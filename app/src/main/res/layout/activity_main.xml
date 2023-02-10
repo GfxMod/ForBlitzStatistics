@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_start_color"
+    style="@style/Theme.ForBlitz"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:baselineAligned="false">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.025"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.115" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.885"
+                android:background="@drawable/background_screen" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.95"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.015" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.075"
+                android:background="@drawable/background_layout"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.05" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/search_button"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.15"
+                    android:background="@null"
+                    android:onClick="onClickSearchButton"
+                    android:src="@drawable/ic_outline_person_search_36" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.75"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.15" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/search_field"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.75"
+                        android:autofillHints=""
+                        android:background="@drawable/background_layout_nested"
+                        android:cursorVisible="true"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:hint="@string/input_nickname"
+                        android:imeOptions="actionSearch"
+                        android:inputType="textPersonName"
+                        android:singleLine="true"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textColorHint="@color/transparent_white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.15" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.05" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.025" />
+
+            <ViewFlipper
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.885">
+
+                <LinearLayout
+                    android:id="@+id/enter_nickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/background_screen"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.2925" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/enter_nickname_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.1"
+                        android:background="@drawable/background_layout"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:padding="15dp"
+                        android:text="@string/enter_nickname"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.1" />
+
+                    <ViewFlipper
+                        android:id="@+id/last_searched_flipper"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.1">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:background="@drawable/background_layout_nested"
+                            android:padding="@dimen/padding_big">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/last_searched_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/inter"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:maxLines="1"
+                                android:padding="@dimen/padding"
+                                android:autoSizeTextType="uniform" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/last_searched_info"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:textColor="@color/grey"
+                                android:fontFamily="@font/inter"
+                                android:gravity="center"
+                                android:maxLines="1"
+                                android:padding="@dimen/padding"
+                                android:autoSizeTextType="uniform" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                    </ViewFlipper>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.2925" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/main_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/background_screen"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.85" />
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tabs"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.1"
+                        android:background="@drawable/background_layout_nested"
+                        app:tabIndicatorColor="@color/stroke_color"
+                        app:tabContentStart="15dp"
+                        app:tabGravity="center"
+                        app:tabMode="fixed"
+                        app:tabRippleColor="@null">
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:icon="@drawable/ic_outline_bar_chart_36" />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:icon="@drawable/ic_outline_auto_graph_36" />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:icon="@drawable/ic_outline_group_36" />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:icon="@drawable/ic_tanks" />
+
+                    </com.google.android.material.tabs.TabLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.025" />
+
+                </LinearLayout>
+
+            </ViewFlipper>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.025"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.115" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.885"
+                android:background="@drawable/background_screen" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/view_pager_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.115" />
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.75225" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.13275" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

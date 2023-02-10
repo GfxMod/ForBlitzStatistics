@@ -1,0 +1,19 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.ForBlitz" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <!-- Secondary brand color. -->
+        <item name="android:forceDarkAllowed" tools:targetApi="29">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="trackColor">@android:color/black</item>
+        <item name="titleTextColor">@android:color/black</item>
+        <item name="android:navigationBarColor">@color/transparent_black</item>
+
+        <item name="colorPrimaryInverse">@android:color/white</item>
+        <item name="colorSecondaryVariant">#e9f0f7</item>
+        <!-- Customize your theme here. -->
+        <item name="android:statusBarColor">@color/background_start_color</item>
+    </style>
+
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- **************************************************************** -->
+    <!-- Custom attributes. -->
+    <!-- **************************************************************** -->
+    <eat-comment />
+
+    <declare-styleable name="AnimatedImageButton">
+        <attr name="button_checked" format="reference|color" />
+        <attr name="button_unchecked" format="reference|color" />
+    </declare-styleable>
+</resources>

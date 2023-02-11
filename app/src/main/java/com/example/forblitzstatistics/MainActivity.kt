@@ -4,10 +4,8 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -35,7 +33,6 @@ import java.io.IOException
 import java.nio.file.Files.*
 import java.nio.file.Paths
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.ceil
 
 class MainActivity : AppCompatActivity() {
@@ -84,13 +81,8 @@ class MainActivity : AppCompatActivity() {
 
         // Hides statistics elements and shows nickname input elements
 
-        val mainLayout = findViewById<LinearLayout>(id.main_layout)
-        val viewPagerLayoutView = findViewById<LinearLayout>(id.view_pager_layout)
-        val enterNickname = findViewById<LinearLayout>(id.enter_nickname)
-
-        mainLayout.visibility = INVISIBLE
-        viewPagerLayoutView.visibility = INVISIBLE
-        enterNickname.visibility = VISIBLE
+        findViewById<ViewFlipper>(id.main_flipper).displayedChild = 0
+        findViewById<LinearLayout>(id.view_pager_layout).visibility = INVISIBLE
 
         // Sets the action when the search button is pressed from the keyboard
 
@@ -153,9 +145,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Called when the search button or the [search button]
-     * [com.example.forblitzstatistics.R.id.search_button] on the keyboard is
-     * pressed. Performs necessary all actions to view statistics.
+     * Called when the [search button]
+     * [com.example.forblitzstatistics.R.id.search_button] or the search button
+     * on the keyboard is pressed. Performs necessary all actions to view
+     * statistics.
      */
     fun onClickSearchButton(view: View) {
 
@@ -327,6 +320,25 @@ class MainActivity : AppCompatActivity() {
             runOnUiThread { tanksLayoutsFlipper.displayedChild = 0 }
 
         }
+
+    }
+
+    // TODO:
+    /**
+     * Called when the [settings button]
+     * [com.example.forblitzstatistics.R.id.settings_button] is pressed. Shows
+     * the settings layout.
+     */
+    fun onClickSettingsButton(view: View) {
+
+        // Plays animation
+
+        Utils.playCycledAnimation(view)
+
+        // Shows the settings layout
+
+        val mainFlipper = findViewById<ViewFlipper>(id.main_flipper)
+        mainFlipper.displayedChild = 2
 
     }
 
@@ -689,13 +701,8 @@ class MainActivity : AppCompatActivity() {
                             val code = prettyJson1.substringAfter("\"code\": ").substringBefore(",")
                             Toast.makeText(applicationContext, "Error $code: $message", Toast.LENGTH_SHORT).show()
 
-                            val mainLayout = findViewById<LinearLayout>(id.main_layout)
-                            val viewPagerLayoutView = findViewById<LinearLayout>(id.view_pager_layout)
-                            val enterNickname = findViewById<LinearLayout>(id.enter_nickname)
-
-                            mainLayout.visibility = INVISIBLE
-                            viewPagerLayoutView.visibility = INVISIBLE
-                            enterNickname.visibility = VISIBLE
+                            findViewById<ViewFlipper>(id.main_flipper).displayedChild = 0
+                            findViewById<LinearLayout>(id.view_pager_layout).visibility = INVISIBLE
 
                         } else {
 
@@ -719,10 +726,8 @@ class MainActivity : AppCompatActivity() {
                             findViewById<TextView>(id.text_nick).text = baseStatisticsData.nickname
                             findViewById<TextView>(id.rating_text_nick).text = baseStatisticsData.nickname
 
-                            findViewById<View>(id.main_layout).visibility = VISIBLE
+                            findViewById<ViewFlipper>(id.main_flipper).displayedChild = 1
                             findViewById<LinearLayout>(id.view_pager_layout).visibility = VISIBLE
-
-                            findViewById<View>(id.enter_nickname).visibility = GONE
 
                         }
 

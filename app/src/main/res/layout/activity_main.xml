@@ -51,12 +51,8 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.075"
                 android:background="@drawable/background_layout"
+                android:padding="@dimen/padding_big"
                 android:orientation="horizontal">
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.05" />
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/search_button"
@@ -68,49 +64,36 @@
                     android:onClick="onClickSearchButton"
                     android:src="@drawable/ic_outline_person_search_36" />
 
-                <LinearLayout
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/search_field"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.75"
-                    android:orientation="vertical">
+                    android:autofillHints=""
+                    android:background="@drawable/background_layout_nested"
+                    android:cursorVisible="true"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:hint="@string/input_nickname"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textPersonName"
+                    android:singleLine="true"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@color/transparent_white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.15" />
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/search_field"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.75"
-                        android:autofillHints=""
-                        android:background="@drawable/background_layout_nested"
-                        android:cursorVisible="true"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:hint="@string/input_nickname"
-                        android:imeOptions="actionSearch"
-                        android:inputType="textPersonName"
-                        android:singleLine="true"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textColorHint="@color/transparent_white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.15" />
-
-                </LinearLayout>
-
-                <View
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/settings_button"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.05" />
+                    android:layout_gravity="center"
+                    android:layout_weight="0.15"
+                    android:background="@null"
+                    android:onClick="onClickSettingsButton"
+                    android:src="@drawable/ic_outline_settings_36" />
 
             </LinearLayout>
 
@@ -120,6 +103,7 @@
                 android:layout_weight="0.025" />
 
             <ViewFlipper
+                android:id="@+id/main_flipper"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.885">
@@ -261,6 +245,40 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.025" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/background_screen"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.2925" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.1"
+                        android:background="@drawable/background_layout"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:padding="15dp"
+                        android:text="@android:string/cancel"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.4925" />
 
                 </LinearLayout>
 

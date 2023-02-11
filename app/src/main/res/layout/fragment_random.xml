@@ -60,6 +60,7 @@
                         android:textColor="@android:color/white"
                         android:textStyle="bold"
                         android:typeface="monospace"
+                        android:paddingHorizontal="@dimen/padding_very_big"
                         app:autoSizeTextType="uniform" />
 
                     <View
@@ -78,6 +79,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
+                            android:padding="@dimen/padding"
                             android:visibility="visible"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
@@ -89,7 +91,7 @@
                                 android:layout_weight="0.5"
                                 android:fontFamily="@font/inter"
                                 android:gravity="start|center_vertical"
-                                android:paddingHorizontal="15dp"
+                                android:paddingHorizontal="@dimen/padding_very_big"
                                 android:text="@string/loading"
                                 android:textColor="@android:color/white"
                                 android:textStyle="bold"
@@ -103,7 +105,7 @@
                                 android:layout_weight="0.4"
                                 android:fontFamily="@font/inter"
                                 android:gravity="start|center_vertical"
-                                android:paddingHorizontal="15dp"
+                                android:paddingHorizontal="@dimen/padding_very_big"
                                 android:text="@string/loading"
                                 android:textColor="@color/grey"
                                 android:typeface="normal"

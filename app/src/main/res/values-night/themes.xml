@@ -5,7 +5,6 @@
         <!-- Secondary brand color. -->
         <item name="android:forceDarkAllowed" tools:targetApi="29">false</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
-        <item name="android:windowLightStatusBar">true</item>
         <item name="trackColor">@android:color/black</item>
         <item name="titleTextColor">@android:color/black</item>
         <item name="android:navigationBarColor">@color/transparent_black</item>

@@ -440,7 +440,7 @@
                     android:fontFamily="@font/inter"
                     android:gravity="center"
                     android:paddingHorizontal="30dp"
-                    android:paddingVertical="@dimen/padding_big"
+                    android:paddingVertical="@dimen/padding_very_big"
                     android:text="@string/detailed_statistics"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"

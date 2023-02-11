@@ -6,6 +6,7 @@ import static androidx.core.widget.TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -199,8 +200,9 @@ public class Vehicle extends StatisticsData {
 
         LinearLayout firstColumnLayout = new LinearLayout(activity);
         firstColumnLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                displayWidth / 100 * 45,
-                LinearLayout.LayoutParams.MATCH_PARENT)
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                1.0f)
         );
         firstColumnLayout.setOrientation(LinearLayout.VERTICAL);
 
@@ -208,8 +210,9 @@ public class Vehicle extends StatisticsData {
 
         LinearLayout secondColumnLayout = new LinearLayout(activity);
         secondColumnLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                displayWidth / 100 * 45,
-                LinearLayout.LayoutParams.MATCH_PARENT)
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                1.0f)
         );
         secondColumnLayout.setOrientation(LinearLayout.VERTICAL);
 
@@ -423,6 +426,7 @@ public class Vehicle extends StatisticsData {
         details.setAutoSizeTextTypeWithDefaults(AUTO_SIZE_TEXT_TYPE_UNIFORM);
         details.setText(activity.getString(R.string.detailed_statistics));
         details.setPadding(padding, padding, padding, padding);
+        details.setAllCaps(false);
         details.setOnClickListener(l -> {
 
             ViewFlipper tanksLayoutsFlipper = activity.findViewById(R.id.tanks_layouts_flipper);
@@ -489,6 +493,35 @@ public class Vehicle extends StatisticsData {
         secondColumnLayout.addView(efficiencyValue);
         secondColumnLayout.addView(hitsFromShotsName);
         secondColumnLayout.addView(hitsFromShotsValue);
+
+    }
+
+    @SuppressLint("RestrictedApi")
+    public static void nothingFound(Activity activity) {
+
+        int padding = Utils.getX(activity) / 1000 * 25;
+        LinearLayout tanksListLayout = activity.findViewById(R.id.tanks_list_layout);
+
+        //
+
+        AppCompatTextView nothingFoundText = new AppCompatTextView(activity);
+        LinearLayout.LayoutParams mainLayoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                padding * 6
+        );
+        mainLayoutParams.setMargins(0, padding, 0, padding);
+        nothingFoundText.setLayoutParams(mainLayoutParams);
+        nothingFoundText.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout));
+        nothingFoundText.setTextColor(ContextCompat.getColor(activity, R.color.white));
+        nothingFoundText.setTypeface(ResourcesCompat.getFont(activity, R.font.inter));
+        nothingFoundText.setGravity(CENTER);
+        nothingFoundText.setAutoSizeTextTypeWithDefaults(AUTO_SIZE_TEXT_TYPE_UNIFORM);
+        nothingFoundText.setPadding(padding, padding, padding, padding);
+        nothingFoundText.setText(R.string.nothing_found);
+
+        //
+
+        tanksListLayout.addView(nothingFoundText);
 
     }
 

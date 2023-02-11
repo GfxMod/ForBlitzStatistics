@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">ForBlitzStatistics</string>
-    <string name="loading">Loading&#8230;</string>
+    <string name="loading">Загрузка&#8230;</string>
     <string name="input_nickname">Введите никнейм</string>
 
     <string name="battles">БОЁВ</string>
@@ -49,12 +49,12 @@
     <string name="enter_nickname">Чтобы посмотреть статистику, введите никнейм в поле выше</string>
     <string name="enter_nickname_or_select">Чтобы посмотреть статистику, введите никнейм в поле выше или выберите предложенный ниже</string>
 
-    <string name="classes">Класс техники</string>
-    <string name="apply_filters">Применить фильтры</string>
     <string name="empty">--</string>
     <string name="clear_tier">Очистить фильтр уровня</string>
-
+    <string name="classes">Класс техники</string>
     <string name="tank_sort">Сортировка</string>
+    <string name="apply_filters">Применить фильтры</string>
+    <string name="nothing_found">Не удалось ничего найти по выбранным вами фильтрам</string>
 
     <string name="rating_false">Игрок не был в рейтинге </string>
     <string name="random_false">Игрок не был в случайных боях</string>

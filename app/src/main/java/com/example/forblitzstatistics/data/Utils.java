@@ -298,7 +298,9 @@ public class Utils {
         animFrom.setFillAfter(true);
 
         view.startAnimation(animTo);
+        view.setClickable(false);
         new Handler().postDelayed(() -> view.startAnimation(animFrom), 125);
+        new Handler().postDelayed(() -> view.setClickable(true), 250);
     }
 
 }

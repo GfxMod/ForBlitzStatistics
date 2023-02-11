@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.GONE
@@ -34,6 +35,7 @@ import java.io.IOException
 import java.nio.file.Files.*
 import java.nio.file.Paths
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.ceil
 
 class MainActivity : AppCompatActivity() {
@@ -59,6 +61,7 @@ class MainActivity : AppCompatActivity() {
 
     private var userID = ""
     private var fillVehiclesInfoJob: Job? = null
+    private var getVehiclesStatisticsJob: ArrayList<Job?> = ArrayList(0)
 
     private var countOfVehicles = 0
 
@@ -178,7 +181,6 @@ class MainActivity : AppCompatActivity() {
         randomLayoutsFlipper.displayedChild = 0
         ratingLayoutsFlipper.displayedChild = 0
         clanLayoutsFlipper.displayedChild = 0
-        tanksLayoutsFlipper.displayedChild = 0
 
         // Sets listeners for buttons
 
@@ -310,10 +312,20 @@ class MainActivity : AppCompatActivity() {
             getIDCoroutine.cancel()
             setPlayerStatistics()
             setClanStat()
+
+            // Displays the loading screen on tanks layout and waits for data loading to finish
+
+            runOnUiThread { tanksLayoutsFlipper.displayedChild = 2 }
             if (fillVehiclesInfoJob?.isCompleted == false) {
                 fillVehiclesInfoJob!!.join()
             }
             fillVehiclesStatistics()
+            getVehiclesStatisticsJob.forEach { it?.join() }
+
+            // Hides the loading screen on tanks layout
+
+            runOnUiThread { tanksLayoutsFlipper.displayedChild = 0 }
+
         }
 
     }
@@ -325,6 +337,8 @@ class MainActivity : AppCompatActivity() {
      * statistics.
      */
     fun onClickApplyFilters(view: View) {
+
+        if (!view.isClickable) { return }
 
         val tanksListLayoutView = findViewById<LinearLayout>(id.tanks_list_layout)
         val tanksTierSelect = findViewById<SeekBar>(id.tanks_tier_select)
@@ -480,38 +494,44 @@ class MainActivity : AppCompatActivity() {
                 vehiclesToCreate.add(it)
             }
 
-        var alreadyGeneratedVehicles = 0
+        if (vehiclesToCreate.size > 0) {
 
-        Handler(Looper.getMainLooper()).postDelayed({
+            var alreadyGeneratedVehicles = 0
 
-            for (i in 0..9) {
-                if (alreadyGeneratedVehicles < vehiclesToCreate.size) {
-                    vehiclesToCreate[alreadyGeneratedVehicles].create(this)
-                } else {
-                    break
-                }
-                alreadyGeneratedVehicles++
-            }
+            Handler(Looper.getMainLooper()).postDelayed({
 
-            tanksScrollView.setScrollViewListener { scrollView: ExtendedScrollView, _, _, _, _ ->
-
-                val lastChildView = scrollView.getChildAt(scrollView.childCount - 1)
-                val diff = lastChildView.bottom - (scrollView.height + scrollView.scrollY)
-
-                if (diff == 0) {
-                    for (i in 0..9) {
-                        if (alreadyGeneratedVehicles < vehiclesToCreate.size) {
-                            vehiclesToCreate[alreadyGeneratedVehicles].create(this)
-                        } else {
-                            break
-                        }
-                        alreadyGeneratedVehicles++
+                for (i in 0..9) {
+                    if (alreadyGeneratedVehicles < vehiclesToCreate.size) {
+                        vehiclesToCreate[alreadyGeneratedVehicles].create(this)
+                    } else {
+                        break
                     }
+                    alreadyGeneratedVehicles++
                 }
 
-            }
+                tanksScrollView.setScrollViewListener { scrollView: ExtendedScrollView, _, _, _, _ ->
 
-        }, 250)
+                    val lastChildView = scrollView.getChildAt(scrollView.childCount - 1)
+                    val diff = lastChildView.bottom - (scrollView.height + scrollView.scrollY)
+
+                    if (diff == 0) {
+                        for (i in 0..9) {
+                            if (alreadyGeneratedVehicles < vehiclesToCreate.size) {
+                                vehiclesToCreate[alreadyGeneratedVehicles].create(this)
+                            } else {
+                                break
+                            }
+                            alreadyGeneratedVehicles++
+                        }
+                    }
+
+                }
+
+            }, 250)
+
+        } else {
+            Vehicle.nothingFound(this@MainActivity)
+        }
 
     }
 
@@ -848,7 +868,7 @@ class MainActivity : AppCompatActivity() {
 
         for (i in idLists.indices) {
 
-            CoroutineScope(Dispatchers.IO).launch {
+            getVehiclesStatisticsJob.add(CoroutineScope(Dispatchers.IO).launch {
 
                 var ids = ""
                 for (j in idLists[i].indices) {
@@ -888,7 +908,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
-            }
+            })
 
         }
 

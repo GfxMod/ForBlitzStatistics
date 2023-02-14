@@ -104,4 +104,11 @@
 
     <string name="last_search">Вы искали этот аккаунт\u0020</string>
 
+    <string name="select_region">Регион для поиска</string>
+    <string name="select_region_ru">RU-регион (Lesta Games)</string>
+    <string name="select_region_eu">EU-регион (Wargaming)</string>
+    <string name="select_region_na">NA-регион (Wargaming)</string>
+    <string name="select_region_asia">ASIA-регион (Wargaming)</string>
+
+
 </resources>

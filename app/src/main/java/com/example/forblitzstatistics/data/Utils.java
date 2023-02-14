@@ -23,7 +23,9 @@ import androidx.core.content.ContextCompat;
 
 import com.example.forblitzstatistics.R;
 import com.example.forblitzstatistics.R.id;
+import com.example.forblitzstatistics.R.dimen;
 import com.example.forblitzstatistics.R.string;
+import com.example.forblitzstatistics.R.drawable;
 
 public class Utils {
 
@@ -282,7 +284,7 @@ public class Utils {
         textView.setBackground(background);
     }
 
-    public static void playCycledAnimation(View view) {
+    public static void playCycledAnimation(@NonNull View view) {
         ScaleAnimation animTo = new ScaleAnimation(
                 1f, 0.75f, 1f, 0.75f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
@@ -301,6 +303,42 @@ public class Utils {
         view.setClickable(false);
         new Handler().postDelayed(() -> view.startAnimation(animFrom), 125);
         new Handler().postDelayed(() -> view.setClickable(true), 250);
+    }
+
+    public static void setSelectedRegion(Activity activity, int number) {
+        View ru = activity.findViewById(id.select_region_ru);
+        View eu = activity.findViewById(id.select_region_eu);
+        View na = activity.findViewById(id.select_region_na);
+        View asia = activity.findViewById(id.select_region_asia);
+
+        if (number == 0) {
+            ru.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested_selected));
+            eu.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
+            na.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
+            asia.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
+        } else if (number == 1) {
+            ru.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
+            eu.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested_selected));
+            na.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
+            asia.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
+        } else if (number == 2) {
+            ru.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
+            eu.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
+            na.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested_selected));
+            asia.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
+        } else if (number == 3) {
+            ru.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
+            eu.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
+            na.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
+            asia.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested_selected));
+        }
+
+        int padding = activity.getResources().getDimensionPixelSize(dimen.padding_very_big);
+        ru.setPadding(padding, padding, padding, padding);
+        eu.setPadding(padding, padding, padding, padding);
+        na.setPadding(padding, padding, padding, padding);
+        asia.setPadding(padding, padding, padding, padding);
+
     }
 
 }

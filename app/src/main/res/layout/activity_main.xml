@@ -106,7 +106,9 @@
                 android:id="@+id/main_flipper"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.885">
+                android:layout_weight="0.885"
+                android:inAnimation="@anim/appearance"
+                android:outAnimation="@anim/disappearance">
 
                 <LinearLayout
                     android:id="@+id/enter_nickname"
@@ -255,30 +257,102 @@
                     android:orientation="vertical"
                     android:visibility="gone">
 
-                    <View
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.2925" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.1"
+                        android:layout_weight="0.45"
+                        android:orientation="vertical"
                         android:background="@drawable/background_layout"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:padding="15dp"
-                        android:text="@android:string/cancel"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
+                        android:padding="@dimen/padding_big">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1.5"
+                            android:fontFamily="@font/inter"
+                            android:gravity="center"
+                            android:padding="0dp"
+                            android:text="@string/select_region"
+                            android:textAllCaps="false"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
+                            android:typeface="monospace"
+                            app:autoSizeTextType="uniform"
+                            android:layout_marginBottom="@dimen/padding_big" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/select_region_ru"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:background="@drawable/background_layout_nested"
+                            android:fontFamily="@font/inter"
+                            android:gravity="center"
+                            android:padding="@dimen/padding_very_big"
+                            android:text="@string/select_region_ru"
+                            android:textAllCaps="false"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
+                            android:typeface="monospace"
+                            app:autoSizeTextType="uniform"
+                            android:layout_marginBottom="@dimen/padding_big" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/select_region_eu"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:background="@drawable/background_layout_nested"
+                            android:fontFamily="@font/inter"
+                            android:gravity="center"
+                            android:padding="@dimen/padding_very_big"
+                            android:text="@string/select_region_eu"
+                            android:textAllCaps="false"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
+                            android:typeface="monospace"
+                            app:autoSizeTextType="uniform"
+                            android:layout_marginBottom="@dimen/padding_big" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/select_region_na"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:background="@drawable/background_layout_nested"
+                            android:fontFamily="@font/inter"
+                            android:gravity="center"
+                            android:padding="@dimen/padding_very_big"
+                            android:text="@string/select_region_na"
+                            android:textAllCaps="false"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
+                            android:typeface="monospace"
+                            app:autoSizeTextType="uniform"
+                            android:layout_marginBottom="@dimen/padding_big" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/select_region_asia"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:background="@drawable/background_layout_nested"
+                            android:fontFamily="@font/inter"
+                            android:gravity="center"
+                            android:padding="@dimen/padding_very_big"
+                            android:text="@string/select_region_asia"
+                            android:textAllCaps="false"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
+                            android:typeface="monospace"
+                            app:autoSizeTextType="uniform" />
+
+                    </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="0.4925" />
+                        android:layout_weight="0.55" />
 
                 </LinearLayout>
 

@@ -459,7 +459,7 @@ public class Vehicle extends StatisticsData {
             tanksSpottedView.setText(getSpotted());
             tanksFrags8pView.setText(getFrags8p());
             tanksMaxXpView.setText(getMaxXp());
-            tanksMaxFragsView.setText(getMaxXp());
+            tanksMaxFragsView.setText(getMaxFrags());
             tanksCapturedPointsView.setText(getCapturePoints());
             tanksDefendedView.setText(getDroppedCapturePoints());
             tanksDamageDealtView.setText(getDamageDealt());

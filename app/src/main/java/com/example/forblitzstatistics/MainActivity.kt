@@ -1,6 +1,8 @@
 package com.example.forblitzstatistics
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -19,6 +21,7 @@ import androidx.viewpager.widget.ViewPager
 import com.example.forblitzstatistics.R.*
 import com.example.forblitzstatistics.api.ApiInterface
 import com.example.forblitzstatistics.api.ApiInterfaceVersion
+import com.example.forblitzstatistics.api.ApiInterfaceWG
 import com.example.forblitzstatistics.api.NetworkConnectionInterceptor
 import com.example.forblitzstatistics.data.*
 import com.google.android.material.tabs.TabLayout
@@ -37,6 +40,9 @@ import kotlin.math.ceil
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var preferences: SharedPreferences
+
+/*
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("https://api.wotblitz.ru/")
         .client(OkHttpClient.Builder().addInterceptor(
@@ -46,6 +52,9 @@ class MainActivity : AppCompatActivity() {
         ).build())
         .build()
     private val service = retrofit.create(ApiInterface::class.java)
+*/
+
+    private lateinit var service: ApiInterface
 
     private var baseStatisticsData: StatisticsData = StatisticsData()
     private var ratingStatisticsData: StatisticsData = StatisticsData()
@@ -99,13 +108,13 @@ class MainActivity : AppCompatActivity() {
 
         // Creates a session directory
 
-        val dir = File(applicationContext.filesDir, "sessions")
-        createDirectories(Paths.get(dir.toString()))
+        val sessionsDir = File(applicationContext.filesDir, "sessions")
+        createDirectories(Paths.get(sessionsDir.toString()))
 
         // Searches for saved sessions to suggest them instead of entering a nickname
 
         var lastFile = File("")
-        val resourcesPath = Paths.get(dir.toString())
+        val resourcesPath = Paths.get(sessionsDir.toString())
         walk(resourcesPath)
             .filter { item -> isRegularFile(item) }
             .forEach { if (it.toFile().lastModified() > lastFile.lastModified()) { lastFile = it.toFile() } }
@@ -134,6 +143,18 @@ class MainActivity : AppCompatActivity() {
             enterNicknameText.setText(string.enter_nickname)
 
         }
+
+        // Get preferences
+
+        preferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
+        setRegion()
+
+        // Sets preferences listeners
+
+        findViewById<View>(id.select_region_ru).setOnClickListener { preferences.edit().putInt("region", 0).apply(); setRegion() }
+        findViewById<View>(id.select_region_eu).setOnClickListener { preferences.edit().putInt("region", 1).apply(); setRegion() }
+        findViewById<View>(id.select_region_na).setOnClickListener { preferences.edit().putInt("region", 2).apply(); setRegion() }
+        findViewById<View>(id.select_region_asia).setOnClickListener { preferences.edit().putInt("region", 3).apply(); setRegion() }
 
         // Check version and fill vehicles specifications
 
@@ -323,7 +344,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    // TODO:
     /**
      * Called when the [settings button]
      * [com.example.forblitzstatistics.R.id.settings_button] is pressed. Shows
@@ -335,10 +355,30 @@ class MainActivity : AppCompatActivity() {
 
         Utils.playCycledAnimation(view)
 
-        // Shows the settings layout
+        // Shows/hides the settings layout
 
         val mainFlipper = findViewById<ViewFlipper>(id.main_flipper)
-        mainFlipper.displayedChild = 2
+        val viewPagerLayout = findViewById<LinearLayout>(id.view_pager_layout)
+
+        if (!view.isActivated && userID == "") {
+
+            mainFlipper.displayedChild = 2
+
+        } else if (!view.isActivated && userID != "") {
+
+            mainFlipper.displayedChild = 2
+            viewPagerLayout.visibility = INVISIBLE
+
+        } else if (view.isActivated) {
+
+            mainFlipper.displayedChild = 0
+            viewPagerLayout.visibility = INVISIBLE
+
+        }
+
+        // Inverses isActivated
+
+        view.isActivated = !view.isActivated
 
     }
 
@@ -702,6 +742,7 @@ class MainActivity : AppCompatActivity() {
                             Toast.makeText(applicationContext, "Error $code: $message", Toast.LENGTH_SHORT).show()
 
                             findViewById<ViewFlipper>(id.main_flipper).displayedChild = 0
+                            findViewById<View>(id.settings_button).isActivated = false
                             findViewById<LinearLayout>(id.view_pager_layout).visibility = INVISIBLE
 
                         } else {
@@ -727,6 +768,7 @@ class MainActivity : AppCompatActivity() {
                             findViewById<TextView>(id.rating_text_nick).text = baseStatisticsData.nickname
 
                             findViewById<ViewFlipper>(id.main_flipper).displayedChild = 1
+                            findViewById<View>(id.settings_button).isActivated = false
                             findViewById<LinearLayout>(id.view_pager_layout).visibility = VISIBLE
 
                         }
@@ -1050,6 +1092,75 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    /**
+     * Sets the background for the region selection buttons and saves the values
+     */
+    private fun setRegion() {
+        when (preferences.getInt("region", -1)) {
+            -1 -> {
+                preferences.edit().putInt("region", 0).apply()
+                Utils.setSelectedRegion(this@MainActivity, 0)
+
+                service = Retrofit.Builder()
+                    .baseUrl("https://api.wotblitz.ru/")
+                    .client(OkHttpClient.Builder().addInterceptor(
+                        NetworkConnectionInterceptor(
+                            this@MainActivity
+                        )
+                    ).build())
+                    .build().create(ApiInterface::class.java)
+            }
+            0 -> {
+                Utils.setSelectedRegion(this@MainActivity, 0)
+
+                service = Retrofit.Builder()
+                    .baseUrl("https://api.wotblitz.ru/")
+                    .client(OkHttpClient.Builder().addInterceptor(
+                        NetworkConnectionInterceptor(
+                            this@MainActivity
+                        )
+                    ).build())
+                    .build().create(ApiInterface::class.java)
+            }
+            1 -> {
+                Utils.setSelectedRegion(this@MainActivity, 1)
+
+                service = Retrofit.Builder()
+                    .baseUrl("https://api.wotblitz.eu/")
+                    .client(OkHttpClient.Builder().addInterceptor(
+                        NetworkConnectionInterceptor(
+                            this@MainActivity
+                        )
+                    ).build())
+                    .build().create(ApiInterfaceWG::class.java)
+            }
+            2 -> {
+                Utils.setSelectedRegion(this@MainActivity, 2)
+
+                service = Retrofit.Builder()
+                    .baseUrl("https://api.wotblitz.com/")
+                    .client(OkHttpClient.Builder().addInterceptor(
+                        NetworkConnectionInterceptor(
+                            this@MainActivity
+                        )
+                    ).build())
+                    .build().create(ApiInterfaceWG::class.java)
+            }
+            3 -> {
+                Utils.setSelectedRegion(this@MainActivity, 3)
+
+                service = Retrofit.Builder()
+                    .baseUrl("https://api.wotblitz.asia/")
+                    .client(OkHttpClient.Builder().addInterceptor(
+                        NetworkConnectionInterceptor(
+                            this@MainActivity
+                        )
+                    ).build())
+                    .build().create(ApiInterfaceWG::class.java)
+            }
+        }
     }
 
 }

@@ -42,18 +42,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var preferences: SharedPreferences
 
-/*
-    private val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("https://api.wotblitz.ru/")
-        .client(OkHttpClient.Builder().addInterceptor(
-            NetworkConnectionInterceptor(
-                this@MainActivity
-            )
-        ).build())
-        .build()
-    private val service = retrofit.create(ApiInterface::class.java)
-*/
-
     private lateinit var service: ApiInterface
 
     private var baseStatisticsData: StatisticsData = StatisticsData()

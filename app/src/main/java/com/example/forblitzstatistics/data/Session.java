@@ -541,7 +541,7 @@ public class Session {
                             }
                             
                         });
-                        alertDialog.setNegativeButton(activity.getString(string.cancel), (dialog, id) -> { });
+                        alertDialog.setNegativeButton(activity.getString(android.R.string.cancel), (dialog, id) -> { });
                         alertDialog.show();
                     }
 

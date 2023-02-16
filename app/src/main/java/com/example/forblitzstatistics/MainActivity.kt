@@ -111,10 +111,10 @@ class MainActivity : AppCompatActivity() {
 
         // Sets preferences listeners
 
-        findViewById<View>(id.select_region_ru).setOnClickListener { preferences.edit().putInt("region", 0).apply(); setRegion() }
-        findViewById<View>(id.select_region_eu).setOnClickListener { preferences.edit().putInt("region", 1).apply(); setRegion() }
-        findViewById<View>(id.select_region_na).setOnClickListener { preferences.edit().putInt("region", 2).apply(); setRegion() }
-        findViewById<View>(id.select_region_asia).setOnClickListener { preferences.edit().putInt("region", 3).apply(); setRegion() }
+        findViewById<View>(id.select_region_ru).setOnClickListener { preferences.edit().putString("region", "ru").apply(); setRegion() }
+        findViewById<View>(id.select_region_eu).setOnClickListener { preferences.edit().putString("region", "eu").apply(); setRegion() }
+        findViewById<View>(id.select_region_na).setOnClickListener { preferences.edit().putString("region", "na").apply(); setRegion() }
+        findViewById<View>(id.select_region_asia).setOnClickListener { preferences.edit().putString("region", "asia").apply(); setRegion() }
 
         // set onBackPressed
 
@@ -124,6 +124,7 @@ class MainActivity : AppCompatActivity() {
                 val randomLayoutsFlipper = findViewById<ViewFlipper>(id.random_layouts_flipper)
                 val ratingLayoutsFlipper = findViewById<ViewFlipper>(id.rating_layouts_flipper)
                 val clanLayoutsFlipper = findViewById<ViewFlipper>(id.clan_layouts_flipper)
+                val tanksLayoutsFlipper = findViewById<ViewFlipper>(id.tanks_layouts_flipper)
 
                 if (mainLayoutsFlipper.displayedChild == 2) {
                     onClickSettingsButton(findViewById(id.settings_button))
@@ -142,6 +143,11 @@ class MainActivity : AppCompatActivity() {
                         2 -> {
                             if (clanLayoutsFlipper.displayedChild != 0) {
                                 clanLayoutsFlipper.displayedChild = 0
+                            }
+                        }
+                        3 -> {
+                            if (tanksLayoutsFlipper.displayedChild == 1) {
+                                tanksLayoutsFlipper.displayedChild = 0
                             }
                         }
                     }
@@ -167,9 +173,11 @@ class MainActivity : AppCompatActivity() {
      */
     fun onClickSearchButton(view: View) {
 
+        view.isClickable = false
+
         // Plays animation
 
-        Utils.playCycledAnimation(view)
+        Utils.playCycledAnimation(view, false)
 
         // Hides keyboard
 
@@ -335,6 +343,10 @@ class MainActivity : AppCompatActivity() {
 
             runOnUiThread { tanksLayoutsFlipper.displayedChild = 0 }
 
+            // all processes are finished, can unlock the button
+
+            view.isClickable = true
+
         }
 
     }
@@ -348,7 +360,7 @@ class MainActivity : AppCompatActivity() {
 
         // Plays animation
 
-        Utils.playCycledAnimation(view)
+        Utils.playCycledAnimation(view, true)
 
         // Shows/hides the settings layout
 
@@ -407,7 +419,7 @@ class MainActivity : AppCompatActivity() {
         val us = findViewById<View>(id.us)
         val su = findViewById<View>(id.su)
 
-        Utils.playCycledAnimation(view)
+        Utils.playCycledAnimation(view, true)
         tanksListLayoutView.removeAllViews()
 
         //
@@ -590,7 +602,7 @@ class MainActivity : AppCompatActivity() {
      */
     fun onClickClearTierFilter(view: View) {
 
-        Utils.playCycledAnimation(view)
+        Utils.playCycledAnimation(view, true)
         val tanksTierSelect = findViewById<SeekBar>(id.tanks_tier_select)
         val tanksTierSelectIndicator = findViewById<TextView>(id.tanks_tier_select_indicator)
 
@@ -992,7 +1004,7 @@ class MainActivity : AppCompatActivity() {
                     text
                         .substringAfter("\"last_battle_time\": ")
                         .substringBefore(",") +
-                    "." + preferences.getInt("region", -1)
+                    "." + preferences.getString("region", "notSpecified")
 
 
         val dir = File(applicationContext.filesDir, "sessions")
@@ -1018,7 +1030,7 @@ class MainActivity : AppCompatActivity() {
             .forEach { if (
                 "$it".substringAfterLast("/").substringBefore("-") == userID
                 &&
-                "$it".substringAfterLast(".").toInt() == preferences.getInt("region", -1)
+                "$it".substringAfterLast(".") == preferences.getString("region", "notSpecified")
             ) { files.add("$it") } }
 
         files.sort()
@@ -1100,9 +1112,10 @@ class MainActivity : AppCompatActivity() {
      * Sets the background for the region selection buttons and saves the values
      */
     private fun setRegion() {
-        when (preferences.getInt("region", -1)) {
-            -1 -> {
-                preferences.edit().putInt("region", 0).apply()
+        findViewById<EditText>(id.search_field).setText("", TextView.BufferType.EDITABLE)
+        when (preferences.getString("region", "notSpecified")) {
+            "notSpecified" -> {
+                preferences.edit().putString("region", "ru").apply()
                 Utils.setSelectedRegion(this@MainActivity, 0)
 
                 service = Retrofit.Builder()
@@ -1114,7 +1127,7 @@ class MainActivity : AppCompatActivity() {
                     ).build())
                     .build().create(ApiInterface::class.java)
             }
-            0 -> {
+            "ru" -> {
                 Utils.setSelectedRegion(this@MainActivity, 0)
 
                 service = Retrofit.Builder()
@@ -1126,7 +1139,7 @@ class MainActivity : AppCompatActivity() {
                     ).build())
                     .build().create(ApiInterface::class.java)
             }
-            1 -> {
+            "eu" -> {
                 Utils.setSelectedRegion(this@MainActivity, 1)
 
                 service = Retrofit.Builder()
@@ -1138,7 +1151,7 @@ class MainActivity : AppCompatActivity() {
                     ).build())
                     .build().create(ApiInterfaceWG::class.java)
             }
-            2 -> {
+            "na" -> {
                 Utils.setSelectedRegion(this@MainActivity, 2)
 
                 service = Retrofit.Builder()
@@ -1150,7 +1163,7 @@ class MainActivity : AppCompatActivity() {
                     ).build())
                     .build().create(ApiInterfaceWG::class.java)
             }
-            3 -> {
+            "asia" -> {
                 Utils.setSelectedRegion(this@MainActivity, 3)
 
                 service = Retrofit.Builder()
@@ -1180,13 +1193,15 @@ class MainActivity : AppCompatActivity() {
             .forEach { if (
                 it.toFile().lastModified() > lastFile.lastModified()
                 &&
-                it.toFile().toString().substringAfterLast(".").toInt() == preferences.getInt("region", -1)
+                it.toFile().toString().substringAfterLast(".") == preferences.getString("region", "notSpecified")
             ) { lastFile = it.toFile() } }
 
         val lastSearchedFlipper = findViewById<ViewFlipper>(id.last_searched_flipper)
         val enterNicknameText = findViewById<TextView>(id.enter_nickname_text)
 
         if (lastFile != File("")) {
+            lastSearchedFlipper.displayedChild = 0
+
             val lastSearchedName = findViewById<TextView>(id.last_searched_name)
             val lastSearchedInfo = findViewById<TextView>(id.last_searched_info)
 
@@ -1204,6 +1219,7 @@ class MainActivity : AppCompatActivity() {
 
             lastSearchedFlipper.displayedChild = 1
             enterNicknameText.setText(string.enter_nickname)
+
         }
 
     }

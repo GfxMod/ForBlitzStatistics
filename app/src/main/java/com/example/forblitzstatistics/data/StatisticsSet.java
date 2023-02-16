@@ -36,7 +36,7 @@ public class StatisticsSet {
         TextView randomMaxXpView = activity.findViewById(id.random_max_xp);
         TextView randomMaxFragsView = activity.findViewById(id.random_max_frags);
         TextView randomCapturedPointsView = activity.findViewById(id.random_captured_points);
-        TextView randomDefendedView = activity.findViewById(id.random_defended);
+        TextView randomDroppedView = activity.findViewById(id.random_dropped);
         TextView randomDamageDealtView = activity.findViewById(id.random_damage_dealt);
         TextView randomDamageReceivedView = activity.findViewById(id.random_damage_received);
         
@@ -156,7 +156,7 @@ public class StatisticsSet {
             randomMaxXpView.setText(maxXp);
             randomMaxFragsView.setText(maxFrags);
             randomCapturedPointsView.setText(capturePoints);
-            randomDefendedView.setText(droppedCapturePoints);
+            randomDroppedView.setText(droppedCapturePoints);
             randomDamageDealtView.setText(damageDealt);
             randomDamageReceivedView.setText(damageReceived);
 
@@ -188,7 +188,7 @@ public class StatisticsSet {
         TextView ratingSpottedView = activity.findViewById(id.rating_spotted);
         TextView ratingFrags8pView = activity.findViewById(id.rating_frags8p);
         TextView ratingCapturedPointsView = activity.findViewById(id.rating_captured_points);
-        TextView ratingDefendedView = activity.findViewById(id.rating_defended);
+        TextView ratingDefendedView = activity.findViewById(id.rating_dropped);
         TextView ratingDamageDealtView = activity.findViewById(id.rating_damage_dealt);
         TextView ratingDamageReceivedView = activity.findViewById(id.rating_damage_received);
 

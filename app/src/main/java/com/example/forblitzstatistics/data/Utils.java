@@ -284,7 +284,8 @@ public class Utils {
         textView.setBackground(background);
     }
 
-    public static void playCycledAnimation(@NonNull View view) {
+    public static void playCycledAnimation(@NonNull View view, Boolean needToSetClickable) {
+        if (needToSetClickable) { view.setClickable(false); }
         ScaleAnimation animTo = new ScaleAnimation(
                 1f, 0.75f, 1f, 0.75f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
@@ -300,9 +301,8 @@ public class Utils {
         animFrom.setFillAfter(true);
 
         view.startAnimation(animTo);
-        view.setClickable(false);
         new Handler().postDelayed(() -> view.startAnimation(animFrom), 125);
-        new Handler().postDelayed(() -> view.setClickable(true), 250);
+        if (needToSetClickable) { new Handler().postDelayed(() -> view.setClickable(true), 250); }
     }
 
     public static void setSelectedRegion(Activity activity, int number) {

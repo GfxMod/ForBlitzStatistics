@@ -1259,7 +1259,7 @@
                                 android:gravity="center"
                                 android:paddingHorizontal="@dimen/padding"
                                 android:paddingVertical="2dp"
-                                android:text="@string/defended_small"
+                                android:text="@string/dropped_small"
                                 android:textAllCaps="false"
                                 android:textColor="@android:color/white"
                                 android:textStyle="bold"
@@ -1267,7 +1267,7 @@
                                 app:autoSizeTextType="uniform" />
 
                             <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/random_defended"
+                                android:id="@+id/random_dropped"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:layout_weight="0.5"

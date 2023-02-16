@@ -6,7 +6,6 @@ import static androidx.core.widget.TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -444,7 +443,7 @@ public class Vehicle extends StatisticsData {
             TextView tanksMaxXpView = activity.findViewById(R.id.tanks_max_xp);
             TextView tanksMaxFragsView = activity.findViewById(R.id.tanks_max_frags);
             TextView tanksCapturedPointsView = activity.findViewById(R.id.tanks_captured_points);
-            TextView tanksDefendedView = activity.findViewById(R.id.tanks_defended);
+            TextView tanksDefendedView = activity.findViewById(R.id.tanks_dropped);
             TextView tanksDamageDealtView = activity.findViewById(R.id.tanks_damage_dealt);
             TextView tanksDamageReceivedView = activity.findViewById(R.id.tanks_damage_received);
 

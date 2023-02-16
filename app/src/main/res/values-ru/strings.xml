@@ -1,0 +1,113 @@
+<resources>
+    <string name="app_name">ForBlitzStatistics</string>
+    <string name="loading">Загрузка&#8230;</string>
+    <string name="input_nickname">Введите никнейм</string>
+
+    <string name="battles">БОЁВ</string>
+    <string name="win_rate">ПОБЕД, %</string>
+    <string name="average_damage">СРЕДНИЙ УРОН</string>
+    <string name="efficiency">ЭФФЕКТИВНОСТЬ</string>
+    <string name="survived">ВЫЖИЛ, %</string>
+    <string name="hits_from_shots">ПОПАДАНИЙ, %</string>
+
+    <string name="I">I</string>
+    <string name="II">II</string>
+    <string name="III">III</string>
+    <string name="IV">IV</string>
+    <string name="V">V</string>
+    <string name="VI">VI</string>
+    <string name="VII">VII</string>
+    <string name="VIII">VIII</string>
+    <string name="IX">IX</string>
+    <string name="X">X</string>
+
+    <string name="cn">Китай</string>
+    <string name="eu">Сборная Европы</string>
+    <string name="fr">Франция</string>
+    <string name="gb">Великобритания</string>
+    <string name="de">Германия</string>
+    <string name="jp">Япония</string>
+    <string name="other">Сборная Нация</string>
+    <string name="us">США</string>
+    <string name="su">СССР</string>
+
+    <string name="clan_false">Игрок не состоит в клане</string>
+
+    <string name="creator_name">Создатель:</string>
+    <string name="created_at">Создан:</string>
+    <string name="renamed_at">Переименован:</string>
+    <string name="old_name">Старое название:</string>
+    <string name="old_tag">Старый тег:</string>
+
+    <string name="recruiting_options_info">Условия авторекрутинга</string>
+    <string name="recruiting_options_vehicles_level">Уровень техники:</string>
+    <string name="recruiting_options_wins_ratio">Побед, %:</string>
+    <string name="recruiting_options_average_battles_per_day">Боёв в день:</string>
+    <string name="recruiting_options_battles">Боёв:</string>
+    <string name="recruiting_options_average_damage">Средний урон:</string>
+
+    <string name="enter_nickname">Чтобы посмотреть статистику, введите никнейм в поле выше</string>
+    <string name="enter_nickname_or_select">Чтобы посмотреть статистику, введите никнейм в поле выше или выберите предложенный ниже</string>
+
+    <string name="empty">--</string>
+    <string name="clear_tier">Очистить фильтр уровня</string>
+    <string name="classes">Класс техники</string>
+    <string name="tank_sort">Сортировка</string>
+    <string name="apply_filters">Применить фильтры</string>
+    <string name="nothing_found">Не удалось ничего найти по выбранным вами фильтрам</string>
+
+    <string name="rating_false">Игрок не был в рейтинге </string>
+    <string name="random_false">Игрок не был в случайных боях</string>
+
+    <string name="detailed_statistics">Подробная статистика</string>
+
+    <string name="wins_small">Побед</string>
+    <string name="losses_small">Поражений</string>
+    <string name="win_and_survive_small">Победил и выжил</string>
+    <string name="survive_small">Выжил</string>
+    <string name="damage_dealt_small">Урона нанёс</string>
+    <string name="damage_received_small">Урона принял</string>
+    <string name="xp_small">Всего опыта</string>
+    <string name="frags_small">Фрагов</string>
+    <string name="shots_small">Выстрелов</string>
+    <string name="hits_small">Попаданий</string>
+    <string name="spotted_small">Обнаружено</string>
+    <string name="frags8p_small">Фрагов на VIII+</string>
+    <string name="max_xp_small">Макс. опыта</string>
+    <string name="max_frags_small">Макс. фрагов</string>
+    <string name="captured_points_small">Очков захвата</string>
+    <string name="dropped_small">Сбито очков захвата</string>
+    <string name="select_session">Выбрать дату сравнения</string>
+    <string name="to_session_stat">К статистике за сессию</string>
+    <string name="from_session_stat">К статистике за всё время</string>
+    <string name="clan_members">Участники клана</string>
+    <string name="back">Назад</string>
+
+    <string name="clan_info">Информация о клане</string>
+
+    <string name="delete">Удалить</string>
+    <string name="delete_alert">Вы уверены, что хотите насовсем удалить эту сессию?</string>
+    <string name="delete_successfully">Сессия успешно удалена</string>
+    <string name="delete_failed">При удалении сессии возникла ошибка, попробуйте ещё раз</string>
+    <string name="delete_select">Нельзя удалить выбранную сессию</string>
+
+    <string name="clan_role_private">Рядовой</string>
+    <string name="clan_role_executive_officer">Заместитель главы</string>
+    <string name="clan_role_commander">Глава клана</string>
+
+    <string name="joined_at">Вступил в клан\u0020</string>
+
+    <string name="network_error">Не удалось установить соединение</string>
+    <string name="network_error_desc">Проверьте подключение к Интернету</string>
+    <string name="network_error_try_again">Выполнить переподключение</string>
+
+    <string name="last_search">Вы искали этот аккаунт\u0020</string>
+
+    <string name="select_region">Регион для поиска</string>
+    <string name="select_region_ru">RU-регион (Lesta Games)</string>
+    <string name="select_region_eu">EU-регион (Wargaming)</string>
+    <string name="select_region_na">NA-регион (Wargaming)</string>
+    <string name="select_region_asia">ASIA-регион (Wargaming)</string>
+
+
+</resources>

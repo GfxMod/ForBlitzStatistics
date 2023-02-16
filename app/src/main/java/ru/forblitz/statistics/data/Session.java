@@ -1,4 +1,4 @@
-package com.example.forblitzstatistics.data;
+package ru.forblitz.statistics.data;
 
 import static android.graphics.Typeface.BOLD;
 import static androidx.core.widget.TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM;
@@ -20,11 +20,11 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
-import com.example.forblitzstatistics.R.color;
-import com.example.forblitzstatistics.R.drawable;
-import com.example.forblitzstatistics.R.font;
-import com.example.forblitzstatistics.R.id;
-import com.example.forblitzstatistics.R.string;
+import ru.forblitz.statistics.R.color;
+import ru.forblitz.statistics.R.drawable;
+import ru.forblitz.statistics.R.font;
+import ru.forblitz.statistics.R.id;
+import ru.forblitz.statistics.R.string;
 
 import java.io.File;
 import java.util.ArrayList;

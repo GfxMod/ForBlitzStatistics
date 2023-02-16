@@ -1,16 +1,16 @@
-package com.example.forblitzstatistics.data;
+package ru.forblitz.statistics.data;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.widget.TextView;
 
-import com.example.forblitzstatistics.R.id;
+import ru.forblitz.statistics.R.id;
 
 
 public class StatisticsSet {
 
     /**
-     * Sets {@link com.example.forblitzstatistics.R.layout#fragment_random base statistics} values
+     * Sets {@link ru.forblitz.statistics.R.layout#fragment_random base statistics} values
      * @param activity required to get resources
      * @param statistics statistics to be set
      */
@@ -165,7 +165,7 @@ public class StatisticsSet {
     }
 
     /**
-     * Sets {@link com.example.forblitzstatistics.R.layout#fragment_rating rating statistics} values
+     * Sets {@link ru.forblitz.statistics.R.layout#fragment_rating rating statistics} values
      * @param activity required to get resources
      * @param statistics statistics to be set
      */

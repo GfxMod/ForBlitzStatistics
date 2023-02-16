@@ -1,4 +1,4 @@
-package com.example.forblitzstatistics
+package ru.forblitz.statistics
 
 import org.junit.Test
 

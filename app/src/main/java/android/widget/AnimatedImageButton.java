@@ -11,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageButton;
 
-import com.example.forblitzstatistics.R;
-import com.example.forblitzstatistics.data.Utils;
+import ru.forblitz.statistics.R;
+import ru.forblitz.statistics.data.Utils;
 
 public class AnimatedImageButton extends AppCompatImageButton {
 

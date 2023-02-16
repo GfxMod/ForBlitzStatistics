@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="@color/background_start_color"
     style="@style/Theme.ForBlitz"
-    tools:context=".MainActivity">
+    tools:context="ru.forblitz.statistics.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

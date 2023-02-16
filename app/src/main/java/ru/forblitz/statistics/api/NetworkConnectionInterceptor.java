@@ -1,4 +1,4 @@
-package com.example.forblitzstatistics.api;
+package ru.forblitz.statistics.api;
 
 import android.app.Activity;
 import android.content.Context;

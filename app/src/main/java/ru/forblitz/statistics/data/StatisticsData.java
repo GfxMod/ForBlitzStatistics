@@ -1,4 +1,4 @@
-package com.example.forblitzstatistics.data;
+package ru.forblitz.statistics.data;
 
 import android.util.Log;
 

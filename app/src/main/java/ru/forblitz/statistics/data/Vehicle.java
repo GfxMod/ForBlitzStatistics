@@ -1,4 +1,4 @@
-package com.example.forblitzstatistics.data;
+package ru.forblitz.statistics.data;
 
 import static android.graphics.Typeface.BOLD;
 import static android.view.Gravity.CENTER;
@@ -18,7 +18,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
-import com.example.forblitzstatistics.R;
+import ru.forblitz.statistics.R;
 
 import java.util.Objects;
 

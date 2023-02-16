@@ -1,4 +1,4 @@
-package com.example.forblitzstatistics
+package ru.forblitz.statistics
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -9,7 +9,6 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-
 
 class ViewPagerAdapter(fragmentManager: FragmentManager, private val context: Context):
     FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -43,7 +42,9 @@ class ViewPagerAdapter(fragmentManager: FragmentManager, private val context: Co
         val span: ImageSpan
         when (position) {
             0 -> {
-                val drawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_outline_bar_chart_36)!!
+                val drawable: Drawable = AppCompatResources.getDrawable(context,
+                    R.drawable.ic_outline_bar_chart_36
+                )!!
                 title = SpannableStringBuilder(" ")
                 drawable.setBounds(
                     0,
@@ -56,7 +57,9 @@ class ViewPagerAdapter(fragmentManager: FragmentManager, private val context: Co
                 return title
             }
             1 -> {
-                val drawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_outline_auto_graph_36)!!
+                val drawable: Drawable = AppCompatResources.getDrawable(context,
+                    R.drawable.ic_outline_auto_graph_36
+                )!!
                 title = SpannableStringBuilder(" ")
                 drawable.setBounds(
                     0,
@@ -69,7 +72,9 @@ class ViewPagerAdapter(fragmentManager: FragmentManager, private val context: Co
                 return title
             }
             2 -> {
-                val drawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_outline_group_36)!!
+                val drawable: Drawable = AppCompatResources.getDrawable(context,
+                    R.drawable.ic_outline_group_36
+                )!!
                 title = SpannableStringBuilder(" ")
                 drawable.setBounds(
                     0,
@@ -82,7 +87,9 @@ class ViewPagerAdapter(fragmentManager: FragmentManager, private val context: Co
                 return title
             }
             else -> {
-                val drawable: Drawable = AppCompatResources.getDrawable(context, R.drawable.ic_tanks)!!
+                val drawable: Drawable = AppCompatResources.getDrawable(context,
+                    R.drawable.ic_tanks
+                )!!
                 title = SpannableStringBuilder(" ")
                 drawable.setBounds(
                     0,

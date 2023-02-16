@@ -7,7 +7,7 @@ import android.view.animation.ScaleAnimation;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatRadioButton;
 
-import com.example.forblitzstatistics.data.Utils;
+import ru.forblitz.statistics.data.Utils;
 
 public class AnimatedRadioButton extends AppCompatRadioButton {
 

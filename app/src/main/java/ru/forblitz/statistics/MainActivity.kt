@@ -1,4 +1,4 @@
-package com.example.forblitzstatistics
+package ru.forblitz.statistics
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -20,12 +20,12 @@ import androidx.constraintlayout.widget.ConstraintLayout.INVISIBLE
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.doOnTextChanged
 import androidx.viewpager.widget.ViewPager
-import com.example.forblitzstatistics.R.*
-import com.example.forblitzstatistics.api.ApiInterface
-import com.example.forblitzstatistics.api.ApiInterfaceVersion
-import com.example.forblitzstatistics.api.ApiInterfaceWG
-import com.example.forblitzstatistics.api.NetworkConnectionInterceptor
-import com.example.forblitzstatistics.data.*
+import ru.forblitz.statistics.R.*
+import ru.forblitz.statistics.api.ApiInterface
+import ru.forblitz.statistics.api.ApiInterfaceVersion
+import ru.forblitz.statistics.api.ApiInterfaceWG
+import ru.forblitz.statistics.api.NetworkConnectionInterceptor
+import ru.forblitz.statistics.data.*
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
@@ -167,7 +167,7 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * Called when the [search button]
-     * [com.example.forblitzstatistics.R.id.search_button] or the search button
+     * [ru.forblitz.statistics.R.id.search_button] or the search button
      * on the keyboard is pressed. Performs necessary all actions to view
      * statistics.
      */
@@ -353,7 +353,7 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * Called when the [settings button]
-     * [com.example.forblitzstatistics.R.id.settings_button] is pressed. Shows
+     * [ru.forblitz.statistics.R.id.settings_button] is pressed. Shows
      * the settings layout.
      */
     fun onClickSettingsButton(view: View) {
@@ -391,7 +391,7 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * Called when the [apply filters button]
-     * [com.example.forblitzstatistics.R.id.tanks_apply_filters] or the search
+     * [ru.forblitz.statistics.R.id.tanks_apply_filters] or the search
      * button on the keyboard is pressed. Creates a display of suitable vehicle
      * statistics.
      */
@@ -596,9 +596,9 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * Clears the progress of the [tier filter SeekBar]
-     * [com.example.forblitzstatistics.R.id.tanks_tier_select] and sets an empty
+     * [ru.forblitz.statistics.R.id.tanks_tier_select] and sets an empty
      * value for the [tier filter indicator]
-     * [com.example.forblitzstatistics.R.id.tanks_tier_select_indicator]
+     * [ru.forblitz.statistics.R.id.tanks_tier_select_indicator]
      */
     fun onClickClearTierFilter(view: View) {
 
@@ -674,7 +674,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Gets ID for nickname in [search field][com.example.forblitzstatistics.R.id.search_field]
+     * Gets ID for nickname in [search field][ru.forblitz.statistics.R.id.search_field]
      */
     private suspend fun getID(): Job  {
         userID = ""
@@ -887,7 +887,9 @@ class MainActivity : AppCompatActivity() {
 
                     countOfVehicles = vehiclesInfoList.substringAfter("\"count\": ").substringBefore("\n").toInt()
 
-                    vehiclesData.clear(); for (i in 0 until countOfVehicles) { vehiclesData.add(Vehicle()) }
+                    vehiclesData.clear(); for (i in 0 until countOfVehicles) { vehiclesData.add(
+                    Vehicle()
+                ) }
 
                     var tmpData = vehiclesInfoList.substringAfter("data\": {")
                     for(j in vehiclesData.indices) {

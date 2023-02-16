@@ -1,4 +1,4 @@
-package com.example.forblitzstatistics.data;
+package ru.forblitz.statistics.data;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -21,11 +21,11 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.content.ContextCompat;
 
-import com.example.forblitzstatistics.R;
-import com.example.forblitzstatistics.R.id;
-import com.example.forblitzstatistics.R.dimen;
-import com.example.forblitzstatistics.R.string;
-import com.example.forblitzstatistics.R.drawable;
+import ru.forblitz.statistics.R;
+import ru.forblitz.statistics.R.id;
+import ru.forblitz.statistics.R.dimen;
+import ru.forblitz.statistics.R.string;
+import ru.forblitz.statistics.R.drawable;
 
 public class Utils {
 
@@ -134,7 +134,7 @@ public class Utils {
     }
 
     /**
-     * Sets displayed child for {@link com.example.forblitzstatistics.R.layout#fragment_random base statistics}
+     * Sets displayed child for {@link ru.forblitz.statistics.R.layout#fragment_random base statistics}
      * @param activity required to get resources
      * @param v visibility value to be set
      */
@@ -154,7 +154,7 @@ public class Utils {
     }
 
     /**
-     * Sets displayed child for {@link com.example.forblitzstatistics.R.layout#fragment_rating rating statistics}
+     * Sets displayed child for {@link ru.forblitz.statistics.R.layout#fragment_rating rating statistics}
      * @param activity required to get resources
      * @param v visibility value to be set
      */

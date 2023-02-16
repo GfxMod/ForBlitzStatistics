@@ -1,4 +1,4 @@
-package com.example.forblitzstatistics.api;
+package ru.forblitz.statistics.api;
 
 import java.io.IOException;
 

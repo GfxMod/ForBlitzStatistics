@@ -10,7 +10,7 @@
     tools:background="@drawable/background_screen"
     android:inAnimation="@anim/appearance"
     android:outAnimation="@anim/disappearance"
-    tools:context=".TanksFragment">
+    tools:context="ru.forblitz.statistics.TanksFragment">
 
     <android.widget.LinearLayout
         android:layout_width="match_parent"

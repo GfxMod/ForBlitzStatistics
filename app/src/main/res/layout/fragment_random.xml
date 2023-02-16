@@ -9,7 +9,7 @@
     tools:background="@drawable/background_screen"
     android:inAnimation="@anim/appearance"
     android:outAnimation="@anim/disappearance"
-    tools:context=".RandomFragment" >
+    tools:context="ru.forblitz.statistics.RandomFragment" >
 
     <android.widget.LinearLayout
         android:layout_width="match_parent"

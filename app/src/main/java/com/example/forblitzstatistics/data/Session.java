@@ -465,13 +465,13 @@ public class Session {
     /**
      * @param activity required to get resources
      * @param files {@link ArrayList<String> list} of suitable files
-     * @param number number of selected session (usually 0; but you can explicitly select any session)
+     * @param selectedNumber selectedNumber of selected session (usually 0; but you can explicitly select any session)
      * @return {@link ArrayList<AppCompatTextView> list} of {@link AppCompatTextView AppCompatTextViews} to be created
      */
     @NonNull
     @SuppressWarnings("SuspiciousNameCombination")
     @SuppressLint("RestrictedApi")
-    public static ArrayList<AppCompatTextView> createSelectList(Activity activity, List<String> files, int number) {
+    public static ArrayList<AppCompatTextView> createSelectList(Activity activity, List<String> files, int selectedNumber) {
 
         ArrayList<AppCompatTextView> dateViews = new ArrayList<>(0);
 
@@ -497,7 +497,7 @@ public class Session {
                 layout.setLayoutParams(layoutLayoutParams);
                 layout.setOrientation(LinearLayout.HORIZONTAL);
                 layout.setPadding(padding, padding, padding, padding);
-                if (files.indexOf(path) == number) {
+                if (files.indexOf(path) == selectedNumber) {
                     layout.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested_selected ));
                 } else {
                     layout.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
@@ -512,7 +512,7 @@ public class Session {
                 date.setTypeface(ResourcesCompat.getFont(activity, font.inter), BOLD);
                 date.setAutoSizeTextTypeWithDefaults(AUTO_SIZE_TEXT_TYPE_UNIFORM);
                 date.setPadding(padding * 2, padding * 2, padding * 2, padding * 2);
-                date.setText(Utils.parseTime(path.substring(path.indexOf("-") + 1)));
+                date.setText(Utils.parseTime(path.substring(path.indexOf("-") + 1, path.lastIndexOf("."))));
 
                 //
                 ////
@@ -525,7 +525,7 @@ public class Session {
                 delete.setPadding(padding, padding, padding, padding);
                 delete.setOnClickListener(v -> {
 
-                    if (files.indexOf(path) == number) {
+                    if (files.indexOf(path) == selectedNumber) {
                         Toast.makeText(activity, activity.getString(string.delete_select), Toast.LENGTH_SHORT).show();
                     } else {
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);

@@ -38,11 +38,10 @@
                 android:id="@+id/tanks_scroll"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fadingEdge="horizontal"
-                android:fadingEdgeLength="15dp"
+                android:fadingEdgeLength="@dimen/padding_very_big"
+                android:requiresFadingEdge="vertical"
                 android:fillViewport="false"
-                android:orientation="vertical"
-                android:requiresFadingEdge="vertical">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/tanks_layout"

@@ -8,10 +8,12 @@ import android.os.Handler
 import android.os.Looper
 import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnFocusChangeListener
 import android.view.View.VISIBLE
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout.INVISIBLE
@@ -78,7 +80,7 @@ class MainActivity : AppCompatActivity() {
 
         // Hides statistics elements and shows nickname input elements
 
-        findViewById<ViewFlipper>(id.main_flipper).displayedChild = 0
+        findViewById<ViewFlipper>(id.main_layouts_flipper).displayedChild = 0
         findViewById<LinearLayout>(id.view_pager_layout).visibility = INVISIBLE
 
         // Sets the action when the search button is pressed from the keyboard
@@ -93,44 +95,14 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+        searchField.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
+            searchField.isCursorVisible = hasFocus
+        }
 
         // Creates a session directory
 
         val sessionsDir = File(applicationContext.filesDir, "sessions")
         createDirectories(Paths.get(sessionsDir.toString()))
-
-        // Searches for saved sessions to suggest them instead of entering a nickname
-
-        var lastFile = File("")
-        val resourcesPath = Paths.get(sessionsDir.toString())
-        walk(resourcesPath)
-            .filter { item -> isRegularFile(item) }
-            .forEach { if (it.toFile().lastModified() > lastFile.lastModified()) { lastFile = it.toFile() } }
-
-        val lastSearchedFlipper = findViewById<ViewFlipper>(id.last_searched_flipper)
-        val enterNicknameText = findViewById<TextView>(id.enter_nickname_text)
-
-        if (lastFile != File("")) {
-
-            val lastSearchedName = findViewById<TextView>(id.last_searched_name)
-            val lastSearchedInfo = findViewById<TextView>(id.last_searched_info)
-
-            lastSearchedName.text = lastFile.readText().substringAfter("\"nickname\": \"").substringBefore("\"")
-            val lastSearchedInfoText = getString(string.last_search) + Utils.parseTime((lastFile.lastModified() / 1000).toString())
-            lastSearchedInfo.text = lastSearchedInfoText
-            enterNicknameText.setText(string.enter_nickname_or_select)
-
-            lastSearchedFlipper.setOnClickListener {
-                findViewById<EditText>(id.search_field).setText(lastFile.readText().substringAfter("\"nickname\": \"").substringBefore("\""), TextView.BufferType.EDITABLE)
-                onClickSearchButton(findViewById(id.search_button))
-            }
-
-        } else {
-
-            lastSearchedFlipper.displayedChild = 1
-            enterNicknameText.setText(string.enter_nickname)
-
-        }
 
         // Get preferences
 
@@ -143,6 +115,40 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(id.select_region_eu).setOnClickListener { preferences.edit().putInt("region", 1).apply(); setRegion() }
         findViewById<View>(id.select_region_na).setOnClickListener { preferences.edit().putInt("region", 2).apply(); setRegion() }
         findViewById<View>(id.select_region_asia).setOnClickListener { preferences.edit().putInt("region", 3).apply(); setRegion() }
+
+        // set onBackPressed
+
+        onBackPressedDispatcher.addCallback(this@MainActivity, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val mainLayoutsFlipper = findViewById<ViewFlipper>(id.main_layouts_flipper)
+                val randomLayoutsFlipper = findViewById<ViewFlipper>(id.random_layouts_flipper)
+                val ratingLayoutsFlipper = findViewById<ViewFlipper>(id.rating_layouts_flipper)
+                val clanLayoutsFlipper = findViewById<ViewFlipper>(id.clan_layouts_flipper)
+
+                if (mainLayoutsFlipper.displayedChild == 2) {
+                    onClickSettingsButton(findViewById(id.settings_button))
+                } else {
+                    when (viewPager.currentItem) {
+                        0 -> {
+                            if (randomLayoutsFlipper.displayedChild != 0) {
+                                randomLayoutsFlipper.displayedChild = 0
+                            }
+                        }
+                        1 -> {
+                            if (ratingLayoutsFlipper.displayedChild != 0) {
+                                ratingLayoutsFlipper.displayedChild = 0
+                            }
+                        }
+                        2 -> {
+                            if (clanLayoutsFlipper.displayedChild != 0) {
+                                clanLayoutsFlipper.displayedChild = 0
+                            }
+                        }
+                    }
+                }
+
+            }
+        })
 
         // Check version and fill vehicles specifications
 
@@ -170,6 +176,7 @@ class MainActivity : AppCompatActivity() {
         val searchField = findViewById<EditText>(id.search_field)
         val imm: InputMethodManager = this.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(searchField.windowToken, 0)
+        searchField.clearFocus()
 
         // Scrolls to main statistics item for each ViewFlipper/ViewPager
 
@@ -345,21 +352,21 @@ class MainActivity : AppCompatActivity() {
 
         // Shows/hides the settings layout
 
-        val mainFlipper = findViewById<ViewFlipper>(id.main_flipper)
+        val mainLayoutsFlipper = findViewById<ViewFlipper>(id.main_layouts_flipper)
         val viewPagerLayout = findViewById<LinearLayout>(id.view_pager_layout)
 
         if (!view.isActivated && userID == "") {
 
-            mainFlipper.displayedChild = 2
+            mainLayoutsFlipper.displayedChild = 2
 
         } else if (!view.isActivated && userID != "") {
 
-            mainFlipper.displayedChild = 2
+            mainLayoutsFlipper.displayedChild = 2
             viewPagerLayout.visibility = INVISIBLE
 
         } else if (view.isActivated) {
 
-            mainFlipper.displayedChild = 0
+            mainLayoutsFlipper.displayedChild = 0
             viewPagerLayout.visibility = INVISIBLE
 
         }
@@ -729,7 +736,7 @@ class MainActivity : AppCompatActivity() {
                             val code = prettyJson1.substringAfter("\"code\": ").substringBefore(",")
                             Toast.makeText(applicationContext, "Error $code: $message", Toast.LENGTH_SHORT).show()
 
-                            findViewById<ViewFlipper>(id.main_flipper).displayedChild = 0
+                            findViewById<ViewFlipper>(id.main_layouts_flipper).displayedChild = 0
                             findViewById<View>(id.settings_button).isActivated = false
                             findViewById<LinearLayout>(id.view_pager_layout).visibility = INVISIBLE
 
@@ -755,7 +762,7 @@ class MainActivity : AppCompatActivity() {
                             findViewById<TextView>(id.text_nick).text = baseStatisticsData.nickname
                             findViewById<TextView>(id.rating_text_nick).text = baseStatisticsData.nickname
 
-                            findViewById<ViewFlipper>(id.main_flipper).displayedChild = 1
+                            findViewById<ViewFlipper>(id.main_layouts_flipper).displayedChild = 1
                             findViewById<View>(id.settings_button).isActivated = false
                             findViewById<LinearLayout>(id.view_pager_layout).visibility = VISIBLE
 
@@ -930,7 +937,6 @@ class MainActivity : AppCompatActivity() {
                                 if (vehicleStatistics.contains("\"tank_id\": " + vehiclesData[i * 100 + j].id + "\n")) {
                                     vehiclesData[i * 100 + j].json = vehicleStatistics.substringBefore("\"tank_id\": " + vehiclesData[i * 100 + j].id + "\n").substringAfterLast("\"all\": {")
                                 }
-
                             }
                         }
 
@@ -979,12 +985,15 @@ class MainActivity : AppCompatActivity() {
      * Creates session file with name format "accountID-lastBattleTime"
      */
     private fun createSessionFile(text: String) {
-        val filename = text
-            .substringAfter("\"account_id\": ")
-            .substringBefore(",") + "-" +
-                text
-                    .substringAfter("\"last_battle_time\": ")
-                    .substringBefore(",")
+        val filename =
+            text
+                .substringAfter("\"account_id\": ")
+                .substringBefore(",") + "-" +
+                    text
+                        .substringAfter("\"last_battle_time\": ")
+                        .substringBefore(",") +
+                    "." + preferences.getInt("region", -1)
+
 
         val dir = File(applicationContext.filesDir, "sessions")
         val file = File(dir, filename)
@@ -1006,7 +1015,11 @@ class MainActivity : AppCompatActivity() {
         val resourcesPath = Paths.get(dir.toString())
         walk(resourcesPath)
             .filter { item -> isRegularFile(item) }
-            .forEach { if ("$it".substringAfterLast("/").substringBefore("-") == userID) { files.add("$it") } }
+            .forEach { if (
+                "$it".substringAfterLast("/").substringBefore("-") == userID
+                &&
+                "$it".substringAfterLast(".").toInt() == preferences.getInt("region", -1)
+            ) { files.add("$it") } }
 
         files.sort()
         files.reverse()
@@ -1017,12 +1030,12 @@ class MainActivity : AppCompatActivity() {
             }
             1 -> {
                 val currentDate = prettyJson1.substringAfter("\"last_battle_time\": ").substringBefore(",")
-                val sessionDate = files[0].substringAfter("-")
+                val sessionDate = files[0].substringAfter("-").substringBeforeLast(".")
                 if (currentDate == sessionDate) { 1 } else { 2 }
             }
             else -> {
                 val currentDate = prettyJson1.substringAfter("\"last_battle_time\": ").substringBefore(",")
-                val sessionDate = files[0].substringAfter("-")
+                val sessionDate = files[0].substringAfter("-").substringBeforeLast(".")
                 if (currentDate == sessionDate) { 3 } else { 4 }
             }
         }
@@ -1038,6 +1051,7 @@ class MainActivity : AppCompatActivity() {
             2 -> {
                 createSessionFile(prettyJson1)
                 Session.show(this@MainActivity)
+                Session.hideSelect(this@MainActivity)
                 val session = File(files[0]).readText()
                 sessionBaseStatisticsData.json = session.substringAfter("all")
                 sessionRatingStatisticsData.json = session.substringAfter("rating")
@@ -1149,6 +1163,49 @@ class MainActivity : AppCompatActivity() {
                     .build().create(ApiInterfaceWG::class.java)
             }
         }
+        updateLastSearch()
+    }
+
+    /**
+     * Searches for saved sessions to suggest them instead of entering a nickname
+     */
+    private fun updateLastSearch() {
+
+        val sessionsDir = File(applicationContext.filesDir, "sessions")
+        var lastFile = File("")
+        val resourcesPath = Paths.get(sessionsDir.toString())
+
+        walk(resourcesPath)
+            .filter { item -> isRegularFile(item) }
+            .forEach { if (
+                it.toFile().lastModified() > lastFile.lastModified()
+                &&
+                it.toFile().toString().substringAfterLast(".").toInt() == preferences.getInt("region", -1)
+            ) { lastFile = it.toFile() } }
+
+        val lastSearchedFlipper = findViewById<ViewFlipper>(id.last_searched_flipper)
+        val enterNicknameText = findViewById<TextView>(id.enter_nickname_text)
+
+        if (lastFile != File("")) {
+            val lastSearchedName = findViewById<TextView>(id.last_searched_name)
+            val lastSearchedInfo = findViewById<TextView>(id.last_searched_info)
+
+            lastSearchedName.text = lastFile.readText().substringAfter("\"nickname\": \"").substringBefore("\"")
+            val lastSearchedInfoText = getString(string.last_search) + Utils.parseTime((lastFile.lastModified() / 1000).toString())
+            lastSearchedInfo.text = lastSearchedInfoText
+            enterNicknameText.setText(string.enter_nickname_or_select)
+
+            lastSearchedFlipper.setOnClickListener {
+                findViewById<EditText>(id.search_field).setText(lastFile.readText().substringAfter("\"nickname\": \"").substringBefore("\""), TextView.BufferType.EDITABLE)
+                onClickSearchButton(findViewById(id.search_button))
+            }
+
+        } else {
+
+            lastSearchedFlipper.displayedChild = 1
+            enterNicknameText.setText(string.enter_nickname)
+        }
+
     }
 
 }

@@ -103,7 +103,7 @@
                 android:layout_weight="0.025" />
 
             <ViewFlipper
-                android:id="@+id/main_flipper"
+                android:id="@+id/main_layouts_flipper"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.885"

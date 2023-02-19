@@ -56,11 +56,11 @@
                         android:layout_weight="0.1"
                         android:fontFamily="@font/inter"
                         android:gravity="center_vertical"
+                        android:paddingHorizontal="@dimen/padding_very_big"
                         android:text="@string/loading"
                         android:textColor="@android:color/white"
                         android:textStyle="bold"
                         android:typeface="monospace"
-                        android:paddingHorizontal="@dimen/padding_very_big"
                         app:autoSizeTextType="uniform" />
 
                     <View

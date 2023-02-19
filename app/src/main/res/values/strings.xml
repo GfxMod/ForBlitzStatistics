@@ -108,5 +108,9 @@
     <string name="select_region_eu">EU-region (Wargaming)</string>
     <string name="select_region_na">NA-region (Wargaming)</string>
     <string name="select_region_asia">ASIA-region (Wargaming)</string>
+    
+    <string name="update_available">New Update Available</string>
+    <string name="update_available_desc">Please, update ForBlitzStatistics to latest version</string>
+    <string name="update">Update</string>
 
 </resources>

@@ -1,8 +1,8 @@
 package ru.forblitz.statistics
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.SharedPreferences
+import android.content.*
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -15,6 +15,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout.INVISIBLE
@@ -333,7 +334,9 @@ class MainActivity : AppCompatActivity() {
 
         // Gets the data of the player you are looking for
 
-        CoroutineScope(Dispatchers.IO).launch {
+        adUtils.showInterstitial {
+            CoroutineScope(Dispatchers.IO).launch {
+
             val getIDCoroutine = getID()
             getIDCoroutine.join()
             getIDCoroutine.cancel()
@@ -357,6 +360,7 @@ class MainActivity : AppCompatActivity() {
 
             view.isClickable = true
 
+        }
         }
 
     }
@@ -671,13 +675,46 @@ class MainActivity : AppCompatActivity() {
                             .substringBefore("\",")
                             .toInt()
 
-                        // TODO: когда появится страница в плей маркете, сделать на первое выбор "Отмена" или "Обновить" (кнопка открывает страницу в плей маркете),
-                        //       а на второе - только "Обновить"
-
                         if (BuildConfig.VERSION_CODE in minimalVersionCodeServer until versionCodeServer) {
-                            Toast.makeText(this@MainActivity, "Ooh, your version's so small! Maybe update?..", Toast.LENGTH_LONG).show()
+
+                            AlertDialog.Builder(this@MainActivity)
+                                .setTitle(this@MainActivity.getString(string.update_available))
+                                .setMessage(this@MainActivity.getString(string.update_available_desc))
+                                .setCancelable(false)
+                                .setNegativeButton(this@MainActivity.getString(android.R.string.cancel)) { _: DialogInterface?, _: Int -> }
+                                .setPositiveButton(this@MainActivity.getString(string.update)) { _: DialogInterface?, _: Int -> Runnable {
+
+                                    try {
+                                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+                                    } catch (e: ActivityNotFoundException) {
+                                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+                                    }
+
+                                }.run()
+                                }.show()
+
+                            this@launch.cancel()
+
                         } else if (BuildConfig.VERSION_CODE < minimalVersionCodeServer) {
-                            Toast.makeText(this@MainActivity, "I won't work with such a small version!", Toast.LENGTH_LONG).show()
+
+                            AlertDialog.Builder(this@MainActivity)
+                                .setTitle(this@MainActivity.getString(string.update_available))
+                                .setMessage(this@MainActivity.getString(string.update_available_desc))
+                                .setCancelable(false)
+                                .setPositiveButton(
+                                    this@MainActivity.getString(string.update)
+                                ) { _: DialogInterface?, _: Int -> Runnable {
+
+                                    try {
+                                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+                                    } catch (e: ActivityNotFoundException) {
+                                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+                                    }
+                                    finish()
+
+                                }.run()
+                                }.show()
+
                         }
 
                         this@launch.cancel()

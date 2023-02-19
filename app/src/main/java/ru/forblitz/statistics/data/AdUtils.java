@@ -21,7 +21,7 @@ public class AdUtils {
 
     private final Activity activity;
 
-    private long dateOfTheLastImpression = 0;
+    private long dateOfTheLastImpression = System.currentTimeMillis();
 
     public AdUtils(Activity activity) {
         this.activity = activity;
@@ -55,7 +55,7 @@ public class AdUtils {
 
             @Override
             public void onAdFailedToLoad(@NonNull AdRequestError adRequestError) {
-
+                Log.e(adRequestError.toString(), adRequestError.getDescription());
             }
 
             @Override
@@ -88,7 +88,7 @@ public class AdUtils {
 
     public void showInterstitial(Runnable runnable) {
 
-        if (System.currentTimeMillis() - dateOfTheLastImpression >= 60000) {
+        if (System.currentTimeMillis() - dateOfTheLastImpression >= 30000) {
 
             // Создание экземпляра InterstitialAd.
             InterstitialAd adView = new InterstitialAd(activity);

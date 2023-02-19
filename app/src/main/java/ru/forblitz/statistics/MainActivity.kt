@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnFocusChangeListener
@@ -20,18 +21,19 @@ import androidx.constraintlayout.widget.ConstraintLayout.INVISIBLE
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.doOnTextChanged
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonParser
+import com.yandex.mobile.ads.common.MobileAds
+import kotlinx.coroutines.*
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
 import ru.forblitz.statistics.R.*
 import ru.forblitz.statistics.api.ApiInterface
 import ru.forblitz.statistics.api.ApiInterfaceVersion
 import ru.forblitz.statistics.api.ApiInterfaceWG
 import ru.forblitz.statistics.api.NetworkConnectionInterceptor
 import ru.forblitz.statistics.data.*
-import com.google.android.material.tabs.TabLayout
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonParser
-import kotlinx.coroutines.*
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
@@ -60,6 +62,8 @@ class MainActivity : AppCompatActivity() {
     private var getVehiclesStatisticsJob: ArrayList<Job?> = ArrayList(0)
 
     private var countOfVehicles = 0
+    
+    private val adUtils = AdUtils(this@MainActivity)
 
     //
     //
@@ -163,6 +167,10 @@ class MainActivity : AppCompatActivity() {
             fillVehiclesSpecifications()
         }
 
+        // Initialization of ads
+
+        MobileAds.initialize(this) { Log.d("YandexMobileAds", "SDK initialized") }
+
     }
 
     /**
@@ -224,7 +232,9 @@ class MainActivity : AppCompatActivity() {
         }
         randomSessionStatButton.setOnClickListener {
             if (!randomSessionStatButton.isActivated) {
-                Session.to(this, baseStatisticsData, sessionBaseStatisticsData, ratingStatisticsData, sessionRatingStatisticsData)
+                adUtils.showInterstitial(
+                    Runnable { Session.to(this, baseStatisticsData, sessionBaseStatisticsData, ratingStatisticsData, sessionRatingStatisticsData) }
+                )
             } else {
                 Session.from(this, baseStatisticsData, ratingStatisticsData)
             }
@@ -553,44 +563,53 @@ class MainActivity : AppCompatActivity() {
                 vehiclesToCreate.add(it)
             }
 
-        if (vehiclesToCreate.size > 0) {
+        adUtils.showInterstitial(Runnable {
+            if (vehiclesToCreate.size > 0) {
 
-            var alreadyGeneratedVehicles = 0
+                var alreadyGeneratedVehicles = 0
 
-            Handler(Looper.getMainLooper()).postDelayed({
+                Handler(Looper.getMainLooper()).postDelayed({
 
-                for (i in 0..9) {
-                    if (alreadyGeneratedVehicles < vehiclesToCreate.size) {
-                        vehiclesToCreate[alreadyGeneratedVehicles].create(this)
-                    } else {
-                        break
-                    }
-                    alreadyGeneratedVehicles++
-                }
-
-                tanksScrollView.setScrollViewListener { scrollView: ExtendedScrollView, _, _, _, _ ->
-
-                    val lastChildView = scrollView.getChildAt(scrollView.childCount - 1)
-                    val diff = lastChildView.bottom - (scrollView.height + scrollView.scrollY)
-
-                    if (diff == 0) {
-                        for (i in 0..9) {
-                            if (alreadyGeneratedVehicles < vehiclesToCreate.size) {
-                                vehiclesToCreate[alreadyGeneratedVehicles].create(this)
-                            } else {
-                                break
+                    for (i in 0..9) {
+                        if (alreadyGeneratedVehicles < vehiclesToCreate.size) {
+                            if (alreadyGeneratedVehicles % 3 == 0) {
+                                tanksListLayoutView.addView(adUtils.createBanner(tanksListLayoutView, resources.getDimensionPixelSize(dimen.padding_very_big)))
                             }
-                            alreadyGeneratedVehicles++
+                            vehiclesToCreate[alreadyGeneratedVehicles].create(this)
+                        } else {
+                            break
                         }
+                        alreadyGeneratedVehicles++
                     }
 
-                }
+                    tanksScrollView.setScrollViewListener { scrollView: ExtendedScrollView, _, _, _, _ ->
 
-            }, 250)
+                        val lastChildView = scrollView.getChildAt(scrollView.childCount - 1)
+                        val diff = lastChildView.bottom - (scrollView.height + scrollView.scrollY)
 
-        } else {
-            Vehicle.nothingFound(this@MainActivity)
-        }
+                        if (diff == 0) {
+                            for (i in 0..9) {
+                                if (alreadyGeneratedVehicles < vehiclesToCreate.size) {
+                                    if (alreadyGeneratedVehicles % 3 == 0) {
+                                        tanksListLayoutView.addView(adUtils.createBanner(tanksListLayoutView, resources.getDimensionPixelSize(dimen.padding_very_big)))
+                                    }
+
+                                    vehiclesToCreate[alreadyGeneratedVehicles].create(this)
+                                } else {
+                                    break
+                                }
+                                alreadyGeneratedVehicles++
+                            }
+                        }
+
+                    }
+
+                }, 250)
+
+            } else {
+                Vehicle.nothingFound(this@MainActivity)
+            }
+        })
 
     }
 
@@ -1084,8 +1103,7 @@ class MainActivity : AppCompatActivity() {
                 val dateViews = Session.createSelectList(this@MainActivity, files.drop(1), number)
                 dateViews.forEach { it ->
                     it.setOnClickListener {
-                        Utils.randomToMain(this@MainActivity)
-                        setSessionStatistics(prettyJson1, dateViews.indexOf(it))
+                        setSessionStatistics(prettyJson1, dateViews.indexOf(it)); Utils.randomToMain(this@MainActivity)
                     }
                 }
             }
@@ -1101,8 +1119,7 @@ class MainActivity : AppCompatActivity() {
                 val dateViews = Session.createSelectList(this@MainActivity, files, number)
                 dateViews.forEach { it ->
                     it.setOnClickListener {
-                        setSessionStatistics(prettyJson1, dateViews.indexOf(it))
-                        Utils.randomToMain(this@MainActivity)
+                        setSessionStatistics(prettyJson1, dateViews.indexOf(it)); Utils.randomToMain(this@MainActivity)
                     }
                 }
             }

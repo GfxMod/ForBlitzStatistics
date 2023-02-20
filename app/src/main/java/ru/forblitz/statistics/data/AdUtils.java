@@ -37,7 +37,7 @@ public class AdUtils {
         adViewLayoutParams.setMargins(0, padding, 0, padding);
         adView.setLayoutParams(adViewLayoutParams);
 
-        adView.setAdUnitId("demo-banner-yandex");
+        adView.setAdUnitId("R-M-2200226-1");
         adView.setAdSize(AdSize.stickySize( (int) Utils.pxToDp(
                 activity, parent.getWidth()
         )));
@@ -92,7 +92,7 @@ public class AdUtils {
 
             // Создание экземпляра InterstitialAd.
             InterstitialAd adView = new InterstitialAd(activity);
-            adView.setAdUnitId("demo-interstitial-yandex");
+            adView.setAdUnitId("R-M-2200226-2");
 
             // Создание объекта таргетирования рекламы.
             final AdRequest adRequest = new AdRequest.Builder().build();

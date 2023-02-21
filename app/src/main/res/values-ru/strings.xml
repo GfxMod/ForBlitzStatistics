@@ -111,6 +111,10 @@
     <string name="update">Обновить</string>
     <string name="update_available">Доступно обновление</string>
     <string name="update_available_desc">Пожалуйста, обновите ForBlitzStatistics до последней версии</string>
+    <string name="terms_of_service">Условия использования</string>
+    <string name="terms_of_service_desc">Пользуясь приложением, вы принимаете нашу политику конфиденциальности (https://forblitz.ru/forblitzstats-privacy/)</string>
+    <string name="accept">Принять</string>
+    <string name="exit">Выход</string>
 
 
 </resources>

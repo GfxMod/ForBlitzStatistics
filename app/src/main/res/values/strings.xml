@@ -113,4 +113,9 @@
     <string name="update_available_desc">Please, update ForBlitzStatistics to latest version</string>
     <string name="update">Update</string>
 
+    <string name="terms_of_service">Terms of service</string>
+    <string name="terms_of_service_desc">By using the app, you accept our privacy policy (https://forblitz.ru/forblitzstats-privacy/)</string>
+    <string name="accept">Accept</string>
+    <string name="exit">Exit</string>
+
 </resources>

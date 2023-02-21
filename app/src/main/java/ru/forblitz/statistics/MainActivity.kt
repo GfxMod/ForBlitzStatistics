@@ -1171,7 +1171,21 @@ class MainActivity : AppCompatActivity() {
         findViewById<EditText>(id.search_field).setText("", TextView.BufferType.EDITABLE)
         when (preferences.getString("region", "notSpecified")) {
             "notSpecified" -> {
-                preferences.edit().putString("region", "ru").apply()
+
+                AlertDialog.Builder(this@MainActivity)
+                    .setTitle(this@MainActivity.getString(string.terms_of_service))
+                    .setMessage(this@MainActivity.getString(string.terms_of_service_desc))
+                    .setCancelable(false)
+                    .setNegativeButton(this@MainActivity.getString(string.exit)) { _: DialogInterface?, _: Int -> Runnable {
+                        finish()
+                    }.run()
+                    }
+                    .setPositiveButton(this@MainActivity.getString(string.accept)) { _: DialogInterface?, _: Int -> Runnable {
+                        preferences.edit().putString("region", "ru").apply()
+                    }.run()
+                    }
+                    .show()
+
                 Utils.setSelectedRegion(this@MainActivity, 0)
 
                 service = Retrofit.Builder()

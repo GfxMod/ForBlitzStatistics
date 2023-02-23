@@ -30,10 +30,7 @@ import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import ru.forblitz.statistics.R.*
-import ru.forblitz.statistics.api.ApiInterface
-import ru.forblitz.statistics.api.ApiInterfaceVersion
-import ru.forblitz.statistics.api.ApiInterfaceWG
-import ru.forblitz.statistics.api.NetworkConnectionInterceptor
+import ru.forblitz.statistics.api.*
 import ru.forblitz.statistics.data.*
 import java.io.File
 import java.io.FileWriter
@@ -47,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var preferences: SharedPreferences
 
-    private lateinit var service: ApiInterface
+    private var service: ApiService = ApiService(this@MainActivity)
 
     private var baseStatisticsData: StatisticsData = StatisticsData()
     private var ratingStatisticsData: StatisticsData = StatisticsData()
@@ -1165,7 +1162,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Sets the background for the region selection buttons and saves the values
+     * Sets the background for the region selection buttons, change region in [service]
      */
     private fun setRegion() {
         findViewById<EditText>(id.search_field).setText("", TextView.BufferType.EDITABLE)
@@ -1188,62 +1185,28 @@ class MainActivity : AppCompatActivity() {
 
                 Utils.setSelectedRegion(this@MainActivity, 0)
 
-                service = Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.ru/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(
-                            this@MainActivity
-                        )
-                    ).build())
-                    .build().create(ApiInterface::class.java)
+                service.region = "ru"
+
             }
             "ru" -> {
                 Utils.setSelectedRegion(this@MainActivity, 0)
 
-                service = Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.ru/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(
-                            this@MainActivity
-                        )
-                    ).build())
-                    .build().create(ApiInterface::class.java)
+                service.region = "ru"
             }
             "eu" -> {
                 Utils.setSelectedRegion(this@MainActivity, 1)
 
-                service = Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.eu/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(
-                            this@MainActivity
-                        )
-                    ).build())
-                    .build().create(ApiInterfaceWG::class.java)
+                service.region = "eu"
             }
             "na" -> {
                 Utils.setSelectedRegion(this@MainActivity, 2)
 
-                service = Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.com/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(
-                            this@MainActivity
-                        )
-                    ).build())
-                    .build().create(ApiInterfaceWG::class.java)
+                service.region = "na"
             }
             "asia" -> {
                 Utils.setSelectedRegion(this@MainActivity, 3)
 
-                service = Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.asia/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(
-                            this@MainActivity
-                        )
-                    ).build())
-                    .build().create(ApiInterfaceWG::class.java)
+                service.region = "asia"
             }
         }
         updateLastSearch()

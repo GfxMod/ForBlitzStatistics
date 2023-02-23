@@ -347,4 +347,21 @@ public class Utils {
         return px / ( (float) activity.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
+    public static String parseUnicode(String string) {
+        String result = string;
+        while (result.contains("\\n")) {
+            result = result.substring(0, result.indexOf("\\n")) + "\n" + result.substring(result.indexOf("\\n") + 2);
+        }
+        while (result.contains("\\u")) {
+            char symbol;
+            try {
+                symbol = (char) Integer.parseInt((result.substring(result.indexOf("\\u") + 2, result.indexOf("\\u") + 6)), 16);
+            } catch (Exception e) {
+                symbol = 0;
+            }
+            result = result.substring(0, result.indexOf("\\u")) + symbol + result.substring(result.indexOf("\\u") + 6);
+        }
+        return result;
+    }
+
 }

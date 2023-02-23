@@ -73,7 +73,7 @@ public class Clan {
         this.bigJson = bigJson;
         this.leader = parseValueFromJson("leader_name", bigJson);
         this.motto = parseValueFromJson("motto", bigJson);
-        this.description = parseValueFromJson("description", bigJson);
+        this.description = Utils.parseUnicode(parseValueFromJson("description", bigJson));
         this.creator = parseValueFromJson("creator_name", bigJson);
         this.createdAt = parseValueFromJson("created_at", bigJson);
         if (bigJson.contains("old_name")) {

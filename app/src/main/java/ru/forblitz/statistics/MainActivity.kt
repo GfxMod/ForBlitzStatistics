@@ -15,13 +15,13 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout.INVISIBLE
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.doOnTextChanged
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
@@ -674,7 +674,7 @@ class MainActivity : AppCompatActivity() {
 
                         if (BuildConfig.VERSION_CODE in minimalVersionCodeServer until versionCodeServer) {
 
-                            AlertDialog.Builder(this@MainActivity)
+                            MaterialAlertDialogBuilder(this@MainActivity)
                                 .setTitle(this@MainActivity.getString(string.update_available))
                                 .setMessage(this@MainActivity.getString(string.update_available_desc))
                                 .setCancelable(false)
@@ -694,7 +694,7 @@ class MainActivity : AppCompatActivity() {
 
                         } else if (BuildConfig.VERSION_CODE < minimalVersionCodeServer) {
 
-                            AlertDialog.Builder(this@MainActivity)
+                            MaterialAlertDialogBuilder(this@MainActivity)
                                 .setTitle(this@MainActivity.getString(string.update_available))
                                 .setMessage(this@MainActivity.getString(string.update_available_desc))
                                 .setCancelable(false)
@@ -1169,7 +1169,7 @@ class MainActivity : AppCompatActivity() {
         when (preferences.getString("region", "notSpecified")) {
             "notSpecified" -> {
 
-                AlertDialog.Builder(this@MainActivity)
+                MaterialAlertDialogBuilder(this@MainActivity)
                     .setTitle(this@MainActivity.getString(string.terms_of_service))
                     .setMessage(this@MainActivity.getString(string.terms_of_service_desc))
                     .setCancelable(false)

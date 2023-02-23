@@ -13,12 +13,13 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import ru.forblitz.statistics.R.color;
 import ru.forblitz.statistics.R.drawable;
@@ -528,7 +529,7 @@ public class Session {
                     if (files.indexOf(path) == selectedNumber) {
                         Toast.makeText(activity, activity.getString(string.delete_select), Toast.LENGTH_SHORT).show();
                     } else {
-                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
+                        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(activity);
                         alertDialog.setTitle(activity.getString(string.delete));
                         alertDialog.setMessage(activity.getString(string.delete_alert));
                         alertDialog.setPositiveButton(activity.getString(string.delete), (dialog, id) -> {

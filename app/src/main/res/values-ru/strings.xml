@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ForBlitzStatistics</string>
+    <string name="app_name">ForBlitz Statistics</string>
     <string name="loading">Загрузка&#8230;</string>
     <string name="input_nickname">Введите никнейм</string>
 
@@ -110,7 +110,7 @@
     <string name="select_region_asia">ASIA-регион (Wargaming)</string>
     <string name="update">Обновить</string>
     <string name="update_available">Доступно обновление</string>
-    <string name="update_available_desc">Пожалуйста, обновите ForBlitzStatistics до последней версии</string>
+    <string name="update_available_desc">Пожалуйста, обновите ForBlitz Statistics до последней версии</string>
     <string name="terms_of_service">Условия использования</string>
     <string name="terms_of_service_desc">Пользуясь приложением, вы принимаете нашу политику конфиденциальности (https://forblitz.ru/forblitzstats-privacy/)</string>
     <string name="accept">Принять</string>

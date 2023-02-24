@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ForBlitzStatistics</string>
+    <string name="app_name">ForBlitz Statistics</string>
     <string name="loading">Loading&#8230;</string>
     <string name="input_nickname">Enter your nickname here</string>
 
@@ -110,7 +110,7 @@
     <string name="select_region_asia">ASIA-region (Wargaming)</string>
     
     <string name="update_available">New Update Available</string>
-    <string name="update_available_desc">Please, update ForBlitzStatistics to latest version</string>
+    <string name="update_available_desc">Please, update ForBlitz Statistics to latest version</string>
     <string name="update">Update</string>
 
     <string name="terms_of_service">Terms of service</string>

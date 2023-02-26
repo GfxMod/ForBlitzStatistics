@@ -20,8 +20,6 @@ import androidx.core.content.res.ResourcesCompat;
 
 import ru.forblitz.statistics.R;
 
-import java.util.Objects;
-
 /**
  * Object containing all the vehicle statistical data
  */
@@ -30,7 +28,7 @@ public class Vehicle extends StatisticsData {
     private String id;
     private String name;
     private String nation;
-    private String tier;
+    private int tier;
     private String type;
 
     public String getName() {
@@ -49,11 +47,11 @@ public class Vehicle extends StatisticsData {
         this.nation = nation;
     }
 
-    public String getTier() {
+    public int getTier() {
         return tier;
     }
 
-    public void setTier(String tier) {
+    public void setTier(int tier) {
         this.tier = tier;
     }
 
@@ -96,7 +94,7 @@ public class Vehicle extends StatisticsData {
         }
 
         int averageDamageColor;
-        if (Objects.equals(tier, "10")) {
+        if (tier == 10) {
             if (Double.parseDouble(getAverageDamage()) < 2000) {
                 averageDamageColor = ContextCompat.getColor(activity, R.color.white);
             } else if (Double.parseDouble(getAverageDamage()) < 2700) {
@@ -106,7 +104,7 @@ public class Vehicle extends StatisticsData {
             } else {
                 averageDamageColor = ContextCompat.getColor(activity, R.color.violet);
             }
-        } else if (Objects.equals(tier, "9")) {
+        } else if (tier == 9) {
             if (Double.parseDouble(getAverageDamage()) < 1700) {
                 averageDamageColor = ContextCompat.getColor(activity, R.color.white);
             } else if (Double.parseDouble(getAverageDamage()) < 2200) {
@@ -116,7 +114,7 @@ public class Vehicle extends StatisticsData {
             } else {
                 averageDamageColor = ContextCompat.getColor(activity, R.color.violet);
             }
-        } else if (Objects.equals(tier, "8")) {
+        } else if (tier == 8) {
             if (Double.parseDouble(getAverageDamage()) < 1300) {
                 averageDamageColor = ContextCompat.getColor(activity, R.color.white);
             } else if (Double.parseDouble(getAverageDamage()) < 1800) {

@@ -23,6 +23,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.yandex.mobile.ads.common.MobileAds
@@ -535,27 +536,7 @@ class MainActivity : AppCompatActivity() {
             }
             .filter {
                 if (tanksTierSelectIndicator.text != getString(string.empty)) {
-                    if ((tanksTierSelect.progress == 0) and (it.tier == "1") ) {
-                        true
-                    } else if ((tanksTierSelect.progress == 1) and (it.tier == "2") ) {
-                        true
-                    } else if ((tanksTierSelect.progress == 2) and (it.tier == "3") ) {
-                        true
-                    } else if ((tanksTierSelect.progress == 3) and (it.tier == "4") ) {
-                        true
-                    } else if ((tanksTierSelect.progress == 4) and (it.tier == "5") ) {
-                        true
-                    } else if ((tanksTierSelect.progress == 5) and (it.tier == "6") ) {
-                        true
-                    } else if ((tanksTierSelect.progress == 6) and (it.tier == "7") ) {
-                        true
-                    } else if ((tanksTierSelect.progress == 7) and (it.tier == "8") ) {
-                        true
-                    } else if ((tanksTierSelect.progress == 8) and (it.tier == "9") ) {
-                        true
-                    } else {
-                        (tanksTierSelect.progress == 9) and (it.tier == "10")
-                    }
+                    tanksTierSelect.progress + 1 == it.tier
                 } else {
                     true
                 }
@@ -940,17 +921,21 @@ class MainActivity : AppCompatActivity() {
 
                     countOfVehicles = vehiclesInfoList.substringAfter("\"count\": ").substringBefore("\n").toInt()
 
-                    vehiclesData.clear(); for (i in 0 until countOfVehicles) { vehiclesData.add(
-                    Vehicle()
-                ) }
+                    vehiclesData.clear(); for (i in 0 until countOfVehicles) { vehiclesData.add(Vehicle()) }
 
                     var tmpData = vehiclesInfoList.substringAfter("data\": {")
                     for(j in vehiclesData.indices) {
+                        vehiclesData[j] = Gson().fromJson(
+                            "{ " +
+                                    tmpData
+                                        .substringBefore("},")
+                                        .substringAfter("\": {")
+                                        .substringAfterLast("{")
+                                        .substringBefore("}")
+                                    + " }"
+                            , Vehicle::class.java
+                        )
                         vehiclesData[j].id = tmpData.substringAfter("\"").substringBefore("\"")
-                        vehiclesData[j].tier = tmpData.substringAfter("tier\": ").substringBefore(",")
-                        vehiclesData[j].type = tmpData.substringAfter("\"type\": \"").substringBefore("\"")
-                        vehiclesData[j].name = tmpData.substringAfter("\"name\": \"").substringBefore("\"")
-                        vehiclesData[j].nation = tmpData.substringAfter("\"nation\": \"").substringBefore("\"")
                         tmpData = tmpData.substringAfter("},")
                     }
 

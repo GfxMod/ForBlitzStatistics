@@ -11,288 +11,157 @@ class ApiService(private val activity: Activity) {
     lateinit var region: String
 
     suspend fun getAccountId(search: String): Response<ResponseBody> {
-        when (region) {
+        return when (region) {
             "ru" -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.ru/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceLesta::class.java)
-                    .getAccountId(search)
+                (getClient() as ApiInterfaceLesta).getAccountId(search)
             }
             "eu" -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.eu/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceWG::class.java)
-                    .getAccountId(search)
+                (getClient() as ApiInterfaceWG).getAccountId(search)
             }
             "na" -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.com/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceWG::class.java)
-                    .getAccountId(search)
+                (getClient() as ApiInterfaceWG).getAccountId(search)
             }
             else -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.asia/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceWG::class.java)
-                    .getAccountId(search)
+                (getClient() as ApiInterfaceWG).getAccountId(search)
             }
         }
     }
 
     suspend fun getUsers(search: String): Response<ResponseBody> {
-        when (region) {
+        return when (region) {
             "ru" -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.ru/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceLesta::class.java)
-                    .getUsers(search)
+                (getClient() as ApiInterfaceLesta).getUsers(search)
             }
             "eu" -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.eu/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceWG::class.java)
-                    .getUsers(search)
+                (getClient() as ApiInterfaceWG).getUsers(search)
             }
             "na" -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.com/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceWG::class.java)
-                    .getUsers(search)
+                (getClient() as ApiInterfaceWG).getUsers(search)
             }
             else -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.asia/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceWG::class.java)
-                    .getUsers(search)
+                (getClient() as ApiInterfaceWG).getUsers(search)
             }
         }
     }
 
     suspend fun getClanInfo(search: String): Response<ResponseBody> {
-        when (region) {
+        return when (region) {
             "ru" -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.ru/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceLesta::class.java)
-                    .getClanInfo(search)
+                (getClient() as ApiInterfaceLesta).getClanInfo(search)
             }
             "eu" -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.eu/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceWG::class.java)
-                    .getClanInfo(search)
+                (getClient() as ApiInterfaceWG).getClanInfo(search)
             }
             "na" -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.com/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceWG::class.java)
-                    .getClanInfo(search)
+                (getClient() as ApiInterfaceWG).getClanInfo(search)
             }
             else -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.asia/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceWG::class.java)
-                    .getClanInfo(search)
+                (getClient() as ApiInterfaceWG).getClanInfo(search)
             }
         }
     }
 
     suspend fun getFullClanInfo(search: String): Response<ResponseBody> {
-        when (region) {
+        return when (region) {
             "ru" -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.ru/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceLesta::class.java)
-                    .getFullClanInfo(search)
+                (getClient() as ApiInterfaceLesta).getFullClanInfo(search)
             }
             "eu" -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.eu/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceWG::class.java)
-                    .getFullClanInfo(search)
+                (getClient() as ApiInterfaceWG).getFullClanInfo(search)
             }
             "na" -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.com/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceWG::class.java)
-                    .getFullClanInfo(search)
+                (getClient() as ApiInterfaceWG).getFullClanInfo(search)
             }
             else -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.asia/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceWG::class.java)
-                    .getFullClanInfo(search)
+                (getClient() as ApiInterfaceWG).getFullClanInfo(search)
             }
         }
     }
 
     suspend fun getAchievements(search: String): Response<ResponseBody> {
-        when (region) {
+        return when (region) {
             "ru" -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.ru/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceLesta::class.java)
-                    .getAchievements(search)
+                (getClient() as ApiInterfaceLesta).getAchievements(search)
             }
             "eu" -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.eu/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceWG::class.java)
-                    .getAchievements(search)
+                (getClient() as ApiInterfaceWG).getAchievements(search)
             }
             "na" -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.com/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceWG::class.java)
-                    .getAchievements(search)
+                (getClient() as ApiInterfaceWG).getAchievements(search)
             }
             else -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.asia/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceWG::class.java)
-                    .getAchievements(search)
+                (getClient() as ApiInterfaceWG).getAchievements(search)
             }
         }
     }
 
     suspend fun getAllInformationAboutVehicles(): Response<ResponseBody> {
-        when (region) {
+        return when (region) {
             "ru" -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.ru/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceLesta::class.java)
-                    .getAllInformationAboutVehicles()
+                (getClient() as ApiInterfaceLesta).getAllInformationAboutVehicles()
             }
             "eu" -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.eu/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceWG::class.java)
-                    .getAllInformationAboutVehicles()
+                (getClient() as ApiInterfaceWG).getAllInformationAboutVehicles()
             }
             "na" -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.com/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceWG::class.java)
-                    .getAllInformationAboutVehicles()
+                (getClient() as ApiInterfaceWG).getAllInformationAboutVehicles()
             }
             else -> {
-                return Retrofit.Builder()
-                    .baseUrl("https://api.wotblitz.asia/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(activity)
-                    ).build())
-                    .build().create(ApiInterfaceWG::class.java)
-                    .getAllInformationAboutVehicles()
+                (getClient() as ApiInterfaceWG).getAllInformationAboutVehicles()
             }
         }
     }
 
     suspend fun getTankStatistics(account_id: String, search: String): Response<ResponseBody> {
-        when (region) {
+        return when (region) {
             "ru" -> {
-                return Retrofit.Builder()
+                (getClient() as ApiInterfaceLesta).getTankStatistics(account_id, search)
+            }
+            "eu" -> {
+                (getClient() as ApiInterfaceWG).getTankStatistics(account_id, search)
+            }
+            "na" -> {
+                (getClient() as ApiInterfaceWG).getTankStatistics(account_id, search)
+            }
+            else -> {
+                (getClient() as ApiInterfaceWG).getTankStatistics(account_id, search)
+            }
+        }
+    }
+
+    private fun getClient(): Any {
+        return when (region) {
+            "ru" -> {
+                Retrofit.Builder()
                     .baseUrl("https://api.wotblitz.ru/")
                     .client(OkHttpClient.Builder().addInterceptor(
                         NetworkConnectionInterceptor(activity)
                     ).build())
                     .build().create(ApiInterfaceLesta::class.java)
-                    .getTankStatistics(account_id, search)
             }
             "eu" -> {
-                return Retrofit.Builder()
+                Retrofit.Builder()
                     .baseUrl("https://api.wotblitz.eu/")
                     .client(OkHttpClient.Builder().addInterceptor(
                         NetworkConnectionInterceptor(activity)
                     ).build())
                     .build().create(ApiInterfaceWG::class.java)
-                    .getTankStatistics(account_id, search)
             }
             "na" -> {
-                return Retrofit.Builder()
+                Retrofit.Builder()
                     .baseUrl("https://api.wotblitz.com/")
                     .client(OkHttpClient.Builder().addInterceptor(
                         NetworkConnectionInterceptor(activity)
                     ).build())
                     .build().create(ApiInterfaceWG::class.java)
-                    .getTankStatistics(account_id, search)
             }
             else -> {
-                return Retrofit.Builder()
+                Retrofit.Builder()
                     .baseUrl("https://api.wotblitz.asia/")
                     .client(OkHttpClient.Builder().addInterceptor(
                         NetworkConnectionInterceptor(activity)
                     ).build())
                     .build().create(ApiInterfaceWG::class.java)
-                    .getTankStatistics(account_id, search)
             }
         }
     }

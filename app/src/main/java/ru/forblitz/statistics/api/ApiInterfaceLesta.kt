@@ -5,7 +5,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface ApiInterface {
+interface ApiInterfaceLesta {
 
     @GET("wotb/account/list/?application_id=1957e1f71656310342971b3b1aa2efef")
     suspend fun getAccountId(@Query("search") search: String) : Response<ResponseBody>

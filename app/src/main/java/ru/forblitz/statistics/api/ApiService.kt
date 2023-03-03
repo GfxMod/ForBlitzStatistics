@@ -18,7 +18,7 @@ class ApiService(private val activity: Activity) {
                     .client(OkHttpClient.Builder().addInterceptor(
                         NetworkConnectionInterceptor(activity)
                     ).build())
-                    .build().create(ApiInterface::class.java)
+                    .build().create(ApiInterfaceLesta::class.java)
                     .getAccountId(search)
             }
             "eu" -> {
@@ -59,7 +59,7 @@ class ApiService(private val activity: Activity) {
                     .client(OkHttpClient.Builder().addInterceptor(
                         NetworkConnectionInterceptor(activity)
                     ).build())
-                    .build().create(ApiInterface::class.java)
+                    .build().create(ApiInterfaceLesta::class.java)
                     .getUsers(search)
             }
             "eu" -> {
@@ -100,7 +100,7 @@ class ApiService(private val activity: Activity) {
                     .client(OkHttpClient.Builder().addInterceptor(
                         NetworkConnectionInterceptor(activity)
                     ).build())
-                    .build().create(ApiInterface::class.java)
+                    .build().create(ApiInterfaceLesta::class.java)
                     .getClanInfo(search)
             }
             "eu" -> {
@@ -141,7 +141,7 @@ class ApiService(private val activity: Activity) {
                     .client(OkHttpClient.Builder().addInterceptor(
                         NetworkConnectionInterceptor(activity)
                     ).build())
-                    .build().create(ApiInterface::class.java)
+                    .build().create(ApiInterfaceLesta::class.java)
                     .getFullClanInfo(search)
             }
             "eu" -> {
@@ -182,7 +182,7 @@ class ApiService(private val activity: Activity) {
                     .client(OkHttpClient.Builder().addInterceptor(
                         NetworkConnectionInterceptor(activity)
                     ).build())
-                    .build().create(ApiInterface::class.java)
+                    .build().create(ApiInterfaceLesta::class.java)
                     .getAchievements(search)
             }
             "eu" -> {
@@ -223,7 +223,7 @@ class ApiService(private val activity: Activity) {
                     .client(OkHttpClient.Builder().addInterceptor(
                         NetworkConnectionInterceptor(activity)
                     ).build())
-                    .build().create(ApiInterface::class.java)
+                    .build().create(ApiInterfaceLesta::class.java)
                     .getAllInformationAboutVehicles()
             }
             "eu" -> {
@@ -264,7 +264,7 @@ class ApiService(private val activity: Activity) {
                     .client(OkHttpClient.Builder().addInterceptor(
                         NetworkConnectionInterceptor(activity)
                     ).build())
-                    .build().create(ApiInterface::class.java)
+                    .build().create(ApiInterfaceLesta::class.java)
                     .getTankStatistics(account_id, search)
             }
             "eu" -> {

@@ -180,33 +180,14 @@ class MainActivity : AppCompatActivity() {
      */
     fun onClickSearchButton(view: View) {
 
-        view.isClickable = false
-
-        // Plays animation
-
-        Utils.playCycledAnimation(view, false)
-
-        // Hides keyboard
-
         val searchField = findViewById<EditText>(id.search_field)
         val imm: InputMethodManager = this.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(searchField.windowToken, 0)
-        searchField.clearFocus()
-
-        // Scrolls to main statistics item for each ViewFlipper/ViewPager
 
         val viewPager = findViewById<ViewPager>(id.view_pager)
         val randomLayoutsFlipper = findViewById<ViewFlipper>(id.random_layouts_flipper)
         val ratingLayoutsFlipper = findViewById<ViewFlipper>(id.rating_layouts_flipper)
         val clanLayoutsFlipper = findViewById<ViewFlipper>(id.clan_layouts_flipper)
         val tanksLayoutsFlipper = findViewById<ViewFlipper>(id.tanks_layouts_flipper)
-
-        viewPager.setCurrentItem(0, true)
-        randomLayoutsFlipper.displayedChild = 0
-        ratingLayoutsFlipper.displayedChild = 0
-        clanLayoutsFlipper.displayedChild = 0
-
-        // Sets listeners for buttons
 
         val randomDetailsButtonView = findViewById<View>(id.random_details_button)
         val randomDetailedStatisticsBackView = findViewById<View>(id.random_detailed_statistics_back)
@@ -219,6 +200,40 @@ class MainActivity : AppCompatActivity() {
         val tanksDetailedStatisticsBackView = findViewById<View>(id.tanks_detailed_statistics_back)
         val tanksListLayoutView = findViewById<LinearLayout>(id.tanks_list_layout)
         val tanksTierSelect = findViewById<VerticalSeekBar>(id.tanks_tier_select)
+
+        val activityMain = findViewById<View>(id.activity_main)
+
+        val tanksFiltersLayout = findViewById<View>(id.tanks_filters_layout)
+
+        val viewPagerLayout = findViewById<View>(id.view_pager_layout)
+        val mainFlipper = findViewById<ViewFlipper>(id.main_layouts_flipper)
+        val searchButton = findViewById<View>(id.search_button)
+        val lastSearched = findViewById<View>(id.last_searched_flipper)
+
+        //
+
+        viewPagerLayout.visibility = INVISIBLE
+        mainFlipper.displayedChild = 3
+        searchButton.isClickable = false
+        lastSearched.isClickable = false
+
+        // Plays animation
+
+        Utils.playCycledAnimation(view, false)
+
+        // Hides keyboard
+
+        imm.hideSoftInputFromWindow(searchField.windowToken, 0)
+        searchField.clearFocus()
+
+        // Scrolls to main statistics item for each ViewFlipper/ViewPager
+
+        viewPager.setCurrentItem(0, true)
+        randomLayoutsFlipper.displayedChild = 0
+        ratingLayoutsFlipper.displayedChild = 0
+        clanLayoutsFlipper.displayedChild = 0
+
+        // Sets listeners for buttons
 
         randomDetailsButtonView.setOnClickListener {
             randomLayoutsFlipper.displayedChild = 1
@@ -297,10 +312,8 @@ class MainActivity : AppCompatActivity() {
 
         // Sets a fixed height for the main activity layout and tanks filters layout
 
-        val activityMain = findViewById<View>(id.activity_main)
         activityMain.updateLayoutParams { height = Utils.getY(this@MainActivity) }
 
-        val tanksFiltersLayout = findViewById<View>(id.tanks_filters_layout)
         tanksFiltersLayout.updateLayoutParams { height = (Utils.getY(this@MainActivity) * 0.75225 * 0.66).toInt() }
 
         // Sets state list for sort radio buttons
@@ -335,30 +348,39 @@ class MainActivity : AppCompatActivity() {
         adUtils.showInterstitial {
             CoroutineScope(Dispatchers.IO).launch {
 
-            val getIDCoroutine = getID()
-            getIDCoroutine.join()
-            getIDCoroutine.cancel()
-            setPlayerStatistics()
-            setClanStat()
+                val getIDCoroutine = getID()
+                getIDCoroutine.join()
+                getIDCoroutine.cancel()
+                setPlayerStatistics()
+                setClanStat()
 
-            // Displays the loading screen on tanks layout and waits for data loading to finish
+                // Displays the loading screen on tanks layout and waits for data loading to finish
 
-            runOnUiThread { tanksLayoutsFlipper.displayedChild = 2 }
-            if (fillVehiclesInfoJob?.isCompleted == false) {
-                fillVehiclesInfoJob!!.join()
+                runOnUiThread { tanksLayoutsFlipper.displayedChild = 2 }
+                if (fillVehiclesInfoJob?.isCompleted == false) {
+                    fillVehiclesInfoJob!!.join()
+                }
+                fillVehiclesStatistics().join()
+                getVehiclesStatisticsJob.forEach { it?.join() }
+
+                // Hides the loading screen on tanks layout
+
+                runOnUiThread { tanksLayoutsFlipper.displayedChild = 0 }
+
+                // all processes are finished, can unlock the button
+
+                runOnUiThread {
+                    viewPagerLayout.visibility = VISIBLE
+                    mainFlipper.displayedChild = 1
+                    searchButton.isClickable = true
+                    lastSearched.isClickable = true
+
+                    // create base list of tanks
+
+                    onClickApplyFilters(findViewById(id.tanks_apply_filters))
+                }
+
             }
-            fillVehiclesStatistics()
-            getVehiclesStatisticsJob.forEach { it?.join() }
-
-            // Hides the loading screen on tanks layout
-
-            runOnUiThread { tanksLayoutsFlipper.displayedChild = 0 }
-
-            // all processes are finished, can unlock the button
-
-            view.isClickable = true
-
-        }
         }
 
     }
@@ -958,50 +980,53 @@ class MainActivity : AppCompatActivity() {
      * API does not allow you to request the characteristics of more than 100
      * tanks per request)
      */
-    private fun getVehiclesStatistics(idLists: Array<Array<String>>) {
+    private fun getVehiclesStatistics(idLists: Array<Array<String>>): Job {
 
-        for (i in idLists.indices) {
+        return CoroutineScope(Dispatchers.IO).launch {
+            for (i in idLists.indices) {
 
-            getVehiclesStatisticsJob.add(CoroutineScope(Dispatchers.IO).launch {
+                getVehiclesStatisticsJob.add(CoroutineScope(Dispatchers.IO).launch {
 
-                var ids = ""
-                for (j in idLists[i].indices) {
-                    ids += idLists[i][j] + ","
-                }
-                ids = ids.substringBeforeLast(",")
+                    var ids = ""
+                    for (j in idLists[i].indices) {
+                        ids += idLists[i][j] + ","
+                    }
+                    ids = ids.substringBeforeLast(",")
 
-                try {
+                    try {
 
-                    val vehiclesStatisticsJson = service.getTankStatistics(userID, ids)
+                        val vehiclesStatisticsJson = service.getTankStatistics(userID, ids)
 
-                    withContext(Dispatchers.Main) {
-                        val gson = GsonBuilder().setPrettyPrinting().create()
-                        val vehicleStatistics = gson.toJson(
-                            JsonParser.parseString(
-                                vehiclesStatisticsJson.body()
-                                    ?.string()
+                        withContext(Dispatchers.Main) {
+                            val gson = GsonBuilder().setPrettyPrinting().create()
+                            val vehicleStatistics = gson.toJson(
+                                JsonParser.parseString(
+                                    vehiclesStatisticsJson.body()
+                                        ?.string()
+                                )
                             )
-                        )
 
-                        if (!vehicleStatistics.contains("\"data\": {}")) {
-                            for (j in idLists[i].indices) {
+                            if (!vehicleStatistics.contains("\"data\": {}")) {
+                                for (j in idLists[i].indices) {
 
-                                if (vehicleStatistics.contains("\"tank_id\": " + vehiclesData[i * 100 + j].id + "\n")) {
-                                    vehiclesData[i * 100 + j].json = vehicleStatistics.substringBefore("\"tank_id\": " + vehiclesData[i * 100 + j].id + "\n").substringAfterLast("\"all\": {")
+                                    if (vehicleStatistics.contains("\"tank_id\": " + vehiclesData[i * 100 + j].id + "\n")) {
+                                        vehiclesData[i * 100 + j].json = vehicleStatistics.substringBefore("\"tank_id\": " + vehiclesData[i * 100 + j].id + "\n").substringAfterLast("\"all\": {")
+                                    }
                                 }
                             }
+
                         }
 
+                    } catch (e: IOException) {
+                        Utils.createNetworkAlertDialog(this@MainActivity) {
+                            getVehiclesStatistics(idLists)
+                            this.cancel()
+                        }
                     }
 
-                } catch (e: IOException) {
-                    Utils.createNetworkAlertDialog(this@MainActivity) {
-                        getVehiclesStatistics(idLists)
-                        this.cancel()
-                    }
-                }
+                })
 
-            })
+            }
 
         }
 
@@ -1013,24 +1038,25 @@ class MainActivity : AppCompatActivity() {
      * so we are forced to distribute all identifiers into arrays containing
      * 100 or less elements
      */
-    private fun fillVehiclesStatistics() {
+    private fun fillVehiclesStatistics(): Job {
+        return CoroutineScope(Dispatchers.IO).launch {
 
-        val idLists: Array<Array<String>> = Array(
-            ceil((countOfVehicles - 1).toDouble() / 100).toInt()
-        ) { Array(0) { "" } }
+            val idLists: Array<Array<String>> = Array(
+                ceil((countOfVehicles - 1).toDouble() / 100).toInt()
+            ) { Array(0) { "" } }
 
-        for(i in idLists.indices) {
-            
-            idLists[i] = Array(if ((i + 1) * 100 <= countOfVehicles) { 100 } else { countOfVehicles % 100 }) { "" }
+            for(i in idLists.indices) {
 
-            for (j in idLists[i].indices) {
-                idLists[i][j] = vehiclesData[i * 100 + j].id
+                idLists[i] = Array(if ((i + 1) * 100 <= countOfVehicles) { 100 } else { countOfVehicles % 100 }) { "" }
+
+                for (j in idLists[i].indices) {
+                    idLists[i][j] = vehiclesData[i * 100 + j].id
+                }
+
             }
 
+            getVehiclesStatistics(idLists).join()
         }
-
-        getVehiclesStatistics(idLists)
-
     }
 
     /**

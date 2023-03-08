@@ -1124,28 +1124,28 @@ class MainActivity : AppCompatActivity() {
 
                 Utils.setSelectedRegion(this@MainActivity, 0)
 
-                service.region = "ru"
+                service.setRegion("ru")
 
             }
             "ru" -> {
                 Utils.setSelectedRegion(this@MainActivity, 0)
 
-                service.region = "ru"
+                service.setRegion("ru")
             }
             "eu" -> {
                 Utils.setSelectedRegion(this@MainActivity, 1)
 
-                service.region = "eu"
+                service.setRegion("eu")
             }
             "na" -> {
                 Utils.setSelectedRegion(this@MainActivity, 2)
 
-                service.region = "na"
+                service.setRegion("na")
             }
             "asia" -> {
                 Utils.setSelectedRegion(this@MainActivity, 3)
 
-                service.region = "asia"
+                service.setRegion("asia")
             }
         }
         updateLastSearch()

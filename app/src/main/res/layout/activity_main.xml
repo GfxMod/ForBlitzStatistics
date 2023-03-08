@@ -102,7 +102,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.025" />
 
-            <ViewFlipper
+            <CustomViewFlipper
                 android:id="@+id/main_layouts_flipper"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -144,7 +144,7 @@
                         android:layout_height="0dp"
                         android:layout_weight="0.1" />
 
-                    <ViewFlipper
+                    <CustomViewFlipper
                         android:id="@+id/last_searched_flipper"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
@@ -188,7 +188,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
 
-                    </ViewFlipper>
+                    </CustomViewFlipper>
 
                     <View
                         android:layout_width="match_parent"
@@ -390,7 +390,7 @@
 
                 </LinearLayout>
 
-            </ViewFlipper>
+            </CustomViewFlipper>
 
         </LinearLayout>
 

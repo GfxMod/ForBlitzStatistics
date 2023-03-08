@@ -4,10 +4,7 @@ import android.annotation.SuppressLint
 import android.content.*
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.View.VISIBLE
@@ -18,12 +15,11 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout.INVISIBLE
-import androidx.core.view.updateLayoutParams
 import androidx.core.widget.doOnTextChanged
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.yandex.mobile.ads.common.MobileAds
@@ -31,6 +27,9 @@ import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import ru.forblitz.statistics.R.*
+import ru.forblitz.statistics.adapters.NothingFoundAdapter
+import ru.forblitz.statistics.adapters.VehicleAdapter
+import ru.forblitz.statistics.adapters.ViewPagerAdapter
 import ru.forblitz.statistics.api.*
 import ru.forblitz.statistics.data.*
 import java.io.File
@@ -53,14 +52,12 @@ class MainActivity : AppCompatActivity() {
     private var sessionRatingStatisticsData: StatisticsData = StatisticsData()
     private var sessionBaseDifferencesStatisticsData: StatisticsData = StatisticsData()
     private var sessionRatingDifferencesStatisticsData: StatisticsData = StatisticsData()
-    private var vehiclesData: ArrayList<Vehicle> = ArrayList(1)
+    private var vehicles: Vehicles = Vehicles()
     private var clanData: Clan = Clan()
 
     private var userID = ""
     private var fillVehiclesInfoJob: Job? = null
     private var getVehiclesStatisticsJob: ArrayList<Job?> = ArrayList(0)
-
-    private var countOfVehicles = 0
     
     private val adUtils = AdUtils(this@MainActivity)
 
@@ -198,12 +195,9 @@ class MainActivity : AppCompatActivity() {
         val clanMembersButton = findViewById<View>(id.clan_members_button)
         val clanMembersListBackView = findViewById<View>(id.clan_members_list_back)
         val tanksDetailedStatisticsBackView = findViewById<View>(id.tanks_detailed_statistics_back)
-        val tanksListLayoutView = findViewById<LinearLayout>(id.tanks_list_layout)
+        val tanksList = findViewById<ListView>(id.tanks_list)
         val tanksTierSelect = findViewById<VerticalSeekBar>(id.tanks_tier_select)
-
-        val activityMain = findViewById<View>(id.activity_main)
-
-        val tanksFiltersLayout = findViewById<View>(id.tanks_filters_layout)
+        val tanksFilters = findViewById<View>(id.tanks_filters)
 
         val viewPagerLayout = findViewById<View>(id.view_pager_layout)
         val mainFlipper = findViewById<ViewFlipper>(id.main_layouts_flipper)
@@ -290,31 +284,19 @@ class MainActivity : AppCompatActivity() {
         })
         tanksTierSelect.setOnTouchListener { _, event ->
             tanksTierSelect.performClick()
-
-            val tanksScrollView = findViewById<ExtendedScrollView>(id.tanks_scroll)
             tanksTierSelect.mOnTouchEvent(event)
-
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                tanksScrollView.setScrollingEnabled(false)
-            } else if (event.action == MotionEvent.ACTION_UP) {
-                tanksScrollView.setScrollingEnabled(true)
-            }
-
             false
+        }
+        tanksFilters.setOnClickListener {
+            tanksLayoutsFlipper.displayedChild = 3
         }
 
         // Clears all data
 
         baseStatisticsData.clear()
         ratingStatisticsData.clear()
-        vehiclesData.forEach { it.clear() }
-        tanksListLayoutView.removeAllViews()
-
-        // Sets a fixed height for the main activity layout and tanks filters layout
-
-        activityMain.updateLayoutParams { height = Utils.getY(this@MainActivity) }
-
-        tanksFiltersLayout.updateLayoutParams { height = (Utils.getY(this@MainActivity) * 0.75225 * 0.66).toInt() }
+        vehicles.clear()
+        tanksList.adapter = null
 
         // Sets state list for sort radio buttons
 
@@ -433,10 +415,10 @@ class MainActivity : AppCompatActivity() {
 
         if (!view.isClickable) { return }
 
-        val tanksListLayoutView = findViewById<LinearLayout>(id.tanks_list_layout)
+        val tanksLayoutsFlipper = findViewById<ViewFlipper>(id.tanks_layouts_flipper)
+        val tanksList = findViewById<ListView>(id.tanks_list)
         val tanksTierSelect = findViewById<SeekBar>(id.tanks_tier_select)
         val tanksTierSelectIndicator = findViewById<AppCompatTextView>(id.tanks_tier_select_indicator)
-        val tanksScrollView = findViewById<ExtendedScrollView>(id.tanks_scroll)
 
         val lt = findViewById<View>(id.tanks_type_lt)
         val mt = findViewById<View>(id.tanks_type_mt)
@@ -453,8 +435,11 @@ class MainActivity : AppCompatActivity() {
         val us = findViewById<View>(id.us)
         val su = findViewById<View>(id.su)
 
+        val tanksFilters = findViewById<FloatingActionButton>(id.tanks_filters)
+
         Utils.playCycledAnimation(view, true)
-        tanksListLayoutView.removeAllViews()
+        tanksLayoutsFlipper.displayedChild = 0
+        tanksList.adapter = null
 
         //
         ////
@@ -462,10 +447,10 @@ class MainActivity : AppCompatActivity() {
         ////
         //
 
-        val sortedVehicles: ArrayList<Vehicle> = ArrayList(0)
+        val sortedVehicles: ArrayList<Vehicle> = ArrayList(vehicles.list)
         val vehiclesToCreate: ArrayList<Vehicle> = ArrayList(0)
 
-        for (i in 0 until countOfVehicles) { sortedVehicles.add(vehiclesData[i]) }
+        //sortedVehicles.forEach { Log.d("it", it.toString()) }
 
         val comparatorByBattles: Comparator<Vehicle> = Comparator<Vehicle> {
                 v1, v2 -> v1.battles.toInt().compareTo(v2.battles.toInt())
@@ -567,53 +552,21 @@ class MainActivity : AppCompatActivity() {
                 vehiclesToCreate.add(it)
             }
 
-        adUtils.showInterstitial(Runnable {
-            if (vehiclesToCreate.size > 0) {
-
-                var alreadyGeneratedVehicles = 0
-
-                Handler(Looper.getMainLooper()).postDelayed({
-
-                    for (i in 0..9) {
-                        if (alreadyGeneratedVehicles < vehiclesToCreate.size) {
-                            if (alreadyGeneratedVehicles % 3 == 0) {
-                                tanksListLayoutView.addView(adUtils.createBanner(tanksListLayoutView, resources.getDimensionPixelSize(dimen.padding_very_big)))
-                            }
-                            vehiclesToCreate[alreadyGeneratedVehicles].create(this)
-                        } else {
-                            break
-                        }
-                        alreadyGeneratedVehicles++
-                    }
-
-                    tanksScrollView.setScrollViewListener { scrollView: ExtendedScrollView, _, _, _, _ ->
-
-                        val lastChildView = scrollView.getChildAt(scrollView.childCount - 1)
-                        val diff = lastChildView.bottom - (scrollView.height + scrollView.scrollY)
-
-                        if (diff == 0) {
-                            for (i in 0..9) {
-                                if (alreadyGeneratedVehicles < vehiclesToCreate.size) {
-                                    if (alreadyGeneratedVehicles % 3 == 0) {
-                                        tanksListLayoutView.addView(adUtils.createBanner(tanksListLayoutView, resources.getDimensionPixelSize(dimen.padding_very_big)))
-                                    }
-
-                                    vehiclesToCreate[alreadyGeneratedVehicles].create(this)
-                                } else {
-                                    break
-                                }
-                                alreadyGeneratedVehicles++
-                            }
-                        }
-
-                    }
-
-                }, 250)
-
-            } else {
-                Vehicle.nothingFound(this@MainActivity)
+        when (vehiclesToCreate.size) {
+            0 -> {
+                val list = ArrayList<Any>(0)
+                list.add(Any())
+                tanksList.adapter = NothingFoundAdapter(this, list)
             }
-        })
+            1 -> {
+                tanksList.adapter = VehicleAdapter(this, vehiclesToCreate)
+                tanksFilters.hide()
+            }
+            else -> {
+                tanksList.adapter = VehicleAdapter(this, vehiclesToCreate)
+                tanksFilters.show()
+            }
+        }
 
     }
 
@@ -940,26 +893,8 @@ class MainActivity : AppCompatActivity() {
                                 ?.string()
                         )
                     )
-
-                    countOfVehicles = vehiclesInfoList.substringAfter("\"count\": ").substringBefore("\n").toInt()
-
-                    vehiclesData.clear(); for (i in 0 until countOfVehicles) { vehiclesData.add(Vehicle()) }
-
-                    var tmpData = vehiclesInfoList.substringAfter("data\": {")
-                    for(j in vehiclesData.indices) {
-                        vehiclesData[j] = Gson().fromJson(
-                            "{ " +
-                                    tmpData
-                                        .substringBefore("},")
-                                        .substringAfter("\": {")
-                                        .substringAfterLast("{")
-                                        .substringBefore("}")
-                                    + " }"
-                            , Vehicle::class.java
-                        )
-                        vehiclesData[j].id = tmpData.substringAfter("\"").substringBefore("\"")
-                        tmpData = tmpData.substringAfter("},")
-                    }
+                    
+                    vehicles.fillVehiclesSpecifications(vehiclesInfoList)
 
                 }
 
@@ -975,7 +910,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Gets statistics for each id list and fills in [vehiclesData] with it
+     * Gets statistics for each id list and fills in [vehicles] with it
      * @param idLists contains id lists having no more than 100 items each (the
      * API does not allow you to request the characteristics of more than 100
      * tanks per request)
@@ -1006,14 +941,7 @@ class MainActivity : AppCompatActivity() {
                                 )
                             )
 
-                            if (!vehicleStatistics.contains("\"data\": {}")) {
-                                for (j in idLists[i].indices) {
-
-                                    if (vehicleStatistics.contains("\"tank_id\": " + vehiclesData[i * 100 + j].id + "\n")) {
-                                        vehiclesData[i * 100 + j].json = vehicleStatistics.substringBefore("\"tank_id\": " + vehiclesData[i * 100 + j].id + "\n").substringAfterLast("\"all\": {")
-                                    }
-                                }
-                            }
+                            vehicles.fillVehiclesStatistics(vehicleStatistics)
 
                         }
 
@@ -1027,7 +955,6 @@ class MainActivity : AppCompatActivity() {
                 })
 
             }
-
         }
 
     }
@@ -1042,19 +969,19 @@ class MainActivity : AppCompatActivity() {
         return CoroutineScope(Dispatchers.IO).launch {
 
             val idLists: Array<Array<String>> = Array(
-                ceil((countOfVehicles - 1).toDouble() / 100).toInt()
+                ceil((vehicles.count - 1).toDouble() / 100).toInt()
             ) { Array(0) { "" } }
 
             for(i in idLists.indices) {
 
-                idLists[i] = Array(if ((i + 1) * 100 <= countOfVehicles) { 100 } else { countOfVehicles % 100 }) { "" }
+                idLists[i] = Array(if ((i + 1) * 100 <= vehicles.count) { 100 } else { vehicles.count % 100 }) { "" }
 
                 for (j in idLists[i].indices) {
-                    idLists[i][j] = vehiclesData[i * 100 + j].id
+                    idLists[i][j] = vehicles.list[i * 100 + j].tankId
                 }
 
             }
-
+            Log.d("idLists.size", idLists.size.toString())
             getVehiclesStatistics(idLists).join()
         }
     }

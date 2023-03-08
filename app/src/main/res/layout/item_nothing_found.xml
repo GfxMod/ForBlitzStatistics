@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.AppCompatTextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_layout_nested_selected"
+    android:textColor="@color/transparent_white"
+    android:text="@string/nothing_found"
+    android:autoSizeTextType="uniform"
+    android:paddingVertical="@dimen/padding_very_big"
+    android:paddingHorizontal="@dimen/padding_very_big"
+    android:gravity="center" />

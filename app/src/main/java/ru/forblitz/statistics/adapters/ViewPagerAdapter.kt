@@ -1,4 +1,4 @@
-package ru.forblitz.statistics
+package ru.forblitz.statistics.adapters
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -9,6 +9,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import ru.forblitz.statistics.*
 
 class ViewPagerAdapter(fragmentManager: FragmentManager, private val context: Context):
     FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {

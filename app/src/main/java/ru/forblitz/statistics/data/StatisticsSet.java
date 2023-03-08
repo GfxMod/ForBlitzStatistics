@@ -46,7 +46,7 @@ public class StatisticsSet {
         String maxXp = statistics.getMaxXp();
         String wins = statistics.getWins();
         String losses = statistics.getLosses();
-        String capturePoints = statistics.getCapturePoints();
+        String capturePoints = statistics.getCapturedPoints();
         String battles = statistics.getBattles();
         String damageDealt = statistics.getDamageDealt();
         String damageReceived = statistics.getDamageReceived();
@@ -197,7 +197,7 @@ public class StatisticsSet {
         String frags = statistics.getFrags();
         String wins = statistics.getWins();
         String losses = statistics.getLosses();
-        String capturePoints = statistics.getCapturePoints();
+        String capturePoints = statistics.getCapturedPoints();
         String battles = statistics.getBattles();
         String damageDealt = statistics.getDamageDealt();
         String damageReceived = statistics.getDamageReceived();

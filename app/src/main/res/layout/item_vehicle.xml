@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background_layout"
+    android:padding="@dimen/padding_big">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:fontFamily="@font/inter"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/padding_very_big"
+        android:text="@string/loading"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:typeface="monospace"
+        app:autoSizeTextType="uniform" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.05" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.725"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                android:text="@string/battles"
+                android:textColor="@android:color/white"
+                android:typeface="monospace"
+                app:autoSizeTextType="uniform" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/battles"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                android:text="@string/empty"
+                android:textColor="@android:color/white"
+                android:typeface="monospace"
+                app:autoSizeTextType="uniform" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.15" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                android:text="@string/average_damage"
+                android:textColor="@android:color/white"
+                android:typeface="monospace"
+                app:autoSizeTextType="uniform" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/average_damage"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                android:text="@string/empty"
+                android:textColor="@android:color/white"
+                android:typeface="monospace"
+                app:autoSizeTextType="uniform" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.15" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                android:text="@string/survived"
+                android:textColor="@android:color/white"
+                android:typeface="monospace"
+                app:autoSizeTextType="uniform" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/survived"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                android:text="@string/empty"
+                android:textColor="@android:color/white"
+                android:typeface="monospace"
+                app:autoSizeTextType="uniform" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.15" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                android:text="@string/win_rate"
+                android:textColor="@android:color/white"
+                android:typeface="monospace"
+                app:autoSizeTextType="uniform" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/win_rate"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                android:text="@string/empty"
+                android:textColor="@android:color/white"
+                android:typeface="monospace"
+                app:autoSizeTextType="uniform" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.15" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                android:text="@string/efficiency"
+                android:textColor="@android:color/white"
+                android:typeface="monospace"
+                app:autoSizeTextType="uniform" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/efficiency"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                android:text="@string/empty"
+                android:textColor="@android:color/white"
+                android:typeface="monospace"
+                app:autoSizeTextType="uniform" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.15" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                android:text="@string/hits_from_shots"
+                android:textColor="@android:color/white"
+                android:typeface="monospace"
+                app:autoSizeTextType="uniform" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/hits_from_shots"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                android:text="@string/empty"
+                android:textColor="@android:color/white"
+                android:typeface="monospace"
+                app:autoSizeTextType="uniform" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.16" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/details"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="0.125"
+        android:background="@drawable/background_button"
+        android:fontFamily="@font/inter"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/padding_big"
+        android:paddingVertical="@dimen/padding_big"
+        android:text="@string/detailed_statistics"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:typeface="normal"
+        app:autoSizeTextType="uniform" />
+
+</android.widget.LinearLayout>

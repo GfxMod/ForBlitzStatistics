@@ -1,35 +1,40 @@
 package ru.forblitz.statistics.data;
 
-import static android.graphics.Typeface.BOLD;
-import static android.view.Gravity.CENTER;
-import static androidx.core.widget.TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM;
-
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.ViewFlipper;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
+
+import com.google.gson.annotations.SerializedName;
 
 import ru.forblitz.statistics.R;
 
 /**
  * Object containing all the vehicle statistical data
  */
-public class Vehicle extends StatisticsData {
+public class Vehicle {
 
-    private String id;
+    @SerializedName("name")
     private String name;
+    @SerializedName("nation")
     private String nation;
+    @SerializedName("tier")
     private int tier;
+    @SerializedName("type")
     private String type;
+
+    @SerializedName("all")
+    private StatisticsData data = new StatisticsData();
+    @SerializedName("tank_id")
+    private String tankId;
+
+    public StatisticsData getData() {
+        return data;
+    }
+
+    public void setData(StatisticsData data) {
+        this.data = data;
+    }
 
     public String getName() {
         return name;
@@ -63,463 +68,220 @@ public class Vehicle extends StatisticsData {
         this.type = type;
     }
 
-    public String getId() {
-        return id;
+    public String getTankId() {
+        return tankId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setTankId(String tankId) {
+        this.tankId = tankId;
     }
 
-    /**
-     * Creates a layout with all the information about the vehicle
-     * @param activity required to get resources
-     */
-    @SuppressLint("RestrictedApi")
-    public void create(Activity activity) {
+    public String getSpotted() {
+        return data.getSpotted();
+    }
 
-        int displayWidth = Utils.getX(activity);
-        int padding = displayWidth / 1000 * 25;
-        LinearLayout tanksListLayout = activity.findViewById(R.id.tanks_list_layout);
+    public String getHits() {
+        return data.getHits();
+    }
 
+    public String getFrags() {
+        return data.getFrags();
+    }
+
+    public String getMaxXp() {
+        return data.getMaxXp();
+    }
+
+    public String getWins() {
+        return data.getWins();
+    }
+
+    public String getLosses() {
+        return data.getLosses();
+    }
+
+    public String getCapturePoints() {
+        return data.getCapturedPoints();
+    }
+
+    public String getBattles() {
+        return data.getBattles();
+    }
+
+    public String getDamageDealt() {
+        return data.getDamageDealt();
+    }
+
+    public String getDamageReceived() {
+        return data.getDamageReceived();
+    }
+
+    public String getShots() {
+        return data.getShots();
+    }
+
+    public String getFrags8p() {
+        return data.getFrags8p();
+    }
+
+    public String getXp() {
+        return data.getXp();
+    }
+
+    public String getWinAndSurvived() {
+        return data.getWinAndSurvived();
+    }
+
+    public String getSurvivedBattles() {
+        return data.getSurvivedBattles();
+    }
+
+    public String getMaxFrags() {
+        return data.getMaxFrags();
+    }
+
+    public String getDroppedCapturePoints() {
+        return data.getDroppedCapturePoints();
+    }
+
+    public String getNickname() {
+        return data.getNickname();
+    }
+
+    public String getWinRate() {
+        return data.getWinRate();
+    }
+
+    public String getAverageDamage() {
+        return data.getAverageDamage();
+    }
+
+    public String getEfficiency() {
+        return data.getEfficiency();
+    }
+
+    public String getSurvived() {
+        return data.getSurvived();
+    }
+
+    public String getHitsFromShots() {
+        return data.getHitsFromShots();
+    }
+
+    public String getAverageXp() {
+        return data.getAverageXp();
+    }
+
+    public void setWinRate(String winRate) {
+        data.setWinRate(winRate);
+    }
+
+    public void setAverageDamage(String averageDamage) {
+        data.setAverageDamage(averageDamage);
+    }
+
+    public void setEfficiency(String efficiency) {
+        data.setEfficiency(efficiency);
+    }
+
+    public void setSurvived(String survived) {
+        data.setSurvived(survived);
+    }
+
+    public void setHitsFromShots(String hitsFromShots) {
+        data.setHitsFromShots(hitsFromShots);
+    }
+
+    public void setAverageXp(String averageXp) {
+        data.setAverageXp(averageXp);
+    }
+
+    public int getBattlesColor(Context context) {
         int battlesColor;
-        if (Integer.parseInt(getBattles()) < 100) {
-            battlesColor = ContextCompat.getColor(activity, R.color.white);
-        } else if (Integer.parseInt(getBattles()) < 250) {
-            battlesColor = ContextCompat.getColor(activity, R.color.green);
-        } else if (Integer.parseInt(getBattles()) < 500) {
-            battlesColor = ContextCompat.getColor(activity, R.color.blue);
+        if (Integer.parseInt(data.getBattles()) < 100) {
+            battlesColor = ContextCompat.getColor(context, R.color.white);
+        } else if (Integer.parseInt(data.getBattles()) < 250) {
+            battlesColor = ContextCompat.getColor(context, R.color.green);
+        } else if (Integer.parseInt(data.getBattles()) < 500) {
+            battlesColor = ContextCompat.getColor(context, R.color.blue);
         } else {
-            battlesColor = ContextCompat.getColor(activity, R.color.violet);
+            battlesColor = ContextCompat.getColor(context, R.color.violet);
         }
-
+        return  battlesColor;
+    }
+    
+    public int getAverageDamageColor(Context context) {
         int averageDamageColor;
         if (tier == 10) {
-            if (Double.parseDouble(getAverageDamage()) < 2000) {
-                averageDamageColor = ContextCompat.getColor(activity, R.color.white);
-            } else if (Double.parseDouble(getAverageDamage()) < 2700) {
-                averageDamageColor = ContextCompat.getColor(activity, R.color.green);
-            } else if (Double.parseDouble(getAverageDamage()) < 3300) {
-                averageDamageColor = ContextCompat.getColor(activity, R.color.blue);
+            if (Double.parseDouble(data.getAverageDamage()) < 2000) {
+                averageDamageColor = ContextCompat.getColor(context, R.color.white);
+            } else if (Double.parseDouble(data.getAverageDamage()) < 2700) {
+                averageDamageColor = ContextCompat.getColor(context, R.color.green);
+            } else if (Double.parseDouble(data.getAverageDamage()) < 3300) {
+                averageDamageColor = ContextCompat.getColor(context, R.color.blue);
             } else {
-                averageDamageColor = ContextCompat.getColor(activity, R.color.violet);
+                averageDamageColor = ContextCompat.getColor(context, R.color.violet);
             }
         } else if (tier == 9) {
-            if (Double.parseDouble(getAverageDamage()) < 1700) {
-                averageDamageColor = ContextCompat.getColor(activity, R.color.white);
-            } else if (Double.parseDouble(getAverageDamage()) < 2200) {
-                averageDamageColor = ContextCompat.getColor(activity, R.color.green);
-            } else if (Double.parseDouble(getAverageDamage()) < 2600) {
-                averageDamageColor = ContextCompat.getColor(activity, R.color.blue);
+            if (Double.parseDouble(data.getAverageDamage()) < 1700) {
+                averageDamageColor = ContextCompat.getColor(context, R.color.white);
+            } else if (Double.parseDouble(data.getAverageDamage()) < 2200) {
+                averageDamageColor = ContextCompat.getColor(context, R.color.green);
+            } else if (Double.parseDouble(data.getAverageDamage()) < 2600) {
+                averageDamageColor = ContextCompat.getColor(context, R.color.blue);
             } else {
-                averageDamageColor = ContextCompat.getColor(activity, R.color.violet);
+                averageDamageColor = ContextCompat.getColor(context, R.color.violet);
             }
         } else if (tier == 8) {
-            if (Double.parseDouble(getAverageDamage()) < 1300) {
-                averageDamageColor = ContextCompat.getColor(activity, R.color.white);
-            } else if (Double.parseDouble(getAverageDamage()) < 1800) {
-                averageDamageColor = ContextCompat.getColor(activity, R.color.green);
-            } else if (Double.parseDouble(getAverageDamage()) < 2200) {
-                averageDamageColor = ContextCompat.getColor(activity, R.color.blue);
+            if (Double.parseDouble(data.getAverageDamage()) < 1300) {
+                averageDamageColor = ContextCompat.getColor(context, R.color.white);
+            } else if (Double.parseDouble(data.getAverageDamage()) < 1800) {
+                averageDamageColor = ContextCompat.getColor(context, R.color.green);
+            } else if (Double.parseDouble(data.getAverageDamage()) < 2200) {
+                averageDamageColor = ContextCompat.getColor(context, R.color.blue);
             } else {
-                averageDamageColor = ContextCompat.getColor(activity, R.color.violet);
+                averageDamageColor = ContextCompat.getColor(context, R.color.violet);
             }
         } else {
-            averageDamageColor = ContextCompat.getColor(activity, R.color.white);
+            averageDamageColor = ContextCompat.getColor(context, R.color.white);
         }
-
-        int winRateColor;
-        if (Double.parseDouble(getWinRate()) < 50) {
-            winRateColor = ContextCompat.getColor(activity, R.color.white);
-        } else if (Double.parseDouble(getWinRate()) < 60) {
-            winRateColor = ContextCompat.getColor(activity, R.color.green);
-        } else if (Double.parseDouble(getWinRate()) < 70) {
-            winRateColor = ContextCompat.getColor(activity, R.color.blue);
-        } else {
-            winRateColor = ContextCompat.getColor(activity, R.color.violet);
-        }
-
-        int efficiencyColor;
-        if (Double.parseDouble(getEfficiency()) < 1) {
-            efficiencyColor = ContextCompat.getColor(activity, R.color.white);
-        } else if (Double.parseDouble(getEfficiency()) < 1.5) {
-            efficiencyColor = ContextCompat.getColor(activity, R.color.green);
-        } else if (Double.parseDouble(getEfficiency()) < 2) {
-            efficiencyColor = ContextCompat.getColor(activity, R.color.blue);
-        } else {
-            efficiencyColor = ContextCompat.getColor(activity, R.color.violet);
-        }
-
-        //
-
-        LinearLayout mainLayout = new LinearLayout(activity);
-        LinearLayout.LayoutParams mainLayoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        mainLayoutParams.setMargins(0, padding, 0, padding);
-        mainLayout.setLayoutParams(mainLayoutParams);
-        mainLayout.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout));
-        mainLayout.setPadding(padding, padding, padding, padding);
-        mainLayout.setOrientation(LinearLayout.VERTICAL);
-
-        //
-
-        AppCompatTextView nameVehicle = new AppCompatTextView(activity);
-        nameVehicle.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                padding * 4)
-        );
-        nameVehicle.setTextColor(ContextCompat.getColor(activity, R.color.white));
-        nameVehicle.setTypeface(ResourcesCompat.getFont(activity, R.font.inter), BOLD);
-        nameVehicle.setGravity(CENTER);
-        nameVehicle.setMaxLines(1);
-        nameVehicle.setAutoSizeTextTypeWithDefaults(AUTO_SIZE_TEXT_TYPE_UNIFORM);
-        nameVehicle.setText(name);
-
-        //
-        ////
-        //
-
-        LinearLayout columnsLayout = new LinearLayout(activity);
-        LinearLayout.LayoutParams columnsLayoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                padding * 24
-        );
-        columnsLayoutParams.setMargins(0, padding, 0, 0);
-        columnsLayout.setLayoutParams(columnsLayoutParams);
-        columnsLayout.setGravity(CENTER);
-        columnsLayout.setOrientation(LinearLayout.HORIZONTAL);
-
-        //
-        ////
-        //
-
-        LinearLayout firstColumnLayout = new LinearLayout(activity);
-        firstColumnLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                1.0f)
-        );
-        firstColumnLayout.setOrientation(LinearLayout.VERTICAL);
-
-        //
-
-        LinearLayout secondColumnLayout = new LinearLayout(activity);
-        secondColumnLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                1.0f)
-        );
-        secondColumnLayout.setOrientation(LinearLayout.VERTICAL);
-
-        //
-        ////
-        //////
-        ////
-        //
-
-        AppCompatTextView battlesName = new AppCompatTextView(activity);
-        battlesName.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                padding * 2)
-        );
-        battlesName.setTextColor(ContextCompat.getColor(activity, R.color.white));
-        battlesName.setTypeface(ResourcesCompat.getFont(activity, R.font.inter));
-        battlesName.setGravity(CENTER);
-        battlesName.setMaxLines(1);
-        battlesName.setAutoSizeTextTypeWithDefaults(AUTO_SIZE_TEXT_TYPE_UNIFORM);
-        battlesName.setText(activity.getString(R.string.battles));
-
-        //
-
-        AppCompatTextView battlesValue = new AppCompatTextView(activity);
-        battlesValue.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                padding * 4)
-        );
-        battlesValue.setTextColor(battlesColor);
-        battlesValue.setTypeface(ResourcesCompat.getFont(activity, R.font.inter));
-        battlesValue.setGravity(CENTER);
-        battlesValue.setMaxLines(1);
-        battlesValue.setAutoSizeTextTypeWithDefaults(AUTO_SIZE_TEXT_TYPE_UNIFORM);
-        battlesValue.setText(getBattles());
-
-        //
-        ////
-        //
-
-        AppCompatTextView averageDamageName = new AppCompatTextView(activity);
-        LinearLayout.LayoutParams averageDamageNameParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                padding * 2
-        );
-        averageDamageNameParams.setMargins(0, padding * 2, 0, 0);
-        averageDamageName.setLayoutParams(averageDamageNameParams);
-        averageDamageName.setTextColor(ContextCompat.getColor(activity, R.color.white));
-        averageDamageName.setTypeface(ResourcesCompat.getFont(activity, R.font.inter));
-        averageDamageName.setGravity(CENTER);
-        averageDamageName.setMaxLines(1);
-        averageDamageName.setAutoSizeTextTypeWithDefaults(AUTO_SIZE_TEXT_TYPE_UNIFORM);
-        averageDamageName.setText(activity.getString(R.string.average_damage));
-
-        //
-
-        AppCompatTextView averageDamageValue = new AppCompatTextView(activity);
-        averageDamageValue.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                padding * 4)
-        );
-        averageDamageValue.setTextColor(averageDamageColor);
-        averageDamageValue.setTypeface(ResourcesCompat.getFont(activity, R.font.inter));
-        averageDamageValue.setGravity(CENTER);
-        averageDamageValue.setMaxLines(1);
-        averageDamageValue.setAutoSizeTextTypeWithDefaults(AUTO_SIZE_TEXT_TYPE_UNIFORM);
-        averageDamageValue.setText(getAverageDamage());
-
-        //
-        ////
-        //
-
-        AppCompatTextView survivedName = new AppCompatTextView(activity);
-        LinearLayout.LayoutParams survivedNameParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                padding * 2
-        );
-        survivedNameParams.setMargins(0, padding * 2, 0, 0);
-        survivedName.setLayoutParams(survivedNameParams);
-        survivedName.setTextColor(ContextCompat.getColor(activity, R.color.white));
-        survivedName.setTypeface(ResourcesCompat.getFont(activity, R.font.inter));
-        survivedName.setGravity(CENTER);
-        survivedName.setMaxLines(1);
-        survivedName.setAutoSizeTextTypeWithDefaults(AUTO_SIZE_TEXT_TYPE_UNIFORM);
-        survivedName.setText(activity.getString(R.string.survived));
-
-        //
-
-        AppCompatTextView survivedValue = new AppCompatTextView(activity);
-        survivedValue.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                padding * 4)
-        );
-        survivedValue.setTextColor(ContextCompat.getColor(activity, R.color.white));
-        survivedValue.setTypeface(ResourcesCompat.getFont(activity, R.font.inter));
-        survivedValue.setGravity(CENTER);
-        survivedValue.setMaxLines(1);
-        survivedValue.setAutoSizeTextTypeWithDefaults(AUTO_SIZE_TEXT_TYPE_UNIFORM);
-        survivedValue.setText(getSurvived());
-
-        //
-        ////
-        //
-
-        AppCompatTextView winRateName = new AppCompatTextView(activity);
-        winRateName.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                padding * 2)
-        );
-        winRateName.setTextColor(ContextCompat.getColor(activity, R.color.white));
-        winRateName.setTypeface(ResourcesCompat.getFont(activity, R.font.inter));
-        winRateName.setGravity(CENTER);
-        winRateName.setMaxLines(1);
-        winRateName.setAutoSizeTextTypeWithDefaults(AUTO_SIZE_TEXT_TYPE_UNIFORM);
-        winRateName.setText(activity.getString(R.string.win_rate));
-
-        //
-
-        AppCompatTextView winRateValue = new AppCompatTextView(activity);
-        winRateValue.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                padding * 4)
-        );
-        winRateValue.setTextColor(winRateColor);
-        winRateValue.setTypeface(ResourcesCompat.getFont(activity, R.font.inter));
-        winRateValue.setGravity(CENTER);
-        winRateValue.setMaxLines(1);
-        winRateValue.setAutoSizeTextTypeWithDefaults(AUTO_SIZE_TEXT_TYPE_UNIFORM);
-        winRateValue.setText(getWinRate());
-
-        //
-        ////
-        //
-
-        AppCompatTextView efficiencyName = new AppCompatTextView(activity);
-        LinearLayout.LayoutParams efficiencyNameParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                padding * 2
-        );
-        efficiencyNameParams.setMargins(0, padding * 2, 0, 0);
-        efficiencyName.setLayoutParams(efficiencyNameParams);
-        efficiencyName.setTextColor(ContextCompat.getColor(activity, R.color.white));
-        efficiencyName.setTypeface(ResourcesCompat.getFont(activity, R.font.inter));
-        efficiencyName.setGravity(CENTER);
-        efficiencyName.setMaxLines(1);
-        efficiencyName.setAutoSizeTextTypeWithDefaults(AUTO_SIZE_TEXT_TYPE_UNIFORM);
-        efficiencyName.setText(activity.getString(R.string.efficiency));
-
-        //
-
-        AppCompatTextView efficiencyValue = new AppCompatTextView(activity);
-        efficiencyValue.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                padding * 4)
-        );
-        efficiencyValue.setTextColor(efficiencyColor);
-        efficiencyValue.setTypeface(ResourcesCompat.getFont(activity, R.font.inter));
-        efficiencyValue.setGravity(CENTER);
-        efficiencyValue.setMaxLines(1);
-        efficiencyValue.setAutoSizeTextTypeWithDefaults(AUTO_SIZE_TEXT_TYPE_UNIFORM);
-        efficiencyValue.setText(getEfficiency());
-
-        //
-        ////
-        //
-
-        AppCompatTextView hitsFromShotsName = new AppCompatTextView(activity);
-        LinearLayout.LayoutParams hitsFromShotsNameParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                padding * 2
-        );
-        hitsFromShotsNameParams.setMargins(0, padding * 2, 0, 0);
-        hitsFromShotsName.setLayoutParams(hitsFromShotsNameParams);
-        hitsFromShotsName.setTextColor(ContextCompat.getColor(activity, R.color.white));
-        hitsFromShotsName.setTypeface(ResourcesCompat.getFont(activity, R.font.inter));
-        hitsFromShotsName.setGravity(CENTER);
-        hitsFromShotsName.setMaxLines(1);
-        hitsFromShotsName.setAutoSizeTextTypeWithDefaults(AUTO_SIZE_TEXT_TYPE_UNIFORM);
-        hitsFromShotsName.setText(activity.getString(R.string.hits_from_shots));
-
-        //
-
-        AppCompatTextView hitsFromShotsValue = new AppCompatTextView(activity);
-        hitsFromShotsValue.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                padding * 4)
-        );
-        hitsFromShotsValue.setTextColor(ContextCompat.getColor(activity, R.color.white));
-        hitsFromShotsValue.setTypeface(ResourcesCompat.getFont(activity, R.font.inter));
-        hitsFromShotsValue.setGravity(CENTER);
-        hitsFromShotsValue.setMaxLines(1);
-        hitsFromShotsValue.setAutoSizeTextTypeWithDefaults(AUTO_SIZE_TEXT_TYPE_UNIFORM);
-        hitsFromShotsValue.setText(getHitsFromShots());
-
-        //
-        ////
-        //////
-        ////
-        //
-
-        AppCompatButton details = new AppCompatButton(activity);
-        LinearLayout.LayoutParams detailsParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                padding * 5
-        );
-        details.setLayoutParams(detailsParams);
-        details.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_button_insets));
-        details.setTextColor(ContextCompat.getColor(activity, R.color.white));
-        details.setTypeface(ResourcesCompat.getFont(activity, R.font.inter), BOLD);
-        details.setGravity(CENTER);
-        details.setMaxLines(1);
-        details.setAutoSizeTextTypeWithDefaults(AUTO_SIZE_TEXT_TYPE_UNIFORM);
-        details.setText(activity.getString(R.string.detailed_statistics));
-        details.setPadding(padding, padding, padding, padding);
-        details.setAllCaps(false);
-        details.setOnClickListener(l -> {
-
-            ViewFlipper tanksLayoutsFlipper = activity.findViewById(R.id.tanks_layouts_flipper);
-
-            TextView tanksWinsView = activity.findViewById(R.id.tanks_wins);
-            TextView tanksLossesView = activity.findViewById(R.id.tanks_losses);
-            TextView tanksWinAndSurviveView = activity.findViewById(R.id.tanks_win_and_survive);
-            TextView tanksSurviveView = activity.findViewById(R.id.tanks_survive);
-            TextView tanksXpView = activity.findViewById(R.id.tanks_xp);
-            TextView tanksFragsView = activity.findViewById(R.id.tanks_frags);
-            TextView tanksShotsView = activity.findViewById(R.id.tanks_shots);
-            TextView tanksHitsView = activity.findViewById(R.id.tanks_hits);
-            TextView tanksSpottedView = activity.findViewById(R.id.tanks_spotted);
-            TextView tanksFrags8pView = activity.findViewById(R.id.tanks_frags8p);
-            TextView tanksMaxXpView = activity.findViewById(R.id.tanks_max_xp);
-            TextView tanksMaxFragsView = activity.findViewById(R.id.tanks_max_frags);
-            TextView tanksCapturedPointsView = activity.findViewById(R.id.tanks_captured_points);
-            TextView tanksDefendedView = activity.findViewById(R.id.tanks_dropped);
-            TextView tanksDamageDealtView = activity.findViewById(R.id.tanks_damage_dealt);
-            TextView tanksDamageReceivedView = activity.findViewById(R.id.tanks_damage_received);
-
-            tanksWinsView.setText(getWins());
-            tanksLossesView.setText(getLosses());
-            tanksWinAndSurviveView.setText(getWinAndSurvived());
-            tanksSurviveView.setText(getSurvivedBattles());
-            tanksXpView.setText(getXp());
-            tanksFragsView.setText(getFrags());
-            tanksShotsView.setText(getShots());
-            tanksHitsView.setText(getHits());
-            tanksSpottedView.setText(getSpotted());
-            tanksFrags8pView.setText(getFrags8p());
-            tanksMaxXpView.setText(getMaxXp());
-            tanksMaxFragsView.setText(getMaxFrags());
-            tanksCapturedPointsView.setText(getCapturePoints());
-            tanksDefendedView.setText(getDroppedCapturePoints());
-            tanksDamageDealtView.setText(getDamageDealt());
-            tanksDamageReceivedView.setText(getDamageReceived());
-
-            tanksLayoutsFlipper.setDisplayedChild(1);
-
-        });
-
-        //
-        ////
-        //////
-        ////
-        //
-
-        tanksListLayout.addView(mainLayout);
-        mainLayout.addView(nameVehicle);
-        mainLayout.addView(columnsLayout);
-        mainLayout.addView(details);
-        columnsLayout.addView(firstColumnLayout);
-        columnsLayout.addView(secondColumnLayout);
-        firstColumnLayout.addView(battlesName);
-        firstColumnLayout.addView(battlesValue);
-        firstColumnLayout.addView(averageDamageName);
-        firstColumnLayout.addView(averageDamageValue);
-        firstColumnLayout.addView(survivedName);
-        firstColumnLayout.addView(survivedValue);
-        secondColumnLayout.addView(winRateName);
-        secondColumnLayout.addView(winRateValue);
-        secondColumnLayout.addView(efficiencyName);
-        secondColumnLayout.addView(efficiencyValue);
-        secondColumnLayout.addView(hitsFromShotsName);
-        secondColumnLayout.addView(hitsFromShotsValue);
-
+        return averageDamageColor;
     }
 
-    @SuppressLint("RestrictedApi")
-    public static void nothingFound(Activity activity) {
+    public int getWinRateColor(Context context) {
+        int winRateColor;
+        if (Double.parseDouble(data.getWinRate()) < 50) {
+            winRateColor = ContextCompat.getColor(context, R.color.white);
+        } else if (Double.parseDouble(data.getWinRate()) < 60) {
+            winRateColor = ContextCompat.getColor(context, R.color.green);
+        } else if (Double.parseDouble(data.getWinRate()) < 70) {
+            winRateColor = ContextCompat.getColor(context, R.color.blue);
+        } else {
+            winRateColor = ContextCompat.getColor(context, R.color.violet);
+        }
+        return winRateColor;
+    }
 
-        int padding = Utils.getX(activity) / 1000 * 25;
-        LinearLayout tanksListLayout = activity.findViewById(R.id.tanks_list_layout);
+    public int getEfficiencyColor(Context context) {
+        int efficiencyColor;
+        if (Double.parseDouble(data.getEfficiency()) < 1) {
+            efficiencyColor = ContextCompat.getColor(context, R.color.white);
+        } else if (Double.parseDouble(data.getEfficiency()) < 1.5) {
+            efficiencyColor = ContextCompat.getColor(context, R.color.green);
+        } else if (Double.parseDouble(data.getEfficiency()) < 2) {
+            efficiencyColor = ContextCompat.getColor(context, R.color.blue);
+        } else {
+            efficiencyColor = ContextCompat.getColor(context, R.color.violet);
+        }
+        return efficiencyColor;
+    }
 
-        //
+    public void clear() {
+        this.data = new StatisticsData();
+    }
 
-        AppCompatTextView nothingFoundText = new AppCompatTextView(activity);
-        LinearLayout.LayoutParams mainLayoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                padding * 6
-        );
-        mainLayoutParams.setMargins(0, padding, 0, padding);
-        nothingFoundText.setLayoutParams(mainLayoutParams);
-        nothingFoundText.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout));
-        nothingFoundText.setTextColor(ContextCompat.getColor(activity, R.color.white));
-        nothingFoundText.setTypeface(ResourcesCompat.getFont(activity, R.font.inter));
-        nothingFoundText.setGravity(CENTER);
-        nothingFoundText.setAutoSizeTextTypeWithDefaults(AUTO_SIZE_TEXT_TYPE_UNIFORM);
-        nothingFoundText.setPadding(padding, padding, padding, padding);
-        nothingFoundText.setText(R.string.nothing_found);
-
-        //
-
-        tanksListLayout.addView(nothingFoundText);
-
+    public void calculate() {
+        data.calculate();
     }
 
     /**
@@ -546,9 +308,9 @@ public class Vehicle extends StatisticsData {
     @NonNull
     @Override
     public String toString() {
-        String result = super.toString();
+        String result = data.toString();
 
-        result += "id: " + id + "\n";
+        result += "tankId: " + tankId + "\n";
         result += "name: " + name + "\n";
         result += "nation: " + nation + "\n";
         result += "tier: " + tier + "\n";

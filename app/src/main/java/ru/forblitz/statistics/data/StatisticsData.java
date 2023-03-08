@@ -4,6 +4,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Locale;
 
 /**
@@ -13,23 +15,41 @@ public class StatisticsData {
 
     private String json = "0";
 
+    @SerializedName("spotted")
     private String spotted = "0";
+    @SerializedName("hits")
     private String hits = "0";
+    @SerializedName("frags")
     private String frags = "0";
+    @SerializedName("max_xp")
     private String maxXp = "0";
+    @SerializedName("wins")
     private String wins = "0";
+    @SerializedName("losses")
     private String losses = "0";
-    private String capturePoints = "0";
+    @SerializedName("capture_points")
+    private String capturedPoints = "0";
+    @SerializedName("battles")
     private String battles = "0";
+    @SerializedName("damage_dealt")
     private String damageDealt = "0";
+    @SerializedName("damage_received")
     private String damageReceived = "0";
+    @SerializedName("shots")
     private String shots = "0";
+    @SerializedName("frags8p")
     private String frags8p = "0";
+    @SerializedName("xp")
     private String xp = "0";
+    @SerializedName("win_and_survived")
     private String winAndSurvived = "0";
+    @SerializedName("survived_battles")
     private String survivedBattles = "0";
+    @SerializedName("max_frags")
     private String maxFrags = "0";
+    @SerializedName("dropped_capture_points")
     private String droppedCapturePoints = "0";
+    @SerializedName("nickname")
     private String nickname = "";
 
     private String winRate = "0";
@@ -51,7 +71,7 @@ public class StatisticsData {
         this.maxXp = parseValueFromJson("max_xp");
         this.wins = parseValueFromJson("wins");
         this.losses = parseValueFromJson("losses");
-        this.capturePoints = parseValueFromJson("capture_points");
+        this.capturedPoints = parseValueFromJson("capture_points");
         this.battles = parseValueFromJson("battles");
         this.damageDealt = parseValueFromJson("damage_dealt");
         this.damageReceived = parseValueFromJson("damage_received");
@@ -64,12 +84,7 @@ public class StatisticsData {
         this.droppedCapturePoints = parseValueFromJson("dropped_capture_points");
         this.nickname = parseValueFromJson("nickname");
 
-        this.winRate = String.format(Locale.US, "%.2f", Double.parseDouble(wins) / Double.parseDouble(battles) * 100);
-        this.averageDamage = String.format(Locale.US, "%.2f", Double.parseDouble(damageDealt) / Double.parseDouble(battles));
-        this.efficiency = String.format(Locale.US, "%.2f", Double.parseDouble(damageDealt) / Double.parseDouble(damageReceived));
-        this.survived = String.format(Locale.US, "%.2f", Double.parseDouble(survivedBattles) / Double.parseDouble(battles) * 100);
-        this.hitsFromShots = String.format(Locale.US, "%.2f", Double.parseDouble(hits) / Double.parseDouble(shots) * 100);
-        this.averageXp = String.format(Locale.US, "%.2f", Double.parseDouble(xp) / Double.parseDouble(battles) * 100);
+        this.calculate();
 
     }
 
@@ -97,8 +112,8 @@ public class StatisticsData {
         return this.losses;
     }
 
-    public String getCapturePoints() {
-        return this.capturePoints;
+    public String getCapturedPoints() {
+        return this.capturedPoints;
     }
 
     public String getBattles() {
@@ -193,8 +208,8 @@ public class StatisticsData {
         this.losses = losses;
     }
 
-    public void setCapturePoints(String capturePoints) {
-        this.capturePoints = capturePoints;
+    public void setCapturedPoints(String capturedPoints) {
+        this.capturedPoints = capturedPoints;
     }
 
     public void setBattles(String battles) {
@@ -310,7 +325,7 @@ public class StatisticsData {
         this.maxXp = "0";
         this.wins = "0";
         this.losses = "0";
-        this.capturePoints = "0";
+        this.capturedPoints = "0";
         this.battles = "0";
         this.damageDealt = "0";
         this.damageReceived = "0";
@@ -328,6 +343,15 @@ public class StatisticsData {
         this.efficiency = "0";
         this.survived = "0";
         this.hitsFromShots = "0";
+    }
+
+    public void calculate() {
+        this.winRate = String.format(Locale.US, "%.2f", Double.parseDouble(wins) / Double.parseDouble(battles) * 100);
+        this.averageDamage = String.format(Locale.US, "%.2f", Double.parseDouble(damageDealt) / Double.parseDouble(battles));
+        this.efficiency = String.format(Locale.US, "%.2f", Double.parseDouble(damageDealt) / Double.parseDouble(damageReceived));
+        this.survived = String.format(Locale.US, "%.2f", Double.parseDouble(survivedBattles) / Double.parseDouble(battles) * 100);
+        this.hitsFromShots = String.format(Locale.US, "%.2f", Double.parseDouble(hits) / Double.parseDouble(shots) * 100);
+        this.averageXp = String.format(Locale.US, "%.2f", Double.parseDouble(xp) / Double.parseDouble(battles) * 100);
     }
 
     /**
@@ -362,7 +386,7 @@ public class StatisticsData {
         result += "maxXp: " + maxXp + "\n";
         result += "wins: " + wins + "\n";
         result += "losses: " + losses + "\n";
-        result += "capturePoints: " + capturePoints + "\n";
+        result += "capturePoints: " + capturedPoints + "\n";
         result += "battles: " + battles + "\n";
         result += "damageDealt: " + damageDealt + "\n";
         result += "damageReceived: " + damageReceived + "\n";

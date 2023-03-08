@@ -212,7 +212,7 @@ public class Session {
         sessionDifferences.setMaxXp(Integer.toString(Integer.parseInt(current.getMaxXp()) - Integer.parseInt(session.getMaxXp())));
         sessionDifferences.setWins(Integer.toString(Integer.parseInt(current.getWins()) - Integer.parseInt(session.getWins())));
         sessionDifferences.setLosses(Integer.toString(Integer.parseInt(current.getLosses()) - Integer.parseInt(session.getLosses())));
-        sessionDifferences.setCapturePoints(Integer.toString(Integer.parseInt(current.getCapturePoints()) - Integer.parseInt(session.getCapturePoints())));
+        sessionDifferences.setCapturedPoints(Integer.toString(Integer.parseInt(current.getCapturedPoints()) - Integer.parseInt(session.getCapturedPoints())));
         sessionDifferences.setBattles(Integer.toString(Integer.parseInt(current.getBattles()) - Integer.parseInt(session.getBattles())));
         sessionDifferences.setDamageDealt(Integer.toString(Integer.parseInt(current.getDamageDealt()) - Integer.parseInt(session.getDamageDealt())));
         sessionDifferences.setDamageReceived(Integer.toString(Integer.parseInt(current.getDamageReceived()) - Integer.parseInt(session.getDamageReceived())));
@@ -249,7 +249,7 @@ public class Session {
         sessionDifferences.setMaxXp(Integer.toString(Integer.parseInt(current.getMaxXp()) - Integer.parseInt(session.getMaxXp())));
         sessionDifferences.setWins(Integer.toString(Integer.parseInt(current.getWins()) - Integer.parseInt(session.getWins())));
         sessionDifferences.setLosses(Integer.toString(Integer.parseInt(current.getLosses()) - Integer.parseInt(session.getLosses())));
-        sessionDifferences.setCapturePoints(Integer.toString(Integer.parseInt(current.getCapturePoints()) - Integer.parseInt(session.getCapturePoints())));
+        sessionDifferences.setCapturedPoints(Integer.toString(Integer.parseInt(current.getCapturedPoints()) - Integer.parseInt(session.getCapturedPoints())));
         sessionDifferences.setBattles(Integer.toString(Integer.parseInt(current.getBattles()) - Integer.parseInt(session.getBattles())));
         sessionDifferences.setDamageDealt(Integer.toString(Integer.parseInt(current.getDamageDealt()) - Integer.parseInt(session.getDamageDealt())));
         sessionDifferences.setDamageReceived(Integer.toString(Integer.parseInt(current.getDamageReceived()) - Integer.parseInt(session.getDamageReceived())));

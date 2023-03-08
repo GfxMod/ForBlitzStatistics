@@ -115,6 +115,7 @@
     <string name="terms_of_service_desc">Пользуясь приложением, вы принимаете нашу политику конфиденциальности (https://forblitz.ru/forblitzstats-privacy/)</string>
     <string name="accept">Принять</string>
     <string name="exit">Выход</string>
+    <string name="filters">Фильтры</string>
 
 
 </resources>

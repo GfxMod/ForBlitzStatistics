@@ -118,4 +118,6 @@
     <string name="accept">Accept</string>
     <string name="exit">Exit</string>
 
+    <string name="filters">Filters</string>
+
 </resources>

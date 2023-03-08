@@ -1,6 +1,6 @@
 package ru.forblitz.statistics.adapters;
 
-import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +24,11 @@ public class NothingFoundAdapter extends ArrayAdapter<Object> {
     // Передавайте всегда Context - не ошибетесь
     // Если вам нужна в адаптере именно активность, то вы точно делаете что-то неправильно
 
-    Activity activity;
+    Context context;
 
-    public NothingFoundAdapter(@NonNull Activity activity, List<Object> list) {
-        super(activity, layout.item_nothing_found, list);
-        this.activity = activity;
+    public NothingFoundAdapter(@NonNull Context context, List<Object> list) {
+        super(context, layout.item_nothing_found, list);
+        this.context = context;
     }
 
     @NonNull
@@ -41,7 +41,7 @@ public class NothingFoundAdapter extends ArrayAdapter<Object> {
 
         convertView.setLayoutParams(new ListView.LayoutParams(
                 ListView.LayoutParams.MATCH_PARENT,
-                (int) (Utils.getY(activity) * 0.1)
+                (int) (Utils.getY(context) * 0.1)
         ));
 
         return convertView;

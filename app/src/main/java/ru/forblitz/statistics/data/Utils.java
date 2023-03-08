@@ -1,6 +1,9 @@
 package ru.forblitz.statistics.data;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -54,15 +57,16 @@ public class Utils {
     }
 
     /**
-     * @param activity required to get resources
+     * @param context required to get resources
      * @return height of app window
      */
-    public static int getY(Activity activity) {
-
-        View activityMain = activity.findViewById(id.activity_main);
-
-        return activityMain.getHeight();
-
+    @SuppressLint({"InternalInsetResource", "DiscouragedApi"})
+    public static int getY(Context context) {
+        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+        int statusBarId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        int statusBarHeight = context.getResources().getDimensionPixelSize(statusBarId);
+        height -= statusBarHeight;
+        return height;
     }
 
     public static ScaleAnimation getAnimTo() {

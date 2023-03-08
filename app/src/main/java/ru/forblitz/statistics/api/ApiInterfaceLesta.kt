@@ -7,6 +7,9 @@ import retrofit2.http.Query
 
 interface ApiInterfaceLesta {
 
+    // TODO: вынести идентификатор приложения в отдельную переменную (константу - public static final) 
+    // в какой-нибудь отдельный класс, где будут храниться настройки приложения
+
     @GET("wotb/account/list/?application_id=1957e1f71656310342971b3b1aa2efef")
     suspend fun getAccountId(@Query("search") search: String) : Response<ResponseBody>
 

@@ -17,6 +17,11 @@ public class Vehicles {
 
     private final ArrayList<Vehicle> list = new ArrayList<>();
 
+    // TODO: Заменить ArrayList на Map
+    // Мы, кажется, не проходили, что это такое, но
+    // позволит хранить пары значений номер танка -> танк
+    // private final Map<String, Vehicle> = new HashMap<>();
+
     private ApiResponse apiResponse;
 
     public ArrayList<Vehicle> getList() {
@@ -42,11 +47,13 @@ public class Vehicles {
 
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
         JsonObject data = jsonObject.getAsJsonObject("data");
+        // TODO: а что если пустой объект? next() может бросить исключение
         JsonArray dataArray = data.entrySet().iterator().next().getValue().getAsJsonArray();
 
         for (JsonElement element : dataArray) {
             JsonObject vehicleObject = element.getAsJsonObject();
             Vehicle vehicle = new Gson().fromJson(vehicleObject, Vehicle.class);
+            // TODO: отказаться от очень долгих indexOf -> получить у map значение по ключу можно так: list.get(КЛЮЧ)
             list.get(indexOf(vehicle.getTankId())).setData(vehicle.getData());
             list.get(indexOf(vehicle.getTankId())).calculate();
         }

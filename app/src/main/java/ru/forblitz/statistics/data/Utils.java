@@ -31,6 +31,9 @@ import ru.forblitz.statistics.R.string;
 
 public class Utils {
 
+    // TODO: возможно, имеет разделить этот функционально жирненький класс на несколько отдельных %Имя-сферы%Utils.java
+    // Их можно в отдельный пакет utils вообзу положить
+
     public static String parseTime(String timestamp) {
         long offset = TimeZone.getDefault().getRawOffset() / 1000L; // насколько в секундах отличается часовой пояс в большую сторону относительно обычного Timestamp
         String time = java.time.format.DateTimeFormatter.ISO_INSTANT.format(java.time.Instant.ofEpochSecond(Long.parseLong(timestamp) + offset));

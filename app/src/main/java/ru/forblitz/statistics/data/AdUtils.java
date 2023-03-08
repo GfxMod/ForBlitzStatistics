@@ -92,6 +92,9 @@ public class AdUtils {
 
             // Создание экземпляра InterstitialAd.
             InterstitialAd adView = new InterstitialAd(activity);
+
+            // TODO: вынести этот идентификатор в настройки приложения, не надо его здесь хардкодить
+            
             adView.setAdUnitId("R-M-2200226-2");
 
             // Создание объекта таргетирования рекламы.

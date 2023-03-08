@@ -14,6 +14,13 @@ import ru.forblitz.statistics.R;
  */
 public class Vehicle {
 
+    // TODO: изучите, есть ли сервисы, которые онлайн по вашей json-схеме 
+    // (это отдельная штука для описания JSON-данных) генерируют вам класс gson
+
+    // Иначе хотя бы подключите библиотеку lombok (в четверг на консультации расскажу)
+    // она позволяет добавлять перед свойством @Getter @Setter и они автоматически будут генерироваться 
+
+
     @SerializedName("name")
     private String name;
     @SerializedName("nation")
@@ -283,6 +290,9 @@ public class Vehicle {
     public void calculate() {
         data.calculate();
     }
+
+
+    // TODO: кажется, это не очень хорошо копировать оригинальную документацию java )
 
     /**
      * Returns a string representation of the object. In general, the

@@ -7,6 +7,9 @@ import retrofit2.http.Query
 
 interface ApiInterfaceWG {
 
+    // TODO: вынести идентификатор приложения в отдельную переменную (константу - public static final) 
+    // в какой-нибудь отдельный класс, где будут храниться настройки приложения
+    
     @GET("wotb/account/list/?application_id=ac75820d6c10195c86370ec1bc9f21de")
     suspend fun getAccountId(@Query("search") search: String) : Response<ResponseBody>
 

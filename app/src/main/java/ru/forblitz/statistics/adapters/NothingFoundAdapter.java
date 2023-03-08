@@ -17,6 +17,13 @@ import ru.forblitz.statistics.data.Utils;
 
 public class NothingFoundAdapter extends ArrayAdapter<Object> {
 
+    // TODO: от отдельного адаптера для пустых элементов имеет смысл отказаться
+    // ListView можно отдельно задать пустой вид: https://stackoverflow.com/questions/44184362/show-something-when-listview-is-empty
+
+    // TODO: не передавайте внутрь адаптеров такие частные вещи, как Activity
+    // Передавайте всегда Context - не ошибетесь
+    // Если вам нужна в адаптере именно активность, то вы точно делаете что-то неправильно
+
     Activity activity;
 
     public NothingFoundAdapter(@NonNull Activity activity, List<Object> list) {

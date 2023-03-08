@@ -11,6 +11,21 @@ class ApiService(private val activity: Activity) {
     lateinit var region: String
 
     suspend fun getAccountId(search: String): Response<ResponseBody> {
+    
+        // TODO: в when или switch, можно сразу несколько значений указать через запятую
+        // "eu", "na" -> ...
+
+        // Этот кусок кода с выбором API-интерфейса очень сильно конфузит.
+        // Надо спрятать его в отдельный метод!
+
+        // Аналогично - Lesta и WG - интерфейсы ничем не отличаются, кроме API-ключа
+        // Их надо вообще объединить и сделать отдельный класс, который будет возвращать подходящий клиент
+        // по региону. И автоматически подставит из настроек нужный ключ и url
+
+        // Если кратко:
+        // 1. Сделать ApiInterfaceLesta и ApiInterfaceWG полиморфными друг другу (короче, оставить один, и добавить в него конструктор по url и ключу)
+        // 2. Убрать этот странный выбор региона из всех методов, содержащихся здесь - перенести эту функцию в getClient()
+
         return when (region) {
             "ru" -> {
                 (getClient() as ApiInterfaceLesta).getAccountId(search)

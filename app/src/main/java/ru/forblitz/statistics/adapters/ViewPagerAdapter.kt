@@ -15,6 +15,7 @@ class ViewPagerAdapter(fragmentManager: FragmentManager, private val context: Co
     FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
+        // TODO: кажется, что можно удалить else или объединить его с 0 через запятую. Надо изучить
         return when (position) {
             0 -> {
                 RandomFragment()
@@ -34,6 +35,8 @@ class ViewPagerAdapter(fragmentManager: FragmentManager, private val context: Co
         }
     }
 
+    // TODO: нельзя хардкодить числа внутри методов
+    // Если у вас правда это такой особый размер, положите выше в константу
     override fun getCount(): Int {
         return 4
     }
@@ -41,6 +44,7 @@ class ViewPagerAdapter(fragmentManager: FragmentManager, private val context: Co
     override fun getPageTitle(position: Int): CharSequence {
         val title: SpannableStringBuilder
         val span: ImageSpan
+        // TODO: аналогично объединить case, чтобы избежать дублирования кода
         when (position) {
             0 -> {
                 val drawable: Drawable = AppCompatResources.getDrawable(context,

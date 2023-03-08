@@ -15,11 +15,7 @@ class ViewPagerAdapter(fragmentManager: FragmentManager, private val context: Co
     FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
-        // TODO: кажется, что можно удалить else или объединить его с 0 через запятую. Надо изучить
         return when (position) {
-            0 -> {
-                RandomFragment()
-            }
             1 -> {
                 RatingFragment()
             }
@@ -40,71 +36,33 @@ class ViewPagerAdapter(fragmentManager: FragmentManager, private val context: Co
     }
 
     override fun getPageTitle(position: Int): CharSequence {
-        val title: SpannableStringBuilder
         val span: ImageSpan
-        // TODO: аналогично объединить case, чтобы избежать дублирования кода
-        when (position) {
-            0 -> {
-                val drawable: Drawable = AppCompatResources.getDrawable(context,
+        val drawable: Drawable = AppCompatResources.getDrawable(context,
+            when (position) {
+                0 -> {
                     R.drawable.ic_outline_bar_chart_36
-                )!!
-                title = SpannableStringBuilder(" ")
-                drawable.setBounds(
-                    0,
-                    0,
-                    drawable.intrinsicWidth,
-                    drawable.intrinsicHeight
-                )
-                span = ImageSpan(drawable, ImageSpan.ALIGN_BASELINE)
-                title.setSpan(span, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                return title
-            }
-            1 -> {
-                val drawable: Drawable = AppCompatResources.getDrawable(context,
+                }
+                1 -> {
                     R.drawable.ic_outline_auto_graph_36
-                )!!
-                title = SpannableStringBuilder(" ")
-                drawable.setBounds(
-                    0,
-                    0,
-                    drawable.intrinsicWidth,
-                    drawable.intrinsicHeight
-                )
-                span = ImageSpan(drawable, ImageSpan.ALIGN_BASELINE)
-                title.setSpan(span, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                return title
-            }
-            2 -> {
-                val drawable: Drawable = AppCompatResources.getDrawable(context,
+                }
+                2 -> {
                     R.drawable.ic_outline_group_36
-                )!!
-                title = SpannableStringBuilder(" ")
-                drawable.setBounds(
-                    0,
-                    0,
-                    drawable.intrinsicWidth,
-                    drawable.intrinsicHeight
-                )
-                span = ImageSpan(drawable, ImageSpan.ALIGN_BASELINE)
-                title.setSpan(span, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                return title
-            }
-            else -> {
-                val drawable: Drawable = AppCompatResources.getDrawable(context,
+                }
+                else -> {
                     R.drawable.ic_tanks
-                )!!
-                title = SpannableStringBuilder(" ")
-                drawable.setBounds(
-                    0,
-                    0,
-                    drawable.intrinsicWidth,
-                    drawable.intrinsicHeight
-                )
-                span = ImageSpan(drawable, ImageSpan.ALIGN_BASELINE)
-                title.setSpan(span, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                return title
+                }
             }
-        }
+        )!!
+        val title = SpannableStringBuilder(" ")
+        drawable.setBounds(
+            0,
+            0,
+            drawable.intrinsicWidth,
+            drawable.intrinsicHeight
+        )
+        span = ImageSpan(drawable, ImageSpan.ALIGN_BASELINE)
+        title.setSpan(span, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        return title
     }
 
 }

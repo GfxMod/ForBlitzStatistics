@@ -73,8 +73,9 @@ class MainActivity : AppCompatActivity() {
         // Configures ViewPager
 
         val viewPager = findViewById<ViewPager>(id.view_pager)
-        viewPager.adapter = ViewPagerAdapter(supportFragmentManager, applicationContext)
         val tabLayout = findViewById<TabLayout>(id.tabs)
+
+        viewPager.adapter = ViewPagerAdapter(supportFragmentManager, this@MainActivity, tabLayout.tabCount)
         tabLayout.setupWithViewPager(viewPager)
         viewPager.offscreenPageLimit = 3
 

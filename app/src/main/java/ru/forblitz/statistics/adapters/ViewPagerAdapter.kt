@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import ru.forblitz.statistics.*
 
-class ViewPagerAdapter(fragmentManager: FragmentManager, private val context: Context):
+class ViewPagerAdapter(fragmentManager: FragmentManager, private val context: Context, private val tabCount: Int):
     FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
@@ -35,10 +35,8 @@ class ViewPagerAdapter(fragmentManager: FragmentManager, private val context: Co
         }
     }
 
-    // TODO: нельзя хардкодить числа внутри методов
-    // Если у вас правда это такой особый размер, положите выше в константу
     override fun getCount(): Int {
-        return 4
+        return tabCount
     }
 
     override fun getPageTitle(position: Int): CharSequence {

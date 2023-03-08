@@ -37,7 +37,7 @@ public class AdUtils {
         adViewLayoutParams.setMargins(0, padding, 0, padding);
         adView.setLayoutParams(adViewLayoutParams);
 
-        adView.setAdUnitId("R-M-2200226-1");
+        adView.setAdUnitId(Constants.bannerAdUnitId);
         adView.setAdSize(AdSize.stickySize( (int) Utils.pxToDp(
                 activity, parent.getWidth()
         )));
@@ -93,9 +93,7 @@ public class AdUtils {
             // Создание экземпляра InterstitialAd.
             InterstitialAd adView = new InterstitialAd(activity);
 
-            // TODO: вынести этот идентификатор в настройки приложения, не надо его здесь хардкодить
-            
-            adView.setAdUnitId("R-M-2200226-2");
+            adView.setAdUnitId(Constants.interstitialAdUnitId);
 
             // Создание объекта таргетирования рекламы.
             final AdRequest adRequest = new AdRequest.Builder().build();

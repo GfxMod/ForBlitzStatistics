@@ -448,7 +448,7 @@ class MainActivity : AppCompatActivity() {
         ////
         //
 
-        val sortedVehicles: ArrayList<Vehicle> = ArrayList(vehicles.list)
+        val sortedVehicles: ArrayList<Vehicle> = ArrayList(vehicles.list.values)
         val vehiclesToCreate: ArrayList<Vehicle> = ArrayList(0)
 
         //sortedVehicles.forEach { Log.d("it", it.toString()) }
@@ -978,7 +978,7 @@ class MainActivity : AppCompatActivity() {
                 idLists[i] = Array(if ((i + 1) * 100 <= vehicles.count) { 100 } else { vehicles.count % 100 }) { "" }
 
                 for (j in idLists[i].indices) {
-                    idLists[i][j] = vehicles.list[i * 100 + j].tankId
+                    idLists[i][j] = vehicles.list.values.toList()[i * 100 + j].tankId
                 }
 
             }

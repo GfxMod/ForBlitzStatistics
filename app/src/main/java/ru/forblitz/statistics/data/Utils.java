@@ -12,11 +12,15 @@ import android.graphics.drawable.StateListDrawable;
 import android.icu.util.TimeZone;
 import android.os.Handler;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.AnimatedRadioButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
@@ -45,15 +49,10 @@ public class Utils {
     }
 
     /**
-     * @param activity required to get resources
      * @return width of app window
      */
-    public static int getX(Activity activity) {
-
-        View activityMain = activity.findViewById(id.activity_main);
-
-        return activityMain.getWidth();
-
+    public static int getX() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
     }
 
     /**
@@ -89,55 +88,14 @@ public class Utils {
         return animFrom;
     }
 
-    public static void allActivatedCheck(Activity activity) {
+    public static void allActivatedCheck(ViewGroup viewGroup) {
 
-        AppCompatImageButton lt = activity.findViewById(id.tanks_type_lt);
-        AppCompatImageButton mt = activity.findViewById(id.tanks_type_mt);
-        AppCompatImageButton ht = activity.findViewById(id.tanks_type_ht);
-        AppCompatImageButton at = activity.findViewById(id.tanks_type_at);
-
-        AppCompatImageButton cn = activity.findViewById(id.cn);
-        AppCompatImageButton eu = activity.findViewById(id.eu);
-        AppCompatImageButton fr = activity.findViewById(id.fr);
-        AppCompatImageButton gb = activity.findViewById(id.gb);
-        AppCompatImageButton de = activity.findViewById(id.de);
-        AppCompatImageButton jp = activity.findViewById(id.jp);
-        AppCompatImageButton other = activity.findViewById(id.other);
-        AppCompatImageButton us = activity.findViewById(id.us);
-        AppCompatImageButton su = activity.findViewById(id.su);
-
-        if (
-                lt.isActivated() &&
-                        mt.isActivated() &&
-                        ht.isActivated() &&
-                        at.isActivated()
-        ) {
-            lt.performClick();
-            mt.performClick();
-            ht.performClick();
-            at.performClick();
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
+            if (!viewGroup.getChildAt(i).isActivated()) { return; }
         }
 
-        if (
-                cn.isActivated() &&
-                eu.isActivated() &&
-                fr.isActivated() &&
-                gb.isActivated() &&
-                de.isActivated() &&
-                jp.isActivated() &&
-                other.isActivated() &&
-                us.isActivated() &&
-                su.isActivated()
-        ) {
-            cn.performClick();
-            eu.performClick();
-            fr.performClick();
-            gb.performClick();
-            de.performClick();
-            jp.performClick();
-            other.performClick();
-            us.performClick();
-            su.performClick();
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
+            viewGroup.getChildAt(i).setActivated(false);
         }
 
     }
@@ -191,7 +149,7 @@ public class Utils {
 
     }
 
-    public static Bitmap drawableToBitmap (Drawable drawable) {
+    public static Bitmap drawableToBitmap (@NonNull Drawable drawable) {
         Bitmap bitmap;
 
         if (drawable instanceof BitmapDrawable) {
@@ -212,48 +170,21 @@ public class Utils {
         drawable.draw(canvas);
         return bitmap;
     }
-    
-    public static void setStateListDrawable(Activity activity, int checkedDrawableId, int uncheckedDrawableId, int viewId) {
-        
-        Drawable checkedDrawable = AppCompatResources.getDrawable(activity, checkedDrawableId);
-        Drawable uncheckedDrawable = AppCompatResources.getDrawable(activity, uncheckedDrawableId);
-        AnimatedRadioButton aRB = activity.findViewById(viewId);
 
-        if (aRB.getWidth() > 0 && aRB.getHeight() > 0) {
-
-            Bitmap checked = Bitmap.createBitmap(aRB.getWidth(), aRB.getHeight(), Bitmap.Config.ARGB_8888);
-            new Canvas(checked).drawBitmap(
-                    Bitmap.createScaledBitmap(
-                            Utils.drawableToBitmap(checkedDrawable),
-                            Math.min(aRB.getWidth(), aRB.getHeight()),
-                            Math.min(aRB.getWidth(), aRB.getHeight()),
-                            true
-                    ),
-                    (aRB.getWidth() - Math.min(aRB.getWidth(), aRB.getHeight())) * 0.5f,
-                    (aRB.getHeight() - Math.min(aRB.getWidth(), aRB.getHeight())) * 0.5f,
-                    null
-            );
-
-            Bitmap unchecked = Bitmap.createBitmap(aRB.getWidth(), aRB.getHeight(), Bitmap.Config.ARGB_8888);
-            new Canvas(unchecked).drawBitmap(
-                    Bitmap.createScaledBitmap(
-                            Utils.drawableToBitmap(uncheckedDrawable),
-                            Math.min(aRB.getWidth(), aRB.getHeight()),
-                            Math.min(aRB.getWidth(), aRB.getHeight()),
-                            true
-                    ),
-                    (aRB.getWidth() - Math.min(aRB.getWidth(), aRB.getHeight())) * 0.5f,
-                    (aRB.getHeight() - Math.min(aRB.getWidth(), aRB.getHeight())) * 0.5f,
-                    null
-            );
-
-            StateListDrawable stateListDrawable = new StateListDrawable();
-            stateListDrawable.addState(new int[] { android.R.attr.state_checked }, new BitmapDrawable(activity.getResources(), checked));
-            stateListDrawable.addState(new int[] { }, new BitmapDrawable(activity.getResources(), unchecked));
-            aRB.setButtonDrawable(stateListDrawable);
-
-        }
-
+    public static Drawable createScaledDrawable(Context context, Drawable drawable, int canvasSize, int drawableSize) {
+        Bitmap bitmap = Bitmap.createBitmap(canvasSize, canvasSize, Bitmap.Config.ARGB_8888);
+        new Canvas(bitmap).drawBitmap(
+                Bitmap.createScaledBitmap(
+                        Utils.drawableToBitmap(drawable),
+                        drawableSize,
+                        drawableSize,
+                        true
+                ),
+                (canvasSize - drawableSize) * 0.5f,
+                (canvasSize - drawableSize) * 0.5f,
+                null
+        );
+        return new BitmapDrawable(context.getResources(), bitmap);
     }
 
     public static void randomToMain(Activity activity) {
@@ -350,8 +281,8 @@ public class Utils {
 
     }
 
-    public static float pxToDp(Activity activity, int px) {
-        return px / ( (float) activity.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+    public static int pxToDp(Context context, int px) {
+        return (int) ((double) px / ( (double) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     public static String parseUnicode(String string) {

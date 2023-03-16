@@ -18,7 +18,7 @@ public class Vehicle {
     // (это отдельная штука для описания JSON-данных) генерируют вам класс gson
 
     // Иначе хотя бы подключите библиотеку lombok (в четверг на консультации расскажу)
-    // она позволяет добавлять перед свойством @Getter @Setter и они автоматически будут генерироваться 
+    // она позволяет добавлять перед свойством @Getter @Setter и они автоматически будут генерироваться
 
 
     @SerializedName("name")
@@ -284,37 +284,13 @@ public class Vehicle {
     }
 
     public void clear() {
-        this.data = new StatisticsData();
+        this.data.clear();
     }
 
     public void calculate() {
         data.calculate();
     }
 
-
-    // TODO: кажется, это не очень хорошо копировать оригинальную документацию java )
-
-    /**
-     * Returns a string representation of the object. In general, the
-     * {@code toString} method returns a string that
-     * "textually represents" this object. The result should
-     * be a concise but informative representation that is easy for a
-     * person to read.
-     * It is recommended that all subclasses override this method.
-     * <p>
-     * The {@code toString} method for class {@code Object}
-     * returns a string consisting of the name of the class of which the
-     * object is an instance, the at-sign character `{@code @}', and
-     * the unsigned hexadecimal representation of the hash code of the
-     * object. In other words, this method returns a string equal to the
-     * value of:
-     * <blockquote>
-     * <pre>
-     * getClass().getName() + '@' + Integer.toHexString(hashCode())
-     * </pre></blockquote>
-     *
-     * @return a string representation of the object.
-     */
     @NonNull
     @Override
     public String toString() {

@@ -23,7 +23,7 @@ import ru.forblitz.statistics.data.Vehicle;
 
 public class VehicleAdapter extends ArrayAdapter<Vehicle> {
 
-    Context context;
+    final Context context;
 
     public VehicleAdapter(@NonNull Context context, ArrayList<Vehicle> vehicles) {
         super(context, layout.item_vehicle, vehicles);
@@ -36,9 +36,7 @@ public class VehicleAdapter extends ArrayAdapter<Vehicle> {
 
         Vehicle vehicle = getItem(position);
 
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(layout.item_vehicle, null);
-        }
+        convertView = LayoutInflater.from(getContext()).inflate(layout.item_vehicle, null);
 
         convertView.setLayoutParams(new ListView.LayoutParams(
                 ListView.LayoutParams.MATCH_PARENT,
@@ -66,8 +64,6 @@ public class VehicleAdapter extends ArrayAdapter<Vehicle> {
         efficiency.setText(vehicle.getEfficiency());
         survived.setText(vehicle.getSurvived());
         hitsFromShots.setText(vehicle.getHitsFromShots());
-
-        convertView.setOnClickListener(l -> {});
 
         details.setOnClickListener(l -> {
             ViewFlipper tanksLayoutsFlipper = ((Activity) context).findViewById(id.tanks_layouts_flipper);
@@ -106,10 +102,8 @@ public class VehicleAdapter extends ArrayAdapter<Vehicle> {
             tanksDamageDealt.setText(vehicle.getData().getDamageDealt());
             tanksDamageReceived.setText(vehicle.getData().getDamageReceived());
 
-
             tanksLayoutsFlipper.setDisplayedChild(1);
         });
-
         return convertView;
 
     }

@@ -116,6 +116,7 @@
     <string name="accept">Принять</string>
     <string name="exit">Выход</string>
     <string name="filters">Фильтры</string>
+    <string name="tier">Уровень техники</string>
 
 
 </resources>

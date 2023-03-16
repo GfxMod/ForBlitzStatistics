@@ -50,6 +50,7 @@
     <string name="enter_nickname_or_select">To view statistics, enter a nickname in the search field or select the one suggested below</string>
 
     <string name="empty">--</string>
+    <string name="tier">Tier of vehicle</string>
     <string name="clear_tier">Clear the tier filter</string>
     <string name="classes">Types of vehicles</string>
     <string name="tank_sort">Type of sorting</string>

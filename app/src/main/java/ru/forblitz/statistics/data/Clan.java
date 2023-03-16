@@ -425,7 +425,7 @@ class Member {
     @SuppressLint("RestrictedApi")
     void create(Activity activity) {
         LinearLayout list = activity.findViewById(id.clan_members_list);
-        int width = Utils.getX(activity);
+        int width = Utils.getX();
         int padding = width * 25 / 1000;
 
         //

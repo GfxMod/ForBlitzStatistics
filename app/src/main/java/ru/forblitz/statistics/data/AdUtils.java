@@ -1,12 +1,14 @@
 package ru.forblitz.statistics.data;
 
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.yandex.mobile.ads.banner.AdSize;
 import com.yandex.mobile.ads.banner.BannerAdEventListener;
@@ -17,9 +19,13 @@ import com.yandex.mobile.ads.common.ImpressionData;
 import com.yandex.mobile.ads.interstitial.InterstitialAd;
 import com.yandex.mobile.ads.interstitial.InterstitialAdEventListener;
 
+import java.util.HashMap;
+import java.util.Objects;
+
 public class AdUtils {
 
     private final Activity activity;
+    private final HashMap<Integer, Long> banners = new HashMap<>();
 
     private long dateOfTheLastImpression = System.currentTimeMillis();
 
@@ -27,20 +33,18 @@ public class AdUtils {
         this.activity = activity;
     }
 
-    public BannerAdView createBanner(ViewGroup parent, int padding) {
+    public BannerAdView setBanner(Context context, int width, int padding, BannerAdView adView) {
 
-        BannerAdView adView = new BannerAdView(activity);
-        LinearLayout.LayoutParams adViewLayoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-        );
-        adViewLayoutParams.setMargins(0, padding, 0, padding);
+        ConstraintLayout.LayoutParams adViewLayoutParams = new ConstraintLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
+        adViewLayoutParams.setMargins(0, padding, 0, 0);
         adView.setLayoutParams(adViewLayoutParams);
+        adView.setGravity(Gravity.BOTTOM);
 
-        adView.setAdUnitId(Constants.bannerAdUnitId);
-        adView.setAdSize(AdSize.stickySize( (int) Utils.pxToDp(
-                activity, parent.getWidth()
-        )));
+        if (!banners.containsKey(adView.getId())) {
+            banners.put(adView.getId(), 0L);
+            adView.setAdUnitId(Constants.bannerAdUnitId);
+            adView.setAdSize(AdSize.stickySize((int) Utils.pxToDp(context, width)));
+        }
 
         // Создание объекта таргетирования рекламы.
         final AdRequest adRequest = new AdRequest.Builder().build();
@@ -80,8 +84,10 @@ public class AdUtils {
         });
 
         // Загрузка объявления.
-        adView.loadAd(adRequest);
-
+        if (System.currentTimeMillis() - Objects.requireNonNull(banners.get(adView.getId())) >= 2000L) {
+            banners.replace(adView.getId(), System.currentTimeMillis());
+            adView.loadAd(adRequest);
+        }
         return adView;
 
     }

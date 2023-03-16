@@ -484,9 +484,9 @@ public class Session {
             files.forEach(path -> {
                 LinearLayout randomSessionsListLayoutView = activity.findViewById(id.random_sessions_list_layout);
                 
-                int layoutWidth = Utils.getX(activity) * 893 / 1000;
-                int layoutHeight = Utils.getX(activity) * 13395 / 100000;
-                int padding = Utils.getX(activity) * 13395 / 1000000;
+                int layoutWidth = Utils.getX() * 893 / 1000;
+                int layoutHeight = Utils.getX() * 13395 / 100000;
+                int padding = Utils.getX() * 13395 / 1000000;
 
                 //
                 ////

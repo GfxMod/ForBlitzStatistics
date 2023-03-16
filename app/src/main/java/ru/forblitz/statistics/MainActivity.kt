@@ -8,13 +8,15 @@ import android.util.Log
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.View.VISIBLE
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.INVISIBLE
+import androidx.core.view.updateLayoutParams
 import androidx.core.widget.doOnTextChanged
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -22,12 +24,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
+import com.yandex.mobile.ads.banner.BannerAdView
 import com.yandex.mobile.ads.common.MobileAds
 import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import ru.forblitz.statistics.R.*
-import ru.forblitz.statistics.adapters.NothingFoundAdapter
 import ru.forblitz.statistics.adapters.VehicleAdapter
 import ru.forblitz.statistics.adapters.ViewPagerAdapter
 import ru.forblitz.statistics.api.*
@@ -69,6 +71,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
+        findViewById<View>(id.activity_main)
+            .updateLayoutParams<ViewGroup.LayoutParams> {
+                ViewGroup.LayoutParams(Utils.getX(), Utils.getY(this@MainActivity))
+            }
 
         // Configures ViewPager
 
@@ -197,7 +203,6 @@ class MainActivity : AppCompatActivity() {
         val clanMembersListBackView = findViewById<View>(id.clan_members_list_back)
         val tanksDetailedStatisticsBackView = findViewById<View>(id.tanks_detailed_statistics_back)
         val tanksList = findViewById<ListView>(id.tanks_list)
-        val tanksTierSelect = findViewById<VerticalSeekBar>(id.tanks_tier_select)
         val tanksFilters = findViewById<View>(id.tanks_filters)
 
         val viewPagerLayout = findViewById<View>(id.view_pager_layout)
@@ -263,31 +268,6 @@ class MainActivity : AppCompatActivity() {
         tanksDetailedStatisticsBackView.setOnClickListener {
             tanksLayoutsFlipper.displayedChild = 0
         }
-        tanksTierSelect.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(tanksTierSelect: SeekBar?, progress: Int, fromUser: Boolean) {
-
-                val tanksTierSelectIndicator = findViewById<AppCompatTextView>(id.tanks_tier_select_indicator)
-
-                if (progress == 0) { tanksTierSelectIndicator.text = getString(string.I) }
-                if (progress == 1) { tanksTierSelectIndicator.text = getString(string.II) }
-                if (progress == 2) { tanksTierSelectIndicator.text = getString(string.III) }
-                if (progress == 3) { tanksTierSelectIndicator.text = getString(string.IV) }
-                if (progress == 4) { tanksTierSelectIndicator.text = getString(string.V) }
-                if (progress == 5) { tanksTierSelectIndicator.text = getString(string.VI) }
-                if (progress == 6) { tanksTierSelectIndicator.text = getString(string.VII) }
-                if (progress == 7) { tanksTierSelectIndicator.text = getString(string.VIII) }
-                if (progress == 8) { tanksTierSelectIndicator.text = getString(string.IX) }
-                if (progress == 9) { tanksTierSelectIndicator.text = getString(string.X) }
-
-            }
-            override fun onStartTrackingTouch(tanksTierSelect: SeekBar?) {}
-            override fun onStopTrackingTouch(tanksTierSelect: SeekBar?) {}
-        })
-        tanksTierSelect.setOnTouchListener { _, event ->
-            tanksTierSelect.performClick()
-            tanksTierSelect.mOnTouchEvent(event)
-            false
-        }
         tanksFilters.setOnClickListener {
             tanksLayoutsFlipper.displayedChild = 3
         }
@@ -297,34 +277,7 @@ class MainActivity : AppCompatActivity() {
         baseStatisticsData.clear()
         ratingStatisticsData.clear()
         vehicles.clear()
-        tanksList.adapter = null
-
-        // Sets state list for sort radio buttons
-
-        Utils.setStateListDrawable(this@MainActivity, drawable.ic_battles_on, drawable.ic_battles_off, id.radio_battles)
-        Utils.setStateListDrawable(this@MainActivity, drawable.ic_damage_on, drawable.ic_damage_off, id.radio_damage)
-        Utils.setStateListDrawable(this@MainActivity, drawable.ic_efficiency_on, drawable.ic_efficiency_off, id.radio_efficiency)
-        Utils.setStateListDrawable(this@MainActivity, drawable.ic_xp_on, drawable.ic_xp_off, id.radio_xp)
-        Utils.setStateListDrawable(this@MainActivity, drawable.ic_win_rate_on, drawable.ic_win_rate_off, id.radio_win_rate)
-
-        // Sets click listener for filter buttons by type
-
-        findViewById<AnimatedImageButton>(id.tanks_type_lt).setOnClickListener(this@MainActivity)
-        findViewById<AnimatedImageButton>(id.tanks_type_mt).setOnClickListener(this@MainActivity)
-        findViewById<AnimatedImageButton>(id.tanks_type_ht).setOnClickListener(this@MainActivity)
-        findViewById<AnimatedImageButton>(id.tanks_type_at).setOnClickListener(this@MainActivity)
-
-        // Sets click listener for filter buttons by nation
-
-        findViewById<AnimatedImageButton>(id.cn).setOnClickListener(this@MainActivity)
-        findViewById<AnimatedImageButton>(id.eu).setOnClickListener(this@MainActivity)
-        findViewById<AnimatedImageButton>(id.fr).setOnClickListener(this@MainActivity)
-        findViewById<AnimatedImageButton>(id.gb).setOnClickListener(this@MainActivity)
-        findViewById<AnimatedImageButton>(id.de).setOnClickListener(this@MainActivity)
-        findViewById<AnimatedImageButton>(id.jp).setOnClickListener(this@MainActivity)
-        findViewById<AnimatedImageButton>(id.other).setOnClickListener(this@MainActivity)
-        findViewById<AnimatedImageButton>(id.us).setOnClickListener(this@MainActivity)
-        findViewById<AnimatedImageButton>(id.su).setOnClickListener(this@MainActivity)
+        tanksList.emptyView = findViewById(id.item_nothing_found)
 
         // Gets the data of the player you are looking for
 
@@ -418,8 +371,6 @@ class MainActivity : AppCompatActivity() {
 
         val tanksLayoutsFlipper = findViewById<ViewFlipper>(id.tanks_layouts_flipper)
         val tanksList = findViewById<ListView>(id.tanks_list)
-        val tanksTierSelect = findViewById<SeekBar>(id.tanks_tier_select)
-        val tanksTierSelectIndicator = findViewById<AppCompatTextView>(id.tanks_tier_select_indicator)
 
         val lt = findViewById<View>(id.tanks_type_lt)
         val mt = findViewById<View>(id.tanks_type_mt)
@@ -436,11 +387,21 @@ class MainActivity : AppCompatActivity() {
         val us = findViewById<View>(id.us)
         val su = findViewById<View>(id.su)
 
+        val i = findViewById<View>(id.tanks_tier_i)
+        val ii = findViewById<View>(id.tanks_tier_ii)
+        val iii = findViewById<View>(id.tanks_tier_iii)
+        val iv = findViewById<View>(id.tanks_tier_iv)
+        val v = findViewById<View>(id.tanks_tier_v)
+        val vi = findViewById<View>(id.tanks_tier_vi)
+        val vii = findViewById<View>(id.tanks_tier_vii)
+        val viii = findViewById<View>(id.tanks_tier_viii)
+        val ix = findViewById<View>(id.tanks_tier_ix)
+        val x = findViewById<View>(id.tanks_tier_x)
+
         val tanksFilters = findViewById<FloatingActionButton>(id.tanks_filters)
 
         Utils.playCycledAnimation(view, true)
         tanksLayoutsFlipper.displayedChild = 0
-        tanksList.adapter = null
 
         //
         ////
@@ -450,9 +411,7 @@ class MainActivity : AppCompatActivity() {
 
         val sortedVehicles: ArrayList<Vehicle> = ArrayList(vehicles.list.values)
         val vehiclesToCreate: ArrayList<Vehicle> = ArrayList(0)
-
-        //sortedVehicles.forEach { Log.d("it", it.toString()) }
-
+        
         val comparatorByBattles: Comparator<Vehicle> = Comparator<Vehicle> {
                 v1, v2 -> v1.battles.toInt().compareTo(v2.battles.toInt())
         }
@@ -543,48 +502,47 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             .filter {
-                if (tanksTierSelectIndicator.text != getString(string.empty)) {
-                    tanksTierSelect.progress + 1 == it.tier
-                } else {
+
+                if (
+                    !i.isActivated and
+                    !ii.isActivated and
+                    !iii.isActivated and
+                    !iv.isActivated and
+                    !v.isActivated and
+                    !vi.isActivated and
+                    !vii.isActivated and
+                    !viii.isActivated and
+                    !ix.isActivated and
+                    !x.isActivated
+                ) {
                     true
+                } else {
+                    if (i.isActivated && it.tier == 1) { true }
+                    else if (ii.isActivated && it.tier == 2) { true }
+                    else if (iii.isActivated && it.tier == 3) { true }
+                    else if (iv.isActivated && it.tier == 4) { true }
+                    else if (v.isActivated && it.tier == 5) { true }
+                    else if (vi.isActivated && it.tier == 6) { true }
+                    else if (vii.isActivated && it.tier == 7) { true }
+                    else if (viii.isActivated && it.tier == 8) { true }
+                    else if (ix.isActivated && it.tier == 9) { true }
+                    else { (x.isActivated && it.tier == 10) }
                 }
             }
             .forEach {
                 vehiclesToCreate.add(it)
             }
 
-        when (vehiclesToCreate.size) {
-            0 -> {
-                val list = ArrayList<Any>(0)
-                list.add(Any())
-                tanksList.adapter = NothingFoundAdapter(this, list)
-            }
-            1 -> {
-                tanksList.adapter = VehicleAdapter(this, vehiclesToCreate)
-                tanksFilters.hide()
-            }
-            else -> {
-                tanksList.adapter = VehicleAdapter(this, vehiclesToCreate)
-                tanksFilters.show()
-            }
+        if (vehiclesToCreate.size == 1) {
+            tanksFilters.hide()
+        } else {
+            tanksFilters.show()
         }
+        tanksList.adapter = VehicleAdapter(this, vehiclesToCreate)
 
-    }
-
-    /**
-     * Clears the progress of the [tier filter SeekBar]
-     * [ru.forblitz.statistics.R.id.tanks_tier_select] and sets an empty
-     * value for the [tier filter indicator]
-     * [ru.forblitz.statistics.R.id.tanks_tier_select_indicator]
-     */
-    fun onClickClearTierFilter(view: View) {
-
-        Utils.playCycledAnimation(view, true)
-        val tanksTierSelect = findViewById<SeekBar>(id.tanks_tier_select)
-        val tanksTierSelectIndicator = findViewById<TextView>(id.tanks_tier_select_indicator)
-
-        tanksTierSelect.progress = 7
-        tanksTierSelectIndicator.text = getString(string.empty)
+        val adView = findViewById<BannerAdView>(id.tanks_list_banner)
+        adUtils.setBanner(this@MainActivity, tanksList.width, 0, adView)
+        adView.updateLayoutParams<ConstraintLayout.LayoutParams> { bottomToBottom = id.tanks_list_layout }
 
     }
 
@@ -982,7 +940,6 @@ class MainActivity : AppCompatActivity() {
                 }
 
             }
-            Log.d("idLists.size", idLists.size.toString())
             getVehiclesStatistics(idLists).join()
         }
     }

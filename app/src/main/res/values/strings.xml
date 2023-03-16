@@ -121,4 +121,7 @@
 
     <string name="filters">Filters</string>
 
+    <string name="error">Error</string>
+    <string name="nickname_not_found">Couldn\'t find players with the nickname you entered</string>
+
 </resources>

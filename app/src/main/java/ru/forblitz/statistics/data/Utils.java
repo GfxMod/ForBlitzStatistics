@@ -149,6 +149,18 @@ public class Utils {
 
     }
 
+    public static MaterialAlertDialogBuilder createErrorAlertDialog(Activity activity, String title, String message) {
+
+        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(activity);
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setCancelable(false);
+        alertDialog.setPositiveButton(activity.getString(android.R.string.ok), (d, w) -> {});
+        activity.runOnUiThread(alertDialog::show);
+        return alertDialog;
+
+    }
+
     public static Bitmap drawableToBitmap (@NonNull Drawable drawable) {
         Bitmap bitmap;
 

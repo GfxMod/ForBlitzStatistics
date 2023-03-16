@@ -117,6 +117,8 @@
     <string name="exit">Выход</string>
     <string name="filters">Фильтры</string>
     <string name="tier">Уровень техники</string>
+    <string name="nickname_not_found">Не удалось найти игроков с введенным вами ником</string>
+    <string name="error">Ошибка</string>
 
 
 </resources>

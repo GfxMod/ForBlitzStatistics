@@ -22,6 +22,7 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.yandex.mobile.ads.banner.BannerAdView
@@ -71,10 +72,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_main)
-        findViewById<View>(id.activity_main)
-            .updateLayoutParams<ViewGroup.LayoutParams> {
-                ViewGroup.LayoutParams(Utils.getX(), Utils.getY(this@MainActivity))
-            }
 
         // Configures ViewPager
 
@@ -287,33 +284,42 @@ class MainActivity : AppCompatActivity() {
                 val getIDCoroutine = getID()
                 getIDCoroutine.join()
                 getIDCoroutine.cancel()
-                setPlayerStatistics()
-                setClanStat()
+                if (userID != "error") {
+                    setPlayerStatistics()
+                    setClanStat()
 
-                // Displays the loading screen on tanks layout and waits for data loading to finish
+                    // Displays the loading screen on tanks layout and waits for data loading to finish
 
-                runOnUiThread { tanksLayoutsFlipper.displayedChild = 2 }
-                if (fillVehiclesInfoJob?.isCompleted == false) {
-                    fillVehiclesInfoJob!!.join()
-                }
-                fillVehiclesStatistics().join()
-                getVehiclesStatisticsJob.forEach { it?.join() }
+                    runOnUiThread { tanksLayoutsFlipper.displayedChild = 2 }
+                    if (fillVehiclesInfoJob?.isCompleted == false) {
+                        fillVehiclesInfoJob!!.join()
+                    }
+                    fillVehiclesStatistics().join()
+                    getVehiclesStatisticsJob.forEach { it?.join() }
 
-                // Hides the loading screen on tanks layout
+                    // Hides the loading screen on tanks layout
 
-                runOnUiThread { tanksLayoutsFlipper.displayedChild = 0 }
+                    runOnUiThread { tanksLayoutsFlipper.displayedChild = 0 }
 
-                // all processes are finished, can unlock the button
+                    // all processes are finished, can unlock the button
 
-                runOnUiThread {
-                    viewPagerLayout.visibility = VISIBLE
-                    mainFlipper.displayedChild = 1
-                    searchButton.isClickable = true
-                    lastSearched.isClickable = true
+                    runOnUiThread {
+                        viewPagerLayout.visibility = VISIBLE
+                        mainFlipper.displayedChild = 1
+                        searchButton.isClickable = true
+                        lastSearched.isClickable = true
 
-                    // create base list of tanks
+                        // create base list of tanks
 
-                    onClickApplyFilters(findViewById(id.tanks_apply_filters))
+                        onClickApplyFilters(findViewById(id.tanks_apply_filters))
+                    }
+                } else {
+                    runOnUiThread {
+                        viewPagerLayout.visibility = INVISIBLE
+                        mainFlipper.displayedChild = 0
+                        searchButton.isClickable = true
+                        lastSearched.isClickable = true
+                    }
                 }
 
             }
@@ -646,12 +652,13 @@ class MainActivity : AppCompatActivity() {
      */
     private suspend fun getID(): Job  {
         userID = ""
+        val searchField = findViewById<EditText>(id.search_field)
 
         return CoroutineScope(Dispatchers.IO).launch {
 
             try {
 
-                val userIdJson = service.getAccountId(findViewById<EditText>(id.search_field).text.toString())
+                val userIdJson = service.getAccountId(searchField.text.toString())
 
                 withContext(Dispatchers.Main) {
 
@@ -662,8 +669,23 @@ class MainActivity : AppCompatActivity() {
                                 ?.string()
                         )
                     )
-
-                    userID = userIDList.substringAfter("\"account_id\": ").substringBefore("\n")
+                    Log.d("userIDList", userIDList)
+                    if (userIDList.contains("error")) {
+                        userID = "error"
+                        val jsonObject = JsonParser.parseString(userIDList).asJsonObject
+                        val data = jsonObject.getAsJsonObject("error")
+                        val error = Gson().fromJson(
+                            data,
+                            ru.forblitz.statistics.jsonobjects.Error::class.java
+                        )
+                        Utils.createErrorAlertDialog(this@MainActivity, "Error ${error.code}", error.message)
+                        searchField.text.clear()
+                    } else if (userIDList.contains("\"count\": 0")) {
+                        userID = "error"
+                        Utils.createErrorAlertDialog(this@MainActivity, getString(string.error), getString(string.nickname_not_found))
+                    } else {
+                        userID = userIDList.substringAfter("\"account_id\": ").substringBefore("\n")
+                    }
 
                 }
 

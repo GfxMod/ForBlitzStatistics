@@ -5,10 +5,10 @@ import android.content.*
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -42,6 +42,7 @@ import java.nio.file.Files.*
 import java.nio.file.Paths
 import java.util.*
 import kotlin.math.ceil
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -102,6 +103,16 @@ class MainActivity : AppCompatActivity() {
         searchField.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
             searchField.isCursorVisible = hasFocus
         }
+
+        searchField.setOnKeyListener(object : View.OnKeyListener {
+            override fun onKey(v: View?, keyCode: Int, event: KeyEvent): Boolean {
+                if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    onClickSearchButton(findViewById(id.search_button))
+                    return true
+                }
+                return false
+            }
+        })
 
         // Creates a session directory
 

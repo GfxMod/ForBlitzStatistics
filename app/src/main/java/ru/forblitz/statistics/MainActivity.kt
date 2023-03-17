@@ -282,8 +282,6 @@ class MainActivity : AppCompatActivity() {
 
         // Clears all data
 
-        baseStatisticsData.clear()
-        ratingStatisticsData.clear()
         vehicles.clear()
         tanksList.emptyView = findViewById(id.item_nothing_found)
 
@@ -680,7 +678,6 @@ class MainActivity : AppCompatActivity() {
                                 ?.string()
                         )
                     )
-                    Log.d("userIDList", userIDList)
                     if (userIDList.contains("error")) {
                         userID = "error"
                         val jsonObject = JsonParser.parseString(userIDList).asJsonObject
@@ -755,8 +752,8 @@ class MainActivity : AppCompatActivity() {
 
                         } else {
 
-                            baseStatisticsData.json = prettyJson1.substringAfter("all")
-                            ratingStatisticsData.json = prettyJson1.substringAfter("rating")
+                            baseStatisticsData = Utils.parseStatisticsData(prettyJson1, "all", userID)
+                            ratingStatisticsData = Utils.parseStatisticsData(prettyJson1, "rating", userID)
 
                             StatisticsSet.setBaseStatistics(this@MainActivity, baseStatisticsData)
                             StatisticsSet.setRatingStatistics(this@MainActivity, ratingStatisticsData)
@@ -1049,8 +1046,8 @@ class MainActivity : AppCompatActivity() {
                 Session.show(this@MainActivity)
                 Session.hideSelect(this@MainActivity)
                 val session = File(files[0]).readText()
-                sessionBaseStatisticsData.json = session.substringAfter("all")
-                sessionRatingStatisticsData.json = session.substringAfter("rating")
+                sessionBaseStatisticsData = Utils.parseStatisticsData(session, "all", userID)
+                sessionRatingStatisticsData = Utils.parseStatisticsData(session, "rating", userID)
                 sessionBaseDifferencesStatisticsData = Session.calculateDifferences(baseStatisticsData, sessionBaseStatisticsData)
                 sessionRatingDifferencesStatisticsData = Session.calculateDifferences(ratingStatisticsData, sessionRatingStatisticsData)
                 Session.set(this, baseStatisticsData, ratingStatisticsData, sessionBaseDifferencesStatisticsData, sessionRatingDifferencesStatisticsData)
@@ -1058,8 +1055,8 @@ class MainActivity : AppCompatActivity() {
             3 -> {
                 Session.show(this@MainActivity)
                 val session = File(files[number + 1]).readText()
-                sessionBaseStatisticsData.json = session.substringAfter("all")
-                sessionRatingStatisticsData.json = session.substringAfter("rating")
+                sessionBaseStatisticsData = Utils.parseStatisticsData(session, "all", userID)
+                sessionRatingStatisticsData = Utils.parseStatisticsData(session, "rating", userID)
                 sessionBaseDifferencesStatisticsData = Session.calculateDifferences(baseStatisticsData, sessionBaseStatisticsData)
                 sessionRatingDifferencesStatisticsData = Session.calculateDifferences(ratingStatisticsData, sessionRatingStatisticsData)
                 Session.set(this, baseStatisticsData, ratingStatisticsData, sessionBaseDifferencesStatisticsData, sessionRatingDifferencesStatisticsData)
@@ -1074,8 +1071,8 @@ class MainActivity : AppCompatActivity() {
                 createSessionFile(prettyJson1)
                 Session.show(this@MainActivity)
                 val session = File(files[number]).readText()
-                sessionBaseStatisticsData.json = session.substringAfter("all")
-                sessionRatingStatisticsData.json = session.substringAfter("rating")
+                sessionBaseStatisticsData = Utils.parseStatisticsData(session, "all", userID)
+                sessionRatingStatisticsData = Utils.parseStatisticsData(session, "rating", userID)
                 sessionBaseDifferencesStatisticsData = Session.calculateDifferences(baseStatisticsData, sessionBaseStatisticsData)
                 sessionRatingDifferencesStatisticsData = Session.calculateDifferences(ratingStatisticsData, sessionRatingStatisticsData)
                 Session.set(this, baseStatisticsData, ratingStatisticsData, sessionBaseDifferencesStatisticsData, sessionRatingDifferencesStatisticsData)

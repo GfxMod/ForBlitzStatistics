@@ -8,27 +8,24 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.StateListDrawable;
 import android.icu.util.TimeZone;
 import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
-import android.widget.AnimatedRadioButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import ru.forblitz.statistics.R;
 import ru.forblitz.statistics.R.dimen;
@@ -312,6 +309,23 @@ public class Utils {
             result = result.substring(0, result.indexOf("\\u")) + symbol + result.substring(result.indexOf("\\u") + 6);
         }
         return result;
+    }
+
+    public static StatisticsData parseStatisticsData(String json, String key, String userID) {
+        JsonObject jsonObject =
+                JsonParser.parseString(json)
+                        .getAsJsonObject()
+                        .getAsJsonObject("data")
+                        .getAsJsonObject(userID);
+        JsonObject data = jsonObject.getAsJsonObject("statistics");
+
+        StatisticsData statisticsData = new Gson().fromJson(
+                data.getAsJsonObject(key),
+                StatisticsData.class
+        );
+        statisticsData.setNickname(jsonObject.get("nickname").getAsString());
+        statisticsData.calculate();
+        return statisticsData;
     }
 
 }

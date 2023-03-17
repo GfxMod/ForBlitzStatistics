@@ -1,7 +1,5 @@
 package ru.forblitz.statistics.data;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
@@ -12,8 +10,6 @@ import java.util.Locale;
  * Object containing all the main statistical data
  */
 public class StatisticsData {
-
-    private String json = "0";
 
     @SerializedName("spotted")
     private String spotted = "0";
@@ -58,35 +54,6 @@ public class StatisticsData {
     private String survived = "0";
     private String hitsFromShots = "0";
     private String averageXp = "0";
-
-    public String getJson() {
-        return this.json;
-    }
-
-    public void setJson(String json) {
-        this.json = json;
-        this.spotted = parseValueFromJson("spotted");
-        this.hits = parseValueFromJson("hits");
-        this.frags = parseValueFromJson("frags");
-        this.maxXp = parseValueFromJson("max_xp");
-        this.wins = parseValueFromJson("wins");
-        this.losses = parseValueFromJson("losses");
-        this.capturedPoints = parseValueFromJson("capture_points");
-        this.battles = parseValueFromJson("battles");
-        this.damageDealt = parseValueFromJson("damage_dealt");
-        this.damageReceived = parseValueFromJson("damage_received");
-        this.shots = parseValueFromJson("shots");
-        this.frags8p = parseValueFromJson("frags8p");
-        this.xp = parseValueFromJson("xp");
-        this.winAndSurvived = parseValueFromJson("win_and_survived");
-        this.survivedBattles = parseValueFromJson("survived_battles");
-        this.maxFrags = parseValueFromJson("max_frags");
-        this.droppedCapturePoints = parseValueFromJson("dropped_capture_points");
-        this.nickname = parseValueFromJson("nickname");
-
-        this.calculate();
-
-    }
 
     public String getSpotted() {
         return this.spotted;
@@ -281,44 +248,9 @@ public class StatisticsData {
     }
 
     /**
-     * Gets value of the parameter from json
-     * @param param the name of the parameter whose value should be found
-     * @return the value of the parameter
-     */
-    @NonNull
-    private String parseValueFromJson(String param) {
-
-        String currentJson = json.substring(json.indexOf(param + "\": ") + param.length() + 3);
-
-        try {
-
-            if (currentJson.indexOf(",") < currentJson.indexOf("\n") && currentJson.contains(",")) {
-                String t = currentJson.substring(0, currentJson.indexOf(","));
-                if (t.contains("\"")) { t = t.substring(1, t.length() - 1); }
-
-                return t;
-            } else {
-                String t = currentJson.substring(0, currentJson.indexOf("\n"));
-                if (t.contains("\"")) { t = t.substring(1, t.length() - 1); }
-
-                return t;
-            }
-
-        } catch (Exception e) {
-            Log.e("Parsing error", e.getMessage());
-            Log.d("param", param);
-            Log.d("json", json);
-            Log.d("currentJson", currentJson);
-            return "0";
-        }
-
-    }
-
-    /**
      * Clear all values
      */
     public void clear() {
-        this.json = "0";
         this.spotted = "0";
         this.hits = "0";
         this.frags = "0";

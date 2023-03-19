@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -12,7 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import ru.forblitz.statistics.R.styleable;
-import ru.forblitz.statistics.data.Utils;
+import ru.forblitz.statistics.utils.Utils;
 
 public class AnimatedImageButton extends AppCompatImageButton {
 

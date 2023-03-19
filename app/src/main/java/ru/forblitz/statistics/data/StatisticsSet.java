@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.widget.TextView;
 
 import ru.forblitz.statistics.R.id;
+import ru.forblitz.statistics.utils.Utils;
 
 
 public class StatisticsSet {

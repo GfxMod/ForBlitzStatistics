@@ -1,4 +1,4 @@
-package ru.forblitz.statistics.data;
+package ru.forblitz.statistics.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -23,9 +23,6 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import ru.forblitz.statistics.R;
 import ru.forblitz.statistics.R.dimen;
@@ -311,21 +308,14 @@ public class Utils {
         return result;
     }
 
-    public static StatisticsData parseStatisticsData(String json, String key, String userID) {
-        JsonObject jsonObject =
-                JsonParser.parseString(json)
-                        .getAsJsonObject()
-                        .getAsJsonObject("data")
-                        .getAsJsonObject(userID);
-        JsonObject data = jsonObject.getAsJsonObject("statistics");
-
-        StatisticsData statisticsData = new Gson().fromJson(
-                data.getAsJsonObject(key),
-                StatisticsData.class
-        );
-        statisticsData.setNickname(jsonObject.get("nickname").getAsString());
-        statisticsData.calculate();
-        return statisticsData;
+    public static String parseRole(Context context, String role) {
+        if (role.equals("private")) {
+            return context.getResources().getString(string.clan_role_private);
+        } else if (role.equals("executive_officer")) {
+            return context.getResources().getString(string.clan_role_executive_officer);
+        } else {
+            return context.getResources().getString(string.clan_role_commander);
+        }
     }
 
 }

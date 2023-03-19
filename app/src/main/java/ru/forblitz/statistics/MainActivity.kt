@@ -35,6 +35,9 @@ import ru.forblitz.statistics.adapters.VehicleAdapter
 import ru.forblitz.statistics.adapters.ViewPagerAdapter
 import ru.forblitz.statistics.api.*
 import ru.forblitz.statistics.data.*
+import ru.forblitz.statistics.utils.AdUtils
+import ru.forblitz.statistics.utils.ParseUtils
+import ru.forblitz.statistics.utils.Utils
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
@@ -164,6 +167,9 @@ class MainActivity : AppCompatActivity() {
                             if (tanksLayoutsFlipper.displayedChild == 1) {
                                 tanksLayoutsFlipper.displayedChild = 0
                             }
+                            if (tanksLayoutsFlipper.displayedChild == 3) {
+                                tanksLayoutsFlipper.displayedChild = 0
+                            }
                         }
                     }
                 }
@@ -208,7 +214,7 @@ class MainActivity : AppCompatActivity() {
         val ratingDetailsButtonView = findViewById<View>(id.rating_details_button)
         val ratingDetailedStatisticsBackView = findViewById<View>(id.rating_detailed_statistics_back)
         val clanMembersButton = findViewById<View>(id.clan_members_button)
-        val clanMembersListBackView = findViewById<View>(id.clan_members_list_back)
+        val clanMembersListBackView = findViewById<View>(id.clan_members_back)
         val tanksDetailedStatisticsBackView = findViewById<View>(id.tanks_detailed_statistics_back)
         val tanksList = findViewById<ListView>(id.tanks_list)
         val tanksFilters = findViewById<View>(id.tanks_filters)
@@ -752,8 +758,8 @@ class MainActivity : AppCompatActivity() {
 
                         } else {
 
-                            baseStatisticsData = Utils.parseStatisticsData(prettyJson1, "all", userID)
-                            ratingStatisticsData = Utils.parseStatisticsData(prettyJson1, "rating", userID)
+                            baseStatisticsData = ParseUtils.parseStatisticsData(prettyJson1, "all", userID)
+                            ratingStatisticsData = ParseUtils.parseStatisticsData(prettyJson1, "rating", userID)
 
                             StatisticsSet.setBaseStatistics(this@MainActivity, baseStatisticsData)
                             StatisticsSet.setRatingStatistics(this@MainActivity, ratingStatisticsData)
@@ -796,43 +802,62 @@ class MainActivity : AppCompatActivity() {
      * Gets clan statistics and shows statistics interface elements
      */
     private fun setClanStat() {
-
-        clanData.clear(this@MainActivity)
-
         CoroutineScope(Dispatchers.IO).launch {
-
             try {
-
                 val clanInfoJson = service.getClanInfo(userID)
 
                 if (clanInfoJson.isSuccessful) {
                     withContext(Dispatchers.Main) {
+
                         val gson = GsonBuilder().setPrettyPrinting().create()
-                        val clanInfo = gson.toJson(
+                        val smallJson = gson.toJson(
                             JsonParser.parseString(
                                 clanInfoJson.body()
                                     ?.string()
                             )
                         )
+                        Log.d("smallJson", smallJson)
 
-                        if (clanData.setSmallJson(clanInfo)) {
+                        val smallJsonObject = JsonParser
+                            .parseString(smallJson)
+                            .asJsonObject
+                            .getAsJsonObject("data")
+                            .getAsJsonObject(userID)
 
+                        clanData.small = Gson().fromJson(
+                            smallJsonObject,
+                            SmallClanData::class.java
+                        )
+                        
+                        if (clanData.small.clanId != null) {
                             try {
 
-                                val fullClanInfoJson = service.getFullClanInfo(clanData.clanId)
+                                val fullClanInfoJson = service.getFullClanInfo(clanData.small.clanId)
 
                                 withContext(Dispatchers.Main) {
 
                                     val gsonFull = GsonBuilder().setPrettyPrinting().create()
-                                    val fullClanInfo = gsonFull.toJson(
+                                    val bigJson = gsonFull.toJson(
                                         JsonParser.parseString(
                                             fullClanInfoJson.body()
                                                 ?.string()
                                         )
                                     )
+                                    Log.d("bigClanInfo", bigJson)
+
+                                    val bigJsonObject = JsonParser
+                                        .parseString(bigJson)
+                                        .asJsonObject
+                                        .getAsJsonObject("data")
+                                        .getAsJsonObject(clanData.small.clanId)
+
+                                    val bigClanData: BigClanData = Gson().fromJson(
+                                        bigJsonObject,
+                                        BigClanData::class.java
+                                    )
 
                                     clanData.show(this@MainActivity)
-                                    clanData.setBigJson(fullClanInfo)
+                                    clanData.setBigClanData(bigClanData)
                                     clanData.set(this@MainActivity)
 
                                 }
@@ -843,23 +868,19 @@ class MainActivity : AppCompatActivity() {
                                     this.cancel()
                                 }
                             }
-
                         } else {
                             clanData.hide(this@MainActivity)
                         }
 
                     }
                 }
-
             } catch (e: IOException) {
                 Utils.createNetworkAlertDialog(this@MainActivity) {
                     setClanStat()
                     this.cancel()
                 }
             }
-
         }
-
     }
 
     /**
@@ -1046,8 +1067,8 @@ class MainActivity : AppCompatActivity() {
                 Session.show(this@MainActivity)
                 Session.hideSelect(this@MainActivity)
                 val session = File(files[0]).readText()
-                sessionBaseStatisticsData = Utils.parseStatisticsData(session, "all", userID)
-                sessionRatingStatisticsData = Utils.parseStatisticsData(session, "rating", userID)
+                sessionBaseStatisticsData = ParseUtils.parseStatisticsData(session, "all", userID)
+                sessionRatingStatisticsData = ParseUtils.parseStatisticsData(session, "rating", userID)
                 sessionBaseDifferencesStatisticsData = Session.calculateDifferences(baseStatisticsData, sessionBaseStatisticsData)
                 sessionRatingDifferencesStatisticsData = Session.calculateDifferences(ratingStatisticsData, sessionRatingStatisticsData)
                 Session.set(this, baseStatisticsData, ratingStatisticsData, sessionBaseDifferencesStatisticsData, sessionRatingDifferencesStatisticsData)
@@ -1055,8 +1076,8 @@ class MainActivity : AppCompatActivity() {
             3 -> {
                 Session.show(this@MainActivity)
                 val session = File(files[number + 1]).readText()
-                sessionBaseStatisticsData = Utils.parseStatisticsData(session, "all", userID)
-                sessionRatingStatisticsData = Utils.parseStatisticsData(session, "rating", userID)
+                sessionBaseStatisticsData = ParseUtils.parseStatisticsData(session, "all", userID)
+                sessionRatingStatisticsData = ParseUtils.parseStatisticsData(session, "rating", userID)
                 sessionBaseDifferencesStatisticsData = Session.calculateDifferences(baseStatisticsData, sessionBaseStatisticsData)
                 sessionRatingDifferencesStatisticsData = Session.calculateDifferences(ratingStatisticsData, sessionRatingStatisticsData)
                 Session.set(this, baseStatisticsData, ratingStatisticsData, sessionBaseDifferencesStatisticsData, sessionRatingDifferencesStatisticsData)
@@ -1071,8 +1092,8 @@ class MainActivity : AppCompatActivity() {
                 createSessionFile(prettyJson1)
                 Session.show(this@MainActivity)
                 val session = File(files[number]).readText()
-                sessionBaseStatisticsData = Utils.parseStatisticsData(session, "all", userID)
-                sessionRatingStatisticsData = Utils.parseStatisticsData(session, "rating", userID)
+                sessionBaseStatisticsData = ParseUtils.parseStatisticsData(session, "all", userID)
+                sessionRatingStatisticsData = ParseUtils.parseStatisticsData(session, "rating", userID)
                 sessionBaseDifferencesStatisticsData = Session.calculateDifferences(baseStatisticsData, sessionBaseStatisticsData)
                 sessionRatingDifferencesStatisticsData = Session.calculateDifferences(ratingStatisticsData, sessionRatingStatisticsData)
                 Session.set(this, baseStatisticsData, ratingStatisticsData, sessionBaseDifferencesStatisticsData, sessionRatingDifferencesStatisticsData)

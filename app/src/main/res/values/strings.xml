@@ -96,7 +96,7 @@
     <string name="clan_role_executive_officer">Executive officer</string>
     <string name="clan_role_commander">Commander</string>
 
-    <string name="joined_at">Joined at\u0020</string>
+    <string name="joined_at">joined at\u0020</string>
     
     <string name="network_error">Connection could not be established</string>
     <string name="network_error_desc">Check your Internet connection</string>

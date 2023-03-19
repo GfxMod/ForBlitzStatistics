@@ -95,7 +95,7 @@
     <string name="clan_role_executive_officer">Заместитель главы</string>
     <string name="clan_role_commander">Глава клана</string>
 
-    <string name="joined_at">Вступил в клан\u0020</string>
+    <string name="joined_at">вступил в клан\u0020</string>
 
     <string name="network_error">Не удалось установить соединение</string>
     <string name="network_error_desc">Проверьте подключение к Интернету</string>

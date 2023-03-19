@@ -10,7 +10,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -78,7 +77,6 @@ public class Vehicles {
 }
 
 class ApiResponse {
-    String status;
     Meta meta;
     Map<String, Vehicle> data;
 }

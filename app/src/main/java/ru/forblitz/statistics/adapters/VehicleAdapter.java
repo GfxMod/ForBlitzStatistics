@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 import ru.forblitz.statistics.R.id;
 import ru.forblitz.statistics.R.layout;
-import ru.forblitz.statistics.data.Utils;
+import ru.forblitz.statistics.utils.Utils;
 import ru.forblitz.statistics.data.Vehicle;
 
 public class VehicleAdapter extends ArrayAdapter<Vehicle> {

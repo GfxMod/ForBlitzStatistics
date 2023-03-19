@@ -1,4 +1,4 @@
-package ru.forblitz.statistics.data;
+package ru.forblitz.statistics.utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,6 +22,8 @@ import com.yandex.mobile.ads.interstitial.InterstitialAdEventListener;
 import java.util.HashMap;
 import java.util.Objects;
 
+import ru.forblitz.statistics.data.Constants;
+
 public class AdUtils {
 
     private final Activity activity;
@@ -43,7 +45,7 @@ public class AdUtils {
         if (!banners.containsKey(adView.getId())) {
             banners.put(adView.getId(), 0L);
             adView.setAdUnitId(Constants.bannerAdUnitId);
-            adView.setAdSize(AdSize.stickySize((int) Utils.pxToDp(context, width)));
+            adView.setAdSize(AdSize.stickySize(Utils.pxToDp(context, width)));
         }
 
         // Создание объекта таргетирования рекламы.

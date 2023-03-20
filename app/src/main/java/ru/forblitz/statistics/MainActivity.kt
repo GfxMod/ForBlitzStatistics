@@ -588,8 +588,7 @@ class MainActivity : AppCompatActivity() {
 
                 if (serverVersion.isSuccessful) {
                     withContext(Dispatchers.Main) {
-                        val gson = GsonBuilder().setPrettyPrinting().create()
-                        val serverVersionJson = gson.toJson(
+                        val serverVersionJson = GsonBuilder().setPrettyPrinting().create().toJson(
                             JsonParser.parseString(
                                 serverVersion.body()
                                     ?.string()
@@ -677,8 +676,7 @@ class MainActivity : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
 
-                    val gson = GsonBuilder().setPrettyPrinting().create()
-                    val userIDList = gson.toJson(
+                    val userIDList = GsonBuilder().setPrettyPrinting().create().toJson(
                         JsonParser.parseString(
                             userIdJson.body()
                                 ?.string()
@@ -737,8 +735,7 @@ class MainActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     withContext(Dispatchers.Main) {
 
-                        val gson = GsonBuilder().setPrettyPrinting().create()
-                        val prettyJson1 = gson.toJson(
+                        val prettyJson1 = GsonBuilder().setPrettyPrinting().create().toJson(
                             JsonParser.parseString(
                                 response.body()
                                     ?.string()
@@ -809,8 +806,7 @@ class MainActivity : AppCompatActivity() {
                 if (clanInfoJson.isSuccessful) {
                     withContext(Dispatchers.Main) {
 
-                        val gson = GsonBuilder().setPrettyPrinting().create()
-                        val smallJson = gson.toJson(
+                        val smallJson = GsonBuilder().setPrettyPrinting().create().toJson(
                             JsonParser.parseString(
                                 clanInfoJson.body()
                                     ?.string()
@@ -836,8 +832,7 @@ class MainActivity : AppCompatActivity() {
 
                                 withContext(Dispatchers.Main) {
 
-                                    val gsonFull = GsonBuilder().setPrettyPrinting().create()
-                                    val bigJson = gsonFull.toJson(
+                                    val bigJson = GsonBuilder().setPrettyPrinting().create().toJson(
                                         JsonParser.parseString(
                                             fullClanInfoJson.body()
                                                 ?.string()
@@ -896,8 +891,7 @@ class MainActivity : AppCompatActivity() {
                 val vehiclesInfoListJson = service.getAllInformationAboutVehicles()
 
                 withContext(Dispatchers.Main) {
-                    val gson = GsonBuilder().setPrettyPrinting().create()
-                    val vehiclesInfoList = gson.toJson(
+                    val vehiclesInfoList = GsonBuilder().setPrettyPrinting().create().toJson(
                         JsonParser.parseString(
                             vehiclesInfoListJson.body()
                                 ?.string()
@@ -943,8 +937,7 @@ class MainActivity : AppCompatActivity() {
                         val vehiclesStatisticsJson = service.getTankStatistics(userID, ids)
 
                         withContext(Dispatchers.Main) {
-                            val gson = GsonBuilder().setPrettyPrinting().create()
-                            val vehicleStatistics = gson.toJson(
+                            val vehicleStatistics = GsonBuilder().setPrettyPrinting().create().toJson(
                                 JsonParser.parseString(
                                     vehiclesStatisticsJson.body()
                                         ?.string()

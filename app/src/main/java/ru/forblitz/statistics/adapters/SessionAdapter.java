@@ -1,0 +1,67 @@
+package ru.forblitz.statistics.adapters;
+
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
+
+import java.util.ArrayList;
+
+import ru.forblitz.statistics.R.drawable;
+import ru.forblitz.statistics.R.id;
+import ru.forblitz.statistics.R.layout;
+import ru.forblitz.statistics.data.Session;
+import ru.forblitz.statistics.utils.Utils;
+
+public class SessionAdapter extends ArrayAdapter<Session> {
+
+    final Context context;
+
+    public SessionAdapter(@NonNull Context context, ArrayList<Session> sessions) {
+        super(context, layout.item_session, sessions);
+        this.context = context;
+    }
+
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+        Session session = getItem(position);
+
+        convertView = LayoutInflater.from(getContext()).inflate(layout.item_session, null);
+
+        convertView.setLayoutParams(new ListView.LayoutParams(
+                ListView.LayoutParams.MATCH_PARENT,
+                (int) (Utils.getX() * 0.15)
+        ));
+
+        String date = Utils.parseTime(session.getPath().substring(session.getPath().lastIndexOf("-") + 1, session.getPath().lastIndexOf(".")));
+
+        TextView sessionDate = convertView.findViewById(id.session_date);
+        View sessionRemove = convertView.findViewById(id.session_remove);
+
+        Drawable background;
+        if (session.isSelected()) {
+            background = AppCompatResources.getDrawable(context, drawable.background_layout_nested_selected);
+        } else {
+            background = AppCompatResources.getDrawable(context, drawable.background_layout_nested);
+        }
+        convertView.setBackground(background);
+
+        sessionDate.setText(date);
+        sessionDate.setOnClickListener(l -> session.getSet().run());
+        sessionRemove.setOnClickListener(l -> session.getDelete().run());
+
+        return convertView;
+
+    }
+
+}

@@ -1440,25 +1440,15 @@
                         android:textStyle="bold"
                         app:autoSizeTextType="uniform" />
 
-                    <androidx.core.widget.NestedScrollView
-                        android:id="@+id/random_sessions_scroll"
-                        style="@android:style/Widget.Holo.ScrollView"
-                        android:fadingEdgeLength="@dimen/padding_very_big"
-                        android:requiresFadingEdge="vertical"
-                        android:fillViewport="false"
+                    <ListView
+                        android:id="@+id/random_sessions_list"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.905"
-                        android:fadingEdge="vertical">
-
-                        <LinearLayout
-                            android:id="@+id/random_sessions_list_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical" />
-
-                    </androidx.core.widget.NestedScrollView>
-
+                        android:divider="@android:color/transparent"
+                        android:dividerHeight="@dimen/padding_very_big"
+                        android:requiresFadingEdge="vertical"
+                        android:fadingEdgeLength="@dimen/padding_big" />
 
                     <View
                         android:layout_width="match_parent"

@@ -16,5 +16,13 @@
         <attr name="button_checked" />
         <attr name="button_unchecked" />
     </declare-styleable>
+    <declare-styleable name="SquareImageButton">
+        <attr name="main_dimension">
+            <!-- Defines an horizontal widget. -->
+            <enum name="horizontal" value="0" />
+            <!-- Defines a vertical widget. -->
+            <enum name="vertical" value="1" />
+        </attr>
+    </declare-styleable>
 
 </resources>

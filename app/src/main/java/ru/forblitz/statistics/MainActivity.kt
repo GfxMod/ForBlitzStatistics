@@ -31,12 +31,15 @@ import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import ru.forblitz.statistics.R.*
+import ru.forblitz.statistics.R.string
+import ru.forblitz.statistics.adapters.SessionAdapter
 import ru.forblitz.statistics.adapters.VehicleAdapter
 import ru.forblitz.statistics.adapters.ViewPagerAdapter
 import ru.forblitz.statistics.api.*
 import ru.forblitz.statistics.data.*
 import ru.forblitz.statistics.utils.AdUtils
 import ru.forblitz.statistics.utils.ParseUtils
+import ru.forblitz.statistics.utils.SessionUtils
 import ru.forblitz.statistics.utils.Utils
 import java.io.File
 import java.io.FileWriter
@@ -44,6 +47,7 @@ import java.io.IOException
 import java.nio.file.Files.*
 import java.nio.file.Paths
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.ceil
 
 
@@ -186,7 +190,7 @@ class MainActivity : AppCompatActivity() {
 
         // Initialization of ads
 
-        MobileAds.initialize(this) { Log.d("YandexMobileAds", "SDK initialized") }
+        MobileAds.initialize(this) { Log.i("YandexMobileAds", "SDK initialized") }
 
     }
 
@@ -261,10 +265,10 @@ class MainActivity : AppCompatActivity() {
         randomSessionStatButton.setOnClickListener {
             if (!randomSessionStatButton.isActivated) {
                 adUtils.showInterstitial(
-                    Runnable { Session.to(this, baseStatisticsData, sessionBaseStatisticsData, ratingStatisticsData, sessionRatingStatisticsData) }
+                    Runnable { SessionUtils.to(this, baseStatisticsData, sessionBaseStatisticsData, ratingStatisticsData, sessionRatingStatisticsData) }
                 )
             } else {
-                Session.from(this, baseStatisticsData, ratingStatisticsData)
+                SessionUtils.from(this, baseStatisticsData, ratingStatisticsData)
             }
         }
         ratingDetailsButtonView.setOnClickListener {
@@ -812,7 +816,6 @@ class MainActivity : AppCompatActivity() {
                                     ?.string()
                             )
                         )
-                        Log.d("smallJson", smallJson)
 
                         val smallJsonObject = JsonParser
                             .parseString(smallJson)
@@ -838,7 +841,6 @@ class MainActivity : AppCompatActivity() {
                                                 ?.string()
                                         )
                                     )
-                                    Log.d("bigClanInfo", bigJson)
 
                                     val bigJsonObject = JsonParser
                                         .parseString(bigJson)
@@ -1016,6 +1018,8 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setSessionStatistics(prettyJson1: String, number: Int) {
 
+        val randomSessionsList = findViewById<ListView>(id.random_sessions_list)
+
         val files: ArrayList<String> = ArrayList(0)
 
         val dir = File(applicationContext.filesDir, "sessions")
@@ -1047,55 +1051,81 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        if (todo == 3) { files.removeAt(0) }
+
+        val sessions = ArrayList<Session>(0)
+        for (i in 0 until files.size) {
+            val session = Session()
+            session.path = files[i]
+            session.set = Runnable {
+                setSessionStatistics(prettyJson1, i); Utils.randomToMain(this@MainActivity)
+            }
+            session.delete = Runnable {
+                if (i == number) {
+                    Toast.makeText(
+                        this@MainActivity,
+                        getString(string.delete_select),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    val alertDialog = MaterialAlertDialogBuilder(this@MainActivity)
+                    alertDialog.setTitle(getString(string.delete))
+                    alertDialog.setMessage(getString(string.delete_alert))
+                    alertDialog.setPositiveButton(
+                        getString(string.delete)
+                    ) { _: DialogInterface?, _: Int ->
+                        if (File(files[i]).delete()) {
+                            Toast.makeText(
+                                this@MainActivity,
+                                this@MainActivity.getString(string.delete_successfully),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            setSessionStatistics(prettyJson1, i)
+                        } else {
+                            Toast.makeText(
+                                this@MainActivity,
+                                this@MainActivity.getString(string.delete_failed),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                    alertDialog.setNegativeButton(getString(android.R.string.cancel)) { _: DialogInterface?, _: Int -> }
+                    alertDialog.show()
+                }
+            }
+            session.isSelected = i == number
+            sessions.add(session)
+        }
+
         when(todo) {
             0 -> {
                 createSessionFile(prettyJson1)
-                Session.hide(this@MainActivity)
+                SessionUtils.hide(this@MainActivity)
             }
             1 -> {
-                Session.hide(this@MainActivity)
+                SessionUtils.hide(this@MainActivity)
             }
             2 -> {
                 createSessionFile(prettyJson1)
-                Session.show(this@MainActivity)
-                Session.hideSelect(this@MainActivity)
+                SessionUtils.show(this@MainActivity)
+                SessionUtils.hideSelect(this@MainActivity)
                 val session = File(files[0]).readText()
                 sessionBaseStatisticsData = ParseUtils.parseStatisticsData(session, "all", userID)
                 sessionRatingStatisticsData = ParseUtils.parseStatisticsData(session, "rating", userID)
-                sessionBaseDifferencesStatisticsData = Session.calculateDifferences(baseStatisticsData, sessionBaseStatisticsData)
-                sessionRatingDifferencesStatisticsData = Session.calculateDifferences(ratingStatisticsData, sessionRatingStatisticsData)
-                Session.set(this, baseStatisticsData, ratingStatisticsData, sessionBaseDifferencesStatisticsData, sessionRatingDifferencesStatisticsData)
+                sessionBaseDifferencesStatisticsData = SessionUtils.calculateDifferences(baseStatisticsData, sessionBaseStatisticsData)
+                sessionRatingDifferencesStatisticsData = SessionUtils.calculateDifferences(ratingStatisticsData, sessionRatingStatisticsData)
+                SessionUtils.set(this@MainActivity, baseStatisticsData, ratingStatisticsData, sessionBaseDifferencesStatisticsData, sessionRatingDifferencesStatisticsData)
             }
-            3 -> {
-                Session.show(this@MainActivity)
-                val session = File(files[number + 1]).readText()
-                sessionBaseStatisticsData = ParseUtils.parseStatisticsData(session, "all", userID)
-                sessionRatingStatisticsData = ParseUtils.parseStatisticsData(session, "rating", userID)
-                sessionBaseDifferencesStatisticsData = Session.calculateDifferences(baseStatisticsData, sessionBaseStatisticsData)
-                sessionRatingDifferencesStatisticsData = Session.calculateDifferences(ratingStatisticsData, sessionRatingStatisticsData)
-                Session.set(this, baseStatisticsData, ratingStatisticsData, sessionBaseDifferencesStatisticsData, sessionRatingDifferencesStatisticsData)
-                val dateViews = Session.createSelectList(this@MainActivity, files.drop(1), number)
-                dateViews.forEach { it ->
-                    it.setOnClickListener {
-                        setSessionStatistics(prettyJson1, dateViews.indexOf(it)); Utils.randomToMain(this@MainActivity)
-                    }
-                }
-            }
-            4 -> {
+            else -> {
                 createSessionFile(prettyJson1)
-                Session.show(this@MainActivity)
-                val session = File(files[number]).readText()
-                sessionBaseStatisticsData = ParseUtils.parseStatisticsData(session, "all", userID)
-                sessionRatingStatisticsData = ParseUtils.parseStatisticsData(session, "rating", userID)
-                sessionBaseDifferencesStatisticsData = Session.calculateDifferences(baseStatisticsData, sessionBaseStatisticsData)
-                sessionRatingDifferencesStatisticsData = Session.calculateDifferences(ratingStatisticsData, sessionRatingStatisticsData)
-                Session.set(this, baseStatisticsData, ratingStatisticsData, sessionBaseDifferencesStatisticsData, sessionRatingDifferencesStatisticsData)
-                val dateViews = Session.createSelectList(this@MainActivity, files, number)
-                dateViews.forEach { it ->
-                    it.setOnClickListener {
-                        setSessionStatistics(prettyJson1, dateViews.indexOf(it)); Utils.randomToMain(this@MainActivity)
-                    }
-                }
+                SessionUtils.show(this@MainActivity)
+                val sessionJson = File(files[number]).readText()
+                sessionBaseStatisticsData = ParseUtils.parseStatisticsData(sessionJson, "all", userID)
+                sessionRatingStatisticsData = ParseUtils.parseStatisticsData(sessionJson, "rating", userID)
+                sessionBaseDifferencesStatisticsData = SessionUtils.calculateDifferences(baseStatisticsData, sessionBaseStatisticsData)
+                sessionRatingDifferencesStatisticsData = SessionUtils.calculateDifferences(ratingStatisticsData, sessionRatingStatisticsData)
+                SessionUtils.set(this@MainActivity, baseStatisticsData, ratingStatisticsData, sessionBaseDifferencesStatisticsData, sessionRatingDifferencesStatisticsData)
+                randomSessionsList.adapter = SessionAdapter(this@MainActivity, sessions)
             }
         }
 

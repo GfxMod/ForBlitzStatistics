@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ViewFlipper
+<DifferenceViewFlipper
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -26,7 +26,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.025" />
 
-        <ViewFlipper
+        <DifferenceViewFlipper
             android:id="@+id/tanks_layouts_flipper"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -1526,7 +1526,7 @@
 
             </LinearLayout>
 
-        </ViewFlipper>
+        </DifferenceViewFlipper>
 
         <View
             android:id="@+id/tanks_right_empty_view"
@@ -1587,4 +1587,4 @@
 
     </LinearLayout>
 
-</ViewFlipper>
+</DifferenceViewFlipper>

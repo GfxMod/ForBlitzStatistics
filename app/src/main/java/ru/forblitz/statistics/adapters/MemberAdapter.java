@@ -1,5 +1,6 @@
 package ru.forblitz.statistics.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,6 +42,8 @@ public class MemberAdapter extends ArrayAdapter<Member> {
                 ListView.LayoutParams.MATCH_PARENT,
                 (int) (Utils.getX() * 0.15)
         ));
+
+        convertView.setOnClickListener(l -> Utils.search(context, member.getAccountName()));
 
         String name = member.getAccountName();
         String details = Utils.parseRole(getContext(), member.getRole()) + "; " + getContext().getResources().getString(string.joined_at) + Utils.parseTime(member.getJoinedAt());

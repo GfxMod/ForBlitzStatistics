@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -316,6 +317,11 @@ public class Utils {
         } else {
             return context.getResources().getString(string.clan_role_commander);
         }
+    }
+
+    public static void search(Context context, String nickname) {
+        ((EditText) ((Activity) context).findViewById(id.search_field)).setText(nickname, TextView.BufferType.EDITABLE);
+        ((Activity) context).findViewById(id.search_button).performClick();
     }
 
 }

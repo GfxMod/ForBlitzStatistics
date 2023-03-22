@@ -91,6 +91,9 @@ public class Clan {
             clanMotto.setText(bigClanData.getMotto());
             clanDescription.setText(bigClanData.getDescription());
             clanCreator.setText(bigClanData.getCreatorName());
+            if (!bigClanData.getCreatorName().equals("")) {
+                clanCreator.setOnClickListener(l -> Utils.search(clanCreator.getContext(), bigClanData.getCreatorName()));
+            }
             clanCreatedAt.setText(Utils.parseTime(bigClanData.getCreatedAt()));
             if (bigClanData.getOldName() != null) {
                 clanOldName.setText(bigClanData.getOldName());

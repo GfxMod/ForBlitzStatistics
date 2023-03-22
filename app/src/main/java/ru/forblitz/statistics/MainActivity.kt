@@ -212,14 +212,14 @@ class MainActivity : AppCompatActivity() {
         val tanksLayoutsFlipper = findViewById<ViewFlipper>(id.tanks_layouts_flipper)
 
         val randomDetailsButtonView = findViewById<View>(id.random_details_button)
-        val randomDetailedStatisticsBackView = findViewById<View>(id.random_detailed_statistics_back)
+        val randomDetailsBack = findViewById<View>(id.random_details_back)
         val randomSessionsButtonView = findViewById<View>(id.random_sessions_button)
         val randomSessionStatButton = findViewById<View>(id.random_session_stat_button)
         val ratingDetailsButtonView = findViewById<View>(id.rating_details_button)
-        val ratingDetailedStatisticsBackView = findViewById<View>(id.rating_detailed_statistics_back)
+        val ratingDetailsBack = findViewById<View>(id.rating_details_back)
         val clanMembersButton = findViewById<View>(id.clan_members_button)
         val clanMembersListBackView = findViewById<View>(id.clan_members_back)
-        val tanksDetailedStatisticsBackView = findViewById<View>(id.tanks_detailed_statistics_back)
+        val tanksDetailsBack = findViewById<View>(id.tanks_details_back)
         val tanksList = findViewById<ListView>(id.tanks_list)
         val tanksFilters = findViewById<View>(id.tanks_filters)
 
@@ -256,7 +256,7 @@ class MainActivity : AppCompatActivity() {
         randomDetailsButtonView.setOnClickListener {
             randomLayoutsFlipper.displayedChild = 1
         }
-        randomDetailedStatisticsBackView.setOnClickListener {
+        randomDetailsBack.setOnClickListener {
             randomLayoutsFlipper.displayedChild = 0
         }
         randomSessionsButtonView.setOnClickListener {
@@ -274,7 +274,7 @@ class MainActivity : AppCompatActivity() {
         ratingDetailsButtonView.setOnClickListener {
             ratingLayoutsFlipper.displayedChild = 1
         }
-        ratingDetailedStatisticsBackView.setOnClickListener {
+        ratingDetailsBack.setOnClickListener {
             ratingLayoutsFlipper.displayedChild = 0
         }
         clanMembersButton.setOnClickListener {
@@ -283,7 +283,7 @@ class MainActivity : AppCompatActivity() {
         clanMembersListBackView.setOnClickListener {
             clanLayoutsFlipper.displayedChild = 0
         }
-        tanksDetailedStatisticsBackView.setOnClickListener {
+        tanksDetailsBack.setOnClickListener {
             tanksLayoutsFlipper.displayedChild = 0
         }
         tanksFilters.setOnClickListener {

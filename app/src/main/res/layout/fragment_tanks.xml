@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<DifferenceViewFlipper
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.widget.DifferenceViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:whatever="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_tanks"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:background="@drawable/background_screen"
     android:inAnimation="@anim/appearance"
     android:outAnimation="@anim/disappearance"
+    tools:background="@drawable/background_screen"
     tools:context="ru.forblitz.statistics.TanksFragment">
 
     <android.widget.LinearLayout
@@ -26,7 +25,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.025" />
 
-        <DifferenceViewFlipper
+        <android.widget.DifferenceViewFlipper
             android:id="@+id/tanks_layouts_flipper"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -45,29 +44,29 @@
                     android:layout_height="match_parent"
                     android:divider="@android:color/transparent"
                     android:dividerHeight="@dimen/padding_very_big"
-                    android:requiresFadingEdge="vertical"
-                    android:fadingEdgeLength="@dimen/padding_big" />
+                    android:fadingEdgeLength="@dimen/padding_big"
+                    android:requiresFadingEdge="vertical" />
 
                 <LinearLayout
                     android:id="@+id/item_nothing_found"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:weightSum="1.0"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    android:weightSum="1.0">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.25"
-                        android:background="@drawable/background_layout_nested_selected"
-                        android:textColor="@color/transparent_white"
-                        android:text="@string/nothing_found"
-                        android:textStyle="bold"
                         android:autoSizeTextType="uniform"
-                        android:paddingVertical="@dimen/padding_very_big"
+                        android:background="@drawable/background_layout_nested_selected"
+                        android:gravity="center"
                         android:paddingHorizontal="@dimen/padding_very_big"
-                        android:gravity="center" />
+                        android:paddingVertical="@dimen/padding_very_big"
+                        android:text="@string/nothing_found"
+                        android:textColor="@color/transparent_white"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -82,12 +81,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
+                    android:contentDescription="@string/filters"
                     android:src="@drawable/ic_outline_rule_24"
                     android:visibility="gone"
                     app:backgroundTint="@color/blue"
                     app:layout_constraintBottom_toTopOf="@+id/tanks_list_banner"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:contentDescription="@string/filters" />
+                    app:layout_constraintEnd_toEndOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -97,11 +96,11 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/background_layout"
                 android:orientation="vertical"
+                android:padding="@dimen/padding_big"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:padding="@dimen/padding_big">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -121,7 +120,7 @@
                         android:textStyle="bold"
                         app:autoSizeTextType="uniform" />
 
-                    <SquareImageButton
+                    <android.widget.SquareImageButton
                         android:id="@+id/tanks_details_back"
                         android:layout_width="0px"
                         android:layout_height="match_parent"
@@ -1002,16 +1001,16 @@
                     android:layout_height="0dp"
                     android:layout_weight="0.35"
                     android:background="@drawable/background_layout"
-                    android:rowCount="3"
                     android:columnCount="3"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:rowCount="3">
 
-                    <AnimatedImageButton
+                    <android.widget.AnimatedImageButton
                         android:id="@+id/cn"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/cn"
                         android:padding="@dimen/padding_big"
@@ -1020,12 +1019,12 @@
                         whatever:button_checked="@drawable/ic_cn_on"
                         whatever:button_unchecked="@drawable/ic_cn_off" />
 
-                    <AnimatedImageButton
+                    <android.widget.AnimatedImageButton
                         android:id="@+id/gb"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/gb"
                         android:padding="@dimen/padding_big"
@@ -1034,12 +1033,12 @@
                         whatever:button_checked="@drawable/ic_gb_on"
                         whatever:button_unchecked="@drawable/ic_gb_off" />
 
-                    <AnimatedImageButton
+                    <android.widget.AnimatedImageButton
                         android:id="@+id/other"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/other"
                         android:padding="@dimen/padding_big"
@@ -1048,12 +1047,12 @@
                         whatever:button_checked="@drawable/ic_other_on"
                         whatever:button_unchecked="@drawable/ic_other_off" />
 
-                    <AnimatedImageButton
+                    <android.widget.AnimatedImageButton
                         android:id="@+id/eu"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/eu"
                         android:padding="@dimen/padding_big"
@@ -1062,12 +1061,12 @@
                         whatever:button_checked="@drawable/ic_eu_on"
                         whatever:button_unchecked="@drawable/ic_eu_off" />
 
-                    <AnimatedImageButton
+                    <android.widget.AnimatedImageButton
                         android:id="@+id/de"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/de"
                         android:padding="@dimen/padding_big"
@@ -1076,12 +1075,12 @@
                         whatever:button_checked="@drawable/ic_de_on"
                         whatever:button_unchecked="@drawable/ic_de_off" />
 
-                    <AnimatedImageButton
+                    <android.widget.AnimatedImageButton
                         android:id="@+id/us"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/us"
                         android:padding="@dimen/padding_big"
@@ -1090,12 +1089,12 @@
                         whatever:button_checked="@drawable/ic_us_on"
                         whatever:button_unchecked="@drawable/ic_us_off" />
 
-                    <AnimatedImageButton
+                    <android.widget.AnimatedImageButton
                         android:id="@+id/fr"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/fr"
                         android:padding="@dimen/padding_big"
@@ -1104,12 +1103,12 @@
                         whatever:button_checked="@drawable/ic_fr_on"
                         whatever:button_unchecked="@drawable/ic_fr_off" />
 
-                    <AnimatedImageButton
+                    <android.widget.AnimatedImageButton
                         android:id="@+id/jp"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/jp"
                         android:padding="@dimen/padding_big"
@@ -1118,12 +1117,12 @@
                         whatever:button_checked="@drawable/ic_jp_on"
                         whatever:button_unchecked="@drawable/ic_jp_off" />
 
-                    <AnimatedImageButton
+                    <android.widget.AnimatedImageButton
                         android:id="@+id/su"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/su"
                         android:padding="@dimen/padding_big"
@@ -1150,8 +1149,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.44"
                         android:background="@drawable/background_layout"
-                        android:padding="@dimen/padding"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="@dimen/padding">
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="match_parent"
@@ -1159,9 +1158,9 @@
                             android:layout_weight="0.33"
                             android:fontFamily="@font/inter"
                             android:gravity="bottom|start|fill_vertical"
+                            android:padding="0dp"
                             android:paddingStart="6dp"
                             android:paddingEnd="6dp"
-                            android:padding="0dp"
                             android:text="@string/classes"
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
@@ -1174,49 +1173,49 @@
                             android:layout_weight="0.66"
                             android:orientation="horizontal">
 
-                            <AnimatedImageButton
+                            <android.widget.AnimatedImageButton
                                 android:id="@+id/tanks_type_lt"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="0.2"
-                                whatever:button_checked="@drawable/ic_lt_outlined_on"
-                                whatever:button_unchecked="@drawable/ic_lt_outlined_off"
                                 android:background="@android:color/transparent"
                                 android:scaleType="fitCenter"
-                                android:src="@drawable/ic_lt_outlined_off" />
+                                android:src="@drawable/ic_lt_outlined_off"
+                                whatever:button_checked="@drawable/ic_lt_outlined_on"
+                                whatever:button_unchecked="@drawable/ic_lt_outlined_off" />
 
-                            <AnimatedImageButton
+                            <android.widget.AnimatedImageButton
                                 android:id="@+id/tanks_type_mt"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="0.2"
-                                whatever:button_checked="@drawable/ic_mt_outlined_on"
-                                whatever:button_unchecked="@drawable/ic_mt_outlined_off"
                                 android:background="@android:color/transparent"
                                 android:scaleType="fitCenter"
-                                android:src="@drawable/ic_mt_outlined_off" />
+                                android:src="@drawable/ic_mt_outlined_off"
+                                whatever:button_checked="@drawable/ic_mt_outlined_on"
+                                whatever:button_unchecked="@drawable/ic_mt_outlined_off" />
 
-                            <AnimatedImageButton
+                            <android.widget.AnimatedImageButton
                                 android:id="@+id/tanks_type_ht"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="0.2"
-                                whatever:button_checked="@drawable/ic_ht_outlined_on"
-                                whatever:button_unchecked="@drawable/ic_ht_outlined_off"
                                 android:background="@android:color/transparent"
                                 android:scaleType="fitCenter"
-                                android:src="@drawable/ic_ht_outlined_off" />
+                                android:src="@drawable/ic_ht_outlined_off"
+                                whatever:button_checked="@drawable/ic_ht_outlined_on"
+                                whatever:button_unchecked="@drawable/ic_ht_outlined_off" />
 
-                            <AnimatedImageButton
+                            <android.widget.AnimatedImageButton
                                 android:id="@+id/tanks_type_at"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="0.2"
-                                whatever:button_checked="@drawable/ic_at_outlined_on"
-                                whatever:button_unchecked="@drawable/ic_at_outlined_off"
                                 android:background="@android:color/transparent"
                                 android:scaleType="fitCenter"
-                                android:src="@drawable/ic_at_outlined_off" />
+                                android:src="@drawable/ic_at_outlined_off"
+                                whatever:button_checked="@drawable/ic_at_outlined_on"
+                                whatever:button_unchecked="@drawable/ic_at_outlined_off" />
 
                         </LinearLayout>
 
@@ -1232,8 +1231,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.51"
                         android:background="@drawable/background_layout"
-                        android:padding="@dimen/padding"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="@dimen/padding">
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="match_parent"
@@ -1241,9 +1240,9 @@
                             android:layout_weight="0.33"
                             android:fontFamily="@font/inter"
                             android:gravity="bottom|start|fill_vertical"
+                            android:padding="0dp"
                             android:paddingStart="6dp"
                             android:paddingEnd="6dp"
-                            android:padding="0dp"
                             android:text="@string/tank_sort"
                             android:textAllCaps="false"
                             android:textColor="@android:color/white"
@@ -1255,10 +1254,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.66"
-                            android:orientation="horizontal"
-                            android:checkedButton="@id/radio_battles">
+                            android:checkedButton="@id/radio_battles"
+                            android:orientation="horizontal">
 
-                            <AnimatedRadioButton
+                            <android.widget.AnimatedRadioButton
                                 android:id="@+id/radio_battles"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
@@ -1268,7 +1267,7 @@
                                 whatever:button_checked="@drawable/ic_battles_on"
                                 whatever:button_unchecked="@drawable/ic_battles_off" />
 
-                            <AnimatedRadioButton
+                            <android.widget.AnimatedRadioButton
                                 android:id="@+id/radio_damage"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
@@ -1278,7 +1277,7 @@
                                 whatever:button_checked="@drawable/ic_damage_on"
                                 whatever:button_unchecked="@drawable/ic_damage_off" />
 
-                            <AnimatedRadioButton
+                            <android.widget.AnimatedRadioButton
                                 android:id="@+id/radio_efficiency"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
@@ -1288,7 +1287,7 @@
                                 whatever:button_checked="@drawable/ic_efficiency_on"
                                 whatever:button_unchecked="@drawable/ic_efficiency_off" />
 
-                            <AnimatedRadioButton
+                            <android.widget.AnimatedRadioButton
                                 android:id="@+id/radio_xp"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
@@ -1298,7 +1297,7 @@
                                 whatever:button_checked="@drawable/ic_xp_on"
                                 whatever:button_unchecked="@drawable/ic_xp_off" />
 
-                            <AnimatedRadioButton
+                            <android.widget.AnimatedRadioButton
                                 android:id="@+id/radio_win_rate"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
@@ -1323,9 +1322,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.125"
+                    android:background="@drawable/background_layout"
                     android:orientation="vertical"
-                    android:padding="@dimen/padding"
-                    android:background="@drawable/background_layout">
+                    android:padding="@dimen/padding">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="match_parent"
@@ -1333,9 +1332,9 @@
                         android:layout_weight="0.33"
                         android:fontFamily="@font/inter"
                         android:gravity="bottom|start|fill_vertical"
+                        android:padding="0dp"
                         android:paddingStart="6dp"
                         android:paddingEnd="6dp"
-                        android:padding="0dp"
                         android:text="@string/tier"
                         android:textAllCaps="false"
                         android:textColor="@android:color/white"
@@ -1348,115 +1347,115 @@
                         android:layout_weight="0.66"
                         android:orientation="horizontal">
 
-                        <AnimatedImageButton
+                        <android.widget.AnimatedImageButton
                             android:id="@+id/tanks_tier_i"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.2"
-                            whatever:button_checked="@drawable/ic_i_on"
-                            whatever:button_unchecked="@drawable/ic_i_off"
                             android:background="@android:color/transparent"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/ic_i_off" />
+                            android:src="@drawable/ic_i_off"
+                            whatever:button_checked="@drawable/ic_i_on"
+                            whatever:button_unchecked="@drawable/ic_i_off" />
 
-                        <AnimatedImageButton
+                        <android.widget.AnimatedImageButton
                             android:id="@+id/tanks_tier_ii"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.2"
-                            whatever:button_checked="@drawable/ic_ii_on"
-                            whatever:button_unchecked="@drawable/ic_ii_off"
                             android:background="@android:color/transparent"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/ic_ii_off" />
+                            android:src="@drawable/ic_ii_off"
+                            whatever:button_checked="@drawable/ic_ii_on"
+                            whatever:button_unchecked="@drawable/ic_ii_off" />
 
-                        <AnimatedImageButton
+                        <android.widget.AnimatedImageButton
                             android:id="@+id/tanks_tier_iii"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.2"
-                            whatever:button_checked="@drawable/ic_iii_on"
-                            whatever:button_unchecked="@drawable/ic_iii_off"
                             android:background="@android:color/transparent"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/ic_iii_off" />
+                            android:src="@drawable/ic_iii_off"
+                            whatever:button_checked="@drawable/ic_iii_on"
+                            whatever:button_unchecked="@drawable/ic_iii_off" />
 
-                        <AnimatedImageButton
+                        <android.widget.AnimatedImageButton
                             android:id="@+id/tanks_tier_iv"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.2"
-                            whatever:button_checked="@drawable/ic_iv_on"
-                            whatever:button_unchecked="@drawable/ic_iv_off"
                             android:background="@android:color/transparent"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/ic_iv_off" />
+                            android:src="@drawable/ic_iv_off"
+                            whatever:button_checked="@drawable/ic_iv_on"
+                            whatever:button_unchecked="@drawable/ic_iv_off" />
 
-                        <AnimatedImageButton
+                        <android.widget.AnimatedImageButton
                             android:id="@+id/tanks_tier_v"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.2"
-                            whatever:button_checked="@drawable/ic_v_on"
-                            whatever:button_unchecked="@drawable/ic_v_off"
                             android:background="@android:color/transparent"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/ic_v_off" />
+                            android:src="@drawable/ic_v_off"
+                            whatever:button_checked="@drawable/ic_v_on"
+                            whatever:button_unchecked="@drawable/ic_v_off" />
 
-                        <AnimatedImageButton
+                        <android.widget.AnimatedImageButton
                             android:id="@+id/tanks_tier_vi"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.2"
-                            whatever:button_checked="@drawable/ic_vi_on"
-                            whatever:button_unchecked="@drawable/ic_vi_off"
                             android:background="@android:color/transparent"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/ic_vi_off" />
+                            android:src="@drawable/ic_vi_off"
+                            whatever:button_checked="@drawable/ic_vi_on"
+                            whatever:button_unchecked="@drawable/ic_vi_off" />
 
-                        <AnimatedImageButton
+                        <android.widget.AnimatedImageButton
                             android:id="@+id/tanks_tier_vii"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.2"
-                            whatever:button_checked="@drawable/ic_vii_on"
-                            whatever:button_unchecked="@drawable/ic_vii_off"
                             android:background="@android:color/transparent"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/ic_vii_off" />
+                            android:src="@drawable/ic_vii_off"
+                            whatever:button_checked="@drawable/ic_vii_on"
+                            whatever:button_unchecked="@drawable/ic_vii_off" />
 
-                        <AnimatedImageButton
+                        <android.widget.AnimatedImageButton
                             android:id="@+id/tanks_tier_viii"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.2"
-                            whatever:button_checked="@drawable/ic_viii_on"
-                            whatever:button_unchecked="@drawable/ic_viii_off"
                             android:background="@android:color/transparent"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/ic_viii_off" />
+                            android:src="@drawable/ic_viii_off"
+                            whatever:button_checked="@drawable/ic_viii_on"
+                            whatever:button_unchecked="@drawable/ic_viii_off" />
 
-                        <AnimatedImageButton
+                        <android.widget.AnimatedImageButton
                             android:id="@+id/tanks_tier_ix"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.2"
-                            whatever:button_checked="@drawable/ic_ix_on"
-                            whatever:button_unchecked="@drawable/ic_ix_off"
                             android:background="@android:color/transparent"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/ic_ix_off" />
+                            android:src="@drawable/ic_ix_off"
+                            whatever:button_checked="@drawable/ic_ix_on"
+                            whatever:button_unchecked="@drawable/ic_ix_off" />
 
-                        <AnimatedImageButton
+                        <android.widget.AnimatedImageButton
                             android:id="@+id/tanks_tier_x"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.2"
-                            whatever:button_checked="@drawable/ic_x_on"
-                            whatever:button_unchecked="@drawable/ic_x_off"
                             android:background="@android:color/transparent"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/ic_x_off" />
+                            android:src="@drawable/ic_x_off"
+                            whatever:button_checked="@drawable/ic_x_on"
+                            whatever:button_unchecked="@drawable/ic_x_off" />
 
                     </LinearLayout>
 
@@ -1476,6 +1475,7 @@
                     android:background="@drawable/background_sessions_true"
                     android:fontFamily="@font/inter"
                     android:gravity="center"
+                    android:onClick="onClickApplyFilters"
                     android:paddingHorizontal="30dp"
                     android:paddingVertical="@dimen/padding_very_big"
                     android:text="@string/apply_filters"
@@ -1483,8 +1483,7 @@
                     android:textColor="#fff"
                     android:textStyle="bold"
                     android:typeface="normal"
-                    app:autoSizeTextType="uniform"
-                    android:onClick="onClickApplyFilters" />
+                    app:autoSizeTextType="uniform" />
 
                 <View
                     android:layout_width="match_parent"
@@ -1493,7 +1492,7 @@
 
             </LinearLayout>
 
-        </DifferenceViewFlipper>
+        </android.widget.DifferenceViewFlipper>
 
         <View
             android:id="@+id/tanks_right_empty_view"
@@ -1554,4 +1553,4 @@
 
     </LinearLayout>
 
-</DifferenceViewFlipper>
+</android.widget.DifferenceViewFlipper>

@@ -102,7 +102,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.025" />
 
-            <DifferenceViewFlipper
+            <android.widget.DifferenceViewFlipper
                 android:id="@+id/main_layouts_flipper"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -131,7 +131,7 @@
                         android:background="@drawable/background_layout"
                         android:fontFamily="@font/inter"
                         android:gravity="center"
-                        android:padding="15dp"
+                        android:padding="@dimen/padding_very_big"
                         android:text="@string/enter_nickname"
                         android:textAllCaps="false"
                         android:textColor="@android:color/white"
@@ -144,7 +144,7 @@
                         android:layout_height="0dp"
                         android:layout_weight="0.1" />
 
-                    <DifferenceViewFlipper
+                    <android.widget.DifferenceViewFlipper
                         android:id="@+id/last_searched_flipper"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
@@ -190,7 +190,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
 
-                    </DifferenceViewFlipper>
+                    </android.widget.DifferenceViewFlipper>
 
                     <View
                         android:layout_width="match_parent"
@@ -217,9 +217,9 @@
                         android:layout_height="0dp"
                         android:layout_weight="0.1"
                         android:background="@drawable/background_layout_nested"
-                        app:tabIndicatorColor="@color/stroke_color"
-                        app:tabContentStart="15dp"
+                        app:tabContentStart="@dimen/padding_very_big"
                         app:tabGravity="center"
+                        app:tabIndicatorColor="@color/stroke_color"
                         app:tabMode="fixed"
                         app:tabRippleColor="@null">
 
@@ -377,7 +377,7 @@
                         android:background="@drawable/background_layout"
                         android:fontFamily="@font/inter"
                         android:gravity="center"
-                        android:padding="15dp"
+                        android:padding="@dimen/padding_very_big"
                         android:text="@string/loading"
                         android:textAllCaps="false"
                         android:textColor="@android:color/white"
@@ -392,7 +392,7 @@
 
                 </LinearLayout>
 
-            </DifferenceViewFlipper>
+            </android.widget.DifferenceViewFlipper>
 
         </LinearLayout>
 

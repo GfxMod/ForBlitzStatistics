@@ -74,7 +74,8 @@
             android:id="@+id/enter_nickname"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/padding_big">
 
             <View
                 android:layout_width="match_parent"
@@ -241,9 +242,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@drawable/background_layout"
-            android:padding="@dimen/padding_big"
-            android:weightSum="14">
+            android:background="@drawable/background_layout_insets"
+            android:padding="@dimen/padding_giant"
+            android:weightSum="20">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"

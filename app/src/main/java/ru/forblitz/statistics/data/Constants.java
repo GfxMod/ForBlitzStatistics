@@ -9,6 +9,13 @@ public class Constants {
     public static final String lestaAppId = "1957e1f71656310342971b3b1aa2efef";
     public static final String wgAppId = "ac75820d6c10195c86370ec1bc9f21de";
 
+    public static class MainViewFlipperItems {
+        public static final int ENTER_NICKNAME = 0;
+        public static final int LOADING = 1;
+        public static final int STATISTICS = 2;
+        public static final int SETTINGS = 3;
+    }
+
     public static final Map<String, String> baseUrl = new HashMap<>();
     static {
         baseUrl.put("ru", "https://api.wotblitz.ru/");

@@ -8,14 +8,12 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.View.OnFocusChangeListener
-import android.view.View.VISIBLE
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintLayout.INVISIBLE
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.doOnTextChanged
 import androidx.viewpager.widget.ViewPager
@@ -31,7 +29,6 @@ import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import ru.forblitz.statistics.R.*
-import ru.forblitz.statistics.R.string
 import ru.forblitz.statistics.adapters.SessionAdapter
 import ru.forblitz.statistics.adapters.VehicleAdapter
 import ru.forblitz.statistics.adapters.ViewPagerAdapter
@@ -47,7 +44,6 @@ import java.io.IOException
 import java.nio.file.Files.*
 import java.nio.file.Paths
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.ceil
 
 
@@ -85,6 +81,7 @@ class MainActivity : AppCompatActivity() {
 
         val viewPager = findViewById<ViewPager>(id.view_pager)
         val tabLayout = findViewById<TabLayout>(id.tabs)
+        val mainLayoutsFlipper = findViewById<ViewFlipper>(id.main_layouts_flipper)
 
         viewPager.adapter = ViewPagerAdapter(supportFragmentManager, this@MainActivity, tabLayout.tabCount)
         tabLayout.setupWithViewPager(viewPager)
@@ -92,8 +89,7 @@ class MainActivity : AppCompatActivity() {
 
         // Hides statistics elements and shows nickname input elements
 
-        findViewById<ViewFlipper>(id.main_layouts_flipper).displayedChild = 0
-        findViewById<LinearLayout>(id.view_pager_layout).visibility = INVISIBLE
+        mainLayoutsFlipper.displayedChild = Constants.MainViewFlipperItems.ENTER_NICKNAME
 
         // Sets the action when the search button is pressed from the keyboard
 
@@ -142,13 +138,12 @@ class MainActivity : AppCompatActivity() {
 
         onBackPressedDispatcher.addCallback(this@MainActivity, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                val mainLayoutsFlipper = findViewById<ViewFlipper>(id.main_layouts_flipper)
                 val randomLayoutsFlipper = findViewById<ViewFlipper>(id.random_layouts_flipper)
                 val ratingLayoutsFlipper = findViewById<ViewFlipper>(id.rating_layouts_flipper)
                 val clanLayoutsFlipper = findViewById<ViewFlipper>(id.clan_layouts_flipper)
                 val tanksLayoutsFlipper = findViewById<ViewFlipper>(id.tanks_layouts_flipper)
 
-                if (mainLayoutsFlipper.displayedChild == 2) {
+                if (mainLayoutsFlipper.displayedChild == Constants.MainViewFlipperItems.SETTINGS) {
                     onClickSettingsButton(findViewById(id.settings_button))
                 } else {
                     when (viewPager.currentItem) {
@@ -223,15 +218,13 @@ class MainActivity : AppCompatActivity() {
         val tanksList = findViewById<ListView>(id.tanks_list)
         val tanksFilters = findViewById<View>(id.tanks_filters)
 
-        val viewPagerLayout = findViewById<View>(id.view_pager_layout)
         val mainFlipper = findViewById<ViewFlipper>(id.main_layouts_flipper)
         val searchButton = findViewById<View>(id.search_button)
         val lastSearched = findViewById<View>(id.last_searched_flipper)
 
         //
 
-        viewPagerLayout.visibility = INVISIBLE
-        mainFlipper.displayedChild = 3
+        mainFlipper.displayedChild = Constants.MainViewFlipperItems.LOADING
         searchButton.isClickable = false
         lastSearched.isClickable = false
 
@@ -293,7 +286,15 @@ class MainActivity : AppCompatActivity() {
         // Clears all data
 
         vehicles.clear()
+
+        // set params of tanksList
+
         tanksList.emptyView = findViewById(id.item_nothing_found)
+
+        val footer = View(this@MainActivity)
+        val width = Utils.getX() - resources.getDimensionPixelSize(dimen.padding_very_big) * 2
+        footer.layoutParams = AbsListView.LayoutParams(width, (width * 0.15).toInt())
+        tanksList.addFooterView(footer)
 
         // Gets the data of the player you are looking for
 
@@ -323,8 +324,7 @@ class MainActivity : AppCompatActivity() {
                     // all processes are finished, can unlock the button
 
                     runOnUiThread {
-                        viewPagerLayout.visibility = VISIBLE
-                        mainFlipper.displayedChild = 1
+                        mainFlipper.displayedChild = Constants.MainViewFlipperItems.STATISTICS
                         searchButton.isClickable = true
                         lastSearched.isClickable = true
 
@@ -334,8 +334,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 } else {
                     runOnUiThread {
-                        viewPagerLayout.visibility = INVISIBLE
-                        mainFlipper.displayedChild = 0
+                        mainFlipper.displayedChild = Constants.MainViewFlipperItems.ENTER_NICKNAME
                         searchButton.isClickable = true
                         lastSearched.isClickable = true
                     }
@@ -360,21 +359,14 @@ class MainActivity : AppCompatActivity() {
         // Shows/hides the settings layout
 
         val mainLayoutsFlipper = findViewById<ViewFlipper>(id.main_layouts_flipper)
-        val viewPagerLayout = findViewById<LinearLayout>(id.view_pager_layout)
 
-        if (!view.isActivated && userID == "") {
+        if (!view.isActivated) {
 
-            mainLayoutsFlipper.displayedChild = 2
-
-        } else if (!view.isActivated && userID != "") {
-
-            mainLayoutsFlipper.displayedChild = 2
-            viewPagerLayout.visibility = INVISIBLE
+            mainLayoutsFlipper.displayedChild = Constants.MainViewFlipperItems.SETTINGS
 
         } else if (view.isActivated) {
 
-            mainLayoutsFlipper.displayedChild = 0
-            viewPagerLayout.visibility = INVISIBLE
+            mainLayoutsFlipper.displayedChild = Constants.MainViewFlipperItems.ENTER_NICKNAME
 
         }
 
@@ -753,9 +745,8 @@ class MainActivity : AppCompatActivity() {
                             val code = prettyJson1.substringAfter("\"code\": ").substringBefore(",")
                             Toast.makeText(applicationContext, "Error $code: $message", Toast.LENGTH_SHORT).show()
 
-                            findViewById<ViewFlipper>(id.main_layouts_flipper).displayedChild = 0
+                            findViewById<ViewFlipper>(id.main_layouts_flipper).displayedChild = Constants.MainViewFlipperItems.ENTER_NICKNAME
                             findViewById<View>(id.settings_button).isActivated = false
-                            findViewById<LinearLayout>(id.view_pager_layout).visibility = INVISIBLE
 
                         } else {
 
@@ -779,9 +770,8 @@ class MainActivity : AppCompatActivity() {
                             findViewById<TextView>(id.text_nick).text = baseStatisticsData.nickname
                             findViewById<TextView>(id.rating_text_nick).text = baseStatisticsData.nickname
 
-                            findViewById<ViewFlipper>(id.main_layouts_flipper).displayedChild = 1
+                            findViewById<ViewFlipper>(id.main_layouts_flipper).displayedChild = Constants.MainViewFlipperItems.STATISTICS
                             findViewById<View>(id.settings_button).isActivated = false
-                            findViewById<LinearLayout>(id.view_pager_layout).visibility = VISIBLE
 
                         }
 

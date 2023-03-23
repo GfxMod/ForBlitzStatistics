@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 import ru.forblitz.statistics.R.id;
 import ru.forblitz.statistics.R.layout;
-import ru.forblitz.statistics.utils.Utils;
 import ru.forblitz.statistics.data.Vehicle;
 
 public class VehicleAdapter extends ArrayAdapter<Vehicle> {
@@ -40,7 +39,7 @@ public class VehicleAdapter extends ArrayAdapter<Vehicle> {
 
         convertView.setLayoutParams(new ListView.LayoutParams(
                 ListView.LayoutParams.MATCH_PARENT,
-                (int) (Utils.getY(context) * 0.4)
+                (int) (parent.getWidth() * 0.85)
         ));
 
         TextView name = convertView.findViewById(id.name);

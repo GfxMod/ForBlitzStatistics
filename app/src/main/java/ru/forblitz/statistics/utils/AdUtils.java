@@ -1,6 +1,5 @@
 package ru.forblitz.statistics.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.Gravity;
@@ -26,16 +25,16 @@ import ru.forblitz.statistics.data.Constants;
 
 public class AdUtils {
 
-    private final Activity activity;
+    private final Context context;
     private final HashMap<Integer, Long> banners = new HashMap<>();
 
     private long dateOfTheLastImpression = System.currentTimeMillis();
 
-    public AdUtils(Activity activity) {
-        this.activity = activity;
+    public AdUtils(Context context) {
+        this.context = context;
     }
 
-    public BannerAdView setBanner(Context context, int width, int padding, BannerAdView adView) {
+    public BannerAdView setBanner(int width, int padding, BannerAdView adView) {
 
         ConstraintLayout.LayoutParams adViewLayoutParams = new ConstraintLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
         adViewLayoutParams.setMargins(0, padding, 0, 0);
@@ -99,7 +98,7 @@ public class AdUtils {
         if (System.currentTimeMillis() - dateOfTheLastImpression >= 30000) {
 
             // Создание экземпляра InterstitialAd.
-            InterstitialAd adView = new InterstitialAd(activity);
+            InterstitialAd adView = new InterstitialAd(context);
 
             adView.setAdUnitId(Constants.interstitialAdUnitId);
 

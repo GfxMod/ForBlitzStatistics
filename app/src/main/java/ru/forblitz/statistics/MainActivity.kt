@@ -558,7 +558,7 @@ class MainActivity : AppCompatActivity() {
         tanksList.adapter = VehicleAdapter(this, vehiclesToCreate)
 
         val adView = findViewById<BannerAdView>(id.tanks_list_banner)
-        adUtils.setBanner(this@MainActivity, tanksList.width, 0, adView)
+        adUtils.setBanner(tanksList.width, 0, adView)
         adView.updateLayoutParams<ConstraintLayout.LayoutParams> { bottomToBottom = id.tanks_list_layout }
 
     }

@@ -45,14 +45,15 @@ public class SquareImageButton extends AppCompatImageButton {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int size = 0;
+        int size;
         if (orientation == -1) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         } else if (orientation == 0) {
             size = widthMeasureSpec;
+            super.onMeasure(size, size);
         } else {
             size = heightMeasureSpec;
+            super.onMeasure(size, size);
         }
-        super.onMeasure(size, size);
     }
 }

@@ -84,11 +84,11 @@ public class AnimatedRadioButton extends AppCompatRadioButton {
             StateListDrawable stateListDrawable = new StateListDrawable();
             stateListDrawable.addState(
                     new int[] { android.R.attr.state_checked },
-                    Utils.createScaledDrawable(this.getContext(), drawableOn, minDimen, minDimen)
+                    Utils.createScaledSquareDrawable(this.getContext(), drawableOn, minDimen, minDimen)
             );
             stateListDrawable.addState(
                     StateSet.WILD_CARD,
-                    Utils.createScaledDrawable(this.getContext(), drawableOff, minDimen, minDimen)
+                    Utils.createScaledSquareDrawable(this.getContext(), drawableOff, minDimen, minDimen)
             );
             this.setButtonDrawable(stateListDrawable);
         }

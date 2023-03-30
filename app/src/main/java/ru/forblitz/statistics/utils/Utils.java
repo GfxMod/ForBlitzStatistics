@@ -178,7 +178,7 @@ public class Utils {
         return bitmap;
     }
 
-    public static Drawable createScaledDrawable(Context context, Drawable drawable, int canvasSize, int drawableSize) {
+    public static BitmapDrawable createScaledSquareDrawable(Context context, Drawable drawable, int canvasSize, int drawableSize) {
         Bitmap bitmap = Bitmap.createBitmap(canvasSize, canvasSize, Bitmap.Config.ARGB_8888);
         new Canvas(bitmap).drawBitmap(
                 Bitmap.createScaledBitmap(

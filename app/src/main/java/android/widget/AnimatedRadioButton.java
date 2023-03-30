@@ -37,6 +37,8 @@ public class AnimatedRadioButton extends AppCompatRadioButton {
         this.setButtonDrawable(stateListDrawable);
 
         a.recycle();
+
+        setOnLongClickListener();
     }
 
     public AnimatedRadioButton(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -53,6 +55,8 @@ public class AnimatedRadioButton extends AppCompatRadioButton {
         this.setButtonDrawable(stateListDrawable);
 
         a.recycle();
+
+        setOnLongClickListener();
     }
 
     /**
@@ -93,6 +97,15 @@ public class AnimatedRadioButton extends AppCompatRadioButton {
             this.setButtonDrawable(stateListDrawable);
         }
 
+    }
+
+    private void setOnLongClickListener() {
+        if (getContentDescription() != null) {
+            setOnLongClickListener(v -> {
+                Toast.makeText(getContext(), getContentDescription(), Toast.LENGTH_SHORT).show();
+                return true;
+            });
+        }
     }
 
 }

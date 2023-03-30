@@ -10,16 +10,16 @@
     <string name="survived">SURVIVED, %</string>
     <string name="hits_from_shots">HITS, %</string>
 
-    <string name="I">I</string>
-    <string name="II">II</string>
-    <string name="III">III</string>
-    <string name="IV">IV</string>
-    <string name="V">V</string>
-    <string name="VI">VI</string>
-    <string name="VII">VII</string>
-    <string name="VIII">VIII</string>
-    <string name="IX">IX</string>
-    <string name="X">X</string>
+    <string name="I">I level</string>
+    <string name="II">II level</string>
+    <string name="III">III level</string>
+    <string name="IV">IV level</string>
+    <string name="V">V level</string>
+    <string name="VI">VI level</string>
+    <string name="VII">VII level</string>
+    <string name="VIII">VIII level</string>
+    <string name="IX">IX level</string>
+    <string name="X">X level</string>
 
     <string name="cn">China</string>
     <string name="eu">European Nation</string>
@@ -54,6 +54,13 @@
     <string name="clear_tier">Clear the tier filter</string>
     <string name="classes">Types of vehicles</string>
     <string name="tank_sort">Type of sorting</string>
+
+    <string name="battles_sort">Sorting by count of battles</string>
+    <string name="damage_sort">Sorting by average damage</string>
+    <string name="efficiency_sort">Sorting by efficiency</string>
+    <string name="xp_sort">Sorting by average xp</string>
+    <string name="win_rate_sort">Sorting by win rate</string>
+
     <string name="apply_filters">Apply filters</string>
     <string name="nothing_found">Could\'t find anything by the filters you selected</string>
 
@@ -123,5 +130,10 @@
 
     <string name="error">Error</string>
     <string name="nickname_not_found">Couldn\'t find players with the nickname you entered</string>
+
+    <string name="lt">Light tank</string>
+    <string name="mt">Medium tank</string>
+    <string name="ht">Heavy tank</string>
+    <string name="at">AT-SPG</string>
 
 </resources>

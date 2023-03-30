@@ -4,10 +4,13 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import ru.forblitz.statistics.R.styleable;
@@ -33,6 +36,7 @@ public class AnimatedImageButton extends AppCompatImageButton {
         a.recycle();
 
         setOnClickListener();
+        setOnLongClickListener();
     }
 
     public AnimatedImageButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -46,13 +50,23 @@ public class AnimatedImageButton extends AppCompatImageButton {
         a.recycle();
 
         setOnClickListener();
+        setOnLongClickListener();
     }
 
-    public void setOnClickListener() {
+    private void setOnClickListener() {
         super.setOnClickListener(l -> {
             setActivated(!isActivated());
             Utils.allActivatedCheck((ViewGroup) this.getParent());
         });
+    }
+
+    private void setOnLongClickListener() {
+        if (getContentDescription() != null) {
+            setOnLongClickListener(v -> {
+                Toast.makeText(getContext(), getContentDescription(), Toast.LENGTH_SHORT).show();
+                return true;
+            });
+        }
     }
 
     @Override

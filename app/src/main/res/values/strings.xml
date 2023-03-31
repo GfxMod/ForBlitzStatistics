@@ -136,4 +136,9 @@
     <string name="ht">Heavy tank</string>
     <string name="at">AT-SPG</string>
 
+    <string name="random">Random battles</string>
+    <string name="rating">Rating battles</string>
+    <string name="clan">Clan information</string>
+    <string name="tanks">Tanks statistics</string>
+
 </resources>

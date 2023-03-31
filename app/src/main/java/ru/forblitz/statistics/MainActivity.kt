@@ -2,17 +2,20 @@ package ru.forblitz.statistics
 
 import android.annotation.SuppressLint
 import android.content.*
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.View.OnFocusChangeListener
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.doOnTextChanged
@@ -83,8 +86,50 @@ class MainActivity : AppCompatActivity() {
         val tabLayout = findViewById<TabLayout>(id.tabs)
         val mainLayoutsFlipper = findViewById<ViewFlipper>(id.main_layouts_flipper)
 
-        viewPager.adapter = ViewPagerAdapter(supportFragmentManager, this@MainActivity, tabLayout.tabCount)
+        viewPager.adapter = ViewPagerAdapter(supportFragmentManager, tabLayout.tabCount)
         tabLayout.setupWithViewPager(viewPager)
+
+        val tabLayoutHeight = (Utils.getY(this@MainActivity) * 0.905 * 0.1).toInt()
+        for (i in 0 until tabLayout.tabCount) {
+            var icon: Drawable
+            var contentDescription: String
+            when (i) {
+                0 -> {
+                    icon = AppCompatResources.getDrawable(applicationContext, drawable.ic_outline_bar_chart_36)!!
+                    contentDescription = getString(string.random)
+                }
+                1 -> {
+                    icon = AppCompatResources.getDrawable(applicationContext, drawable.ic_outline_auto_graph_36)!!
+                    contentDescription = getString(string.rating)
+                }
+                2 -> {
+                    icon = AppCompatResources.getDrawable(applicationContext, drawable.ic_outline_group_36)!!
+                    contentDescription = getString(string.clan)
+                }
+                else -> {
+                    icon = AppCompatResources.getDrawable(applicationContext, drawable.ic_tanks)!!
+                    contentDescription = getString(string.random)
+                }
+            }
+            icon = Utils.createScaledSquareDrawable(
+                this@MainActivity,
+                icon,
+                tabLayoutHeight - resources.getDimensionPixelSize(dimen.padding_giant) * 2,
+                tabLayoutHeight - resources.getDimensionPixelSize(dimen.padding_giant) * 2
+            )
+            val view = View(this@MainActivity)
+            view.layoutParams = ViewGroup.LayoutParams(
+                tabLayoutHeight - resources.getDimensionPixelSize(dimen.padding_giant) * 2,
+                tabLayoutHeight - resources.getDimensionPixelSize(dimen.padding_giant) * 2
+            )
+            view.background = icon
+            view.setOnLongClickListener {
+                Toast.makeText(applicationContext, contentDescription, Toast.LENGTH_SHORT).show()
+                true
+            }
+            tabLayout.getTabAt(i)?.customView = view
+        }
+
         viewPager.offscreenPageLimit = 3
 
         // Hides statistics elements and shows nickname input elements

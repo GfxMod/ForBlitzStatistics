@@ -209,11 +209,16 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.1"
                 android:background="@drawable/background_layout_nested_insets"
-                app:tabContentStart="@dimen/padding_very_big"
+                app:tabContentStart="@dimen/padding"
                 app:tabGravity="center"
+                app:tabIndicatorHeight="@dimen/padding"
                 app:tabIndicatorColor="@color/stroke_color"
                 app:tabMode="fixed"
-                app:tabRippleColor="@null">
+                app:tabRippleColor="@null"
+                app:tabPaddingTop="@dimen/padding_very_big"
+                app:tabPaddingStart="@dimen/padding_giant"
+                app:tabPaddingBottom="@dimen/padding_very_big"
+                app:tabPaddingEnd="@dimen/padding_giant">
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"

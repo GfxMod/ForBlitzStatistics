@@ -34,10 +34,9 @@ public class AdUtils {
         this.context = context;
     }
 
-    public BannerAdView setBanner(int width, int padding, BannerAdView adView) {
+    public BannerAdView setBanner(int width, BannerAdView adView) {
 
         ConstraintLayout.LayoutParams adViewLayoutParams = new ConstraintLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
-        adViewLayoutParams.setMargins(0, padding, 0, 0);
         adView.setLayoutParams(adViewLayoutParams);
         adView.setGravity(Gravity.BOTTOM);
 
@@ -85,7 +84,7 @@ public class AdUtils {
         });
 
         // Загрузка объявления.
-        if (System.currentTimeMillis() - Objects.requireNonNull(banners.get(adView.getId())) >= 2000L) {
+        if (System.currentTimeMillis() - Objects.requireNonNull(banners.get(adView.getId())) >= 30000) {
             banners.replace(adView.getId(), System.currentTimeMillis());
             adView.loadAd(adRequest);
         }

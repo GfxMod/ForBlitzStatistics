@@ -123,6 +123,7 @@ class MainActivity : AppCompatActivity() {
                 tabLayoutHeight - resources.getDimensionPixelSize(dimen.padding_giant) * 2
             )
             view.background = icon
+            view.setOnClickListener { viewPager.setCurrentItem(i, true) }
             view.setOnLongClickListener {
                 Toast.makeText(applicationContext, contentDescription, Toast.LENGTH_SHORT).show()
                 true

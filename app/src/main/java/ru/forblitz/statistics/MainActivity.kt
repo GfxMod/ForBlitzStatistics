@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 else -> {
                     icon = AppCompatResources.getDrawable(applicationContext, drawable.ic_tanks)!!
-                    contentDescription = getString(string.random)
+                    contentDescription = getString(string.tanks)
                 }
             }
             icon = Utils.createScaledSquareDrawable(

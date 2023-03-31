@@ -2,6 +2,7 @@ package ru.forblitz.statistics.data;
 
 import android.util.Log;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
@@ -76,11 +77,13 @@ public class Vehicles {
 
 }
 
+@Keep
 class ApiResponse {
     Meta meta;
     Map<String, Vehicle> data;
 }
 
+@Keep
 class Meta {
     int count;
 }

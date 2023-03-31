@@ -1,6 +1,5 @@
 package ru.forblitz.statistics.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +15,8 @@ import ru.forblitz.statistics.R.string;
 import ru.forblitz.statistics.R.id;
 import ru.forblitz.statistics.R.layout;
 import ru.forblitz.statistics.data.BigClanData.*;
-import ru.forblitz.statistics.utils.Utils;
+import ru.forblitz.statistics.utils.InterfaceUtils;
+import ru.forblitz.statistics.utils.ParseUtils;
 
 public class MemberAdapter extends ArrayAdapter<Member> {
 
@@ -40,13 +39,13 @@ public class MemberAdapter extends ArrayAdapter<Member> {
 
         convertView.setLayoutParams(new ListView.LayoutParams(
                 ListView.LayoutParams.MATCH_PARENT,
-                (int) (Utils.getX() * 0.15)
+                (int) (InterfaceUtils.getX() * 0.15)
         ));
 
-        convertView.setOnClickListener(l -> Utils.search(context, member.getAccountName()));
+        convertView.setOnClickListener(l -> InterfaceUtils.search(context, member.getAccountName()));
 
         String name = member.getAccountName();
-        String details = Utils.parseRole(getContext(), member.getRole()) + "; " + getContext().getResources().getString(string.joined_at) + Utils.parseTime(member.getJoinedAt());
+        String details = ParseUtils.parseRole(getContext(), member.getRole()) + "; " + getContext().getResources().getString(string.joined_at) + ParseUtils.parseTime(member.getJoinedAt());
 
         TextView memberName = convertView.findViewById(id.member_name);
         TextView memberDetails = convertView.findViewById(id.member_details);

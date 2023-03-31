@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatRadioButton;
 
 import ru.forblitz.statistics.R;
-import ru.forblitz.statistics.utils.Utils;
+import ru.forblitz.statistics.utils.InterfaceUtils;
 
 public class AnimatedRadioButton extends AppCompatRadioButton {
 
@@ -69,9 +69,9 @@ public class AnimatedRadioButton extends AppCompatRadioButton {
 
         ScaleAnimation anim;
         if (checked) {
-            anim = Utils.getAnimTo();
+            anim = InterfaceUtils.getAnimTo();
         } else {
-            anim = Utils.getAnimFrom();
+            anim = InterfaceUtils.getAnimFrom();
         }
         startAnimation(anim);
 
@@ -88,11 +88,11 @@ public class AnimatedRadioButton extends AppCompatRadioButton {
             StateListDrawable stateListDrawable = new StateListDrawable();
             stateListDrawable.addState(
                     new int[] { android.R.attr.state_checked },
-                    Utils.createScaledSquareDrawable(this.getContext(), drawableOn, minDimen, minDimen)
+                    InterfaceUtils.createScaledSquareDrawable(this.getContext(), drawableOn, minDimen, minDimen)
             );
             stateListDrawable.addState(
                     StateSet.WILD_CARD,
-                    Utils.createScaledSquareDrawable(this.getContext(), drawableOff, minDimen, minDimen)
+                    InterfaceUtils.createScaledSquareDrawable(this.getContext(), drawableOff, minDimen, minDimen)
             );
             this.setButtonDrawable(stateListDrawable);
         }

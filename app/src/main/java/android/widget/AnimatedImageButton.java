@@ -4,17 +4,14 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import ru.forblitz.statistics.R.styleable;
-import ru.forblitz.statistics.utils.Utils;
+import ru.forblitz.statistics.utils.InterfaceUtils;
 
 public class AnimatedImageButton extends AppCompatImageButton {
 
@@ -56,7 +53,7 @@ public class AnimatedImageButton extends AppCompatImageButton {
     private void setOnClickListener() {
         super.setOnClickListener(l -> {
             setActivated(!isActivated());
-            Utils.allActivatedCheck((ViewGroup) this.getParent());
+            InterfaceUtils.allActivatedCheck((ViewGroup) this.getParent());
         });
     }
 
@@ -74,10 +71,10 @@ public class AnimatedImageButton extends AppCompatImageButton {
         super.setActivated(activated);
         if (!activated) {
             setImageDrawable(drawableOff);
-            startAnimation(Utils.getAnimFrom());
+            startAnimation(InterfaceUtils.getAnimFrom());
         } else {
             setImageDrawable(drawableOn);
-            startAnimation(Utils.getAnimTo());
+            startAnimation(InterfaceUtils.getAnimTo());
         }
     }
 

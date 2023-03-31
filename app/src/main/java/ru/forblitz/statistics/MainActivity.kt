@@ -37,10 +37,7 @@ import ru.forblitz.statistics.adapters.VehicleAdapter
 import ru.forblitz.statistics.adapters.ViewPagerAdapter
 import ru.forblitz.statistics.api.*
 import ru.forblitz.statistics.data.*
-import ru.forblitz.statistics.utils.AdUtils
-import ru.forblitz.statistics.utils.ParseUtils
-import ru.forblitz.statistics.utils.SessionUtils
-import ru.forblitz.statistics.utils.Utils
+import ru.forblitz.statistics.utils.*
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
@@ -89,7 +86,9 @@ class MainActivity : AppCompatActivity() {
         viewPager.adapter = ViewPagerAdapter(supportFragmentManager, tabLayout.tabCount)
         tabLayout.setupWithViewPager(viewPager)
 
-        val tabLayoutHeight = (Utils.getY(this@MainActivity) * 0.905 * 0.1).toInt()
+        val tabLayoutHeight = (InterfaceUtils.getY(
+            this@MainActivity
+        ) * 0.905 * 0.1).toInt()
         for (i in 0 until tabLayout.tabCount) {
             var icon: Drawable
             var contentDescription: String
@@ -111,12 +110,13 @@ class MainActivity : AppCompatActivity() {
                     contentDescription = getString(string.tanks)
                 }
             }
-            icon = Utils.createScaledSquareDrawable(
-                this@MainActivity,
-                icon,
-                tabLayoutHeight - resources.getDimensionPixelSize(dimen.padding_giant) * 2,
-                tabLayoutHeight - resources.getDimensionPixelSize(dimen.padding_giant) * 2
-            )
+            icon =
+                InterfaceUtils.createScaledSquareDrawable(
+                    this@MainActivity,
+                    icon,
+                    tabLayoutHeight - resources.getDimensionPixelSize(dimen.padding_giant) * 2,
+                    tabLayoutHeight - resources.getDimensionPixelSize(dimen.padding_giant) * 2
+                )
             val view = View(this@MainActivity)
             view.layoutParams = ViewGroup.LayoutParams(
                 tabLayoutHeight - resources.getDimensionPixelSize(dimen.padding_giant) * 2,
@@ -276,7 +276,10 @@ class MainActivity : AppCompatActivity() {
 
         // Plays animation
 
-        Utils.playCycledAnimation(view, false)
+        InterfaceUtils.playCycledAnimation(
+            view,
+            false
+        )
 
         // Hides keyboard
 
@@ -338,7 +341,7 @@ class MainActivity : AppCompatActivity() {
         tanksList.emptyView = findViewById(id.item_nothing_found)
 
         val footer = View(this@MainActivity)
-        val width = Utils.getX() - resources.getDimensionPixelSize(dimen.padding_very_big) * 2
+        val width = InterfaceUtils.getX() - resources.getDimensionPixelSize(dimen.padding_very_big) * 2
         footer.layoutParams = AbsListView.LayoutParams(width, (width * 0.15).toInt())
         tanksList.addFooterView(footer)
 
@@ -400,7 +403,10 @@ class MainActivity : AppCompatActivity() {
 
         // Plays animation
 
-        Utils.playCycledAnimation(view, true)
+        InterfaceUtils.playCycledAnimation(
+            view,
+            true
+        )
 
         // Shows/hides the settings layout
 
@@ -463,7 +469,10 @@ class MainActivity : AppCompatActivity() {
 
         val tanksFilters = findViewById<FloatingActionButton>(id.tanks_filters)
 
-        Utils.playCycledAnimation(view, true)
+        InterfaceUtils.playCycledAnimation(
+            view,
+            true
+        )
         tanksLayoutsFlipper.displayedChild = 0
 
         //
@@ -604,7 +613,7 @@ class MainActivity : AppCompatActivity() {
         tanksList.adapter = VehicleAdapter(this, vehiclesToCreate)
 
         val adView = findViewById<BannerAdView>(id.tanks_list_banner)
-        adUtils.setBanner(Utils.getX() - resources.getDimensionPixelSize(dimen.padding_big), adView)
+        adUtils.setBanner(InterfaceUtils.getX() - resources.getDimensionPixelSize(dimen.padding_big), adView)
         adView.updateLayoutParams<ConstraintLayout.LayoutParams> { bottomToBottom = id.tanks_list_layout }
 
     }
@@ -732,11 +741,19 @@ class MainActivity : AppCompatActivity() {
                             data,
                             ru.forblitz.statistics.jsonobjects.Error::class.java
                         )
-                        Utils.createErrorAlertDialog(this@MainActivity, "Error ${error.code}", error.message)
+                        InterfaceUtils.createErrorAlertDialog(
+                            this@MainActivity,
+                            "Error ${error.code}",
+                            error.message
+                        )
                         searchField.text.clear()
                     } else if (userIDList.contains("\"count\": 0")) {
                         userID = "error"
-                        Utils.createErrorAlertDialog(this@MainActivity, getString(string.error), getString(string.nickname_not_found))
+                        InterfaceUtils.createErrorAlertDialog(
+                            this@MainActivity,
+                            getString(string.error),
+                            getString(string.nickname_not_found)
+                        )
                     } else {
                         userID = userIDList.substringAfter("\"account_id\": ").substringBefore("\n")
                     }
@@ -745,7 +762,9 @@ class MainActivity : AppCompatActivity() {
 
             } catch (e: IOException) {
                 @Suppress("ControlFlowWithEmptyBody") val mainCor = CoroutineScope(Dispatchers.IO).launch {
-                    Utils.createNetworkAlertDialog(this@MainActivity) {
+                    InterfaceUtils.createNetworkAlertDialog(
+                        this@MainActivity
+                    ) {
                         CoroutineScope(Dispatchers.IO).launch {
                             val cor = getID()
                             cor.join()
@@ -825,7 +844,9 @@ class MainActivity : AppCompatActivity() {
                 }
 
             } catch (e: IOException) {
-                Utils.createNetworkAlertDialog(this@MainActivity) {
+                InterfaceUtils.createNetworkAlertDialog(
+                    this@MainActivity
+                ) {
                     setPlayerStatistics()
                     this.cancel()
                 }
@@ -896,7 +917,9 @@ class MainActivity : AppCompatActivity() {
                                 }
 
                             } catch (e: IOException) {
-                                Utils.createNetworkAlertDialog(this@MainActivity) {
+                                InterfaceUtils.createNetworkAlertDialog(
+                                    this@MainActivity
+                                ) {
                                     setClanStat()
                                     this.cancel()
                                 }
@@ -908,7 +931,9 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             } catch (e: IOException) {
-                Utils.createNetworkAlertDialog(this@MainActivity) {
+                InterfaceUtils.createNetworkAlertDialog(
+                    this@MainActivity
+                ) {
                     setClanStat()
                     this.cancel()
                 }
@@ -941,7 +966,9 @@ class MainActivity : AppCompatActivity() {
                 }
 
             } catch (e: IOException) {
-                Utils.createNetworkAlertDialog(this@MainActivity) {
+                InterfaceUtils.createNetworkAlertDialog(
+                    this@MainActivity
+                ) {
                     fillVehiclesSpecifications()
                     this.cancel()
                 }
@@ -987,7 +1014,9 @@ class MainActivity : AppCompatActivity() {
                         }
 
                     } catch (e: IOException) {
-                        Utils.createNetworkAlertDialog(this@MainActivity) {
+                        InterfaceUtils.createNetworkAlertDialog(
+                            this@MainActivity
+                        ) {
                             getVehiclesStatistics(idLists)
                             this.cancel()
                         }
@@ -1094,7 +1123,9 @@ class MainActivity : AppCompatActivity() {
             val session = Session()
             session.path = files[i]
             session.set = Runnable {
-                setSessionStatistics(prettyJson1, i); Utils.randomToMain(this@MainActivity)
+                setSessionStatistics(prettyJson1, i); InterfaceUtils.randomToMain(
+                this@MainActivity
+            )
             }
             session.delete = Runnable {
                 if (i == number) {
@@ -1189,28 +1220,43 @@ class MainActivity : AppCompatActivity() {
                     }
                     .show()
 
-                Utils.setSelectedRegion(this@MainActivity, 0)
+                InterfaceUtils.setSelectedRegion(
+                    this@MainActivity,
+                    0
+                )
 
                 service.setRegion("ru")
 
             }
             "ru" -> {
-                Utils.setSelectedRegion(this@MainActivity, 0)
+                InterfaceUtils.setSelectedRegion(
+                    this@MainActivity,
+                    0
+                )
 
                 service.setRegion("ru")
             }
             "eu" -> {
-                Utils.setSelectedRegion(this@MainActivity, 1)
+                InterfaceUtils.setSelectedRegion(
+                    this@MainActivity,
+                    1
+                )
 
                 service.setRegion("eu")
             }
             "na" -> {
-                Utils.setSelectedRegion(this@MainActivity, 2)
+                InterfaceUtils.setSelectedRegion(
+                    this@MainActivity,
+                    2
+                )
 
                 service.setRegion("na")
             }
             "asia" -> {
-                Utils.setSelectedRegion(this@MainActivity, 3)
+                InterfaceUtils.setSelectedRegion(
+                    this@MainActivity,
+                    3
+                )
 
                 service.setRegion("asia")
             }
@@ -1245,7 +1291,9 @@ class MainActivity : AppCompatActivity() {
             val lastSearchedInfo = findViewById<TextView>(id.last_searched_info)
 
             lastSearchedName.text = lastFile.readText().substringAfter("\"nickname\": \"").substringBefore("\"")
-            val lastSearchedInfoText = getString(string.last_search) + Utils.parseTime((lastFile.lastModified() / 1000).toString())
+            val lastSearchedInfoText = getString(string.last_search) + ParseUtils.parseTime(
+                (lastFile.lastModified() / 1000).toString()
+            )
             lastSearchedInfo.text = lastSearchedInfoText
             enterNicknameText.setText(string.enter_nickname_or_select)
 

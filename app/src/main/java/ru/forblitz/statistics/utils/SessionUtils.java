@@ -1,39 +1,18 @@
 package ru.forblitz.statistics.utils;
 
-import static android.graphics.Typeface.BOLD;
-import static androidx.core.widget.TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM;
-
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Handler;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import ru.forblitz.statistics.R.color;
-import ru.forblitz.statistics.R.drawable;
-import ru.forblitz.statistics.R.font;
 import ru.forblitz.statistics.R.id;
 import ru.forblitz.statistics.R.string;
 import ru.forblitz.statistics.data.StatisticsData;
 import ru.forblitz.statistics.data.StatisticsSet;
-import ru.forblitz.statistics.utils.Utils;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class SessionUtils {
@@ -294,56 +273,56 @@ public class SessionUtils {
         if (Integer.parseInt(sessionBaseDifferencesStatisticsData.getBattles()) > 0) {
             
             String valueBattles = "+" + sessionBaseDifferencesStatisticsData.getBattles();
-            Utils.setSessionTrueValue(activity, textBattlesSessionInfo, valueBattles);
+            InterfaceUtils.setSessionTrueValue(activity, textBattlesSessionInfo, valueBattles);
 
             if (Double.parseDouble(sessionBaseDifferencesStatisticsData.getWinRate()) == 0) {
                 textWinRateSessionInfo.setVisibility(View.INVISIBLE);
             } else if (Double.parseDouble(sessionBaseDifferencesStatisticsData.getWinRate()) > 0) {
                 String value = "+" + sessionBaseDifferencesStatisticsData.getWinRate() + "%";
-                Utils.setSessionTrueValue(activity, textWinRateSessionInfo, value);
+                InterfaceUtils.setSessionTrueValue(activity, textWinRateSessionInfo, value);
             } else if (Double.parseDouble(sessionBaseDifferencesStatisticsData.getWinRate()) < 0) {
                 String value = sessionBaseDifferencesStatisticsData.getWinRate() + "%";
-                Utils.setSessionFalseValue(activity, textWinRateSessionInfo, value);
+                InterfaceUtils.setSessionFalseValue(activity, textWinRateSessionInfo, value);
             }
 
             if (Double.parseDouble(sessionBaseDifferencesStatisticsData.getAverageDamage()) == 0) {
                 textAverageDamageSessionInfo.setVisibility(View.INVISIBLE);
             } else if (Double.parseDouble(sessionBaseDifferencesStatisticsData.getAverageDamage()) > 0) {
                 String value = "+" + sessionBaseDifferencesStatisticsData.getAverageDamage();
-                Utils.setSessionTrueValue(activity, textAverageDamageSessionInfo, value);
+                InterfaceUtils.setSessionTrueValue(activity, textAverageDamageSessionInfo, value);
             } else if (Double.parseDouble(sessionBaseDifferencesStatisticsData.getAverageDamage()) < 0) {
                 String value = sessionBaseDifferencesStatisticsData.getAverageDamage();
-                Utils.setSessionFalseValue(activity, textAverageDamageSessionInfo, value);
+                InterfaceUtils.setSessionFalseValue(activity, textAverageDamageSessionInfo, value);
             }
 
             if (Double.parseDouble(sessionBaseDifferencesStatisticsData.getEfficiency()) == 0) {
                 textEfficiencySessionInfo.setVisibility(View.INVISIBLE);
             } else if (Double.parseDouble(sessionBaseDifferencesStatisticsData.getEfficiency()) > 0) {
                 String value = "+" + sessionBaseDifferencesStatisticsData.getEfficiency() + "%";
-                Utils.setSessionTrueValue(activity, textEfficiencySessionInfo, value);
+                InterfaceUtils.setSessionTrueValue(activity, textEfficiencySessionInfo, value);
             } else if (Double.parseDouble(sessionBaseDifferencesStatisticsData.getEfficiency()) < 0) {
                 String value = sessionBaseDifferencesStatisticsData.getEfficiency() + "%";
-                Utils.setSessionFalseValue(activity, textEfficiencySessionInfo, value);
+                InterfaceUtils.setSessionFalseValue(activity, textEfficiencySessionInfo, value);
             }
 
             if (Double.parseDouble(sessionBaseDifferencesStatisticsData.getSurvived()) == 0) {
                 textSurvivedSessionInfo.setVisibility(View.INVISIBLE);
             } else if (Double.parseDouble(sessionBaseDifferencesStatisticsData.getSurvived()) > 0) {
                 String value = "+" + sessionBaseDifferencesStatisticsData.getSurvived() + "%";
-                Utils.setSessionTrueValue(activity, textSurvivedSessionInfo, value);
+                InterfaceUtils.setSessionTrueValue(activity, textSurvivedSessionInfo, value);
             } else if (Double.parseDouble(sessionBaseDifferencesStatisticsData.getSurvived()) < 0) {
                 String value = sessionBaseDifferencesStatisticsData.getSurvived() + "%";
-                Utils.setSessionFalseValue(activity, textSurvivedSessionInfo, value);
+                InterfaceUtils.setSessionFalseValue(activity, textSurvivedSessionInfo, value);
             }
 
             if (Double.parseDouble(sessionBaseDifferencesStatisticsData.getHitsFromShots()) == 0) {
                 textHitsFromShotsSessionInfo.setVisibility(View.INVISIBLE);
             } else if (Double.parseDouble(sessionBaseDifferencesStatisticsData.getHitsFromShots()) > 0) {
                 String value = "+" + sessionBaseDifferencesStatisticsData.getHitsFromShots() + "%";
-                Utils.setSessionTrueValue(activity, textHitsFromShotsSessionInfo, value);
+                InterfaceUtils.setSessionTrueValue(activity, textHitsFromShotsSessionInfo, value);
             } else if (Double.parseDouble(sessionBaseDifferencesStatisticsData.getHitsFromShots()) < 0) {
                 String value = sessionBaseDifferencesStatisticsData.getHitsFromShots() + "%";
-                Utils.setSessionFalseValue(activity, textHitsFromShotsSessionInfo, value);
+                InterfaceUtils.setSessionFalseValue(activity, textHitsFromShotsSessionInfo, value);
             }
 
         } else {
@@ -353,56 +332,56 @@ public class SessionUtils {
         if (Integer.parseInt(sessionRatingDifferencesStatisticsData.getBattles()) > 0) {
 
             String valueBattles = "+" + sessionRatingDifferencesStatisticsData.getBattles();
-            Utils.setSessionTrueValue(activity, textBattlesRatingSessionInfo, valueBattles);
+            InterfaceUtils.setSessionTrueValue(activity, textBattlesRatingSessionInfo, valueBattles);
 
             if (Double.parseDouble(sessionRatingDifferencesStatisticsData.getWinRate()) == 0) {
                 textWinRateRatingSessionInfo.setVisibility(View.INVISIBLE);
             } else if (Double.parseDouble(sessionRatingDifferencesStatisticsData.getWinRate()) > 0) {
                 String value = "+" + sessionRatingDifferencesStatisticsData.getWinRate() + "%";
-                Utils.setSessionTrueValue(activity, textWinRateRatingSessionInfo, value);
+                InterfaceUtils.setSessionTrueValue(activity, textWinRateRatingSessionInfo, value);
             } else if (Double.parseDouble(sessionRatingDifferencesStatisticsData.getWinRate()) < 0) {
                 String value = sessionRatingDifferencesStatisticsData.getWinRate() + "%";
-                Utils.setSessionFalseValue(activity, textWinRateRatingSessionInfo, value);
+                InterfaceUtils.setSessionFalseValue(activity, textWinRateRatingSessionInfo, value);
             }
 
             if (Double.parseDouble(sessionRatingDifferencesStatisticsData.getAverageDamage()) == 0) {
                 textAverageDamageRatingSessionInfo.setVisibility(View.INVISIBLE);
             } else if (Double.parseDouble(sessionRatingDifferencesStatisticsData.getAverageDamage()) > 0) {
                 String value = "+" + sessionRatingDifferencesStatisticsData.getAverageDamage();
-                Utils.setSessionTrueValue(activity, textAverageDamageRatingSessionInfo, value);
+                InterfaceUtils.setSessionTrueValue(activity, textAverageDamageRatingSessionInfo, value);
             } else if (Double.parseDouble(sessionRatingDifferencesStatisticsData.getAverageDamage()) < 0) {
                 String value = sessionRatingDifferencesStatisticsData.getAverageDamage();
-                Utils.setSessionFalseValue(activity, textAverageDamageRatingSessionInfo, value);
+                InterfaceUtils.setSessionFalseValue(activity, textAverageDamageRatingSessionInfo, value);
             }
 
             if (Double.parseDouble(sessionRatingDifferencesStatisticsData.getEfficiency()) == 0) {
                 textEfficiencyRatingSessionInfo.setVisibility(View.INVISIBLE);
             } else if (Double.parseDouble(sessionRatingDifferencesStatisticsData.getEfficiency()) > 0) {
                 String value = "+" + sessionRatingDifferencesStatisticsData.getEfficiency() + "%";
-                Utils.setSessionTrueValue(activity, textEfficiencyRatingSessionInfo, value);
+                InterfaceUtils.setSessionTrueValue(activity, textEfficiencyRatingSessionInfo, value);
             } else if (Double.parseDouble(sessionRatingDifferencesStatisticsData.getEfficiency()) < 0) {
                 String value = sessionRatingDifferencesStatisticsData.getEfficiency() + "%";
-                Utils.setSessionFalseValue(activity, textEfficiencyRatingSessionInfo, value);
+                InterfaceUtils.setSessionFalseValue(activity, textEfficiencyRatingSessionInfo, value);
             }
 
             if (Double.parseDouble(sessionRatingDifferencesStatisticsData.getSurvived()) == 0) {
                 textSurvivedRatingSessionInfo.setVisibility(View.INVISIBLE);
             } else if (Double.parseDouble(sessionRatingDifferencesStatisticsData.getSurvived()) > 0) {
                 String value = "+" + sessionRatingDifferencesStatisticsData.getSurvived() + "%";
-                Utils.setSessionTrueValue(activity, textSurvivedRatingSessionInfo, value);
+                InterfaceUtils.setSessionTrueValue(activity, textSurvivedRatingSessionInfo, value);
             } else if (Double.parseDouble(sessionRatingDifferencesStatisticsData.getSurvived()) < 0) {
                 String value = sessionRatingDifferencesStatisticsData.getSurvived() + "%";
-                Utils.setSessionFalseValue(activity, textSurvivedRatingSessionInfo, value);
+                InterfaceUtils.setSessionFalseValue(activity, textSurvivedRatingSessionInfo, value);
             }
 
             if (Double.parseDouble(sessionRatingDifferencesStatisticsData.getHitsFromShots()) == 0) {
                 textHitsFromShotsRatingSessionInfo.setVisibility(View.INVISIBLE);
             } else if (Double.parseDouble(sessionRatingDifferencesStatisticsData.getHitsFromShots()) > 0) {
                 String value = "+" + sessionRatingDifferencesStatisticsData.getHitsFromShots() + "%";
-                Utils.setSessionTrueValue(activity, textHitsFromShotsRatingSessionInfo, value);
+                InterfaceUtils.setSessionTrueValue(activity, textHitsFromShotsRatingSessionInfo, value);
             } else if (Double.parseDouble(sessionRatingDifferencesStatisticsData.getHitsFromShots()) < 0) {
                 String value = sessionRatingDifferencesStatisticsData.getHitsFromShots() + "%";
-                Utils.setSessionFalseValue(activity, textHitsFromShotsRatingSessionInfo, value);
+                InterfaceUtils.setSessionFalseValue(activity, textHitsFromShotsRatingSessionInfo, value);
             }
 
         } else {

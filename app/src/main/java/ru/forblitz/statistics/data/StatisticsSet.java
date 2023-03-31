@@ -5,7 +5,7 @@ import android.graphics.Color;
 import android.widget.TextView;
 
 import ru.forblitz.statistics.R.id;
-import ru.forblitz.statistics.utils.Utils;
+import ru.forblitz.statistics.utils.InterfaceUtils;
 
 
 public class StatisticsSet {
@@ -68,11 +68,11 @@ public class StatisticsSet {
 
         if (Integer.parseInt(battles) == 0) {
 
-            Utils.setBaseStatisticsVisibility(activity, false);
+            InterfaceUtils.setBaseStatisticsVisibility(activity, false);
 
         } else {
 
-            Utils.setBaseStatisticsVisibility(activity, true);
+            InterfaceUtils.setBaseStatisticsVisibility(activity, true);
 
             //
             /////
@@ -218,11 +218,11 @@ public class StatisticsSet {
 
         if (Integer.parseInt(battles) == 0) {
 
-            Utils.setRatingStatisticsVisibility(activity, false);
+            InterfaceUtils.setRatingStatisticsVisibility(activity, false);
 
         } else {
 
-            Utils.setRatingStatisticsVisibility(activity, true);
+            InterfaceUtils.setRatingStatisticsVisibility(activity, true);
 
             //
             /////

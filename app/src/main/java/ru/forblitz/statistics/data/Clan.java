@@ -15,7 +15,8 @@ import ru.forblitz.statistics.R.drawable;
 import ru.forblitz.statistics.R.id;
 import ru.forblitz.statistics.R.string;
 import ru.forblitz.statistics.adapters.MemberAdapter;
-import ru.forblitz.statistics.utils.Utils;
+import ru.forblitz.statistics.utils.InterfaceUtils;
+import ru.forblitz.statistics.utils.ParseUtils;
 
 public class Clan {
 
@@ -85,16 +86,16 @@ public class Clan {
             randomClanName.setText(fullName);
             ratingClanName.setText(fullName);
             clanName.setText(fullName);
-            randomClanRole.setText(Utils.parseRole(activity, smallClanData.getRole()));
-            ratingClanRole.setText(Utils.parseRole(activity, smallClanData.getRole()));
-            clanRole.setText(Utils.parseRole(activity, smallClanData.getRole()));
+            randomClanRole.setText(ParseUtils.parseRole(activity, smallClanData.getRole()));
+            ratingClanRole.setText(ParseUtils.parseRole(activity, smallClanData.getRole()));
+            clanRole.setText(ParseUtils.parseRole(activity, smallClanData.getRole()));
             clanMotto.setText(bigClanData.getMotto());
             clanDescription.setText(bigClanData.getDescription());
             clanCreator.setText(bigClanData.getCreatorName());
             if (!bigClanData.getCreatorName().equals("")) {
-                clanCreator.setOnClickListener(l -> Utils.search(clanCreator.getContext(), bigClanData.getCreatorName()));
+                clanCreator.setOnClickListener(l -> InterfaceUtils.search(clanCreator.getContext(), bigClanData.getCreatorName()));
             }
-            clanCreatedAt.setText(Utils.parseTime(bigClanData.getCreatedAt()));
+            clanCreatedAt.setText(ParseUtils.parseTime(bigClanData.getCreatedAt()));
             if (bigClanData.getOldName() != null) {
                 clanOldName.setText(bigClanData.getOldName());
             } else {
@@ -106,7 +107,7 @@ public class Clan {
                 clanOldTag.setText(activity.getString(string.empty));
             }
             if (bigClanData.getRenamedAt() != null) {
-                clanRenamedAt.setText(Utils.parseTime(bigClanData.getRenamedAt()));
+                clanRenamedAt.setText(ParseUtils.parseTime(bigClanData.getRenamedAt()));
             } else {
                 clanRenamedAt.setText(activity.getString(string.empty));
             }

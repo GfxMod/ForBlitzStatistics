@@ -19,7 +19,8 @@ import ru.forblitz.statistics.R.drawable;
 import ru.forblitz.statistics.R.id;
 import ru.forblitz.statistics.R.layout;
 import ru.forblitz.statistics.data.Session;
-import ru.forblitz.statistics.utils.Utils;
+import ru.forblitz.statistics.utils.InterfaceUtils;
+import ru.forblitz.statistics.utils.ParseUtils;
 
 public class SessionAdapter extends ArrayAdapter<Session> {
 
@@ -40,10 +41,10 @@ public class SessionAdapter extends ArrayAdapter<Session> {
 
         convertView.setLayoutParams(new ListView.LayoutParams(
                 ListView.LayoutParams.MATCH_PARENT,
-                (int) (Utils.getX() * 0.15)
+                (int) (InterfaceUtils.getX() * 0.15)
         ));
 
-        String date = Utils.parseTime(session.getPath().substring(session.getPath().lastIndexOf("-") + 1, session.getPath().lastIndexOf(".")));
+        String date = ParseUtils.parseTime(session.getPath().substring(session.getPath().lastIndexOf("-") + 1, session.getPath().lastIndexOf(".")));
 
         TextView sessionDate = convertView.findViewById(id.session_date);
         View sessionRemove = convertView.findViewById(id.session_remove);

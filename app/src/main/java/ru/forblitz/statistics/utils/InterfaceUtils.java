@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.icu.util.TimeZone;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -26,22 +25,8 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import ru.forblitz.statistics.R;
-import ru.forblitz.statistics.R.dimen;
-import ru.forblitz.statistics.R.drawable;
-import ru.forblitz.statistics.R.id;
-import ru.forblitz.statistics.R.string;
 
-public class Utils {
-
-    // TODO: возможно, имеет разделить этот функционально жирненький класс на несколько отдельных %Имя-сферы%Utils.java
-    // Их можно в отдельный пакет utils вообзу положить
-
-    public static String parseTime(String timestamp) {
-        long offset = TimeZone.getDefault().getRawOffset() / 1000L; // насколько в секундах отличается часовой пояс в большую сторону относительно обычного Timestamp
-        String time = java.time.format.DateTimeFormatter.ISO_INSTANT.format(java.time.Instant.ofEpochSecond(Long.parseLong(timestamp) + offset));
-        time = time.substring(0, 4) +  "." + time.substring(5, 7) + "." + time.substring(8, 10) + " " + time.substring(11, time.length() - 1);
-        return time;
-    }
+public class InterfaceUtils {
 
     /**
      * @return width of app window
@@ -102,8 +87,8 @@ public class Utils {
      */
     public static void setBaseStatisticsVisibility(Activity activity, boolean v) {
 
-        ViewFlipper randomFlipper = activity.findViewById(id.fragment_random);
-        ViewFlipper tanksFlipper = activity.findViewById(id.fragment_tanks);
+        ViewFlipper randomFlipper = activity.findViewById(R.id.fragment_random);
+        ViewFlipper tanksFlipper = activity.findViewById(R.id.fragment_tanks);
 
         if (v) {
             randomFlipper.setDisplayedChild(0);
@@ -116,13 +101,13 @@ public class Utils {
     }
 
     /**
-     * Sets displayed child for {@link ru.forblitz.statistics.R.layout#fragment_rating rating statistics}
+     * Sets displayed child for {@link R.layout#fragment_rating rating statistics}
      * @param activity required to get resources
      * @param v visibility value to be set
      */
     public static void setRatingStatisticsVisibility(Activity activity, boolean v) {
 
-        ViewFlipper ratingFlipper = activity.findViewById(id.fragment_rating);
+        ViewFlipper ratingFlipper = activity.findViewById(R.id.fragment_rating);
 
         if (v) {
             ratingFlipper.setDisplayedChild(0);
@@ -135,10 +120,10 @@ public class Utils {
     public static MaterialAlertDialogBuilder createNetworkAlertDialog(Activity activity, Runnable r) {
 
         MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(activity);
-        alertDialog.setTitle(activity.getString(string.network_error));
-        alertDialog.setMessage(activity.getString(string.network_error_desc));
+        alertDialog.setTitle(activity.getString(R.string.network_error));
+        alertDialog.setMessage(activity.getString(R.string.network_error_desc));
         alertDialog.setCancelable(false);
-        alertDialog.setPositiveButton(activity.getString(string.network_error_try_again), (d, w) -> r.run());
+        alertDialog.setPositiveButton(activity.getString(R.string.network_error_try_again), (d, w) -> r.run());
         activity.runOnUiThread(alertDialog::show);
         return alertDialog;
 
@@ -182,7 +167,7 @@ public class Utils {
         Bitmap bitmap = Bitmap.createBitmap(canvasSize, canvasSize, Bitmap.Config.ARGB_8888);
         new Canvas(bitmap).drawBitmap(
                 Bitmap.createScaledBitmap(
-                        Utils.drawableToBitmap(drawable),
+                        drawableToBitmap(drawable),
                         drawableSize,
                         drawableSize,
                         true
@@ -196,7 +181,7 @@ public class Utils {
 
     public static void randomToMain(Activity activity) {
 
-        ViewFlipper flipper = activity.findViewById(id.random_layouts_flipper);
+        ViewFlipper flipper = activity.findViewById(R.id.random_layouts_flipper);
         flipper.setDisplayedChild(0);
 
     }
@@ -253,34 +238,34 @@ public class Utils {
     }
 
     public static void setSelectedRegion(Activity activity, int number) {
-        View ru = activity.findViewById(id.select_region_ru);
-        View eu = activity.findViewById(id.select_region_eu);
-        View na = activity.findViewById(id.select_region_na);
-        View asia = activity.findViewById(id.select_region_asia);
+        View ru = activity.findViewById(R.id.select_region_ru);
+        View eu = activity.findViewById(R.id.select_region_eu);
+        View na = activity.findViewById(R.id.select_region_na);
+        View asia = activity.findViewById(R.id.select_region_asia);
 
         if (number == 0) {
-            ru.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested_selected));
-            eu.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
-            na.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
-            asia.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
+            ru.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested_selected));
+            eu.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
+            na.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
+            asia.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
         } else if (number == 1) {
-            ru.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
-            eu.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested_selected));
-            na.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
-            asia.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
+            ru.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
+            eu.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested_selected));
+            na.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
+            asia.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
         } else if (number == 2) {
-            ru.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
-            eu.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
-            na.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested_selected));
-            asia.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
+            ru.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
+            eu.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
+            na.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested_selected));
+            asia.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
         } else if (number == 3) {
-            ru.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
-            eu.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
-            na.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested));
-            asia.setBackground(AppCompatResources.getDrawable(activity, drawable.background_layout_nested_selected));
+            ru.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
+            eu.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
+            na.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
+            asia.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested_selected));
         }
 
-        int padding = activity.getResources().getDimensionPixelSize(dimen.padding_very_big);
+        int padding = activity.getResources().getDimensionPixelSize(R.dimen.padding_very_big);
         ru.setPadding(padding, padding, padding, padding);
         eu.setPadding(padding, padding, padding, padding);
         na.setPadding(padding, padding, padding, padding);
@@ -292,36 +277,9 @@ public class Utils {
         return (int) ((double) px / ( (double) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
-    public static String parseUnicode(String string) {
-        String result = string;
-        while (result.contains("\\n")) {
-            result = result.substring(0, result.indexOf("\\n")) + "\n" + result.substring(result.indexOf("\\n") + 2);
-        }
-        while (result.contains("\\u")) {
-            char symbol;
-            try {
-                symbol = (char) Integer.parseInt((result.substring(result.indexOf("\\u") + 2, result.indexOf("\\u") + 6)), 16);
-            } catch (Exception e) {
-                symbol = 0;
-            }
-            result = result.substring(0, result.indexOf("\\u")) + symbol + result.substring(result.indexOf("\\u") + 6);
-        }
-        return result;
-    }
-
-    public static String parseRole(Context context, String role) {
-        if (role.equals("private")) {
-            return context.getResources().getString(string.clan_role_private);
-        } else if (role.equals("executive_officer")) {
-            return context.getResources().getString(string.clan_role_executive_officer);
-        } else {
-            return context.getResources().getString(string.clan_role_commander);
-        }
-    }
-
     public static void search(Context context, String nickname) {
-        ((EditText) ((Activity) context).findViewById(id.search_field)).setText(nickname, TextView.BufferType.EDITABLE);
-        ((Activity) context).findViewById(id.search_button).performClick();
+        ((EditText) ((Activity) context).findViewById(R.id.search_field)).setText(nickname, TextView.BufferType.EDITABLE);
+        ((Activity) context).findViewById(R.id.search_button).performClick();
     }
 
 }

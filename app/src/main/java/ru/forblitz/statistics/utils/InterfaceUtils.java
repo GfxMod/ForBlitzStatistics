@@ -68,18 +68,6 @@ public class InterfaceUtils {
         return animFrom;
     }
 
-    public static void allActivatedCheck(ViewGroup viewGroup) {
-
-        for (int i = 0; i < viewGroup.getChildCount(); i++) {
-            if (!viewGroup.getChildAt(i).isActivated()) { return; }
-        }
-
-        for (int i = 0; i < viewGroup.getChildCount(); i++) {
-            viewGroup.getChildAt(i).setActivated(false);
-        }
-
-    }
-
     /**
      * Sets displayed child for {@link ru.forblitz.statistics.R.layout#fragment_random base statistics}
      * @param activity required to get resources

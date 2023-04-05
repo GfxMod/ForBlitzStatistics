@@ -53,7 +53,6 @@ public class AnimatedImageButton extends AppCompatImageButton {
     private void setOnClickListener() {
         super.setOnClickListener(l -> {
             setActivated(!isActivated());
-            InterfaceUtils.allActivatedCheck((ViewGroup) this.getParent());
         });
     }
 

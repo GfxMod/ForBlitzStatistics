@@ -880,49 +880,53 @@ class MainActivity : AppCompatActivity() {
                             .getAsJsonObject("data")
                             .getAsJsonObject(userID)
 
-                        clanData.small = Gson().fromJson(
-                            smallJsonObject,
-                            SmallClanData::class.java
-                        )
-                        
-                        if (clanData.small.clanId != null) {
-                            try {
+                        if (smallJsonObject != null) {
+                            clanData.small = Gson().fromJson(
+                                smallJsonObject,
+                                SmallClanData::class.java
+                            )
 
-                                val fullClanInfoJson = service.getFullClanInfo(clanData.small.clanId)
+                            if (clanData.small.clanId != null) {
+                                try {
 
-                                withContext(Dispatchers.Main) {
+                                    val fullClanInfoJson = service.getFullClanInfo(clanData.small.clanId)
 
-                                    val bigJson = GsonBuilder().setPrettyPrinting().create().toJson(
-                                        JsonParser.parseString(
-                                            fullClanInfoJson.body()
-                                                ?.string()
+                                    withContext(Dispatchers.Main) {
+
+                                        val bigJson = GsonBuilder().setPrettyPrinting().create().toJson(
+                                            JsonParser.parseString(
+                                                fullClanInfoJson.body()
+                                                    ?.string()
+                                            )
                                         )
-                                    )
 
-                                    val bigJsonObject = JsonParser
-                                        .parseString(bigJson)
-                                        .asJsonObject
-                                        .getAsJsonObject("data")
-                                        .getAsJsonObject(clanData.small.clanId)
+                                        val bigJsonObject = JsonParser
+                                            .parseString(bigJson)
+                                            .asJsonObject
+                                            .getAsJsonObject("data")
+                                            .getAsJsonObject(clanData.small.clanId)
 
-                                    val bigClanData: BigClanData = Gson().fromJson(
-                                        bigJsonObject,
-                                        BigClanData::class.java
-                                    )
+                                        val bigClanData: BigClanData = Gson().fromJson(
+                                            bigJsonObject,
+                                            BigClanData::class.java
+                                        )
 
-                                    clanData.show(this@MainActivity)
-                                    clanData.setBigClanData(bigClanData)
-                                    clanData.set(this@MainActivity)
+                                        clanData.show(this@MainActivity)
+                                        clanData.setBigClanData(bigClanData)
+                                        clanData.set(this@MainActivity)
 
+                                    }
+
+                                } catch (e: IOException) {
+                                    InterfaceUtils.createNetworkAlertDialog(
+                                        this@MainActivity
+                                    ) {
+                                        setClanStat()
+                                        this.cancel()
+                                    }
                                 }
-
-                            } catch (e: IOException) {
-                                InterfaceUtils.createNetworkAlertDialog(
-                                    this@MainActivity
-                                ) {
-                                    setClanStat()
-                                    this.cancel()
-                                }
+                            } else {
+                                clanData.hide(this@MainActivity)
                             }
                         } else {
                             clanData.hide(this@MainActivity)

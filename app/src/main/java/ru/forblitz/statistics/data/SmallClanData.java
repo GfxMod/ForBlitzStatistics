@@ -1,9 +1,11 @@
 package ru.forblitz.statistics.data;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
+@Keep
 public class SmallClanData {
 
     @SerializedName("clan")
@@ -59,6 +61,7 @@ public class SmallClanData {
     }
 }
 
+@Keep
 class ClanData {
 
     @SerializedName("members_count")

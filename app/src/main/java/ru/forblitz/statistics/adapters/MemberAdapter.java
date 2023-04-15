@@ -10,10 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import ru.forblitz.statistics.R.string;
 
-import ru.forblitz.statistics.R.id;
-import ru.forblitz.statistics.R.layout;
+import ru.forblitz.statistics.R;
 import ru.forblitz.statistics.data.BigClanData.*;
 import ru.forblitz.statistics.utils.InterfaceUtils;
 import ru.forblitz.statistics.utils.ParseUtils;
@@ -23,7 +21,7 @@ public class MemberAdapter extends ArrayAdapter<Member> {
     final Context context;
 
     public MemberAdapter(@NonNull Context context, Member[] members) {
-        super(context, layout.item_member, members);
+        super(context, R.layout.item_member, members);
         this.context = context;
     }
 
@@ -34,7 +32,7 @@ public class MemberAdapter extends ArrayAdapter<Member> {
         Member member = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(layout.item_member, null);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_member, null);
         }
 
         convertView.setLayoutParams(new ListView.LayoutParams(
@@ -45,10 +43,10 @@ public class MemberAdapter extends ArrayAdapter<Member> {
         convertView.setOnClickListener(l -> InterfaceUtils.search(context, member.getAccountName()));
 
         String name = member.getAccountName();
-        String details = ParseUtils.parseRole(getContext(), member.getRole()) + "; " + getContext().getResources().getString(string.joined_at) + ParseUtils.parseTime(member.getJoinedAt());
+        String details = ParseUtils.parseRole(getContext(), member.getRole()) + "; " + getContext().getResources().getString(R.string.joined_at) + ParseUtils.parseTime(member.getJoinedAt());
 
-        TextView memberName = convertView.findViewById(id.member_name);
-        TextView memberDetails = convertView.findViewById(id.member_details);
+        TextView memberName = convertView.findViewById(R.id.member_name);
+        TextView memberDetails = convertView.findViewById(R.id.member_details);
 
         memberName.setText(name);
         memberDetails.setText(details);

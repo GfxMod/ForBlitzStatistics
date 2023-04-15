@@ -31,7 +31,6 @@ import com.yandex.mobile.ads.common.MobileAds
 import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import ru.forblitz.statistics.R.*
 import ru.forblitz.statistics.adapters.SessionAdapter
 import ru.forblitz.statistics.adapters.VehicleAdapter
 import ru.forblitz.statistics.adapters.ViewPagerAdapter
@@ -75,13 +74,13 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(layout.activity_main)
+        setContentView(R.layout.activity_main)
 
         // Configures ViewPager
 
-        val viewPager = findViewById<ViewPager>(id.view_pager)
-        val tabLayout = findViewById<TabLayout>(id.tabs)
-        val mainLayoutsFlipper = findViewById<ViewFlipper>(id.main_layouts_flipper)
+        val viewPager = findViewById<ViewPager>(R.id.view_pager)
+        val tabLayout = findViewById<TabLayout>(R.id.tabs)
+        val mainLayoutsFlipper = findViewById<ViewFlipper>(R.id.main_layouts_flipper)
 
         viewPager.adapter = ViewPagerAdapter(supportFragmentManager, tabLayout.tabCount)
         tabLayout.setupWithViewPager(viewPager)
@@ -94,33 +93,33 @@ class MainActivity : AppCompatActivity() {
             var contentDescription: String
             when (i) {
                 0 -> {
-                    icon = AppCompatResources.getDrawable(applicationContext, drawable.ic_outline_bar_chart_36)!!
-                    contentDescription = getString(string.random)
+                    icon = AppCompatResources.getDrawable(applicationContext, R.drawable.ic_outline_bar_chart_36)!!
+                    contentDescription = getString(R.string.random)
                 }
                 1 -> {
-                    icon = AppCompatResources.getDrawable(applicationContext, drawable.ic_outline_auto_graph_36)!!
-                    contentDescription = getString(string.rating)
+                    icon = AppCompatResources.getDrawable(applicationContext, R.drawable.ic_outline_auto_graph_36)!!
+                    contentDescription = getString(R.string.rating)
                 }
                 2 -> {
-                    icon = AppCompatResources.getDrawable(applicationContext, drawable.ic_outline_group_36)!!
-                    contentDescription = getString(string.clan)
+                    icon = AppCompatResources.getDrawable(applicationContext, R.drawable.ic_outline_group_36)!!
+                    contentDescription = getString(R.string.clan)
                 }
                 else -> {
-                    icon = AppCompatResources.getDrawable(applicationContext, drawable.ic_tanks)!!
-                    contentDescription = getString(string.tanks)
+                    icon = AppCompatResources.getDrawable(applicationContext, R.drawable.ic_tanks)!!
+                    contentDescription = getString(R.string.tanks)
                 }
             }
             icon =
                 InterfaceUtils.createScaledSquareDrawable(
                     this@MainActivity,
                     icon,
-                    tabLayoutHeight - resources.getDimensionPixelSize(dimen.padding_giant) * 2,
-                    tabLayoutHeight - resources.getDimensionPixelSize(dimen.padding_giant) * 2
+                    tabLayoutHeight - resources.getDimensionPixelSize(R.dimen.padding_giant) * 2,
+                    tabLayoutHeight - resources.getDimensionPixelSize(R.dimen.padding_giant) * 2
                 )
             val view = View(this@MainActivity)
             view.layoutParams = ViewGroup.LayoutParams(
-                tabLayoutHeight - resources.getDimensionPixelSize(dimen.padding_giant) * 2,
-                tabLayoutHeight - resources.getDimensionPixelSize(dimen.padding_giant) * 2
+                tabLayoutHeight - resources.getDimensionPixelSize(R.dimen.padding_giant) * 2,
+                tabLayoutHeight - resources.getDimensionPixelSize(R.dimen.padding_giant) * 2
             )
             view.background = icon
             view.setOnClickListener { viewPager.setCurrentItem(i, true) }
@@ -139,11 +138,11 @@ class MainActivity : AppCompatActivity() {
 
         // Sets the action when the search button is pressed from the keyboard
 
-        val searchField = findViewById<EditText>(id.search_field)
+        val searchField = findViewById<EditText>(R.id.search_field)
         searchField.setOnEditorActionListener { _, actionId, _ ->
             return@setOnEditorActionListener when (actionId) {
                 EditorInfo.IME_ACTION_SEARCH -> {
-                    onClickSearchButton(findViewById(id.search_button))
+                    onClickSearchButton(findViewById(R.id.search_button))
                     true
                 }
                 else -> false
@@ -156,7 +155,7 @@ class MainActivity : AppCompatActivity() {
         searchField.setOnKeyListener(object : View.OnKeyListener {
             override fun onKey(v: View?, keyCode: Int, event: KeyEvent): Boolean {
                 if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                    onClickSearchButton(findViewById(id.search_button))
+                    onClickSearchButton(findViewById(R.id.search_button))
                     return true
                 }
                 return false
@@ -175,22 +174,22 @@ class MainActivity : AppCompatActivity() {
 
         // Sets preferences listeners
 
-        findViewById<View>(id.select_region_ru).setOnClickListener { preferences.edit().putString("region", "ru").apply(); setRegion() }
-        findViewById<View>(id.select_region_eu).setOnClickListener { preferences.edit().putString("region", "eu").apply(); setRegion() }
-        findViewById<View>(id.select_region_na).setOnClickListener { preferences.edit().putString("region", "na").apply(); setRegion() }
-        findViewById<View>(id.select_region_asia).setOnClickListener { preferences.edit().putString("region", "asia").apply(); setRegion() }
+        findViewById<View>(R.id.select_region_ru).setOnClickListener { preferences.edit().putString("region", "ru").apply(); setRegion() }
+        findViewById<View>(R.id.select_region_eu).setOnClickListener { preferences.edit().putString("region", "eu").apply(); setRegion() }
+        findViewById<View>(R.id.select_region_na).setOnClickListener { preferences.edit().putString("region", "na").apply(); setRegion() }
+        findViewById<View>(R.id.select_region_asia).setOnClickListener { preferences.edit().putString("region", "asia").apply(); setRegion() }
 
         // set onBackPressed
 
         onBackPressedDispatcher.addCallback(this@MainActivity, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                val randomLayoutsFlipper = findViewById<ViewFlipper>(id.random_layouts_flipper)
-                val ratingLayoutsFlipper = findViewById<ViewFlipper>(id.rating_layouts_flipper)
-                val clanLayoutsFlipper = findViewById<ViewFlipper>(id.clan_layouts_flipper)
-                val tanksLayoutsFlipper = findViewById<ViewFlipper>(id.tanks_layouts_flipper)
+                val randomLayoutsFlipper = findViewById<ViewFlipper>(R.id.random_layouts_flipper)
+                val ratingLayoutsFlipper = findViewById<ViewFlipper>(R.id.rating_layouts_flipper)
+                val clanLayoutsFlipper = findViewById<ViewFlipper>(R.id.clan_layouts_flipper)
+                val tanksLayoutsFlipper = findViewById<ViewFlipper>(R.id.tanks_layouts_flipper)
 
                 if (mainLayoutsFlipper.displayedChild == Constants.MainViewFlipperItems.SETTINGS) {
-                    onClickSettingsButton(findViewById(id.settings_button))
+                    onClickSettingsButton(findViewById(R.id.settings_button))
                 } else {
                     when (viewPager.currentItem) {
                         0 -> {
@@ -243,30 +242,30 @@ class MainActivity : AppCompatActivity() {
      */
     fun onClickSearchButton(view: View) {
 
-        val searchField = findViewById<EditText>(id.search_field)
+        val searchField = findViewById<EditText>(R.id.search_field)
         val imm: InputMethodManager = this.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
-        val viewPager = findViewById<ViewPager>(id.view_pager)
-        val randomLayoutsFlipper = findViewById<ViewFlipper>(id.random_layouts_flipper)
-        val ratingLayoutsFlipper = findViewById<ViewFlipper>(id.rating_layouts_flipper)
-        val clanLayoutsFlipper = findViewById<ViewFlipper>(id.clan_layouts_flipper)
-        val tanksLayoutsFlipper = findViewById<ViewFlipper>(id.tanks_layouts_flipper)
+        val viewPager = findViewById<ViewPager>(R.id.view_pager)
+        val randomLayoutsFlipper = findViewById<ViewFlipper>(R.id.random_layouts_flipper)
+        val ratingLayoutsFlipper = findViewById<ViewFlipper>(R.id.rating_layouts_flipper)
+        val clanLayoutsFlipper = findViewById<ViewFlipper>(R.id.clan_layouts_flipper)
+        val tanksLayoutsFlipper = findViewById<ViewFlipper>(R.id.tanks_layouts_flipper)
 
-        val randomDetailsButtonView = findViewById<View>(id.random_details_button)
-        val randomDetailsBack = findViewById<View>(id.random_details_back)
-        val randomSessionsButtonView = findViewById<View>(id.random_sessions_button)
-        val randomSessionStatButton = findViewById<View>(id.random_session_stat_button)
-        val ratingDetailsButtonView = findViewById<View>(id.rating_details_button)
-        val ratingDetailsBack = findViewById<View>(id.rating_details_back)
-        val clanMembersButton = findViewById<View>(id.clan_members_button)
-        val clanMembersListBackView = findViewById<View>(id.clan_members_back)
-        val tanksDetailsBack = findViewById<View>(id.tanks_details_back)
-        val tanksList = findViewById<ListView>(id.tanks_list)
-        val tanksFilters = findViewById<View>(id.tanks_filters)
+        val randomDetailsButtonView = findViewById<View>(R.id.random_details_button)
+        val randomDetailsBack = findViewById<View>(R.id.random_details_back)
+        val randomSessionsButtonView = findViewById<View>(R.id.random_sessions_button)
+        val randomSessionStatButton = findViewById<View>(R.id.random_session_stat_button)
+        val ratingDetailsButtonView = findViewById<View>(R.id.rating_details_button)
+        val ratingDetailsBack = findViewById<View>(R.id.rating_details_back)
+        val clanMembersButton = findViewById<View>(R.id.clan_members_button)
+        val clanMembersListBackView = findViewById<View>(R.id.clan_members_back)
+        val tanksDetailsBack = findViewById<View>(R.id.tanks_details_back)
+        val tanksList = findViewById<ListView>(R.id.tanks_list)
+        val tanksFilters = findViewById<View>(R.id.tanks_filters)
 
-        val mainFlipper = findViewById<ViewFlipper>(id.main_layouts_flipper)
-        val searchButton = findViewById<View>(id.search_button)
-        val lastSearched = findViewById<View>(id.last_searched_flipper)
+        val mainFlipper = findViewById<ViewFlipper>(R.id.main_layouts_flipper)
+        val searchButton = findViewById<View>(R.id.search_button)
+        val lastSearched = findViewById<View>(R.id.last_searched_flipper)
 
         //
 
@@ -338,10 +337,10 @@ class MainActivity : AppCompatActivity() {
 
         // set params of tanksList
 
-        tanksList.emptyView = findViewById(id.item_nothing_found)
+        tanksList.emptyView = findViewById(R.id.item_nothing_found)
 
         val footer = View(this@MainActivity)
-        val width = InterfaceUtils.getX() - resources.getDimensionPixelSize(dimen.padding_very_big) * 2
+        val width = InterfaceUtils.getX() - resources.getDimensionPixelSize(R.dimen.padding_very_big) * 2
         footer.layoutParams = AbsListView.LayoutParams(width, (width * 0.15).toInt())
         tanksList.addFooterView(footer)
 
@@ -379,7 +378,7 @@ class MainActivity : AppCompatActivity() {
 
                         // create base list of tanks
 
-                        onClickApplyFilters(findViewById(id.tanks_apply_filters))
+                        onClickApplyFilters(findViewById(R.id.tanks_apply_filters))
                     }
                 } else {
                     runOnUiThread {
@@ -410,7 +409,7 @@ class MainActivity : AppCompatActivity() {
 
         // Shows/hides the settings layout
 
-        val mainLayoutsFlipper = findViewById<ViewFlipper>(id.main_layouts_flipper)
+        val mainLayoutsFlipper = findViewById<ViewFlipper>(R.id.main_layouts_flipper)
 
         if (!view.isActivated) {
 
@@ -438,36 +437,36 @@ class MainActivity : AppCompatActivity() {
 
         if (!view.isClickable) { return }
 
-        val tanksLayoutsFlipper = findViewById<ViewFlipper>(id.tanks_layouts_flipper)
-        val tanksList = findViewById<ListView>(id.tanks_list)
+        val tanksLayoutsFlipper = findViewById<ViewFlipper>(R.id.tanks_layouts_flipper)
+        val tanksList = findViewById<ListView>(R.id.tanks_list)
 
-        val lt = findViewById<View>(id.tanks_type_lt)
-        val mt = findViewById<View>(id.tanks_type_mt)
-        val ht = findViewById<View>(id.tanks_type_ht)
-        val at = findViewById<View>(id.tanks_type_at)
+        val lt = findViewById<View>(R.id.tanks_type_lt)
+        val mt = findViewById<View>(R.id.tanks_type_mt)
+        val ht = findViewById<View>(R.id.tanks_type_ht)
+        val at = findViewById<View>(R.id.tanks_type_at)
 
-        val cn = findViewById<View>(id.cn)
-        val eu = findViewById<View>(id.eu)
-        val fr = findViewById<View>(id.fr)
-        val gb = findViewById<View>(id.gb)
-        val de = findViewById<View>(id.de)
-        val jp = findViewById<View>(id.jp)
-        val other = findViewById<View>(id.other)
-        val us = findViewById<View>(id.us)
-        val su = findViewById<View>(id.su)
+        val cn = findViewById<View>(R.id.cn)
+        val eu = findViewById<View>(R.id.eu)
+        val fr = findViewById<View>(R.id.fr)
+        val gb = findViewById<View>(R.id.gb)
+        val de = findViewById<View>(R.id.de)
+        val jp = findViewById<View>(R.id.jp)
+        val other = findViewById<View>(R.id.other)
+        val us = findViewById<View>(R.id.us)
+        val su = findViewById<View>(R.id.su)
 
-        val i = findViewById<View>(id.tanks_tier_i)
-        val ii = findViewById<View>(id.tanks_tier_ii)
-        val iii = findViewById<View>(id.tanks_tier_iii)
-        val iv = findViewById<View>(id.tanks_tier_iv)
-        val v = findViewById<View>(id.tanks_tier_v)
-        val vi = findViewById<View>(id.tanks_tier_vi)
-        val vii = findViewById<View>(id.tanks_tier_vii)
-        val viii = findViewById<View>(id.tanks_tier_viii)
-        val ix = findViewById<View>(id.tanks_tier_ix)
-        val x = findViewById<View>(id.tanks_tier_x)
+        val i = findViewById<View>(R.id.tanks_tier_i)
+        val ii = findViewById<View>(R.id.tanks_tier_ii)
+        val iii = findViewById<View>(R.id.tanks_tier_iii)
+        val iv = findViewById<View>(R.id.tanks_tier_iv)
+        val v = findViewById<View>(R.id.tanks_tier_v)
+        val vi = findViewById<View>(R.id.tanks_tier_vi)
+        val vii = findViewById<View>(R.id.tanks_tier_vii)
+        val viii = findViewById<View>(R.id.tanks_tier_viii)
+        val ix = findViewById<View>(R.id.tanks_tier_ix)
+        val x = findViewById<View>(R.id.tanks_tier_x)
 
-        val tanksFilters = findViewById<FloatingActionButton>(id.tanks_filters)
+        val tanksFilters = findViewById<FloatingActionButton>(R.id.tanks_filters)
 
         InterfaceUtils.playCycledAnimation(
             view,
@@ -500,7 +499,7 @@ class MainActivity : AppCompatActivity() {
                 v1, v2 -> v1.efficiency.toDouble().compareTo(v2.efficiency.toDouble())
         }
 
-        val tanksSort = findViewById<RadioGroup>(id.tanks_sort)
+        val tanksSort = findViewById<RadioGroup>(R.id.tanks_sort)
         when (tanksSort.indexOfChild(findViewById(tanksSort.checkedRadioButtonId))) {
             0 -> {
                 Collections.sort(sortedVehicles, comparatorByBattles)
@@ -612,9 +611,9 @@ class MainActivity : AppCompatActivity() {
         }
         tanksList.adapter = VehicleAdapter(this, vehiclesToCreate)
 
-        val adView = findViewById<BannerAdView>(id.tanks_list_banner)
-        adUtils.setBanner(InterfaceUtils.getX() - resources.getDimensionPixelSize(dimen.padding_big), adView)
-        adView.updateLayoutParams<ConstraintLayout.LayoutParams> { bottomToBottom = id.tanks_list_layout }
+        val adView = findViewById<BannerAdView>(R.id.tanks_list_banner)
+        adUtils.setBanner(InterfaceUtils.getX() - resources.getDimensionPixelSize(R.dimen.padding_big), adView)
+        adView.updateLayoutParams<ConstraintLayout.LayoutParams> { bottomToBottom = R.id.tanks_list_layout }
 
     }
 
@@ -661,11 +660,11 @@ class MainActivity : AppCompatActivity() {
                         if (BuildConfig.VERSION_CODE in minimalVersionCodeServer until versionCodeServer) {
 
                             MaterialAlertDialogBuilder(this@MainActivity)
-                                .setTitle(this@MainActivity.getString(string.update_available))
-                                .setMessage(this@MainActivity.getString(string.update_available_desc))
+                                .setTitle(this@MainActivity.getString(R.string.update_available))
+                                .setMessage(this@MainActivity.getString(R.string.update_available_desc))
                                 .setCancelable(false)
                                 .setNegativeButton(this@MainActivity.getString(android.R.string.cancel)) { _: DialogInterface?, _: Int -> }
-                                .setPositiveButton(this@MainActivity.getString(string.update)) { _: DialogInterface?, _: Int -> Runnable {
+                                .setPositiveButton(this@MainActivity.getString(R.string.update)) { _: DialogInterface?, _: Int -> Runnable {
 
                                     try {
                                         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
@@ -681,11 +680,11 @@ class MainActivity : AppCompatActivity() {
                         } else if (BuildConfig.VERSION_CODE < minimalVersionCodeServer) {
 
                             MaterialAlertDialogBuilder(this@MainActivity)
-                                .setTitle(this@MainActivity.getString(string.update_available))
-                                .setMessage(this@MainActivity.getString(string.update_available_desc))
+                                .setTitle(this@MainActivity.getString(R.string.update_available))
+                                .setMessage(this@MainActivity.getString(R.string.update_available_desc))
                                 .setCancelable(false)
                                 .setPositiveButton(
-                                    this@MainActivity.getString(string.update)
+                                    this@MainActivity.getString(R.string.update)
                                 ) { _: DialogInterface?, _: Int -> Runnable {
 
                                     try {
@@ -717,7 +716,7 @@ class MainActivity : AppCompatActivity() {
      */
     private suspend fun getID(): Job  {
         userID = ""
-        val searchField = findViewById<EditText>(id.search_field)
+        val searchField = findViewById<EditText>(R.id.search_field)
 
         return CoroutineScope(Dispatchers.IO).launch {
 
@@ -751,8 +750,8 @@ class MainActivity : AppCompatActivity() {
                         userID = "error"
                         InterfaceUtils.createErrorAlertDialog(
                             this@MainActivity,
-                            getString(string.error),
-                            getString(string.nickname_not_found)
+                            getString(R.string.error),
+                            getString(R.string.nickname_not_found)
                         )
                     } else {
                         userID = userIDList.substringAfter("\"account_id\": ").substringBefore("\n")
@@ -810,8 +809,8 @@ class MainActivity : AppCompatActivity() {
                             val code = prettyJson1.substringAfter("\"code\": ").substringBefore(",")
                             Toast.makeText(applicationContext, "Error $code: $message", Toast.LENGTH_SHORT).show()
 
-                            findViewById<ViewFlipper>(id.main_layouts_flipper).displayedChild = Constants.MainViewFlipperItems.ENTER_NICKNAME
-                            findViewById<View>(id.settings_button).isActivated = false
+                            findViewById<ViewFlipper>(R.id.main_layouts_flipper).displayedChild = Constants.MainViewFlipperItems.ENTER_NICKNAME
+                            findViewById<View>(R.id.settings_button).isActivated = false
 
                         } else {
 
@@ -825,18 +824,18 @@ class MainActivity : AppCompatActivity() {
 
                             //
 
-                            val searchField = findViewById<EditText>(id.search_field)
-                            val searchButton = findViewById<ImageButton>(id.search_button)
+                            val searchField = findViewById<EditText>(R.id.search_field)
+                            val searchButton = findViewById<ImageButton>(R.id.search_button)
 
                             searchField.setText(baseStatisticsData.nickname, TextView.BufferType.EDITABLE)
-                            searchField.doOnTextChanged { _, _, _, _ -> searchButton.setImageResource(drawable.ic_outline_person_search_36) }
-                            searchButton.setImageResource(drawable.ic_outline_change_circle_36)
+                            searchField.doOnTextChanged { _, _, _, _ -> searchButton.setImageResource(R.drawable.ic_outline_person_search_36) }
+                            searchButton.setImageResource(R.drawable.ic_outline_change_circle_36)
 
-                            findViewById<TextView>(id.text_nick).text = baseStatisticsData.nickname
-                            findViewById<TextView>(id.rating_text_nick).text = baseStatisticsData.nickname
+                            findViewById<TextView>(R.id.text_nick).text = baseStatisticsData.nickname
+                            findViewById<TextView>(R.id.rating_text_nick).text = baseStatisticsData.nickname
 
-                            findViewById<ViewFlipper>(id.main_layouts_flipper).displayedChild = Constants.MainViewFlipperItems.STATISTICS
-                            findViewById<View>(id.settings_button).isActivated = false
+                            findViewById<ViewFlipper>(R.id.main_layouts_flipper).displayedChild = Constants.MainViewFlipperItems.STATISTICS
+                            findViewById<View>(R.id.settings_button).isActivated = false
 
                         }
 
@@ -1087,7 +1086,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setSessionStatistics(prettyJson1: String, number: Int) {
 
-        val randomSessionsList = findViewById<ListView>(id.random_sessions_list)
+        val randomSessionsList = findViewById<ListView>(R.id.random_sessions_list)
 
         val files: ArrayList<String> = ArrayList(0)
 
@@ -1135,27 +1134,27 @@ class MainActivity : AppCompatActivity() {
                 if (i == number) {
                     Toast.makeText(
                         this@MainActivity,
-                        getString(string.delete_select),
+                        getString(R.string.delete_select),
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
                     val alertDialog = MaterialAlertDialogBuilder(this@MainActivity)
-                    alertDialog.setTitle(getString(string.delete))
-                    alertDialog.setMessage(getString(string.delete_alert))
+                    alertDialog.setTitle(getString(R.string.delete))
+                    alertDialog.setMessage(getString(R.string.delete_alert))
                     alertDialog.setPositiveButton(
-                        getString(string.delete)
+                        getString(R.string.delete)
                     ) { _: DialogInterface?, _: Int ->
                         if (File(files[i]).delete()) {
                             Toast.makeText(
                                 this@MainActivity,
-                                this@MainActivity.getString(string.delete_successfully),
+                                this@MainActivity.getString(R.string.delete_successfully),
                                 Toast.LENGTH_SHORT
                             ).show()
                             setSessionStatistics(prettyJson1, i)
                         } else {
                             Toast.makeText(
                                 this@MainActivity,
-                                this@MainActivity.getString(string.delete_failed),
+                                this@MainActivity.getString(R.string.delete_failed),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
@@ -1206,19 +1205,19 @@ class MainActivity : AppCompatActivity() {
      * Sets the background for the region selection buttons, change region in [service]
      */
     private fun setRegion() {
-        findViewById<EditText>(id.search_field).setText("", TextView.BufferType.EDITABLE)
+        findViewById<EditText>(R.id.search_field).setText("", TextView.BufferType.EDITABLE)
         when (preferences.getString("region", "notSpecified")) {
             "notSpecified" -> {
 
                 MaterialAlertDialogBuilder(this@MainActivity)
-                    .setTitle(this@MainActivity.getString(string.terms_of_service))
-                    .setMessage(this@MainActivity.getString(string.terms_of_service_desc))
+                    .setTitle(this@MainActivity.getString(R.string.terms_of_service))
+                    .setMessage(this@MainActivity.getString(R.string.terms_of_service_desc))
                     .setCancelable(false)
-                    .setNegativeButton(this@MainActivity.getString(string.exit)) { _: DialogInterface?, _: Int -> Runnable {
+                    .setNegativeButton(this@MainActivity.getString(R.string.exit)) { _: DialogInterface?, _: Int -> Runnable {
                         finish()
                     }.run()
                     }
-                    .setPositiveButton(this@MainActivity.getString(string.accept)) { _: DialogInterface?, _: Int -> Runnable {
+                    .setPositiveButton(this@MainActivity.getString(R.string.accept)) { _: DialogInterface?, _: Int -> Runnable {
                         preferences.edit().putString("region", "ru").apply()
                     }.run()
                     }
@@ -1285,31 +1284,31 @@ class MainActivity : AppCompatActivity() {
                 it.toFile().toString().substringAfterLast(".") == preferences.getString("region", "notSpecified")
             ) { lastFile = it.toFile() } }
 
-        val lastSearchedFlipper = findViewById<ViewFlipper>(id.last_searched_flipper)
-        val enterNicknameText = findViewById<TextView>(id.enter_nickname_text)
+        val lastSearchedFlipper = findViewById<ViewFlipper>(R.id.last_searched_flipper)
+        val enterNicknameText = findViewById<TextView>(R.id.enter_nickname_text)
 
         if (lastFile != File("")) {
             lastSearchedFlipper.displayedChild = 0
 
-            val lastSearchedName = findViewById<TextView>(id.last_searched_name)
-            val lastSearchedInfo = findViewById<TextView>(id.last_searched_info)
+            val lastSearchedName = findViewById<TextView>(R.id.last_searched_name)
+            val lastSearchedInfo = findViewById<TextView>(R.id.last_searched_info)
 
             lastSearchedName.text = lastFile.readText().substringAfter("\"nickname\": \"").substringBefore("\"")
-            val lastSearchedInfoText = getString(string.last_search) + ParseUtils.parseTime(
+            val lastSearchedInfoText = getString(R.string.last_search) + ParseUtils.parseTime(
                 (lastFile.lastModified() / 1000).toString()
             )
             lastSearchedInfo.text = lastSearchedInfoText
-            enterNicknameText.setText(string.enter_nickname_or_select)
+            enterNicknameText.setText(R.string.enter_nickname_or_select)
 
             lastSearchedFlipper.setOnClickListener {
-                findViewById<EditText>(id.search_field).setText(lastFile.readText().substringAfter("\"nickname\": \"").substringBefore("\""), TextView.BufferType.EDITABLE)
-                onClickSearchButton(findViewById(id.search_button))
+                findViewById<EditText>(R.id.search_field).setText(lastFile.readText().substringAfter("\"nickname\": \"").substringBefore("\""), TextView.BufferType.EDITABLE)
+                onClickSearchButton(findViewById(R.id.search_button))
             }
 
         } else {
 
             lastSearchedFlipper.displayedChild = 1
-            enterNicknameText.setText(string.enter_nickname)
+            enterNicknameText.setText(R.string.enter_nickname)
 
         }
 

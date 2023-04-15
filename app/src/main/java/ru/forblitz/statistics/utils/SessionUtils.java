@@ -8,8 +8,7 @@ import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 
-import ru.forblitz.statistics.R.id;
-import ru.forblitz.statistics.R.string;
+import ru.forblitz.statistics.R;
 import ru.forblitz.statistics.data.StatisticsData;
 import ru.forblitz.statistics.data.StatisticsSet;
 
@@ -23,23 +22,23 @@ public class SessionUtils {
      */
     public static void hide(Activity activity) {
 
-        View textBattlesSessionInfo = activity.findViewById(id.text_battles_session_info);
-        View textWinsSessionInfo = activity.findViewById(id.text_win_rate_session_info);
-        View textDamageSessionInfo = activity.findViewById(id.text_average_damage_session_info);
-        View textEfficiencySessionInfo = activity.findViewById(id.text_efficiency_session_info);
-        View textSurvivedSessionInfo = activity.findViewById(id.text_survived_session_info);
-        View textHitsFromShotsSessionInfo = activity.findViewById(id.text_hits_from_shots_session_info);
-        View textBattlesRatingSessionInfo = activity.findViewById(id.rating_text_battles_session_info);
-        View textWinsRatingSessionInfo = activity.findViewById(id.rating_text_win_rate_session_info);
-        View textDamageRatingSessionInfo = activity.findViewById(id.rating_text_average_damage_session_info);
-        View textEfficiencyRatingSessionInfo = activity.findViewById(id.rating_text_efficiency_session_info);
-        View textSurvivedRatingSessionInfo = activity.findViewById(id.rating_text_survived_session_info);
-        View textHitsFromShotsRatingSessionInfo = activity.findViewById(id.rating_text_hits_from_shots_session_info);
+        View textBattlesSessionInfo = activity.findViewById(R.id.text_battles_session_info);
+        View textWinsSessionInfo = activity.findViewById(R.id.text_win_rate_session_info);
+        View textDamageSessionInfo = activity.findViewById(R.id.text_average_damage_session_info);
+        View textEfficiencySessionInfo = activity.findViewById(R.id.text_efficiency_session_info);
+        View textSurvivedSessionInfo = activity.findViewById(R.id.text_survived_session_info);
+        View textHitsFromShotsSessionInfo = activity.findViewById(R.id.text_hits_from_shots_session_info);
+        View textBattlesRatingSessionInfo = activity.findViewById(R.id.rating_text_battles_session_info);
+        View textWinsRatingSessionInfo = activity.findViewById(R.id.rating_text_win_rate_session_info);
+        View textDamageRatingSessionInfo = activity.findViewById(R.id.rating_text_average_damage_session_info);
+        View textEfficiencyRatingSessionInfo = activity.findViewById(R.id.rating_text_efficiency_session_info);
+        View textSurvivedRatingSessionInfo = activity.findViewById(R.id.rating_text_survived_session_info);
+        View textHitsFromShotsRatingSessionInfo = activity.findViewById(R.id.rating_text_hits_from_shots_session_info);
 
-        View randomSessionsButtonView = activity.findViewById(id.random_sessions_button);
-        View randomSessionsViewView = activity.findViewById(id.random_sessions_view);
-        View randomSessionStatButtonView = activity.findViewById(id.random_session_stat_button);
-        View randomSessionStatViewView = activity.findViewById(id.random_session_stat_view);
+        View randomSessionsButtonView = activity.findViewById(R.id.random_sessions_button);
+        View randomSessionsViewView = activity.findViewById(R.id.random_sessions_view);
+        View randomSessionStatButtonView = activity.findViewById(R.id.random_session_stat_button);
+        View randomSessionStatViewView = activity.findViewById(R.id.random_session_stat_view);
 
         textBattlesSessionInfo.setVisibility(View.INVISIBLE);
         textWinsSessionInfo.setVisibility(View.INVISIBLE);
@@ -67,23 +66,23 @@ public class SessionUtils {
      */
     public static void show(Activity activity) {
 
-        View textBattlesSessionInfo = activity.findViewById(id.text_battles_session_info);
-        View textWinsSessionInfo = activity.findViewById(id.text_win_rate_session_info);
-        View textDamageSessionInfo = activity.findViewById(id.text_average_damage_session_info);
-        View textEfficiencySessionInfo = activity.findViewById(id.text_efficiency_session_info);
-        View textSurvivedSessionInfo = activity.findViewById(id.text_survived_session_info);
-        View textHitsFromShotsSessionInfo = activity.findViewById(id.text_hits_from_shots_session_info);
-        View textBattlesRatingSessionInfo = activity.findViewById(id.rating_text_battles_session_info);
-        View textWinsRatingSessionInfo = activity.findViewById(id.rating_text_win_rate_session_info);
-        View textDamageRatingSessionInfo = activity.findViewById(id.rating_text_average_damage_session_info);
-        View textEfficiencyRatingSessionInfo = activity.findViewById(id.rating_text_efficiency_session_info);
-        View textSurvivedRatingSessionInfo = activity.findViewById(id.rating_text_survived_session_info);
-        View textHitsFromShotsRatingSessionInfo = activity.findViewById(id.rating_text_hits_from_shots_session_info);
+        View textBattlesSessionInfo = activity.findViewById(R.id.text_battles_session_info);
+        View textWinsSessionInfo = activity.findViewById(R.id.text_win_rate_session_info);
+        View textDamageSessionInfo = activity.findViewById(R.id.text_average_damage_session_info);
+        View textEfficiencySessionInfo = activity.findViewById(R.id.text_efficiency_session_info);
+        View textSurvivedSessionInfo = activity.findViewById(R.id.text_survived_session_info);
+        View textHitsFromShotsSessionInfo = activity.findViewById(R.id.text_hits_from_shots_session_info);
+        View textBattlesRatingSessionInfo = activity.findViewById(R.id.rating_text_battles_session_info);
+        View textWinsRatingSessionInfo = activity.findViewById(R.id.rating_text_win_rate_session_info);
+        View textDamageRatingSessionInfo = activity.findViewById(R.id.rating_text_average_damage_session_info);
+        View textEfficiencyRatingSessionInfo = activity.findViewById(R.id.rating_text_efficiency_session_info);
+        View textSurvivedRatingSessionInfo = activity.findViewById(R.id.rating_text_survived_session_info);
+        View textHitsFromShotsRatingSessionInfo = activity.findViewById(R.id.rating_text_hits_from_shots_session_info);
 
-        View randomSessionsButtonView = activity.findViewById(id.random_sessions_button);
-        View randomSessionsViewView = activity.findViewById(id.random_sessions_view);
-        View randomSessionStatButtonView = activity.findViewById(id.random_session_stat_button);
-        View randomSessionStatViewView = activity.findViewById(id.random_session_stat_view);
+        View randomSessionsButtonView = activity.findViewById(R.id.random_sessions_button);
+        View randomSessionsViewView = activity.findViewById(R.id.random_sessions_view);
+        View randomSessionStatButtonView = activity.findViewById(R.id.random_session_stat_button);
+        View randomSessionStatViewView = activity.findViewById(R.id.random_session_stat_view);
 
         textBattlesSessionInfo.setVisibility(View.VISIBLE);
         textWinsSessionInfo.setVisibility(View.VISIBLE);
@@ -111,12 +110,12 @@ public class SessionUtils {
      */
     public static void hideBase(Activity activity) {
 
-        View textBattlesSessionInfo = activity.findViewById(id.text_battles_session_info);
-        View textWinsSessionInfo = activity.findViewById(id.text_win_rate_session_info);
-        View textDamageSessionInfo = activity.findViewById(id.text_average_damage_session_info);
-        View textEfficiencySessionInfo = activity.findViewById(id.text_efficiency_session_info);
-        View textSurvivedSessionInfo = activity.findViewById(id.text_survived_session_info);
-        View textHitsFromShotsSessionInfo = activity.findViewById(id.text_hits_from_shots_session_info);
+        View textBattlesSessionInfo = activity.findViewById(R.id.text_battles_session_info);
+        View textWinsSessionInfo = activity.findViewById(R.id.text_win_rate_session_info);
+        View textDamageSessionInfo = activity.findViewById(R.id.text_average_damage_session_info);
+        View textEfficiencySessionInfo = activity.findViewById(R.id.text_efficiency_session_info);
+        View textSurvivedSessionInfo = activity.findViewById(R.id.text_survived_session_info);
+        View textHitsFromShotsSessionInfo = activity.findViewById(R.id.text_hits_from_shots_session_info);
 
         textBattlesSessionInfo.setVisibility(View.INVISIBLE);
         textWinsSessionInfo.setVisibility(View.INVISIBLE);
@@ -133,12 +132,12 @@ public class SessionUtils {
      */
     public static void hideRating(Activity activity) {
 
-        View textBattlesRatingSessionInfo = activity.findViewById(id.rating_text_battles_session_info);
-        View textWinsRatingSessionInfo = activity.findViewById(id.rating_text_win_rate_session_info);
-        View textDamageRatingSessionInfo = activity.findViewById(id.rating_text_average_damage_session_info);
-        View textEfficiencyRatingSessionInfo = activity.findViewById(id.rating_text_efficiency_session_info);
-        View textSurvivedRatingSessionInfo = activity.findViewById(id.rating_text_survived_session_info);
-        View textHitsFromShotsRatingSessionInfo = activity.findViewById(id.rating_text_hits_from_shots_session_info);
+        View textBattlesRatingSessionInfo = activity.findViewById(R.id.rating_text_battles_session_info);
+        View textWinsRatingSessionInfo = activity.findViewById(R.id.rating_text_win_rate_session_info);
+        View textDamageRatingSessionInfo = activity.findViewById(R.id.rating_text_average_damage_session_info);
+        View textEfficiencyRatingSessionInfo = activity.findViewById(R.id.rating_text_efficiency_session_info);
+        View textSurvivedRatingSessionInfo = activity.findViewById(R.id.rating_text_survived_session_info);
+        View textHitsFromShotsRatingSessionInfo = activity.findViewById(R.id.rating_text_hits_from_shots_session_info);
 
         textBattlesRatingSessionInfo.setVisibility(View.INVISIBLE);
         textWinsRatingSessionInfo.setVisibility(View.INVISIBLE);
@@ -154,8 +153,8 @@ public class SessionUtils {
      * @param activity required to get resources
      */
     public static void hideSelect(Activity activity) {
-        View randomSessionsButtonView = activity.findViewById(id.random_sessions_button);
-        View randomSessionsView = activity.findViewById(id.random_sessions_view);
+        View randomSessionsButtonView = activity.findViewById(R.id.random_sessions_button);
+        View randomSessionsView = activity.findViewById(R.id.random_sessions_view);
         randomSessionsButtonView.setVisibility(View.GONE);
         randomSessionsView.setVisibility(View.VISIBLE);
     }
@@ -165,8 +164,8 @@ public class SessionUtils {
      * @param activity required to get resources
      */
     public static void showSelect(Activity activity) {
-        View randomSessionsButtonView = activity.findViewById(id.random_sessions_button);
-        View randomSessionsView = activity.findViewById(id.random_sessions_view);
+        View randomSessionsButtonView = activity.findViewById(R.id.random_sessions_button);
+        View randomSessionsView = activity.findViewById(R.id.random_sessions_view);
         randomSessionsButtonView.setVisibility(View.VISIBLE);
         randomSessionsView.setVisibility(View.GONE);
     }
@@ -256,19 +255,19 @@ public class SessionUtils {
     public static void set(Activity activity, StatisticsData baseStatisticsData, StatisticsData ratingStatisticsData, StatisticsData sessionBaseDifferencesStatisticsData, StatisticsData sessionRatingDifferencesStatisticsData) {
         from(activity, baseStatisticsData, ratingStatisticsData);
 
-        TextView textBattlesSessionInfo = activity.findViewById(id.text_battles_session_info);
-        TextView textWinRateSessionInfo = activity.findViewById(id.text_win_rate_session_info);
-        TextView textAverageDamageSessionInfo = activity.findViewById(id.text_average_damage_session_info);
-        TextView textEfficiencySessionInfo = activity.findViewById(id.text_efficiency_session_info);
-        TextView textSurvivedSessionInfo = activity.findViewById(id.text_survived_session_info);
-        TextView textHitsFromShotsSessionInfo = activity.findViewById(id.text_hits_from_shots_session_info);
+        TextView textBattlesSessionInfo = activity.findViewById(R.id.text_battles_session_info);
+        TextView textWinRateSessionInfo = activity.findViewById(R.id.text_win_rate_session_info);
+        TextView textAverageDamageSessionInfo = activity.findViewById(R.id.text_average_damage_session_info);
+        TextView textEfficiencySessionInfo = activity.findViewById(R.id.text_efficiency_session_info);
+        TextView textSurvivedSessionInfo = activity.findViewById(R.id.text_survived_session_info);
+        TextView textHitsFromShotsSessionInfo = activity.findViewById(R.id.text_hits_from_shots_session_info);
         
-        TextView textBattlesRatingSessionInfo = activity.findViewById(id.rating_text_battles_session_info);
-        TextView textWinRateRatingSessionInfo = activity.findViewById(id.rating_text_win_rate_session_info);
-        TextView textAverageDamageRatingSessionInfo = activity.findViewById(id.rating_text_average_damage_session_info);
-        TextView textEfficiencyRatingSessionInfo = activity.findViewById(id.rating_text_efficiency_session_info);
-        TextView textSurvivedRatingSessionInfo = activity.findViewById(id.rating_text_survived_session_info);
-        TextView textHitsFromShotsRatingSessionInfo = activity.findViewById(id.rating_text_hits_from_shots_session_info);
+        TextView textBattlesRatingSessionInfo = activity.findViewById(R.id.rating_text_battles_session_info);
+        TextView textWinRateRatingSessionInfo = activity.findViewById(R.id.rating_text_win_rate_session_info);
+        TextView textAverageDamageRatingSessionInfo = activity.findViewById(R.id.rating_text_average_damage_session_info);
+        TextView textEfficiencyRatingSessionInfo = activity.findViewById(R.id.rating_text_efficiency_session_info);
+        TextView textSurvivedRatingSessionInfo = activity.findViewById(R.id.rating_text_survived_session_info);
+        TextView textHitsFromShotsRatingSessionInfo = activity.findViewById(R.id.rating_text_hits_from_shots_session_info);
 
         if (Integer.parseInt(sessionBaseDifferencesStatisticsData.getBattles()) > 0) {
             
@@ -399,9 +398,9 @@ public class SessionUtils {
      * @param sessionRatingStatisticsData session rating statistics data
      */
     public static void to(Activity activity, StatisticsData baseStatisticsData, StatisticsData sessionBaseStatisticsData, StatisticsData ratingStatisticsData, StatisticsData sessionRatingStatisticsData) {
-        TextView randomSessionStatButton = activity.findViewById(id.random_session_stat_button);
-        ViewFlipper fragmentRandom = activity.findViewById(id.fragment_random);
-        ViewFlipper fragmentRating = activity.findViewById(id.fragment_rating);
+        TextView randomSessionStatButton = activity.findViewById(R.id.random_session_stat_button);
+        ViewFlipper fragmentRandom = activity.findViewById(R.id.fragment_random);
+        ViewFlipper fragmentRating = activity.findViewById(R.id.fragment_rating);
 
         fragmentRandom.startAnimation(fragmentRandom.getOutAnimation());
         fragmentRating.startAnimation(fragmentRating.getOutAnimation());
@@ -409,7 +408,7 @@ public class SessionUtils {
         new Handler().postDelayed(() -> {
             StatisticsSet.setBaseStatistics(activity, calculate(baseStatisticsData, sessionBaseStatisticsData));
             StatisticsSet.setRatingStatistics(activity, calculate(ratingStatisticsData, sessionRatingStatisticsData));
-            randomSessionStatButton.setText(activity.getString(string.from_session_stat));
+            randomSessionStatButton.setText(activity.getString(R.string.from_session_stat));
             randomSessionStatButton.setActivated(true);
         }, 125);
 
@@ -422,9 +421,9 @@ public class SessionUtils {
      * @param ratingStatisticsData current rating statistics data
      */
     public static void from(Activity activity, StatisticsData baseStatisticsData, StatisticsData ratingStatisticsData) {
-        TextView randomSessionStatButton = activity.findViewById(id.random_session_stat_button);
-        ViewFlipper fragmentRandom = activity.findViewById(id.fragment_random);
-        ViewFlipper fragmentRating = activity.findViewById(id.fragment_rating);
+        TextView randomSessionStatButton = activity.findViewById(R.id.random_session_stat_button);
+        ViewFlipper fragmentRandom = activity.findViewById(R.id.fragment_random);
+        ViewFlipper fragmentRating = activity.findViewById(R.id.fragment_rating);
 
         fragmentRandom.startAnimation(fragmentRandom.getOutAnimation());
         fragmentRating.startAnimation(fragmentRating.getOutAnimation());
@@ -432,7 +431,7 @@ public class SessionUtils {
         new Handler().postDelayed(() -> {
             StatisticsSet.setBaseStatistics(activity, baseStatisticsData);
             StatisticsSet.setRatingStatistics(activity, ratingStatisticsData);
-            randomSessionStatButton.setText(activity.getString(string.to_session_stat));
+            randomSessionStatButton.setText(activity.getString(R.string.to_session_stat));
             randomSessionStatButton.setActivated(false);
         }, 125);
 

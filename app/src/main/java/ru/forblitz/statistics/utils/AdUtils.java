@@ -21,8 +21,6 @@ import com.yandex.mobile.ads.interstitial.InterstitialAdEventListener;
 import java.util.HashMap;
 import java.util.Objects;
 
-import ru.forblitz.statistics.data.Constants;
-
 public class AdUtils {
 
     private final Context context;
@@ -42,7 +40,7 @@ public class AdUtils {
 
         if (!banners.containsKey(adView.getId())) {
             banners.put(adView.getId(), 0L);
-            adView.setAdUnitId(Constants.bannerAdUnitId);
+            adView.setAdUnitId(Objects.requireNonNull(Utils.getProperties("adUnitIds.properties", context)).getProperty("bannerAdUnitId"));
             adView.setAdSize(AdSize.stickySize(InterfaceUtils.pxToDp(context, width)));
         }
 
@@ -99,7 +97,7 @@ public class AdUtils {
             // Создание экземпляра InterstitialAd.
             InterstitialAd adView = new InterstitialAd(context);
 
-            adView.setAdUnitId(Constants.interstitialAdUnitId);
+            adView.setAdUnitId(Objects.requireNonNull(Utils.getProperties("adUnitIds.properties", context)).getProperty("interstitialAdUnitId"));
 
             // Создание объекта таргетирования рекламы.
             final AdRequest adRequest = new AdRequest.Builder().build();

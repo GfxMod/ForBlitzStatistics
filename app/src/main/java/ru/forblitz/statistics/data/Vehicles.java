@@ -62,11 +62,7 @@ public class Vehicles {
     @NonNull
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        for (Vehicle vehicle : list.values().toArray(new Vehicle[0])) {
-            result.append(vehicle).append("\n");
-        }
-        return result.toString();
+        return new Gson().toJson(this);
     }
 
     public void clear() {

@@ -3,6 +3,7 @@ package ru.forblitz.statistics.data;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 @Keep
@@ -48,17 +49,9 @@ public class SmallClanData {
     @NonNull
     @Override
     public String toString() {
-        String result = "";
-
-        result += "clanData = " + clanData + "\n";
-        result += "accountId = " + accountId + "\n";
-        result += "joinedAt = " + joinedAt + "\n";
-        result += "clanId = " + clanId + "\n";
-        result += "role = " + role + "\n";
-        result += "accountName = " + accountName + "\n";
-
-        return result;
+        return new Gson().toJson(this);
     }
+
 }
 
 @Keep
@@ -80,15 +73,7 @@ class ClanData {
     @NonNull
     @Override
     public String toString() {
-        String result = "";
-
-        result += "membersCount = " + membersCount + "\n";
-        result += "name = " + name + "\n";
-        result += "createdAt = " + createdAt + "\n";
-        result += "tag = " + tag + "\n";
-        result += "clanId = " + clanId + "\n";
-        result += "emblemSetId = " + emblemSetId + "\n";
-
-        return result;
+        return new Gson().toJson(this);
     }
+
 }

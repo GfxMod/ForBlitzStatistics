@@ -3,6 +3,7 @@ package ru.forblitz.statistics.data;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Arrays;
@@ -188,52 +189,7 @@ public class BigClanData {
     @NonNull
     @Override
     public String toString() {
-        String result = "";
-
-        result += "recruitingOptions.vehiclesLevel = " + recruitingOptions.vehiclesLevel + "\n";
-        result += "recruitingOptions.winsRatio = " + recruitingOptions.winsRatio + "\n";
-        result += "recruitingOptions.averageBattlesPerDay = " + recruitingOptions.averageBattlesPerDay + "\n";
-        result += "recruitingOptions.battles = " + recruitingOptions.battles + "\n";
-        result += "recruitingOptions.averageDamage = " + recruitingOptions.averageDamage + "\n";
-        result += "\n";
-        result += "membersCount = " + membersCount + "\n";
-        result += "name = " + name + "\n";
-        result += "creatorName = " + creatorName + "\n";
-        result += "createdAt = " + createdAt + "\n";
-        result += "tag = " + tag + "\n";
-        result += "updatedAt = " + updatedAt + "\n";
-        result += "recruitingPolicy = " + recruitingPolicy + "\n";
-        result += "leaderName = " + leaderName + "\n";
-        result += "\n";
-        result += "membersIds = " + Arrays.toString(membersIds) + "\n";
-        result += "\n";
-        result += "oldName = " + oldName + "\n";
-        result += "creatorId = " + creatorId + "\n";
-        result += "clanId = " + clanId + "\n";
-        result += "emblemSetId = " + emblemSetId + "\n";
-        result += "isClanDisbanded = " + isClanDisbanded + "\n";
-        result += "motto = " + motto + "\n";
-        result += "renamedAt = " + renamedAt + "\n";
-        result += "oldTag = " + oldTag + "\n";
-        result += "leaderId = " + leaderId + "\n";
-        result += "description = " + description + "\n";
-
-        Member[] membersArray = members.values().toArray(new Member[0]);
-
-        StringBuilder resultBuilder = new StringBuilder(result);
-        for (Member member : membersArray) {
-            resultBuilder
-                    .append(member.accountName).append(" (ID: ")
-                    .append(member.accountId)
-                    .append(", joined at ")
-                    .append(member.joinedAt)
-                    .append(") - ")
-                    .append(member.role)
-                    .append("\n");
-        }
-        result = resultBuilder.toString();
-
-        return result;
+        return new Gson().toJson(this);
     }
 
 }

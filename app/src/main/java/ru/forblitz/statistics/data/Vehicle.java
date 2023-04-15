@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import ru.forblitz.statistics.R;
@@ -287,15 +288,7 @@ public class Vehicle {
     @NonNull
     @Override
     public String toString() {
-        String result = data.toString();
-
-        result += "tankId: " + tankId + "\n";
-        result += "name: " + name + "\n";
-        result += "nation: " + nation + "\n";
-        result += "tier: " + tier + "\n";
-        result += "type: " + type + "\n";
-
-        return result;
+        return new Gson().toJson(this);
     }
 
 }

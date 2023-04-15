@@ -2,6 +2,7 @@ package ru.forblitz.statistics.data;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Locale;
@@ -286,58 +287,10 @@ public class StatisticsData {
         this.averageXp = String.format(Locale.US, "%.2f", Double.parseDouble(xp) / Double.parseDouble(battles) * 100);
     }
 
-    /**
-     * Returns a string representation of the object. In general, the
-     * {@code toString} method returns a string that
-     * "textually represents" this object. The result should
-     * be a concise but informative representation that is easy for a
-     * person to read.
-     * It is recommended that all subclasses override this method.
-     * <p>
-     * The {@code toString} method for class {@code Object}
-     * returns a string consisting of the name of the class of which the
-     * object is an instance, the at-sign character `{@code @}', and
-     * the unsigned hexadecimal representation of the hash code of the
-     * object. In other words, this method returns a string equal to the
-     * value of:
-     * <blockquote>
-     * <pre>
-     * getClass().getName() + '@' + Integer.toHexString(hashCode())
-     * </pre></blockquote>
-     *
-     * @return a string representation of the object.
-     */
     @NonNull
     @Override
     public String toString() {
-        String result = "-\n--STATISTICS DATA--\n";
-
-        result += "spotted: " + spotted + "\n";
-        result += "hits: " + hits + "\n";
-        result += "frags: " + frags + "\n";
-        result += "maxXp: " + maxXp + "\n";
-        result += "wins: " + wins + "\n";
-        result += "losses: " + losses + "\n";
-        result += "capturePoints: " + capturedPoints + "\n";
-        result += "battles: " + battles + "\n";
-        result += "damageDealt: " + damageDealt + "\n";
-        result += "damageReceived: " + damageReceived + "\n";
-        result += "shots: " + shots + "\n";
-        result += "frags8p: " + frags8p + "\n";
-        result += "xp: " + xp + "\n";
-        result += "winAndSurvived: " + winAndSurvived + "\n";
-        result += "survivedBattles: " + survivedBattles + "\n";
-        result += "maxFrags: " + maxFrags + "\n";
-        result += "droppedCapturePoints: " + droppedCapturePoints + "\n";
-        result += "nickname: " + nickname + "\n";
-
-        result += "winRate: " + winRate + "\n";
-        result += "averageDamage: " + averageDamage + "\n";
-        result += "efficiency: " + efficiency + "\n";
-        result += "survived: " + survived + "\n";
-        result += "hitsFromShots: : " + hitsFromShots + "\n";
-
-        return result;
+        return new Gson().toJson(this);
     }
 
 }

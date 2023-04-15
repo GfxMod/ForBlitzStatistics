@@ -1,9 +1,8 @@
 package ru.forblitz.statistics.data;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Locale;
@@ -12,8 +11,6 @@ import java.util.Locale;
  * Object containing all the main statistical data
  */
 public class StatisticsData {
-
-    private String json = "0";
 
     @SerializedName("spotted")
     private String spotted = "0";
@@ -58,35 +55,6 @@ public class StatisticsData {
     private String survived = "0";
     private String hitsFromShots = "0";
     private String averageXp = "0";
-
-    public String getJson() {
-        return this.json;
-    }
-
-    public void setJson(String json) {
-        this.json = json;
-        this.spotted = parseValueFromJson("spotted");
-        this.hits = parseValueFromJson("hits");
-        this.frags = parseValueFromJson("frags");
-        this.maxXp = parseValueFromJson("max_xp");
-        this.wins = parseValueFromJson("wins");
-        this.losses = parseValueFromJson("losses");
-        this.capturedPoints = parseValueFromJson("capture_points");
-        this.battles = parseValueFromJson("battles");
-        this.damageDealt = parseValueFromJson("damage_dealt");
-        this.damageReceived = parseValueFromJson("damage_received");
-        this.shots = parseValueFromJson("shots");
-        this.frags8p = parseValueFromJson("frags8p");
-        this.xp = parseValueFromJson("xp");
-        this.winAndSurvived = parseValueFromJson("win_and_survived");
-        this.survivedBattles = parseValueFromJson("survived_battles");
-        this.maxFrags = parseValueFromJson("max_frags");
-        this.droppedCapturePoints = parseValueFromJson("dropped_capture_points");
-        this.nickname = parseValueFromJson("nickname");
-
-        this.calculate();
-
-    }
 
     public String getSpotted() {
         return this.spotted;
@@ -281,44 +249,9 @@ public class StatisticsData {
     }
 
     /**
-     * Gets value of the parameter from json
-     * @param param the name of the parameter whose value should be found
-     * @return the value of the parameter
-     */
-    @NonNull
-    private String parseValueFromJson(String param) {
-
-        String currentJson = json.substring(json.indexOf(param + "\": ") + param.length() + 3);
-
-        try {
-
-            if (currentJson.indexOf(",") < currentJson.indexOf("\n") && currentJson.contains(",")) {
-                String t = currentJson.substring(0, currentJson.indexOf(","));
-                if (t.contains("\"")) { t = t.substring(1, t.length() - 1); }
-
-                return t;
-            } else {
-                String t = currentJson.substring(0, currentJson.indexOf("\n"));
-                if (t.contains("\"")) { t = t.substring(1, t.length() - 1); }
-
-                return t;
-            }
-
-        } catch (Exception e) {
-            Log.e("Parsing error", e.getMessage());
-            Log.d("param", param);
-            Log.d("json", json);
-            Log.d("currentJson", currentJson);
-            return "0";
-        }
-
-    }
-
-    /**
      * Clear all values
      */
     public void clear() {
-        this.json = "0";
         this.spotted = "0";
         this.hits = "0";
         this.frags = "0";
@@ -354,58 +287,10 @@ public class StatisticsData {
         this.averageXp = String.format(Locale.US, "%.2f", Double.parseDouble(xp) / Double.parseDouble(battles) * 100);
     }
 
-    /**
-     * Returns a string representation of the object. In general, the
-     * {@code toString} method returns a string that
-     * "textually represents" this object. The result should
-     * be a concise but informative representation that is easy for a
-     * person to read.
-     * It is recommended that all subclasses override this method.
-     * <p>
-     * The {@code toString} method for class {@code Object}
-     * returns a string consisting of the name of the class of which the
-     * object is an instance, the at-sign character `{@code @}', and
-     * the unsigned hexadecimal representation of the hash code of the
-     * object. In other words, this method returns a string equal to the
-     * value of:
-     * <blockquote>
-     * <pre>
-     * getClass().getName() + '@' + Integer.toHexString(hashCode())
-     * </pre></blockquote>
-     *
-     * @return a string representation of the object.
-     */
     @NonNull
     @Override
     public String toString() {
-        String result = "-\n--STATISTICS DATA--\n";
-
-        result += "spotted: " + spotted + "\n";
-        result += "hits: " + hits + "\n";
-        result += "frags: " + frags + "\n";
-        result += "maxXp: " + maxXp + "\n";
-        result += "wins: " + wins + "\n";
-        result += "losses: " + losses + "\n";
-        result += "capturePoints: " + capturedPoints + "\n";
-        result += "battles: " + battles + "\n";
-        result += "damageDealt: " + damageDealt + "\n";
-        result += "damageReceived: " + damageReceived + "\n";
-        result += "shots: " + shots + "\n";
-        result += "frags8p: " + frags8p + "\n";
-        result += "xp: " + xp + "\n";
-        result += "winAndSurvived: " + winAndSurvived + "\n";
-        result += "survivedBattles: " + survivedBattles + "\n";
-        result += "maxFrags: " + maxFrags + "\n";
-        result += "droppedCapturePoints: " + droppedCapturePoints + "\n";
-        result += "nickname: " + nickname + "\n";
-
-        result += "winRate: " + winRate + "\n";
-        result += "averageDamage: " + averageDamage + "\n";
-        result += "efficiency: " + efficiency + "\n";
-        result += "survived: " + survived + "\n";
-        result += "hitsFromShots: : " + hitsFromShots + "\n";
-
-        return result;
+        return new Gson().toJson(this);
     }
 
 }

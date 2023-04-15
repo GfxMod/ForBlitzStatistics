@@ -3,4 +3,5 @@
     <dimen name="padding">4dp</dimen>
     <dimen name="padding_big">7dp</dimen>
     <dimen name="padding_very_big">11dp</dimen>
+    <dimen name="padding_giant">15dp</dimen>
 </resources>

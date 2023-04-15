@@ -307,6 +307,9 @@
       </map>
     </option>
   </component>
+  <component name="EntryPointsManager">
+    <pattern value="ru.forblitz.statistics.api.ApiService" method="getFullClanInfo" />
+  </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$" />
   </component>

@@ -2,6 +2,7 @@ package ru.forblitz.statistics.data;
 
 import android.util.Log;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
@@ -10,16 +11,17 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Vehicles {
 
-    private final ArrayList<Vehicle> list = new ArrayList<>();
+    private final HashMap<String, Vehicle> list = new HashMap<>();
 
     private ApiResponse apiResponse;
 
-    public ArrayList<Vehicle> getList() {
+    public HashMap<String, Vehicle> getList() {
         return list;
     }
 
@@ -33,7 +35,7 @@ public class Vehicles {
         for (Map.Entry<String, Vehicle> entry : apiResponse.data.entrySet()) {
             Vehicle vehicle = entry.getValue();
             vehicle.setTankId(entry.getKey());
-            list.add(vehicle);
+            list.put(entry.getKey(), vehicle);
         }
 
     }
@@ -42,13 +44,17 @@ public class Vehicles {
 
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
         JsonObject data = jsonObject.getAsJsonObject("data");
-        JsonArray dataArray = data.entrySet().iterator().next().getValue().getAsJsonArray();
+        try {
+            JsonArray dataArray = data.entrySet().iterator().next().getValue().getAsJsonArray();
 
-        for (JsonElement element : dataArray) {
-            JsonObject vehicleObject = element.getAsJsonObject();
-            Vehicle vehicle = new Gson().fromJson(vehicleObject, Vehicle.class);
-            list.get(indexOf(vehicle.getTankId())).setData(vehicle.getData());
-            list.get(indexOf(vehicle.getTankId())).calculate();
+            for (JsonElement element : dataArray) {
+                JsonObject vehicleObject = element.getAsJsonObject();
+                Vehicle vehicle = new Gson().fromJson(vehicleObject, Vehicle.class);
+                Objects.requireNonNull(list.get(vehicle.getTankId())).setData(vehicle.getData());
+                Objects.requireNonNull(list.get(vehicle.getTankId())).calculate();
+            }
+        } catch (java.util.NoSuchElementException e) {
+            Log.e(e.toString(), "no element in current vehicles statistics JSON");
         }
 
     }
@@ -56,36 +62,24 @@ public class Vehicles {
     @NonNull
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        for (Vehicle vehicle : list) {
-            result.append(vehicle).append("\n");
-        }
-        return result.toString();
-    }
-
-    public int indexOf(String tankId) {
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getTankId().equals(tankId)) {
-                return i;
-            }
-        }
-        return -1;
+        return new Gson().toJson(this);
     }
 
     public void clear() {
-        for (Vehicle vehicle : list) {
+        for (Vehicle vehicle : list.values().toArray(new Vehicle[0])) {
             vehicle.clear();
         }
     }
 
 }
 
+@Keep
 class ApiResponse {
-    String status;
     Meta meta;
     Map<String, Vehicle> data;
 }
 
+@Keep
 class Meta {
     int count;
 }

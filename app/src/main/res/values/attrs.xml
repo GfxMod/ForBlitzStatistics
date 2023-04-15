@@ -5,8 +5,26 @@
     <!-- **************************************************************** -->
     <eat-comment />
 
+    <attr name="button_checked" format="reference" />
+    <attr name="button_unchecked" format="reference" />
+    <attr name="main_dimension">
+        <!-- Defines an horizontal widget. -->
+        <enum name="horizontal" value="0" />
+        <!-- Defines a vertical widget. -->
+        <enum name="vertical" value="1" />
+    </attr>
+
     <declare-styleable name="AnimatedImageButton">
-        <attr name="button_checked" format="reference|color" />
-        <attr name="button_unchecked" format="reference|color" />
+        <attr name="button_checked" />
+        <attr name="button_unchecked" />
     </declare-styleable>
+    <declare-styleable name="AnimatedRadioButton">
+        <attr name="button_checked" />
+        <attr name="button_unchecked" />
+        <attr name="main_dimension" />
+    </declare-styleable>
+    <declare-styleable name="SquareImageButton">
+        <attr name="main_dimension" />
+    </declare-styleable>
+
 </resources>

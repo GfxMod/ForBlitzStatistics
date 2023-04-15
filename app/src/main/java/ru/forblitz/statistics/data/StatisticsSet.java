@@ -4,7 +4,8 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.widget.TextView;
 
-import ru.forblitz.statistics.R.id;
+import ru.forblitz.statistics.R;
+import ru.forblitz.statistics.utils.InterfaceUtils;
 
 
 public class StatisticsSet {
@@ -16,29 +17,29 @@ public class StatisticsSet {
      */
     public static void setBaseStatistics(Activity activity, StatisticsData statistics) {
 
-        TextView battlesView = activity.findViewById(id.text_battles_info);
-        TextView winRateView = activity.findViewById(id.text_wins_info);
-        TextView averageDamageView = activity.findViewById(id.text_damage_info);
-        TextView efficiencyView = activity.findViewById(id.text_efficiency_info);
-        TextView survivedView = activity.findViewById(id.text_survived_info);
-        TextView hitsFromShotsView = activity.findViewById(id.text_hits_from_shots_info);
+        TextView battlesView = activity.findViewById(R.id.text_battles_info);
+        TextView winRateView = activity.findViewById(R.id.text_wins_info);
+        TextView averageDamageView = activity.findViewById(R.id.text_damage_info);
+        TextView efficiencyView = activity.findViewById(R.id.text_efficiency_info);
+        TextView survivedView = activity.findViewById(R.id.text_survived_info);
+        TextView hitsFromShotsView = activity.findViewById(R.id.text_hits_from_shots_info);
 
-        TextView randomWinsView = activity.findViewById(id.random_wins);
-        TextView randomLossesView = activity.findViewById(id.random_losses);
-        TextView randomWinAndSurviveView = activity.findViewById(id.random_win_and_survive);
-        TextView randomSurviveView = activity.findViewById(id.random_survive);
-        TextView randomXpView = activity.findViewById(id.random_xp);
-        TextView randomFragsView = activity.findViewById(id.random_frags);
-        TextView randomShotsView = activity.findViewById(id.random_shots);
-        TextView randomHitsView = activity.findViewById(id.random_hits);
-        TextView randomSpottedView = activity.findViewById(id.random_spotted);
-        TextView randomFrags8pView = activity.findViewById(id.random_frags8p);
-        TextView randomMaxXpView = activity.findViewById(id.random_max_xp);
-        TextView randomMaxFragsView = activity.findViewById(id.random_max_frags);
-        TextView randomCapturedPointsView = activity.findViewById(id.random_captured_points);
-        TextView randomDroppedView = activity.findViewById(id.random_dropped);
-        TextView randomDamageDealtView = activity.findViewById(id.random_damage_dealt);
-        TextView randomDamageReceivedView = activity.findViewById(id.random_damage_received);
+        TextView randomWinsView = activity.findViewById(R.id.random_wins);
+        TextView randomLossesView = activity.findViewById(R.id.random_losses);
+        TextView randomWinAndSurviveView = activity.findViewById(R.id.random_win_and_survive);
+        TextView randomSurviveView = activity.findViewById(R.id.random_survive);
+        TextView randomXpView = activity.findViewById(R.id.random_xp);
+        TextView randomFragsView = activity.findViewById(R.id.random_frags);
+        TextView randomShotsView = activity.findViewById(R.id.random_shots);
+        TextView randomHitsView = activity.findViewById(R.id.random_hits);
+        TextView randomSpottedView = activity.findViewById(R.id.random_spotted);
+        TextView randomFrags8pView = activity.findViewById(R.id.random_frags8p);
+        TextView randomMaxXpView = activity.findViewById(R.id.random_max_xp);
+        TextView randomMaxFragsView = activity.findViewById(R.id.random_max_frags);
+        TextView randomCapturedPointsView = activity.findViewById(R.id.random_captured_points);
+        TextView randomDroppedView = activity.findViewById(R.id.random_dropped);
+        TextView randomDamageDealtView = activity.findViewById(R.id.random_damage_dealt);
+        TextView randomDamageReceivedView = activity.findViewById(R.id.random_damage_received);
         
         String spotted = statistics.getSpotted();
         String hits = statistics.getHits();
@@ -67,11 +68,11 @@ public class StatisticsSet {
 
         if (Integer.parseInt(battles) == 0) {
 
-            Utils.setBaseStatisticsVisibility(activity, false);
+            InterfaceUtils.setBaseStatisticsVisibility(activity, false);
 
         } else {
 
-            Utils.setBaseStatisticsVisibility(activity, true);
+            InterfaceUtils.setBaseStatisticsVisibility(activity, true);
 
             //
             /////
@@ -170,27 +171,27 @@ public class StatisticsSet {
      * @param statistics statistics to be set
      */
     public static void setRatingStatistics(Activity activity, StatisticsData statistics) {
-        TextView battlesView = activity.findViewById(id.rating_text_battles_info);
-        TextView winRateView = activity.findViewById(id.rating_text_wins_info);
-        TextView averageDamageView = activity.findViewById(id.rating_text_damage_info);
-        TextView efficiencyView = activity.findViewById(id.rating_text_efficiency_info);
-        TextView survivedView = activity.findViewById(id.rating_text_survived_info);
-        TextView hitsFromShotsView = activity.findViewById(id.rating_text_hits_from_shots_info);
+        TextView battlesView = activity.findViewById(R.id.rating_text_battles_info);
+        TextView winRateView = activity.findViewById(R.id.rating_text_wins_info);
+        TextView averageDamageView = activity.findViewById(R.id.rating_text_damage_info);
+        TextView efficiencyView = activity.findViewById(R.id.rating_text_efficiency_info);
+        TextView survivedView = activity.findViewById(R.id.rating_text_survived_info);
+        TextView hitsFromShotsView = activity.findViewById(R.id.rating_text_hits_from_shots_info);
 
-        TextView ratingWinsView = activity.findViewById(id.rating_wins);
-        TextView ratingLossesView = activity.findViewById(id.rating_losses);
-        TextView ratingWinAndSurviveView = activity.findViewById(id.rating_win_and_survive);
-        TextView ratingSurviveView = activity.findViewById(id.rating_survive);
-        TextView ratingXpView = activity.findViewById(id.rating_xp);
-        TextView ratingFragsView = activity.findViewById(id.rating_frags);
-        TextView ratingShotsView = activity.findViewById(id.rating_shots);
-        TextView ratingHitsView = activity.findViewById(id.rating_hits);
-        TextView ratingSpottedView = activity.findViewById(id.rating_spotted);
-        TextView ratingFrags8pView = activity.findViewById(id.rating_frags8p);
-        TextView ratingCapturedPointsView = activity.findViewById(id.rating_captured_points);
-        TextView ratingDefendedView = activity.findViewById(id.rating_dropped);
-        TextView ratingDamageDealtView = activity.findViewById(id.rating_damage_dealt);
-        TextView ratingDamageReceivedView = activity.findViewById(id.rating_damage_received);
+        TextView ratingWinsView = activity.findViewById(R.id.rating_wins);
+        TextView ratingLossesView = activity.findViewById(R.id.rating_losses);
+        TextView ratingWinAndSurviveView = activity.findViewById(R.id.rating_win_and_survive);
+        TextView ratingSurviveView = activity.findViewById(R.id.rating_survive);
+        TextView ratingXpView = activity.findViewById(R.id.rating_xp);
+        TextView ratingFragsView = activity.findViewById(R.id.rating_frags);
+        TextView ratingShotsView = activity.findViewById(R.id.rating_shots);
+        TextView ratingHitsView = activity.findViewById(R.id.rating_hits);
+        TextView ratingSpottedView = activity.findViewById(R.id.rating_spotted);
+        TextView ratingFrags8pView = activity.findViewById(R.id.rating_frags8p);
+        TextView ratingCapturedPointsView = activity.findViewById(R.id.rating_captured_points);
+        TextView ratingDefendedView = activity.findViewById(R.id.rating_dropped);
+        TextView ratingDamageDealtView = activity.findViewById(R.id.rating_damage_dealt);
+        TextView ratingDamageReceivedView = activity.findViewById(R.id.rating_damage_received);
 
         String spotted = statistics.getSpotted();
         String hits = statistics.getHits();
@@ -217,11 +218,11 @@ public class StatisticsSet {
 
         if (Integer.parseInt(battles) == 0) {
 
-            Utils.setRatingStatisticsVisibility(activity, false);
+            InterfaceUtils.setRatingStatisticsVisibility(activity, false);
 
         } else {
 
-            Utils.setRatingStatisticsVisibility(activity, true);
+            InterfaceUtils.setRatingStatisticsVisibility(activity, true);
 
             //
             /////

@@ -1,18 +1,17 @@
 package android.widget;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.view.animation.ScaleAnimation;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageButton;
 
-import ru.forblitz.statistics.R;
-import ru.forblitz.statistics.data.Utils;
+import ru.forblitz.statistics.R.styleable;
+import ru.forblitz.statistics.utils.InterfaceUtils;
 
 public class AnimatedImageButton extends AppCompatImageButton {
 
@@ -26,42 +25,56 @@ public class AnimatedImageButton extends AppCompatImageButton {
     public AnimatedImageButton(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AnimatedImageButton);
+        TypedArray a = context.obtainStyledAttributes(attrs, styleable.AnimatedImageButton);
 
-        drawableOn = a.getDrawable(R.styleable.AnimatedImageButton_button_checked);
-        drawableOff = a.getDrawable(R.styleable.AnimatedImageButton_button_unchecked);
+        drawableOn = a.getDrawable(styleable.AnimatedImageButton_button_checked);
+        drawableOff = a.getDrawable(styleable.AnimatedImageButton_button_unchecked);
 
         a.recycle();
+
+        setOnClickListener();
+        setOnLongClickListener();
     }
 
     public AnimatedImageButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AnimatedImageButton, defStyleAttr, 0);
+        TypedArray a = context.obtainStyledAttributes(attrs, styleable.AnimatedImageButton, defStyleAttr, 0);
 
-        drawableOn = a.getDrawable(R.styleable.AnimatedImageButton_button_checked);
-        drawableOff = a.getDrawable(R.styleable.AnimatedImageButton_button_unchecked);
+        drawableOn = a.getDrawable(styleable.AnimatedImageButton_button_checked);
+        drawableOff = a.getDrawable(styleable.AnimatedImageButton_button_unchecked);
 
         a.recycle();
+
+        setOnClickListener();
+        setOnLongClickListener();
     }
 
-    public void setOnClickListener(Activity activity) {
+    private void setOnClickListener() {
         super.setOnClickListener(l -> {
-
-            ScaleAnimation anim;
-            if (!isActivated()) {
-                anim = Utils.getAnimTo();
-                setImageDrawable(drawableOn);
-            } else {
-                anim = Utils.getAnimFrom();
-                setImageDrawable(drawableOff);
-            }
-            startAnimation(anim);
-            setActivated(!this.isActivated());
-
-            Utils.allActivatedCheck(activity);
-
+            setActivated(!isActivated());
         });
+    }
+
+    private void setOnLongClickListener() {
+        if (getContentDescription() != null) {
+            setOnLongClickListener(v -> {
+                Toast.makeText(getContext(), getContentDescription(), Toast.LENGTH_SHORT).show();
+                return true;
+            });
+        }
+    }
+
+    @Override
+    public void setActivated(boolean activated) {
+        super.setActivated(activated);
+        if (!activated) {
+            setImageDrawable(drawableOff);
+            startAnimation(InterfaceUtils.getAnimFrom());
+        } else {
+            setImageDrawable(drawableOn);
+            startAnimation(InterfaceUtils.getAnimTo());
+        }
     }
 
 }

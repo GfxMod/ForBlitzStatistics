@@ -1,12 +1,13 @@
-package ru.forblitz.statistics.data;
+package ru.forblitz.statistics.utils;
 
-import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.yandex.mobile.ads.banner.AdSize;
 import com.yandex.mobile.ads.banner.BannerAdEventListener;
@@ -17,30 +18,31 @@ import com.yandex.mobile.ads.common.ImpressionData;
 import com.yandex.mobile.ads.interstitial.InterstitialAd;
 import com.yandex.mobile.ads.interstitial.InterstitialAdEventListener;
 
+import java.util.HashMap;
+import java.util.Objects;
+
 public class AdUtils {
 
-    private final Activity activity;
+    private final Context context;
+    private final HashMap<Integer, Long> banners = new HashMap<>();
 
     private long dateOfTheLastImpression = System.currentTimeMillis();
 
-    public AdUtils(Activity activity) {
-        this.activity = activity;
+    public AdUtils(Context context) {
+        this.context = context;
     }
 
-    public BannerAdView createBanner(ViewGroup parent, int padding) {
+    public BannerAdView setBanner(int width, BannerAdView adView) {
 
-        BannerAdView adView = new BannerAdView(activity);
-        LinearLayout.LayoutParams adViewLayoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-        );
-        adViewLayoutParams.setMargins(0, padding, 0, padding);
+        ConstraintLayout.LayoutParams adViewLayoutParams = new ConstraintLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
         adView.setLayoutParams(adViewLayoutParams);
+        adView.setGravity(Gravity.BOTTOM);
 
-        adView.setAdUnitId("R-M-2200226-1");
-        adView.setAdSize(AdSize.stickySize( (int) Utils.pxToDp(
-                activity, parent.getWidth()
-        )));
+        if (!banners.containsKey(adView.getId())) {
+            banners.put(adView.getId(), 0L);
+            adView.setAdUnitId(Objects.requireNonNull(Utils.getProperties("adUnitIds.properties", context)).getProperty("bannerAdUnitId"));
+            adView.setAdSize(AdSize.stickySize(InterfaceUtils.pxToDp(context, width)));
+        }
 
         // Создание объекта таргетирования рекламы.
         final AdRequest adRequest = new AdRequest.Builder().build();
@@ -80,8 +82,10 @@ public class AdUtils {
         });
 
         // Загрузка объявления.
-        adView.loadAd(adRequest);
-
+        if (System.currentTimeMillis() - Objects.requireNonNull(banners.get(adView.getId())) >= 30000) {
+            banners.replace(adView.getId(), System.currentTimeMillis());
+            adView.loadAd(adRequest);
+        }
         return adView;
 
     }
@@ -91,8 +95,9 @@ public class AdUtils {
         if (System.currentTimeMillis() - dateOfTheLastImpression >= 30000) {
 
             // Создание экземпляра InterstitialAd.
-            InterstitialAd adView = new InterstitialAd(activity);
-            adView.setAdUnitId("R-M-2200226-2");
+            InterstitialAd adView = new InterstitialAd(context);
+
+            adView.setAdUnitId(Objects.requireNonNull(Utils.getProperties("adUnitIds.properties", context)).getProperty("interstitialAdUnitId"));
 
             // Создание объекта таргетирования рекламы.
             final AdRequest adRequest = new AdRequest.Builder().build();

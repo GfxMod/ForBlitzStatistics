@@ -1,6 +1,7 @@
 package ru.forblitz.statistics.adapters;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,18 +16,16 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-import ru.forblitz.statistics.R.id;
-import ru.forblitz.statistics.R.layout;
-import ru.forblitz.statistics.data.Utils;
+import ru.forblitz.statistics.R;
 import ru.forblitz.statistics.data.Vehicle;
 
 public class VehicleAdapter extends ArrayAdapter<Vehicle> {
 
-    Activity activity;
+    final Context context;
 
-    public VehicleAdapter(@NonNull Activity activity, ArrayList<Vehicle> vehicles) {
-        super(activity, layout.item_vehicle, vehicles);
-        this.activity = activity;
+    public VehicleAdapter(@NonNull Context context, ArrayList<Vehicle> vehicles) {
+        super(context, R.layout.item_vehicle, vehicles);
+        this.context = context;
     }
 
     @NonNull
@@ -35,23 +34,21 @@ public class VehicleAdapter extends ArrayAdapter<Vehicle> {
 
         Vehicle vehicle = getItem(position);
 
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(layout.item_vehicle, null);
-        }
+        convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_vehicle, null);
 
         convertView.setLayoutParams(new ListView.LayoutParams(
                 ListView.LayoutParams.MATCH_PARENT,
-                (int) (Utils.getY(activity) * 0.4)
+                (int) (parent.getWidth() * 0.85)
         ));
 
-        TextView name = convertView.findViewById(id.name);
-        TextView battles = convertView.findViewById(id.battles);
-        TextView winRate = convertView.findViewById(id.win_rate);
-        TextView averageDamage = convertView.findViewById(id.average_damage);
-        TextView efficiency = convertView.findViewById(id.efficiency);
-        TextView survived = convertView.findViewById(id.survived);
-        TextView hitsFromShots = convertView.findViewById(id.hits_from_shots);
-        Button details = convertView.findViewById(id.details);
+        TextView name = convertView.findViewById(R.id.name);
+        TextView battles = convertView.findViewById(R.id.battles);
+        TextView winRate = convertView.findViewById(R.id.win_rate);
+        TextView averageDamage = convertView.findViewById(R.id.average_damage);
+        TextView efficiency = convertView.findViewById(R.id.efficiency);
+        TextView survived = convertView.findViewById(R.id.survived);
+        TextView hitsFromShots = convertView.findViewById(R.id.hits_from_shots);
+        Button details = convertView.findViewById(R.id.details);
 
         battles.setTextColor(vehicle.getBattlesColor(getContext()));
         winRate.setTextColor(vehicle.getWinRateColor(getContext()));
@@ -66,27 +63,25 @@ public class VehicleAdapter extends ArrayAdapter<Vehicle> {
         survived.setText(vehicle.getSurvived());
         hitsFromShots.setText(vehicle.getHitsFromShots());
 
-        convertView.setOnClickListener(l -> {});
-
         details.setOnClickListener(l -> {
-            ViewFlipper tanksLayoutsFlipper = activity.findViewById(id.tanks_layouts_flipper);
+            ViewFlipper tanksLayoutsFlipper = ((Activity) context).findViewById(R.id.tanks_layouts_flipper);
 
-            TextView tanksWins = activity.findViewById(id.tanks_wins);
-            TextView tanksLosses = activity.findViewById(id.tanks_losses);
-            TextView tanksWinAndSurvive = activity.findViewById(id.tanks_win_and_survive);
-            TextView tanksSurvive = activity.findViewById(id.tanks_survive);
-            TextView tanksXp = activity.findViewById(id.tanks_xp);
-            TextView tanksFrags = activity.findViewById(id.tanks_frags);
-            TextView tanksShots = activity.findViewById(id.tanks_shots);
-            TextView tanksHits = activity.findViewById(id.tanks_hits);
-            TextView tanksSpotted = activity.findViewById(id.tanks_spotted);
-            TextView tanksFrags8p = activity.findViewById(id.tanks_frags8p);
-            TextView tanksMaxXp = activity.findViewById(id.tanks_max_xp);
-            TextView tanksMaxFrags = activity.findViewById(id.tanks_max_frags);
-            TextView tanksCapturedPoints = activity.findViewById(id.tanks_captured_points);
-            TextView tanksDropped = activity.findViewById(id.tanks_dropped);
-            TextView tanksDamageDealt = activity.findViewById(id.tanks_damage_dealt);
-            TextView tanksDamageReceived = activity.findViewById(id.tanks_damage_received);
+            TextView tanksWins = ((Activity) context).findViewById(R.id.tanks_wins);
+            TextView tanksLosses = ((Activity) context).findViewById(R.id.tanks_losses);
+            TextView tanksWinAndSurvive = ((Activity) context).findViewById(R.id.tanks_win_and_survive);
+            TextView tanksSurvive = ((Activity) context).findViewById(R.id.tanks_survive);
+            TextView tanksXp = ((Activity) context).findViewById(R.id.tanks_xp);
+            TextView tanksFrags = ((Activity) context).findViewById(R.id.tanks_frags);
+            TextView tanksShots = ((Activity) context).findViewById(R.id.tanks_shots);
+            TextView tanksHits = ((Activity) context).findViewById(R.id.tanks_hits);
+            TextView tanksSpotted = ((Activity) context).findViewById(R.id.tanks_spotted);
+            TextView tanksFrags8p = ((Activity) context).findViewById(R.id.tanks_frags8p);
+            TextView tanksMaxXp = ((Activity) context).findViewById(R.id.tanks_max_xp);
+            TextView tanksMaxFrags = ((Activity) context).findViewById(R.id.tanks_max_frags);
+            TextView tanksCapturedPoints = ((Activity) context).findViewById(R.id.tanks_captured_points);
+            TextView tanksDropped = ((Activity) context).findViewById(R.id.tanks_dropped);
+            TextView tanksDamageDealt = ((Activity) context).findViewById(R.id.tanks_damage_dealt);
+            TextView tanksDamageReceived = ((Activity) context).findViewById(R.id.tanks_damage_received);
 
             tanksWins.setText(vehicle.getData().getWins());
             tanksLosses.setText(vehicle.getData().getLosses());
@@ -105,10 +100,8 @@ public class VehicleAdapter extends ArrayAdapter<Vehicle> {
             tanksDamageDealt.setText(vehicle.getData().getDamageDealt());
             tanksDamageReceived.setText(vehicle.getData().getDamageReceived());
 
-
             tanksLayoutsFlipper.setDisplayedChild(1);
         });
-
         return convertView;
 
     }

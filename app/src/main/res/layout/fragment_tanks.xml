@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ViewFlipper
+<android.widget.DifferenceViewFlipper
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,1532 +7,1523 @@
     android:id="@+id/fragment_tanks"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:background="@drawable/background_screen"
     android:inAnimation="@anim/appearance"
     android:outAnimation="@anim/disappearance"
+    tools:background="@drawable/background_screen"
+    android:paddingHorizontal="@dimen/padding_big"
     tools:context="ru.forblitz.statistics.TanksFragment">
 
-    <android.widget.LinearLayout
+    <android.widget.DifferenceViewFlipper
+        android:id="@+id/tanks_layouts_flipper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:inAnimation="@anim/appearance_scale"
+        android:outAnimation="@anim/disappearance_scale" >
 
-        <View
-            android:id="@+id/tanks_left_empty_view"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.025" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tanks_list_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <CustomViewFlipper
-            android:id="@+id/tanks_layouts_flipper"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.95"
-            android:inAnimation="@anim/appearance_scale"
-            android:outAnimation="@anim/disappearance_scale" >
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ListView
-                    android:id="@+id/tanks_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:divider="#00000000"
-                    android:dividerHeight="@dimen/padding_very_big"
-                    android:requiresFadingEdge="vertical"
-                    android:fadingEdgeLength="@dimen/padding_big" />
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/tanks_filters"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:src="@drawable/ic_outline_rule_24"
-                    android:visibility="gone"
-                    app:backgroundTint="@color/blue"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:contentDescription="@string/filters" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <android.widget.LinearLayout
-                android:id="@+id/tanks_details_layout"
+            <ListView
+                android:id="@+id/tanks_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/background_layout"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:visibility="gone">
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.03" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.94"
-                    android:orientation="vertical">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.015" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.065"
-                        android:orientation="horizontal">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.8"
-                            android:fontFamily="@font/inter"
-                            android:gravity="start"
-                            android:text="@string/detailed_statistics"
-                            android:textAllCaps="false"
-                            android:textColor="@android:color/white"
-                            android:textStyle="bold"
-                            app:autoSizeTextType="uniform" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.025" />
-
-                        <ImageView
-                            android:id="@+id/tanks_detailed_statistics_back"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.175"
-                            android:background="@drawable/background_blue_info"
-                            android:contentDescription="@string/back"
-                            android:paddingHorizontal="8dp"
-                            android:src="@drawable/ic_baseline_arrow_back_24"
-                            app:tint="@color/transparent_black" />
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.02" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.09"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.475"
-                            android:background="@drawable/background_layout_nested"
-                            android:orientation="vertical">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:paddingHorizontal="@dimen/padding"
-                                android:paddingVertical="2dp"
-                                android:text="@string/wins_small"
-                                android:textAllCaps="false"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tanks_wins"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:background="@drawable/background_blue_info"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/empty"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.025" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.475"
-                            android:background="@drawable/background_layout_nested"
-                            android:orientation="vertical">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:paddingHorizontal="@dimen/padding"
-                                android:paddingVertical="2dp"
-                                android:text="@string/losses_small"
-                                android:textAllCaps="false"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tanks_losses"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:background="@drawable/background_blue_info"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/empty"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.02" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.005"
-                        android:background="@drawable/background_layout_nested" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.02" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.09"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.475"
-                            android:background="@drawable/background_layout_nested"
-                            android:orientation="vertical">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/win_and_survive_small"
-                                android:textAllCaps="false"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                app:autoSizeTextType="uniform" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tanks_win_and_survive"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:background="@drawable/background_blue_info"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/empty"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.025" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.475"
-                            android:background="@drawable/background_layout_nested"
-                            android:orientation="vertical">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:paddingHorizontal="@dimen/padding"
-                                android:paddingVertical="2dp"
-                                android:text="@string/survive_small"
-                                android:textAllCaps="false"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tanks_survive"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:background="@drawable/background_blue_info"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/empty"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.02" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.09"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.475"
-                            android:background="@drawable/background_layout_nested"
-                            android:orientation="vertical">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/xp_small"
-                                android:textAllCaps="false"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                app:autoSizeTextType="uniform" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tanks_xp"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:background="@drawable/background_blue_info"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/empty"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.025" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.475"
-                            android:background="@drawable/background_layout_nested"
-                            android:orientation="vertical">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:paddingHorizontal="@dimen/padding"
-                                android:paddingVertical="2dp"
-                                android:text="@string/frags_small"
-                                android:textAllCaps="false"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tanks_frags"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:background="@drawable/background_blue_info"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/empty"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.02" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.09"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.475"
-                            android:background="@drawable/background_layout_nested"
-                            android:orientation="vertical">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/shots_small"
-                                android:textAllCaps="false"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                app:autoSizeTextType="uniform" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tanks_shots"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:background="@drawable/background_blue_info"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/empty"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.025" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.475"
-                            android:background="@drawable/background_layout_nested"
-                            android:orientation="vertical">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:paddingHorizontal="@dimen/padding"
-                                android:paddingVertical="2dp"
-                                android:text="@string/hits_small"
-                                android:textAllCaps="false"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tanks_hits"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:background="@drawable/background_blue_info"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/empty"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.02" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.09"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.475"
-                            android:background="@drawable/background_layout_nested"
-                            android:orientation="vertical">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/spotted_small"
-                                android:textAllCaps="false"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                app:autoSizeTextType="uniform" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tanks_spotted"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:background="@drawable/background_blue_info"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/empty"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.025" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.475"
-                            android:background="@drawable/background_layout_nested"
-                            android:orientation="vertical">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:paddingHorizontal="@dimen/padding"
-                                android:paddingVertical="2dp"
-                                android:text="@string/frags8p_small"
-                                android:textAllCaps="false"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tanks_frags8p"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:background="@drawable/background_blue_info"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/empty"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.02" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.09"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.475"
-                            android:background="@drawable/background_layout_nested"
-                            android:orientation="vertical">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/max_xp_small"
-                                android:textAllCaps="false"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                app:autoSizeTextType="uniform" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tanks_max_xp"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:background="@drawable/background_blue_info"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/empty"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.025" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.475"
-                            android:background="@drawable/background_layout_nested"
-                            android:orientation="vertical">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:paddingHorizontal="@dimen/padding"
-                                android:paddingVertical="2dp"
-                                android:text="@string/max_frags_small"
-                                android:textAllCaps="false"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tanks_max_frags"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:background="@drawable/background_blue_info"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/empty"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.02" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.09"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.475"
-                            android:background="@drawable/background_layout_nested"
-                            android:orientation="vertical">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/captured_points_small"
-                                android:textAllCaps="false"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                app:autoSizeTextType="uniform" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tanks_captured_points"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:background="@drawable/background_blue_info"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/empty"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.025" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.475"
-                            android:background="@drawable/background_layout_nested"
-                            android:orientation="vertical">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:paddingHorizontal="@dimen/padding"
-                                android:paddingVertical="2dp"
-                                android:text="@string/dropped_small"
-                                android:textAllCaps="false"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tanks_dropped"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:background="@drawable/background_blue_info"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/empty"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.02" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.09"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.475"
-                            android:background="@drawable/background_layout_nested"
-                            android:orientation="vertical">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/damage_dealt_small"
-                                android:textAllCaps="false"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                app:autoSizeTextType="uniform" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tanks_damage_dealt"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:background="@drawable/background_blue_info"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/empty"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.025" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.475"
-                            android:background="@drawable/background_layout_nested"
-                            android:orientation="vertical">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:paddingHorizontal="@dimen/padding"
-                                android:paddingVertical="2dp"
-                                android:text="@string/damage_received_small"
-                                android:textAllCaps="false"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/tanks_damage_received"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:background="@drawable/background_blue_info"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center"
-                                android:maxLines="1"
-                                android:paddingHorizontal="2dp"
-                                android:paddingVertical="2dp"
-                                android:text="@string/empty"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.015" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.03" />
-
-            </android.widget.LinearLayout>
+                android:divider="@android:color/transparent"
+                android:dividerHeight="@dimen/padding_very_big"
+                android:fadingEdgeLength="@dimen/padding_big"
+                android:requiresFadingEdge="vertical" />
 
             <LinearLayout
+                android:id="@+id/item_nothing_found"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:weightSum="1.0">
 
-                <View
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="0.425" />
+                    android:layout_weight="0.25"
+                    android:autoSizeTextType="uniform"
+                    android:background="@drawable/background_layout_nested_selected"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/padding_very_big"
+                    android:paddingVertical="@dimen/padding_very_big"
+                    android:text="@string/nothing_found"
+                    android:textColor="@color/transparent_white"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <com.yandex.mobile.ads.banner.BannerAdView
+                android:id="@+id/tanks_list_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/tanks_filters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:contentDescription="@string/filters"
+                android:src="@drawable/ic_outline_rule_24"
+                android:visibility="gone"
+                app:backgroundTint="@color/blue"
+                app:layout_constraintBottom_toTopOf="@+id/tanks_list_banner"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <android.widget.LinearLayout
+            android:id="@+id/tanks_details_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_layout"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_big"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.065"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:text="@string/detailed_statistics"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    app:autoSizeTextType="uniform" />
+
+                <android.widget.SquareImageButton
+                    android:id="@+id/tanks_details_back"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/background_layout_nested_selected"
+                    android:contentDescription="@string/back"
+                    android:paddingHorizontal="@dimen/padding_big"
+                    android:src="@drawable/ic_baseline_arrow_back_24"
+                    app:tint="@color/transparent_white"
+                    whatever:main_dimension="vertical" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.02" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.09"
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.0885"
-                    android:orientation="horizontal">
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.025" />
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.475"
+                    android:background="@drawable/background_layout_nested"
+                    android:orientation="vertical">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.95"
-                        android:background="@drawable/background_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
                         android:fontFamily="@font/inter"
                         android:gravity="center"
-                        android:padding="15dp"
-                        android:text="@string/loading"
+                        android:paddingHorizontal="@dimen/padding"
+                        android:paddingVertical="2dp"
+                        android:text="@string/wins_small"
                         android:textAllCaps="false"
                         android:textColor="@android:color/white"
                         android:textStyle="bold"
                         android:typeface="monospace"
                         app:autoSizeTextType="uniform" />
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.025" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tanks_wins"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/background_button"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/empty"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
 
                 </LinearLayout>
 
                 <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.4865" />
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.025" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.475"
+                    android:background="@drawable/background_layout_nested"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="@dimen/padding"
+                        android:paddingVertical="2dp"
+                        android:text="@string/losses_small"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tanks_losses"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/background_button"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/empty"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/tanks_filters_layout"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="0dp"
+                android:layout_weight="0.02" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.005"
+                android:background="@drawable/background_layout_nested" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.02" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.09"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.475"
+                    android:background="@drawable/background_layout_nested"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/win_and_survive_small"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        app:autoSizeTextType="uniform" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tanks_win_and_survive"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/background_button"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/empty"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.025" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.475"
+                    android:background="@drawable/background_layout_nested"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="@dimen/padding"
+                        android:paddingVertical="2dp"
+                        android:text="@string/survive_small"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tanks_survive"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/background_button"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/empty"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.02" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.09"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.475"
+                    android:background="@drawable/background_layout_nested"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/xp_small"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        app:autoSizeTextType="uniform" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tanks_xp"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/background_button"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/empty"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.025" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.475"
+                    android:background="@drawable/background_layout_nested"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="@dimen/padding"
+                        android:paddingVertical="2dp"
+                        android:text="@string/frags_small"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tanks_frags"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/background_button"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/empty"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.02" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.09"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.475"
+                    android:background="@drawable/background_layout_nested"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/shots_small"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        app:autoSizeTextType="uniform" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tanks_shots"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/background_button"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/empty"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.025" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.475"
+                    android:background="@drawable/background_layout_nested"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="@dimen/padding"
+                        android:paddingVertical="2dp"
+                        android:text="@string/hits_small"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tanks_hits"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/background_button"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/empty"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.02" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.09"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.475"
+                    android:background="@drawable/background_layout_nested"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/spotted_small"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        app:autoSizeTextType="uniform" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tanks_spotted"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/background_button"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/empty"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.025" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.475"
+                    android:background="@drawable/background_layout_nested"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="@dimen/padding"
+                        android:paddingVertical="2dp"
+                        android:text="@string/frags8p_small"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tanks_frags8p"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/background_button"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/empty"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.02" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.09"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.475"
+                    android:background="@drawable/background_layout_nested"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/max_xp_small"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        app:autoSizeTextType="uniform" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tanks_max_xp"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/background_button"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/empty"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.025" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.475"
+                    android:background="@drawable/background_layout_nested"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="@dimen/padding"
+                        android:paddingVertical="2dp"
+                        android:text="@string/max_frags_small"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tanks_max_frags"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/background_button"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/empty"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.02" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.09"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.475"
+                    android:background="@drawable/background_layout_nested"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/captured_points_small"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        app:autoSizeTextType="uniform" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tanks_captured_points"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/background_button"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/empty"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.025" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.475"
+                    android:background="@drawable/background_layout_nested"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="@dimen/padding"
+                        android:paddingVertical="2dp"
+                        android:text="@string/dropped_small"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tanks_dropped"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/background_button"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/empty"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.02" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.09"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.475"
+                    android:background="@drawable/background_layout_nested"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/damage_dealt_small"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        app:autoSizeTextType="uniform" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tanks_damage_dealt"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/background_button"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/empty"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.025" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.475"
+                    android:background="@drawable/background_layout_nested"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="@dimen/padding"
+                        android:paddingVertical="2dp"
+                        android:text="@string/damage_received_small"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tanks_damage_received"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/background_button"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingHorizontal="2dp"
+                        android:paddingVertical="2dp"
+                        android:text="@string/empty"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.widget.LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.425" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.0885"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.025" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.95"
+                    android:background="@drawable/background_layout"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:text="@string/loading"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.025" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.4865" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tanks_filters_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.35"
+                android:background="@drawable/background_layout"
+                android:columnCount="3"
+                android:orientation="horizontal"
+                android:rowCount="3">
+
+                <android.widget.AnimatedImageButton
+                    android:id="@+id/cn"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/cn"
+                    android:padding="@dimen/padding_big"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/ic_cn_off"
+                    whatever:button_checked="@drawable/ic_cn_on"
+                    whatever:button_unchecked="@drawable/ic_cn_off" />
+
+                <android.widget.AnimatedImageButton
+                    android:id="@+id/gb"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/gb"
+                    android:padding="@dimen/padding_big"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_gb_off"
+                    whatever:button_checked="@drawable/ic_gb_on"
+                    whatever:button_unchecked="@drawable/ic_gb_off" />
+
+                <android.widget.AnimatedImageButton
+                    android:id="@+id/other"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/other"
+                    android:padding="@dimen/padding_big"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/ic_other_off"
+                    whatever:button_checked="@drawable/ic_other_on"
+                    whatever:button_unchecked="@drawable/ic_other_off" />
+
+                <android.widget.AnimatedImageButton
+                    android:id="@+id/eu"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/eu"
+                    android:padding="@dimen/padding_big"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/ic_eu_off"
+                    whatever:button_checked="@drawable/ic_eu_on"
+                    whatever:button_unchecked="@drawable/ic_eu_off" />
+
+                <android.widget.AnimatedImageButton
+                    android:id="@+id/de"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/de"
+                    android:padding="@dimen/padding_big"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_de_off"
+                    whatever:button_checked="@drawable/ic_de_on"
+                    whatever:button_unchecked="@drawable/ic_de_off" />
+
+                <android.widget.AnimatedImageButton
+                    android:id="@+id/us"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/us"
+                    android:padding="@dimen/padding_big"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/ic_us_off"
+                    whatever:button_checked="@drawable/ic_us_on"
+                    whatever:button_unchecked="@drawable/ic_us_off" />
+
+                <android.widget.AnimatedImageButton
+                    android:id="@+id/fr"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/fr"
+                    android:padding="@dimen/padding_big"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/ic_fr_off"
+                    whatever:button_checked="@drawable/ic_fr_on"
+                    whatever:button_unchecked="@drawable/ic_fr_off" />
+
+                <android.widget.AnimatedImageButton
+                    android:id="@+id/jp"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/jp"
+                    android:padding="@dimen/padding_big"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_jp_off"
+                    whatever:button_checked="@drawable/ic_jp_on"
+                    whatever:button_unchecked="@drawable/ic_jp_off" />
+
+                <android.widget.AnimatedImageButton
+                    android:id="@+id/su"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/su"
+                    android:padding="@dimen/padding_big"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/ic_su_off"
+                    whatever:button_checked="@drawable/ic_su_on"
+                    whatever:button_unchecked="@drawable/ic_su_off" />
+
+            </GridLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.025" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.125"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.44"
+                    android:background="@drawable/background_layout"
+                    android:orientation="vertical"
+                    android:padding="@dimen/padding">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.33"
+                        android:fontFamily="@font/inter"
+                        android:gravity="bottom|start|fill_vertical"
+                        android:padding="0dp"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp"
+                        android:text="@string/classes"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        app:autoSizeTextType="uniform" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.66"
+                        android:orientation="horizontal">
+
+                        <android.widget.AnimatedImageButton
+                            android:id="@+id/tanks_type_lt"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.2"
+                            android:background="@android:color/transparent"
+                            android:contentDescription="@string/lt"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_lt_outlined_off"
+                            whatever:button_checked="@drawable/ic_lt_outlined_on"
+                            whatever:button_unchecked="@drawable/ic_lt_outlined_off" />
+
+                        <android.widget.AnimatedImageButton
+                            android:id="@+id/tanks_type_mt"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.2"
+                            android:background="@android:color/transparent"
+                            android:contentDescription="@string/mt"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_mt_outlined_off"
+                            whatever:button_checked="@drawable/ic_mt_outlined_on"
+                            whatever:button_unchecked="@drawable/ic_mt_outlined_off" />
+
+                        <android.widget.AnimatedImageButton
+                            android:id="@+id/tanks_type_ht"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.2"
+                            android:background="@android:color/transparent"
+                            android:contentDescription="@string/ht"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_ht_outlined_off"
+                            whatever:button_checked="@drawable/ic_ht_outlined_on"
+                            whatever:button_unchecked="@drawable/ic_ht_outlined_off" />
+
+                        <android.widget.AnimatedImageButton
+                            android:id="@+id/tanks_type_at"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.2"
+                            android:background="@android:color/transparent"
+                            android:contentDescription="@string/at"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_at_outlined_off"
+                            whatever:button_checked="@drawable/ic_at_outlined_on"
+                            whatever:button_unchecked="@drawable/ic_at_outlined_off" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.05" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.51"
+                    android:background="@drawable/background_layout"
+                    android:orientation="vertical"
+                    android:padding="@dimen/padding">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.33"
+                        android:fontFamily="@font/inter"
+                        android:gravity="bottom|start|fill_vertical"
+                        android:padding="0dp"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp"
+                        android:text="@string/tank_sort"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        app:autoSizeTextType="uniform" />
+
+                    <RadioGroup
+                        android:id="@+id/tanks_sort"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.66"
+                        android:checkedButton="@id/radio_battles"
+                        android:orientation="horizontal">
+
+                        <android.widget.AnimatedRadioButton
+                            android:id="@+id/radio_battles"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:contentDescription="@string/battles_sort"
+                            android:buttonTintMode="multiply"
+                            whatever:button_checked="@drawable/ic_battles_on"
+                            whatever:button_unchecked="@drawable/ic_battles_off" />
+
+                        <android.widget.AnimatedRadioButton
+                            android:id="@+id/radio_damage"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:contentDescription="@string/damage_sort"
+                            android:buttonTintMode="multiply"
+                            whatever:button_checked="@drawable/ic_damage_on"
+                            whatever:button_unchecked="@drawable/ic_damage_off" />
+
+                        <android.widget.AnimatedRadioButton
+                            android:id="@+id/radio_efficiency"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:contentDescription="@string/efficiency_sort"
+                            android:buttonTintMode="multiply"
+                            whatever:button_checked="@drawable/ic_efficiency_on"
+                            whatever:button_unchecked="@drawable/ic_efficiency_off" />
+
+                        <android.widget.AnimatedRadioButton
+                            android:id="@+id/radio_xp"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:contentDescription="@string/xp_sort"
+                            android:buttonTintMode="multiply"
+                            whatever:button_checked="@drawable/ic_xp_on"
+                            whatever:button_unchecked="@drawable/ic_xp_off" />
+
+                        <android.widget.AnimatedRadioButton
+                            android:id="@+id/radio_win_rate"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:contentDescription="@string/win_rate_sort"
+                            android:buttonTintMode="multiply"
+                            whatever:button_checked="@drawable/ic_win_rate_on"
+                            whatever:button_unchecked="@drawable/ic_win_rate_off" />
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.025" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.125"
+                android:background="@drawable/background_layout"
+                android:orientation="vertical"
+                android:padding="@dimen/padding">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.33"
+                    android:fontFamily="@font/inter"
+                    android:gravity="bottom|start|fill_vertical"
+                    android:padding="0dp"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="6dp"
+                    android:text="@string/tier"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    app:autoSizeTextType="uniform" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="0.35"
+                    android:layout_weight="0.66"
                     android:orientation="horizontal">
 
-                    <LinearLayout
+                    <android.widget.AnimatedImageButton
+                        android:id="@+id/tanks_tier_i"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.2"
-                        android:background="@drawable/background_layout"
-                        android:orientation="vertical">
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/I"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_i_off"
+                        whatever:button_checked="@drawable/ic_i_on"
+                        whatever:button_unchecked="@drawable/ic_i_off" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tanks_tier_select_indicator"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.2"
-                            android:fontFamily="@font/inter"
-                            android:gravity="center"
-                            android:padding="@dimen/padding_big"
-                            android:text="@string/empty"
-                            android:textAllCaps="false"
-                            android:textColor="#7FFFFFFF"
-                            app:autoSizeTextType="uniform"
-                            tools:text="VIII" />
-
-                        <android.widget.VerticalSeekBar
-                            android:id="@+id/tanks_tier_select"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.6"
-                            android:max="9"
-                            android:progress="7"
-                            android:progressBackgroundTint="@color/transparent_black"
-                            android:progressBackgroundTintMode="src_over"
-                            android:progressTint="@color/stroke_color"
-                            android:progressTintMode="src_over"
-                            android:splitTrack="false"
-                            android:thumbOffset="2dp"
-                            android:paddingStart="0dp"
-                            android:paddingEnd="0dp"
-                            android:thumbTint="@android:color/white" />
-
-                        <androidx.appcompat.widget.AppCompatImageButton
-                            android:id="@+id/tanks_clear_tier"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.2"
-                            android:background="@android:color/transparent"
-                            android:contentDescription="@string/clear_tier"
-                            android:padding="8dp"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/ic_outline_clear_24"
-                            android:onClick="onClickClearTierFilter" />
-
-                    </LinearLayout>
-
-                    <View
+                    <android.widget.AnimatedImageButton
+                        android:id="@+id/tanks_tier_ii"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.025" />
+                        android:layout_weight="0.2"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/II"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_ii_off"
+                        whatever:button_checked="@drawable/ic_ii_on"
+                        whatever:button_unchecked="@drawable/ic_ii_off" />
 
-                    <LinearLayout
+                    <android.widget.AnimatedImageButton
+                        android:id="@+id/tanks_tier_iii"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.775"
-                        android:background="@drawable/background_layout"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/padding_big">
+                        android:layout_weight="0.2"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/III"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_iii_off"
+                        whatever:button_checked="@drawable/ic_iii_on"
+                        whatever:button_unchecked="@drawable/ic_iii_off" />
 
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.3"
-                            android:orientation="vertical">
+                    <android.widget.AnimatedImageButton
+                        android:id="@+id/tanks_tier_iv"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.2"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/IV"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_iv_off"
+                        whatever:button_checked="@drawable/ic_iv_on"
+                        whatever:button_unchecked="@drawable/ic_iv_off" />
 
-                            <AnimatedImageButton
-                                android:id="@+id/cn"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.3"
-                                android:background="@android:color/transparent"
-                                android:contentDescription="@string/cn"
-                                android:padding="0dp"
-                                android:scaleType="fitStart"
-                                android:src="@drawable/ic_cn_off"
-                                whatever:button_checked="@drawable/ic_cn_on"
-                                whatever:button_unchecked="@drawable/ic_cn_off" />
+                    <android.widget.AnimatedImageButton
+                        android:id="@+id/tanks_tier_v"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.2"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/V"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_v_off"
+                        whatever:button_checked="@drawable/ic_v_on"
+                        whatever:button_unchecked="@drawable/ic_v_off" />
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.05" />
+                    <android.widget.AnimatedImageButton
+                        android:id="@+id/tanks_tier_vi"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.2"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/VI"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_vi_off"
+                        whatever:button_checked="@drawable/ic_vi_on"
+                        whatever:button_unchecked="@drawable/ic_vi_off" />
 
-                            <AnimatedImageButton
-                                android:id="@+id/eu"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.3"
-                                android:background="@android:color/transparent"
-                                android:contentDescription="@string/eu"
-                                android:padding="0dp"
-                                android:scaleType="fitStart"
-                                android:src="@drawable/ic_eu_off"
-                                whatever:button_checked="@drawable/ic_eu_on"
-                                whatever:button_unchecked="@drawable/ic_eu_off" />
+                    <android.widget.AnimatedImageButton
+                        android:id="@+id/tanks_tier_vii"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.2"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/VII"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_vii_off"
+                        whatever:button_checked="@drawable/ic_vii_on"
+                        whatever:button_unchecked="@drawable/ic_vii_off" />
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.05" />
+                    <android.widget.AnimatedImageButton
+                        android:id="@+id/tanks_tier_viii"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.2"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/VIII"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_viii_off"
+                        whatever:button_checked="@drawable/ic_viii_on"
+                        whatever:button_unchecked="@drawable/ic_viii_off" />
 
-                            <AnimatedImageButton
-                                android:id="@+id/fr"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.3"
-                                android:background="@android:color/transparent"
-                                android:contentDescription="@string/fr"
-                                android:padding="0dp"
-                                android:scaleType="fitStart"
-                                android:src="@drawable/ic_fr_off"
-                                whatever:button_checked="@drawable/ic_fr_on"
-                                whatever:button_unchecked="@drawable/ic_fr_off" />
+                    <android.widget.AnimatedImageButton
+                        android:id="@+id/tanks_tier_ix"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.2"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/IX"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_ix_off"
+                        whatever:button_checked="@drawable/ic_ix_on"
+                        whatever:button_unchecked="@drawable/ic_ix_off" />
 
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.05" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.3"
-                            android:orientation="vertical">
-
-                            <AnimatedImageButton
-                                android:id="@+id/gb"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.3"
-                                android:background="@android:color/transparent"
-                                android:contentDescription="@string/gb"
-                                android:padding="0dp"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/ic_gb_off"
-                                whatever:button_checked="@drawable/ic_gb_on"
-                                whatever:button_unchecked="@drawable/ic_gb_off" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.05" />
-
-                            <AnimatedImageButton
-                                android:id="@+id/de"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.3"
-                                android:background="@android:color/transparent"
-                                android:contentDescription="@string/de"
-                                android:padding="0dp"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/ic_de_off"
-                                whatever:button_checked="@drawable/ic_de_on"
-                                whatever:button_unchecked="@drawable/ic_de_off" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.05" />
-
-                            <AnimatedImageButton
-                                android:id="@+id/jp"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.3"
-                                android:background="@android:color/transparent"
-                                android:contentDescription="@string/jp"
-                                android:padding="0dp"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/ic_jp_off"
-                                whatever:button_checked="@drawable/ic_jp_on"
-                                whatever:button_unchecked="@drawable/ic_jp_off" />
-
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.05" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.3"
-                            android:orientation="vertical">
-
-                            <AnimatedImageButton
-                                android:id="@+id/other"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.3"
-                                android:background="@android:color/transparent"
-                                android:contentDescription="@string/other"
-                                android:padding="0dp"
-                                android:scaleType="fitEnd"
-                                android:src="@drawable/ic_other_off"
-                                whatever:button_checked="@drawable/ic_other_on"
-                                whatever:button_unchecked="@drawable/ic_other_off" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.05" />
-
-                            <AnimatedImageButton
-                                android:id="@+id/us"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.3"
-                                android:background="@android:color/transparent"
-                                android:contentDescription="@string/us"
-                                android:padding="0dp"
-                                android:scaleType="fitEnd"
-                                android:src="@drawable/ic_us_off"
-                                whatever:button_checked="@drawable/ic_us_on"
-                                whatever:button_unchecked="@drawable/ic_us_off" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.05" />
-
-                            <AnimatedImageButton
-                                android:id="@+id/su"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.3"
-                                android:background="@android:color/transparent"
-                                android:contentDescription="@string/su"
-                                android:padding="0dp"
-                                android:scaleType="fitEnd"
-                                android:src="@drawable/ic_su_off"
-                                whatever:button_checked="@drawable/ic_su_on"
-                                whatever:button_unchecked="@drawable/ic_su_off" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
+                    <android.widget.AnimatedImageButton
+                        android:id="@+id/tanks_tier_x"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.2"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/X"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_x_off"
+                        whatever:button_checked="@drawable/ic_x_on"
+                        whatever:button_unchecked="@drawable/ic_x_off" />
 
                 </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.025" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.125"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.44"
-                        android:background="@drawable/background_layout"
-                        android:padding="@dimen/padding"
-                        android:orientation="vertical">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.33"
-                            android:fontFamily="@font/inter"
-                            android:gravity="bottom|start|fill_vertical"
-                            android:paddingStart="6dp"
-                            android:paddingEnd="6dp"
-                            android:padding="0dp"
-                            android:text="@string/classes"
-                            android:textAllCaps="false"
-                            android:textColor="@android:color/white"
-                            android:textStyle="bold"
-                            app:autoSizeTextType="uniform" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.66"
-                            android:orientation="horizontal">
-
-                            <AnimatedImageButton
-                                android:id="@+id/tanks_type_lt"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.2"
-                                whatever:button_checked="@drawable/ic_lt_outlined_on"
-                                whatever:button_unchecked="@drawable/ic_lt_outlined_off"
-                                android:background="@android:color/transparent"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/ic_lt_outlined_off" />
-
-                            <AnimatedImageButton
-                                android:id="@+id/tanks_type_mt"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.2"
-                                whatever:button_checked="@drawable/ic_mt_outlined_on"
-                                whatever:button_unchecked="@drawable/ic_mt_outlined_off"
-                                android:background="@android:color/transparent"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/ic_mt_outlined_off" />
-
-                            <AnimatedImageButton
-                                android:id="@+id/tanks_type_ht"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.2"
-                                whatever:button_checked="@drawable/ic_ht_outlined_on"
-                                whatever:button_unchecked="@drawable/ic_ht_outlined_off"
-                                android:background="@android:color/transparent"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/ic_ht_outlined_off" />
-
-                            <AnimatedImageButton
-                                android:id="@+id/tanks_type_at"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.2"
-                                whatever:button_checked="@drawable/ic_at_outlined_on"
-                                whatever:button_unchecked="@drawable/ic_at_outlined_off"
-                                android:background="@android:color/transparent"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/ic_at_outlined_off" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.05" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.51"
-                        android:background="@drawable/background_layout"
-                        android:padding="@dimen/padding"
-                        android:orientation="vertical">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.33"
-                            android:fontFamily="@font/inter"
-                            android:gravity="bottom|start|fill_vertical"
-                            android:paddingStart="6dp"
-                            android:paddingEnd="6dp"
-                            android:padding="0dp"
-                            android:text="@string/tank_sort"
-                            android:textAllCaps="false"
-                            android:textColor="@android:color/white"
-                            android:textStyle="bold"
-                            app:autoSizeTextType="uniform" />
-
-                        <RadioGroup
-                            android:id="@+id/tanks_sort"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.66"
-                            android:checkedButton="@id/radio_battles"
-                            android:orientation="horizontal">
-
-                            <AnimatedRadioButton
-                                android:id="@+id/radio_battles"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="@android:color/transparent"
-                                android:button="@drawable/radio_battles"
-                                android:buttonTintMode="multiply"
-                                android:gravity="center"
-                                android:foregroundGravity="center"
-                                android:scaleType="fitCenter" />
-
-                            <AnimatedRadioButton
-                                android:id="@+id/radio_damage"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="@android:color/transparent"
-                                android:button="@drawable/radio_damage"
-                                android:buttonTintMode="multiply"
-                                android:scaleType="fitCenter" />
-
-                            <AnimatedRadioButton
-                                android:id="@+id/radio_efficiency"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="@android:color/transparent"
-                                android:button="@drawable/radio_efficiency"
-                                android:buttonTintMode="multiply"
-                                android:scaleType="fitCenter" />
-
-                            <AnimatedRadioButton
-                                android:id="@+id/radio_xp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="@android:color/transparent"
-                                android:button="@drawable/radio_xp"
-                                android:buttonTintMode="multiply"
-                                android:scaleType="fitCenter" />
-
-                            <AnimatedRadioButton
-                                android:id="@+id/radio_win_rate"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="@android:color/transparent"
-                                android:button="@drawable/radio_win_rate"
-                                android:buttonTintMode="multiply"
-                                android:scaleType="fitCenter" />
-
-                        </RadioGroup>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.025" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/tanks_apply_filters"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.075"
-                    android:background="@drawable/background_sessions_true"
-                    android:fontFamily="@font/inter"
-                    android:gravity="center"
-                    android:paddingHorizontal="30dp"
-                    android:paddingVertical="@dimen/padding_very_big"
-                    android:text="@string/apply_filters"
-                    android:textAllCaps="false"
-                    android:textColor="#fff"
-                    android:textStyle="bold"
-                    android:typeface="normal"
-                    app:autoSizeTextType="uniform"
-                    android:onClick="onClickApplyFilters" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.025" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.01"
-                    android:background="@drawable/background_layout_nested" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.025" />
 
             </LinearLayout>
 
-        </CustomViewFlipper>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.025" />
 
-        <View
-            android:id="@+id/tanks_right_empty_view"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.025" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/tanks_apply_filters"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="0.075"
+                android:background="@drawable/background_sessions_true"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                android:onClick="onClickApplyFilters"
+                android:paddingHorizontal="30dp"
+                android:paddingVertical="@dimen/padding_very_big"
+                android:text="@string/apply_filters"
+                android:textAllCaps="false"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:typeface="normal"
+                app:autoSizeTextType="uniform" />
 
-    </android.widget.LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.15" />
+
+        </LinearLayout>
+
+    </android.widget.DifferenceViewFlipper>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:orientation="vertical">
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.425" />
 
-        <LinearLayout
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.0885"
-            android:orientation="horizontal">
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.025" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.95"
-                android:background="@drawable/background_layout"
-                android:fontFamily="@font/inter"
-                android:gravity="center"
-                android:padding="15dp"
-                android:text="@string/random_false"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:typeface="monospace"
-                app:autoSizeTextType="uniform" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.025" />
-
-        </LinearLayout>
+            android:background="@drawable/background_layout"
+            android:fontFamily="@font/inter"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="@string/random_false"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:typeface="monospace"
+            app:autoSizeTextType="uniform" />
 
         <View
             android:layout_width="match_parent"
@@ -1541,4 +1532,4 @@
 
     </LinearLayout>
 
-</ViewFlipper>
+</android.widget.DifferenceViewFlipper>

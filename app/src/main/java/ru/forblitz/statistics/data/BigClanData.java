@@ -15,15 +15,15 @@ public class BigClanData {
     public static class RecruitingOptions {
 
         @SerializedName("vehicles_level")
-        String vehiclesLevel;
+        public String vehiclesLevel;
         @SerializedName("wins_ratio")
-        String winsRatio;
+        public String winsRatio;
         @SerializedName("average_battles_per_day")
-        String averageBattlesPerDay;
+        public String averageBattlesPerDay;
         @SerializedName("battles")
-        String battles;
+        public String battles;
         @SerializedName("average_damage")
-        String averageDamage;
+        public String averageDamage;
 
     }
 

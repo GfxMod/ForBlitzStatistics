@@ -1,19 +1,17 @@
 package ru.forblitz.statistics.data;
 
 import android.app.Activity;
-import android.graphics.Paint;
 import android.view.View;
+import android.widget.GClanInfo;
+import android.widget.GClanSmall;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
-
-import androidx.appcompat.content.res.AppCompatResources;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import ru.forblitz.statistics.R;
 import ru.forblitz.statistics.adapters.MemberAdapter;
-import ru.forblitz.statistics.utils.InterfaceUtils;
 import ru.forblitz.statistics.utils.ParseUtils;
 
 public class Clan {
@@ -40,29 +38,10 @@ public class Clan {
      */
     public void set(Activity activity) {
 
-        TextView randomClanName = activity.findViewById(R.id.random_clan_name);
-        TextView ratingClanName = activity.findViewById(R.id.rating_clan_name);
-        TextView randomClanRole = activity.findViewById(R.id.random_clan_role);
-        TextView ratingClanRole = activity.findViewById(R.id.rating_clan_role);
         TextView clanName = activity.findViewById(R.id.clan_name);
         TextView clanRole = activity.findViewById(R.id.clan_role);
         TextView clanMotto = activity.findViewById(R.id.clan_motto);
         TextView clanDescription = activity.findViewById(R.id.clan_description);
-        TextView clanCreator = activity.findViewById(R.id.clan_creator);
-        TextView clanCreatedAt = activity.findViewById(R.id.clan_created_at);
-        TextView clanOldName = activity.findViewById(R.id.clan_old_name);
-        TextView clanOldTag = activity.findViewById(R.id.clan_old_tag);
-        TextView clanRenamedAt = activity.findViewById(R.id.clan_renamed_at);
-        
-        ViewFlipper clanInfoFlipper = activity.findViewById(R.id.clan_info_flipper);
-        TextView clanInfoButton = activity.findViewById(R.id.clan_info_button);
-        TextView clanInfoRecruitingButton = activity.findViewById(R.id.clan_info_recruiting_button);
-
-        TextView clanRecruitingOptionsBattles = activity.findViewById(R.id.clan_recruiting_options_battles);
-        TextView clanRecruitingOptionsWinsRatio = activity.findViewById(R.id.clan_recruiting_options_wins_ratio);
-        TextView clanRecruitingOptionsAverageDamage = activity.findViewById(R.id.clan_recruiting_options_average_damage);
-        TextView clanRecruitingOptionsAverageBattlesPerDay = activity.findViewById(R.id.clan_recruiting_options_average_battles_per_day);
-        TextView clanRecruitingOptionsVehiclesLevel = activity.findViewById(R.id.clan_recruiting_options_vehicles_level);
 
         ListView clanMembersList = activity.findViewById(R.id.clan_members_list);
         FloatingActionButton clanBackFab = activity.findViewById(R.id.clan_members_back);
@@ -71,79 +50,10 @@ public class Clan {
         
         activity.runOnUiThread(() -> {
 
-            int paddingHorizontal = clanInfoButton.getPaddingStart();
-            int paddingVertical = clanInfoButton.getPaddingTop();
-
-            clanInfoFlipper.setDisplayedChild(0);
-            clanInfoButton.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_button_insets));
-            clanInfoRecruitingButton.setBackgroundColor(activity.getColor(android.R.color.transparent));
-
-            clanInfoButton.setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical);
-            clanInfoRecruitingButton.setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical);
-
-            randomClanName.setText(fullName);
-            ratingClanName.setText(fullName);
             clanName.setText(fullName);
-            randomClanRole.setText(ParseUtils.parseRole(activity, smallClanData.getRole()));
-            ratingClanRole.setText(ParseUtils.parseRole(activity, smallClanData.getRole()));
             clanRole.setText(ParseUtils.parseRole(activity, smallClanData.getRole()));
             clanMotto.setText(bigClanData.getMotto());
             clanDescription.setText(bigClanData.getDescription());
-            clanCreator.setText(bigClanData.getCreatorName());
-            if (!bigClanData.getCreatorName().equals("")) {
-                clanCreator.setOnClickListener(l -> InterfaceUtils.search(clanCreator.getContext(), bigClanData.getCreatorName()));
-            }
-            clanCreatedAt.setText(ParseUtils.parseTime(bigClanData.getCreatedAt()));
-            if (bigClanData.getOldName() != null) {
-                clanOldName.setText(bigClanData.getOldName());
-            } else {
-                clanOldName.setText(activity.getString(R.string.empty));
-            }
-            if (bigClanData.getOldTag() != null) {
-                clanOldTag.setText(bigClanData.getOldTag());
-            } else {
-                clanOldTag.setText(activity.getString(R.string.empty));
-            }
-            if (bigClanData.getRenamedAt() != null) {
-                clanRenamedAt.setText(ParseUtils.parseTime(bigClanData.getRenamedAt()));
-            } else {
-                clanRenamedAt.setText(activity.getString(R.string.empty));
-            }
-
-            if (bigClanData.getRecruitingPolicy().equals("open")) {
-
-                clanInfoRecruitingButton.setPaintFlags(Paint.LINEAR_TEXT_FLAG);
-                clanInfoButton.setOnClickListener(l -> {
-                    clanInfoButton.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_button_insets));
-                    clanInfoRecruitingButton.setBackgroundColor(activity.getColor(android.R.color.transparent));
-
-                    clanInfoButton.setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical);
-                    clanInfoRecruitingButton.setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical);
-
-                    clanInfoFlipper.setDisplayedChild(0);
-                });
-                clanInfoRecruitingButton.setOnClickListener(l -> {
-                    clanInfoButton.setBackgroundColor(activity.getColor(android.R.color.transparent));
-                    clanInfoRecruitingButton.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_button_insets));
-
-                    clanInfoButton.setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical);
-                    clanInfoRecruitingButton.setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical);
-
-                    clanInfoFlipper.setDisplayedChild(1);
-                });
-
-                clanRecruitingOptionsBattles.setText(bigClanData.getRecruitingOptions().battles);
-                clanRecruitingOptionsWinsRatio.setText(bigClanData.getRecruitingOptions().winsRatio);
-                clanRecruitingOptionsAverageDamage.setText(bigClanData.getRecruitingOptions().averageDamage);
-                clanRecruitingOptionsAverageBattlesPerDay.setText(bigClanData.getRecruitingOptions().averageBattlesPerDay);
-                clanRecruitingOptionsVehiclesLevel.setText(bigClanData.getRecruitingOptions().vehiclesLevel);
-
-            } else {
-                clanInfoRecruitingButton.setPaintFlags(clanInfoRecruitingButton.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                clanInfoRecruitingButton.setOnClickListener(null);
-
-                clanInfoRecruitingButton.setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical);
-            }
 
             clanMembersList.setAdapter(
                     new MemberAdapter(
@@ -157,6 +67,10 @@ public class Clan {
             clanBackFab.show();
 
         });
+
+        ((GClanInfo) activity.findViewById(R.id.gclan_info)).setData(bigClanData);
+        ((GClanSmall) activity.findViewById(R.id.clan_true_random)).setData(smallClanData, bigClanData);
+        ((GClanSmall) activity.findViewById(R.id.clan_true_rating)).setData(smallClanData, bigClanData);
 
     }
 

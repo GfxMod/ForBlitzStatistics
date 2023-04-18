@@ -62,7 +62,7 @@
                     android:layout_weight="0.15"
                     android:background="@drawable/background_layout_nested">
 
-                    <LinearLayout
+                    <android.widget.GClanSmall
                         android:id="@+id/clan_true_rating"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -73,7 +73,7 @@
                         android:visibility="visible">
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/rating_clan_name"
+                            android:tag="clan_name"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.5"
@@ -87,7 +87,7 @@
                             app:autoSizeTextType="uniform" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/rating_clan_role"
+                            android:tag="clan_role"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.4"
@@ -99,7 +99,7 @@
                             android:typeface="normal"
                             app:autoSizeTextType="uniform" />
 
-                    </LinearLayout>
+                    </android.widget.GClanSmall>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/clan_false_rating"

@@ -41,4 +41,11 @@ public class Constants {
         apiId.put("asia", wgAppId);
     }
 
+    public static class Steps {
+        public static final double[] battles = new double[] { 2000, 10000, 25000 };
+        public static final double[] winRate = new double[] { 50, 60, 70 };
+        public static final double[] averageDamage = new double[] { 1000, 1500, 2000 };
+        public static final double[] efficiency = new double[] { 1, 1.25, 1.5 };
+    }
+
 }

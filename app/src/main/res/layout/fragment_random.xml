@@ -27,9 +27,10 @@
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            android:weightSum="1">
 
-            <android.widget.LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.55"
@@ -125,7 +126,8 @@
                     android:layout_height="0dp"
                     android:layout_weight="0.1" />
 
-                <LinearLayout
+                <android.widget.GPlayerFastStat
+                    android:id="@+id/random_fast_stat"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.755"
@@ -139,7 +141,6 @@
                         android:orientation="vertical">
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/text_battles"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.1"
@@ -151,7 +152,7 @@
                             app:autoSizeTextType="uniform" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/text_battles_info"
+                            android:tag="battles"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.2"
@@ -162,8 +163,8 @@
                             android:typeface="monospace"
                             app:autoSizeTextType="uniform" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/text_battles_session_info"
+                        <android.widget.DifferenceIndicatorView
+                            android:tag="battlesDiff"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_gravity="center"
@@ -183,7 +184,6 @@
                             android:layout_weight="0.05" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/text_damage"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.1"
@@ -195,7 +195,7 @@
                             app:autoSizeTextType="uniform" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/text_damage_info"
+                            android:tag="averageDamage"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.2"
@@ -206,8 +206,8 @@
                             android:typeface="monospace"
                             app:autoSizeTextType="uniform" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/text_average_damage_session_info"
+                        <android.widget.DifferenceIndicatorView
+                            android:tag="averageDamageDiff"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_gravity="center"
@@ -227,7 +227,6 @@
                             android:layout_weight="0.05" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/text_survived"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.1"
@@ -239,7 +238,7 @@
                             app:autoSizeTextType="uniform" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/text_survived_info"
+                            android:tag="survived"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.2"
@@ -250,8 +249,8 @@
                             android:typeface="monospace"
                             app:autoSizeTextType="uniform" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/text_survived_session_info"
+                        <android.widget.DifferenceIndicatorView
+                            android:tag="survivedDiff"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_gravity="center"
@@ -279,7 +278,6 @@
                         android:orientation="vertical">
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/text_wins"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.1"
@@ -291,7 +289,7 @@
                             app:autoSizeTextType="uniform" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/text_wins_info"
+                            android:tag="winRate"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.2"
@@ -302,8 +300,8 @@
                             android:typeface="monospace"
                             app:autoSizeTextType="uniform" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/text_win_rate_session_info"
+                        <android.widget.DifferenceIndicatorView
+                            android:tag="winRateDiff"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_gravity="center"
@@ -323,7 +321,6 @@
                             android:layout_weight="0.05" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/text_efficiency"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.1"
@@ -335,7 +332,7 @@
                             app:autoSizeTextType="uniform" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/text_efficiency_info"
+                            android:tag="efficiency"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.2"
@@ -346,8 +343,8 @@
                             android:typeface="monospace"
                             app:autoSizeTextType="uniform" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/text_efficiency_session_info"
+                        <android.widget.DifferenceIndicatorView
+                            android:tag="efficiencyDiff"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_gravity="center"
@@ -367,7 +364,6 @@
                             android:layout_weight="0.05" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/text_hits_from_shots"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.1"
@@ -379,7 +375,7 @@
                             app:autoSizeTextType="uniform" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/text_hits_from_shots_info"
+                            android:tag="hitsFromShots"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.2"
@@ -390,8 +386,8 @@
                             android:typeface="monospace"
                             app:autoSizeTextType="uniform" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/text_hits_from_shots_session_info"
+                        <android.widget.DifferenceIndicatorView
+                            android:tag="hitsFromShotsDiff"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_gravity="center"
@@ -412,14 +408,14 @@
 
                     </LinearLayout>
 
-                </LinearLayout>
+                </android.widget.GPlayerFastStat>
 
-            </android.widget.LinearLayout>
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.05" />
+                android:layout_weight="0.05625" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/random_details_button"
@@ -442,7 +438,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.05" />
+                android:layout_weight="0.05625" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/random_session_stat_button"
@@ -463,19 +459,12 @@
                 app:autoSizeTextType="uniform" />
 
             <View
-                android:id="@+id/random_session_stat_view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.075"
-                android:visibility="gone" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.05" />
+                android:layout_weight="0.05625" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/random_sessions_button"
+                android:id="@+id/random_sessions_list_button"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
@@ -491,18 +480,6 @@
                 android:textStyle="bold"
                 android:typeface="normal"
                 app:autoSizeTextType="uniform" />
-
-            <View
-                android:id="@+id/random_sessions_view"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.075"
-                android:visibility="gone" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.025" />
 
         </android.widget.LinearLayout>
 

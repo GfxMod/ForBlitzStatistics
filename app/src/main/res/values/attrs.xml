@@ -26,5 +26,11 @@
     <declare-styleable name="SquareImageButton">
         <attr name="main_dimension" />
     </declare-styleable>
+    <declare-styleable name="DifferenceIndicatorView">
+        <attr name="minusBackground" format="reference|color" />
+        <attr name="plusBackground" format="reference|color" />
+        <attr name="minusTextColor" format="color" />
+        <attr name="plusTextColor" format="color" />
+    </declare-styleable>
 
 </resources>

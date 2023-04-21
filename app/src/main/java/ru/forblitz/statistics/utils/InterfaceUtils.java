@@ -19,7 +19,6 @@ import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.content.ContextCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -173,36 +172,6 @@ public class InterfaceUtils {
 
     }
 
-    /**
-     * Sets green background and green text color for {@link TextView textView}; called when difference is greater then 0
-     * @param activity required to get resources
-     * @param textView session info TextView
-     * @param value difference that should be set
-     */
-    public static void setSessionTrueValue(Activity activity, @NonNull TextView textView, String value) {
-        int color = ContextCompat.getColor(activity, R.color.session_green);
-        Drawable background = AppCompatResources.getDrawable(activity, R.drawable.background_sessions_true);
-
-        textView.setText(value);
-        textView.setTextColor(color);
-        textView.setBackground(background);
-    }
-
-    /**
-     * Sets red background and red text color for {@link TextView textView}; called when difference is less then 0
-     * @param activity required to get resources
-     * @param textView session info TextView
-     * @param value difference that should be set
-     */
-    public static void setSessionFalseValue(Activity activity, @NonNull TextView textView, String value) {
-        int color = ContextCompat.getColor(activity, R.color.session_red);
-        Drawable background = AppCompatResources.getDrawable(activity, R.drawable.background_sessions_false);
-
-        textView.setText(value);
-        textView.setTextColor(color);
-        textView.setBackground(background);
-    }
-
     public static void playCycledAnimation(@NonNull View view, Boolean needToSetClickable) {
         if (needToSetClickable) { view.setClickable(false); }
         ScaleAnimation animTo = new ScaleAnimation(
@@ -267,6 +236,24 @@ public class InterfaceUtils {
     public static void search(Context context, String nickname) {
         ((EditText) ((Activity) context).findViewById(R.id.search_field)).setText(nickname, TextView.BufferType.EDITABLE);
         ((Activity) context).findViewById(R.id.search_button).performClick();
+    }
+
+    public static int getValueColor(Context context, double value, double[] steps) {
+        if (value < steps[0]) {
+            return context.getColor(R.color.white);
+        }
+        if (value < steps[1]) {
+            return context.getColor(R.color.green);
+        }
+        if (value < steps[2]) {
+            return context.getColor(R.color.blue);
+        } else {
+            return context.getColor(R.color.violet);
+        }
+    }
+
+    public static int getValueColor(Context context, String stringValue, double[] steps) {
+        return getValueColor(context, Double.parseDouble(stringValue), steps);
     }
 
 }

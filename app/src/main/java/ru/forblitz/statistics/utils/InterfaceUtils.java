@@ -66,67 +66,6 @@ public class InterfaceUtils {
         return animFrom;
     }
 
-    /**
-     * Sets displayed child for {@link ru.forblitz.statistics.R.layout#fragment_random base statistics}
-     * @param activity required to get resources
-     * @param v visibility value to be set
-     */
-    public static void setBaseStatisticsVisibility(Activity activity, boolean v) {
-
-        ViewFlipper randomFlipper = activity.findViewById(R.id.fragment_random);
-        ViewFlipper tanksFlipper = activity.findViewById(R.id.fragment_tanks);
-
-        if (v) {
-            randomFlipper.setDisplayedChild(0);
-            tanksFlipper.setDisplayedChild(0);
-        } else {
-            randomFlipper.setDisplayedChild(1);
-            tanksFlipper.setDisplayedChild(1);
-        }
-
-    }
-
-    /**
-     * Sets displayed child for {@link R.layout#fragment_rating rating statistics}
-     * @param activity required to get resources
-     * @param v visibility value to be set
-     */
-    public static void setRatingStatisticsVisibility(Activity activity, boolean v) {
-
-        ViewFlipper ratingFlipper = activity.findViewById(R.id.fragment_rating);
-
-        if (v) {
-            ratingFlipper.setDisplayedChild(0);
-        } else {
-            ratingFlipper.setDisplayedChild(1);
-        }
-
-    }
-
-    public static MaterialAlertDialogBuilder createNetworkAlertDialog(Activity activity, Runnable r) {
-
-        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(activity);
-        alertDialog.setTitle(activity.getString(R.string.network_error));
-        alertDialog.setMessage(activity.getString(R.string.network_error_desc));
-        alertDialog.setCancelable(false);
-        alertDialog.setPositiveButton(activity.getString(R.string.network_error_try_again), (d, w) -> r.run());
-        activity.runOnUiThread(alertDialog::show);
-        return alertDialog;
-
-    }
-
-    public static MaterialAlertDialogBuilder createErrorAlertDialog(Activity activity, String title, String message) {
-
-        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(activity);
-        alertDialog.setTitle(title);
-        alertDialog.setMessage(message);
-        alertDialog.setCancelable(false);
-        alertDialog.setPositiveButton(activity.getString(android.R.string.ok), (d, w) -> {});
-        activity.runOnUiThread(alertDialog::show);
-        return alertDialog;
-
-    }
-
     public static Bitmap drawableToBitmap (@NonNull Drawable drawable) {
         Bitmap bitmap;
 
@@ -254,6 +193,45 @@ public class InterfaceUtils {
 
     public static int getValueColor(Context context, String stringValue, double[] steps) {
         return getValueColor(context, Double.parseDouble(stringValue), steps);
+    }
+
+    public static MaterialAlertDialogBuilder createAlertDialog(
+            Context context,
+            String title,
+            String message
+    ) {
+        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setCancelable(false);
+        alertDialog.setPositiveButton(context.getString(android.R.string.ok), (d, w) -> {});
+        return alertDialog;
+    }
+
+    public static MaterialAlertDialogBuilder createAlertDialog(
+            Context context, 
+            String title, 
+            String message, 
+            String positiveButtonText, 
+            Runnable positiveButtonAction
+    ) {
+        MaterialAlertDialogBuilder alertDialog = createAlertDialog(context, title, message);
+        alertDialog.setPositiveButton(positiveButtonText, (d, w) -> positiveButtonAction.run());
+        return alertDialog;
+    }
+
+    public static MaterialAlertDialogBuilder createAlertDialog(
+            Context context,
+            String title,
+            String message,
+            String positiveButtonText,
+            Runnable positiveButtonAction,
+            String negativeButtonText,
+            Runnable negativeButtonAction
+    ) {
+        MaterialAlertDialogBuilder alertDialog = createAlertDialog(context, title, message, positiveButtonText, positiveButtonAction);
+        alertDialog.setNegativeButton(negativeButtonText, (d, w) -> negativeButtonAction.run());
+        return alertDialog;
     }
 
 }

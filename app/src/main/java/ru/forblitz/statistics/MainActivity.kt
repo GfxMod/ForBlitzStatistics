@@ -20,7 +20,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.doOnTextChanged
 import androidx.viewpager.widget.ViewPager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
@@ -659,43 +658,40 @@ class MainActivity : AppCompatActivity() {
 
                         if (BuildConfig.VERSION_CODE in minimalVersionCodeServer until versionCodeServer) {
 
-                            MaterialAlertDialogBuilder(this@MainActivity)
-                                .setTitle(this@MainActivity.getString(R.string.update_available))
-                                .setMessage(this@MainActivity.getString(R.string.update_available_desc))
-                                .setCancelable(false)
-                                .setNegativeButton(this@MainActivity.getString(android.R.string.cancel)) { _: DialogInterface?, _: Int -> }
-                                .setPositiveButton(this@MainActivity.getString(R.string.update)) { _: DialogInterface?, _: Int -> Runnable {
-
+                            InterfaceUtils.createAlertDialog(
+                                this@MainActivity,
+                                this@MainActivity.getString(R.string.update_available),
+                                this@MainActivity.getString(R.string.update_available_desc),
+                                this@MainActivity.getString(R.string.update),
+                                Runnable {
                                     try {
                                         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
                                     } catch (e: ActivityNotFoundException) {
                                         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
                                     }
-
-                                }.run()
-                                }.show()
+                                },
+                                this@MainActivity.getString(android.R.string.cancel),
+                                Runnable {  }
+                            ).show()
 
                             this@launch.cancel()
 
                         } else if (BuildConfig.VERSION_CODE < minimalVersionCodeServer) {
 
-                            MaterialAlertDialogBuilder(this@MainActivity)
-                                .setTitle(this@MainActivity.getString(R.string.update_available))
-                                .setMessage(this@MainActivity.getString(R.string.update_available_desc))
-                                .setCancelable(false)
-                                .setPositiveButton(
-                                    this@MainActivity.getString(R.string.update)
-                                ) { _: DialogInterface?, _: Int -> Runnable {
-
+                            InterfaceUtils.createAlertDialog(
+                                this@MainActivity,
+                                this@MainActivity.getString(R.string.update_available),
+                                this@MainActivity.getString(R.string.update_available_desc),
+                                this@MainActivity.getString(R.string.update),
+                                Runnable {
                                     try {
                                         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
                                     } catch (e: ActivityNotFoundException) {
                                         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
                                     }
                                     finish()
-
-                                }.run()
-                                }.show()
+                                }
+                            ).show()
 
                         }
 
@@ -740,19 +736,29 @@ class MainActivity : AppCompatActivity() {
                             data,
                             ru.forblitz.statistics.jsonobjects.Error::class.java
                         )
-                        InterfaceUtils.createErrorAlertDialog(
+                        /*InterfaceUtils.createErrorAlertDialog(
                             this@MainActivity,
                             "Error ${error.code}",
                             error.message
-                        )
+                        )*/
+                        InterfaceUtils.createAlertDialog(
+                            this@MainActivity,
+                            "Error ${error.code}",
+                            error.message
+                        ).show()
                         searchField.text.clear()
                     } else if (userIDList.contains("\"count\": 0")) {
                         userID = "error"
-                        InterfaceUtils.createErrorAlertDialog(
+                        /*InterfaceUtils.createErrorAlertDialog(
                             this@MainActivity,
                             getString(R.string.error),
                             getString(R.string.nickname_not_found)
-                        )
+                        )*/
+                        InterfaceUtils.createAlertDialog(
+                            this@MainActivity,
+                            getString(R.string.error),
+                            getString(R.string.nickname_not_found)
+                        ).show()
                     } else {
                         userID = userIDList.substringAfter("\"account_id\": ").substringBefore("\n")
                     }
@@ -761,15 +767,22 @@ class MainActivity : AppCompatActivity() {
 
             } catch (e: IOException) {
                 @Suppress("ControlFlowWithEmptyBody") val mainCor = CoroutineScope(Dispatchers.IO).launch {
-                    InterfaceUtils.createNetworkAlertDialog(
-                        this@MainActivity
-                    ) {
-                        CoroutineScope(Dispatchers.IO).launch {
-                            val cor = getID()
-                            cor.join()
-                            cor.cancel()
-                        }
+
+                    runOnUiThread {
+                        InterfaceUtils.createAlertDialog(
+                            this@MainActivity,
+                            this@MainActivity.getString(R.string.network_error),
+                            this@MainActivity.getString(R.string.network_error_desc),
+                            this@MainActivity.getString(R.string.network_error_try_again)
+                        ) {
+                            CoroutineScope(Dispatchers.IO).launch {
+                                val cor = getID()
+                                cor.join()
+                                cor.cancel()
+                            }
+                        }.show()
                     }
+
                     while (userID == "") {  }
                 }
                 mainCor.join()
@@ -848,11 +861,16 @@ class MainActivity : AppCompatActivity() {
                 }
 
             } catch (e: IOException) {
-                InterfaceUtils.createNetworkAlertDialog(
-                    this@MainActivity
-                ) {
-                    setPlayerStatistics()
-                    this.cancel()
+                runOnUiThread {
+                    InterfaceUtils.createAlertDialog(
+                        this@MainActivity,
+                        this@MainActivity.getString(R.string.network_error),
+                        this@MainActivity.getString(R.string.network_error_desc),
+                        this@MainActivity.getString(R.string.network_error_try_again)
+                    ) {
+                        setPlayerStatistics()
+                        this.cancel()
+                    }.show()
                 }
             }
 
@@ -922,11 +940,16 @@ class MainActivity : AppCompatActivity() {
                                     }
 
                                 } catch (e: IOException) {
-                                    InterfaceUtils.createNetworkAlertDialog(
-                                        this@MainActivity
-                                    ) {
-                                        setClanStat()
-                                        this.cancel()
+                                    runOnUiThread {
+                                        InterfaceUtils.createAlertDialog(
+                                            this@MainActivity,
+                                            this@MainActivity.getString(R.string.network_error),
+                                            this@MainActivity.getString(R.string.network_error_desc),
+                                            this@MainActivity.getString(R.string.network_error_try_again)
+                                        ) {
+                                            setClanStat()
+                                            this.cancel()
+                                        }.show()
                                     }
                                 }
                             } else {
@@ -939,11 +962,16 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             } catch (e: IOException) {
-                InterfaceUtils.createNetworkAlertDialog(
-                    this@MainActivity
-                ) {
-                    setClanStat()
-                    this.cancel()
+                runOnUiThread {
+                    InterfaceUtils.createAlertDialog(
+                        this@MainActivity,
+                        this@MainActivity.getString(R.string.network_error),
+                        this@MainActivity.getString(R.string.network_error_desc),
+                        this@MainActivity.getString(R.string.network_error_try_again)
+                    ) {
+                        setClanStat()
+                        this.cancel()
+                    }.show()
                 }
             }
         }
@@ -974,11 +1002,16 @@ class MainActivity : AppCompatActivity() {
                 }
 
             } catch (e: IOException) {
-                InterfaceUtils.createNetworkAlertDialog(
-                    this@MainActivity
-                ) {
-                    fillVehiclesSpecifications()
-                    this.cancel()
+                runOnUiThread {
+                    InterfaceUtils.createAlertDialog(
+                        this@MainActivity,
+                        this@MainActivity.getString(R.string.network_error),
+                        this@MainActivity.getString(R.string.network_error_desc),
+                        this@MainActivity.getString(R.string.network_error_try_again)
+                    ) {
+                        fillVehiclesSpecifications()
+                        this.cancel()
+                    }.show()
                 }
             }
 
@@ -1022,11 +1055,16 @@ class MainActivity : AppCompatActivity() {
                         }
 
                     } catch (e: IOException) {
-                        InterfaceUtils.createNetworkAlertDialog(
-                            this@MainActivity
-                        ) {
-                            getVehiclesStatistics(idLists)
-                            this.cancel()
+                        runOnUiThread {
+                            InterfaceUtils.createAlertDialog(
+                                this@MainActivity,
+                                this@MainActivity.getString(R.string.network_error),
+                                this@MainActivity.getString(R.string.network_error_desc),
+                                this@MainActivity.getString(R.string.network_error_try_again)
+                            ) {
+                                getVehiclesStatistics(idLists)
+                                this.cancel()
+                            }.show()
                         }
                     }
 
@@ -1124,21 +1162,24 @@ class MainActivity : AppCompatActivity() {
                 if (i == number) {
                     Toast.makeText(this@MainActivity, getString(R.string.delete_select), Toast.LENGTH_SHORT).show()
                 } else {
-                    val alertDialog = MaterialAlertDialogBuilder(this@MainActivity)
-                    alertDialog.setTitle(getString(R.string.delete))
-                    alertDialog.setMessage(getString(R.string.delete_alert))
-                    alertDialog.setPositiveButton(
-                        getString(R.string.delete)
-                    ) { _: DialogInterface?, _: Int ->
-                        if (File(files[i]).delete()) {
-                            Toast.makeText(this@MainActivity, this@MainActivity.getString(R.string.delete_successfully), Toast.LENGTH_SHORT).show()
-                            setSessionStatistics(prettyJson1, i)
-                        } else {
-                            Toast.makeText(this@MainActivity, this@MainActivity.getString(R.string.delete_failed), Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                    alertDialog.setNegativeButton(getString(android.R.string.cancel)) { _: DialogInterface?, _: Int -> }
-                    alertDialog.show()
+
+                    InterfaceUtils.createAlertDialog(
+                        this@MainActivity,
+                        this@MainActivity.getString(R.string.delete),
+                        this@MainActivity.getString(R.string.delete_alert),
+                        this@MainActivity.getString(R.string.delete),
+                        Runnable {
+                            if (File(files[i]).delete()) {
+                                Toast.makeText(this@MainActivity, this@MainActivity.getString(R.string.delete_successfully), Toast.LENGTH_SHORT).show()
+                                setSessionStatistics(prettyJson1, i)
+                            } else {
+                                Toast.makeText(this@MainActivity, this@MainActivity.getString(R.string.delete_failed), Toast.LENGTH_SHORT).show()
+                            }
+                        },
+                        this@MainActivity.getString(android.R.string.cancel),
+                        Runnable {  }
+                    ).show()
+
                 }
             }
             session.isSelected = i == number
@@ -1206,19 +1247,15 @@ class MainActivity : AppCompatActivity() {
         when (preferences.getString("region", "notSpecified")) {
             "notSpecified" -> {
 
-                MaterialAlertDialogBuilder(this@MainActivity)
-                    .setTitle(this@MainActivity.getString(R.string.terms_of_service))
-                    .setMessage(this@MainActivity.getString(R.string.terms_of_service_desc))
-                    .setCancelable(false)
-                    .setNegativeButton(this@MainActivity.getString(R.string.exit)) { _: DialogInterface?, _: Int -> Runnable {
-                        finish()
-                    }.run()
-                    }
-                    .setPositiveButton(this@MainActivity.getString(R.string.accept)) { _: DialogInterface?, _: Int -> Runnable {
-                        preferences.edit().putString("region", "ru").apply()
-                    }.run()
-                    }
-                    .show()
+                InterfaceUtils.createAlertDialog(
+                    this@MainActivity,
+                    this@MainActivity.getString(R.string.terms_of_service),
+                    this@MainActivity.getString(R.string.terms_of_service_desc),
+                    this@MainActivity.getString(R.string.accept),
+                    Runnable { preferences.edit().putString("region", "ru").apply() },
+                    this@MainActivity.getString(R.string.exit),
+                    Runnable { finish() }
+                ).show()
 
                 InterfaceUtils.setSelectedRegion(
                     this@MainActivity,

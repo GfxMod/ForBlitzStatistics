@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.GDetailsLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -66,39 +67,7 @@ public class VehicleAdapter extends ArrayAdapter<Vehicle> {
         details.setOnClickListener(l -> {
             ViewFlipper tanksLayoutsFlipper = ((Activity) context).findViewById(R.id.tanks_layouts_flipper);
 
-            TextView tanksWins = ((Activity) context).findViewById(R.id.tanks_wins);
-            TextView tanksLosses = ((Activity) context).findViewById(R.id.tanks_losses);
-            TextView tanksWinAndSurvive = ((Activity) context).findViewById(R.id.tanks_win_and_survive);
-            TextView tanksSurvive = ((Activity) context).findViewById(R.id.tanks_survive);
-            TextView tanksXp = ((Activity) context).findViewById(R.id.tanks_xp);
-            TextView tanksFrags = ((Activity) context).findViewById(R.id.tanks_frags);
-            TextView tanksShots = ((Activity) context).findViewById(R.id.tanks_shots);
-            TextView tanksHits = ((Activity) context).findViewById(R.id.tanks_hits);
-            TextView tanksSpotted = ((Activity) context).findViewById(R.id.tanks_spotted);
-            TextView tanksFrags8p = ((Activity) context).findViewById(R.id.tanks_frags8p);
-            TextView tanksMaxXp = ((Activity) context).findViewById(R.id.tanks_max_xp);
-            TextView tanksMaxFrags = ((Activity) context).findViewById(R.id.tanks_max_frags);
-            TextView tanksCapturedPoints = ((Activity) context).findViewById(R.id.tanks_captured_points);
-            TextView tanksDropped = ((Activity) context).findViewById(R.id.tanks_dropped);
-            TextView tanksDamageDealt = ((Activity) context).findViewById(R.id.tanks_damage_dealt);
-            TextView tanksDamageReceived = ((Activity) context).findViewById(R.id.tanks_damage_received);
-
-            tanksWins.setText(vehicle.getData().getWins());
-            tanksLosses.setText(vehicle.getData().getLosses());
-            tanksWinAndSurvive.setText(vehicle.getData().getWinAndSurvived());
-            tanksSurvive.setText(vehicle.getData().getSurvivedBattles());
-            tanksXp.setText(vehicle.getData().getXp());
-            tanksFrags.setText(vehicle.getData().getFrags());
-            tanksShots.setText(vehicle.getData().getShots());
-            tanksHits.setText(vehicle.getData().getHits());
-            tanksSpotted.setText(vehicle.getData().getSpotted());
-            tanksFrags8p.setText(vehicle.getData().getFrags8p());
-            tanksMaxXp.setText(vehicle.getData().getMaxXp());
-            tanksMaxFrags.setText(vehicle.getData().getMaxFrags());
-            tanksCapturedPoints.setText(vehicle.getData().getCapturedPoints());
-            tanksDropped.setText(vehicle.getData().getDroppedCapturePoints());
-            tanksDamageDealt.setText(vehicle.getData().getDamageDealt());
-            tanksDamageReceived.setText(vehicle.getData().getDamageReceived());
+            ((GDetailsLayout) ((Activity) context).findViewById(R.id.tanks_details_layout)).setData(vehicle.getData());
 
             tanksLayoutsFlipper.setDisplayedChild(1);
         });

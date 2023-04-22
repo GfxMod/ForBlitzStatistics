@@ -77,17 +77,17 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <android.widget.LinearLayout
+        <android.widget.GDetailsLayout
             android:id="@+id/tanks_details_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/background_layout"
             android:orientation="vertical"
-            android:padding="@dimen/padding_big"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:padding="@dimen/padding_big">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -154,7 +154,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tanks_wins"
+                        android:tag="wins"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -200,7 +200,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tanks_losses"
+                        android:tag="losses"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -264,7 +264,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tanks_win_and_survive"
+                        android:tag="winAndSurvived"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -310,7 +310,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tanks_survive"
+                        android:tag="survivedBattles"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -363,7 +363,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tanks_xp"
+                        android:tag="xp"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -409,7 +409,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tanks_frags"
+                        android:tag="frags"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -462,7 +462,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tanks_shots"
+                        android:tag="shots"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -508,7 +508,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tanks_hits"
+                        android:tag="hits"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -561,7 +561,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tanks_spotted"
+                        android:tag="spotted"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -607,7 +607,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tanks_frags8p"
+                        android:tag="frags8p"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -660,7 +660,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tanks_max_xp"
+                        android:tag="maxXp"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -706,7 +706,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tanks_max_frags"
+                        android:tag="maxFrags"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -759,7 +759,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tanks_captured_points"
+                        android:tag="capturedPoints"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -805,7 +805,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tanks_dropped"
+                        android:tag="droppedCapturePoints"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -858,7 +858,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tanks_damage_dealt"
+                        android:tag="damageDealt"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -904,7 +904,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tanks_damage_received"
+                        android:tag="damageReceived"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -924,7 +924,7 @@
 
             </LinearLayout>
 
-        </android.widget.LinearLayout>
+        </android.widget.GDetailsLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

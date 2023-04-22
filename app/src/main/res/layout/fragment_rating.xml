@@ -437,7 +437,8 @@
 
         </android.widget.LinearLayout>
 
-        <android.widget.LinearLayout
+        <android.widget.GDetailsLayout
+            android:id="@+id/rating_details_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/background_layout"
@@ -513,7 +514,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_wins"
+                        android:tag="wins"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -559,7 +560,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_losses"
+                        android:tag="losses"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -623,7 +624,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_win_and_survive"
+                        android:tag="winAndSurvived"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -669,7 +670,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_survive"
+                        android:tag="survivedBattles"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -722,7 +723,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_xp"
+                        android:tag="xp"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -768,7 +769,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_frags"
+                        android:tag="frags"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -821,7 +822,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_shots"
+                        android:tag="shots"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -867,7 +868,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_hits"
+                        android:tag="hits"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -920,7 +921,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_spotted"
+                        android:tag="spotted"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -966,7 +967,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_frags8p"
+                        android:tag="frags8p"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -1019,7 +1020,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_captured_points"
+                        android:tag="capturedPoints"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -1065,7 +1066,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_dropped"
+                        android:tag="droppedCapturePoints"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -1118,7 +1119,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_damage_dealt"
+                        android:tag="damageDealt"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -1164,7 +1165,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_damage_received"
+                        android:tag="damageReceived"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -1189,7 +1190,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.11" />
 
-        </android.widget.LinearLayout>
+        </android.widget.GDetailsLayout>
 
     </android.widget.DifferenceViewFlipper>
 

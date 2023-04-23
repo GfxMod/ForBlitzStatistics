@@ -2,8 +2,8 @@ package ru.forblitz.statistics.data;
 
 import android.app.Activity;
 import android.view.View;
-import android.widget.GClanInfo;
-import android.widget.GClanSmall;
+import ru.forblitz.statistics.widget.data.ClanInfo;
+import ru.forblitz.statistics.widget.data.ClanSmall;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -68,9 +68,9 @@ public class Clan {
 
         });
 
-        ((GClanInfo) activity.findViewById(R.id.gclan_info)).setData(bigClanData);
-        ((GClanSmall) activity.findViewById(R.id.clan_true_random)).setData(smallClanData, bigClanData);
-        ((GClanSmall) activity.findViewById(R.id.clan_true_rating)).setData(smallClanData, bigClanData);
+        ((ClanInfo) activity.findViewById(R.id.gclan_info)).setData(bigClanData);
+        ((ClanSmall) activity.findViewById(R.id.clan_true_random)).setData(smallClanData, bigClanData);
+        ((ClanSmall) activity.findViewById(R.id.clan_true_rating)).setData(smallClanData, bigClanData);
 
     }
 

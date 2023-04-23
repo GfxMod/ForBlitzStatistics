@@ -1,11 +1,8 @@
-package android.widget;
+package ru.forblitz.statistics.widget.common;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.drawable.StateListDrawable;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.util.StateSet;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

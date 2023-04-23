@@ -1,8 +1,10 @@
-package android.widget;
+package ru.forblitz.statistics.widget.data;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -11,17 +13,17 @@ import java.util.ArrayList;
 
 import ru.forblitz.statistics.data.StatisticsData;
 
-public class GDetailsLayout extends LinearLayout {
+public class DetailsLayout extends LinearLayout {
 
-    public GDetailsLayout(Context context) {
+    public DetailsLayout(Context context) {
         super(context);
     }
 
-    public GDetailsLayout(Context context, @Nullable AttributeSet attrs) {
+    public DetailsLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public GDetailsLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public DetailsLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

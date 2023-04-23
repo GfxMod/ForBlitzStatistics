@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.widget.DifferenceViewFlipper
+<ru.forblitz.statistics.widget.common.DifferenceViewFlipper
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -13,7 +13,7 @@
     android:paddingHorizontal="@dimen/padding_big"
     tools:context="ru.forblitz.statistics.RandomFragment">
 
-    <android.widget.DifferenceViewFlipper
+    <ru.forblitz.statistics.widget.common.DifferenceViewFlipper
         android:id="@+id/random_layouts_flipper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -63,7 +63,7 @@
                     android:layout_weight="0.15"
                     android:background="@drawable/background_layout_nested">
 
-                    <android.widget.GClanSmall
+                    <ru.forblitz.statistics.widget.data.ClanSmall
                         android:id="@+id/clan_true_random"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -100,7 +100,7 @@
                             android:typeface="normal"
                             app:autoSizeTextType="uniform" />
 
-                    </android.widget.GClanSmall>
+                    </ru.forblitz.statistics.widget.data.ClanSmall>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/clan_false_random"
@@ -126,7 +126,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="0.1" />
 
-                <android.widget.GPlayerFastStat
+                <ru.forblitz.statistics.widget.data.PlayerFastStat
                     android:id="@+id/random_fast_stat"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -163,7 +163,7 @@
                             android:typeface="monospace"
                             app:autoSizeTextType="uniform" />
 
-                        <android.widget.DifferenceIndicatorView
+                        <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
                             android:tag="battlesDiff"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
@@ -206,7 +206,7 @@
                             android:typeface="monospace"
                             app:autoSizeTextType="uniform" />
 
-                        <android.widget.DifferenceIndicatorView
+                        <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
                             android:tag="averageDamageDiff"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
@@ -249,7 +249,7 @@
                             android:typeface="monospace"
                             app:autoSizeTextType="uniform" />
 
-                        <android.widget.DifferenceIndicatorView
+                        <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
                             android:tag="survivedDiff"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
@@ -300,7 +300,7 @@
                             android:typeface="monospace"
                             app:autoSizeTextType="uniform" />
 
-                        <android.widget.DifferenceIndicatorView
+                        <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
                             android:tag="winRateDiff"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
@@ -343,7 +343,7 @@
                             android:typeface="monospace"
                             app:autoSizeTextType="uniform" />
 
-                        <android.widget.DifferenceIndicatorView
+                        <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
                             android:tag="efficiencyDiff"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
@@ -386,7 +386,7 @@
                             android:typeface="monospace"
                             app:autoSizeTextType="uniform" />
 
-                        <android.widget.DifferenceIndicatorView
+                        <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
                             android:tag="hitsFromShotsDiff"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
@@ -408,7 +408,7 @@
 
                     </LinearLayout>
 
-                </android.widget.GPlayerFastStat>
+                </ru.forblitz.statistics.widget.data.PlayerFastStat>
 
             </LinearLayout>
 
@@ -483,7 +483,7 @@
 
         </android.widget.LinearLayout>
 
-        <android.widget.GDetailsLayout
+        <ru.forblitz.statistics.widget.data.DetailsLayout
             android:id="@+id/random_details_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -513,7 +513,7 @@
                     android:textStyle="bold"
                     app:autoSizeTextType="uniform" />
 
-                <android.widget.SquareImageButton
+                <ru.forblitz.statistics.widget.common.SquareImageButton
                     android:id="@+id/random_details_back"
                     android:layout_width="0px"
                     android:layout_height="match_parent"
@@ -1330,7 +1330,7 @@
 
             </LinearLayout>
 
-        </android.widget.GDetailsLayout>
+        </ru.forblitz.statistics.widget.data.DetailsLayout>
 
         <android.widget.LinearLayout
             android:id="@+id/random_sessions_layout"
@@ -1396,7 +1396,7 @@
 
         </android.widget.LinearLayout>
 
-    </android.widget.DifferenceViewFlipper>
+    </ru.forblitz.statistics.widget.common.DifferenceViewFlipper>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -1430,4 +1430,4 @@
 
     </LinearLayout>
 
-</android.widget.DifferenceViewFlipper>
+</ru.forblitz.statistics.widget.common.DifferenceViewFlipper>

@@ -1,8 +1,9 @@
-package android.widget;
+package ru.forblitz.statistics.widget.data;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -11,17 +12,17 @@ import ru.forblitz.statistics.data.Constants;
 import ru.forblitz.statistics.data.StatisticsData;
 import ru.forblitz.statistics.utils.InterfaceUtils;
 
-public class GPlayerFastStat extends LinearLayout {
+public class PlayerFastStat extends LinearLayout {
 
-    public GPlayerFastStat(Context context) {
+    public PlayerFastStat(Context context) {
         super(context);
     }
 
-    public GPlayerFastStat(Context context, @Nullable AttributeSet attrs) {
+    public PlayerFastStat(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public GPlayerFastStat(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public PlayerFastStat(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

@@ -1,4 +1,4 @@
-package android.widget;
+package ru.forblitz.statistics.widget.data;
 
 import android.content.Context;
 import android.content.res.TypedArray;

@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.view.View;
-import android.widget.GPlayerFastStat;
+import ru.forblitz.statistics.widget.data.PlayerFastStat;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -109,8 +109,8 @@ public class SessionUtils {
     public static void set(Activity activity, StatisticsData baseStatisticsData, StatisticsData ratingStatisticsData, StatisticsData sessionBaseDifferencesStatisticsData, StatisticsData sessionRatingDifferencesStatisticsData) {
         from(activity, baseStatisticsData, ratingStatisticsData);
 
-        ((GPlayerFastStat) activity.findViewById(R.id.random_fast_stat)).setSessionData(sessionBaseDifferencesStatisticsData);
-        ((GPlayerFastStat) activity.findViewById(R.id.rating_fast_stat)).setSessionData(sessionRatingDifferencesStatisticsData);
+        ((PlayerFastStat) activity.findViewById(R.id.random_fast_stat)).setSessionData(sessionBaseDifferencesStatisticsData);
+        ((PlayerFastStat) activity.findViewById(R.id.rating_fast_stat)).setSessionData(sessionRatingDifferencesStatisticsData);
 
     }
 

@@ -62,7 +62,7 @@
 
     </LinearLayout>
 
-    <android.widget.DifferenceViewFlipper
+    <ru.forblitz.statistics.widget.common.DifferenceViewFlipper
         android:id="@+id/main_layouts_flipper"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -103,7 +103,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.1" />
 
-            <android.widget.DifferenceViewFlipper
+            <ru.forblitz.statistics.widget.common.DifferenceViewFlipper
                 android:id="@+id/last_searched_flipper"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -149,7 +149,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
-            </android.widget.DifferenceViewFlipper>
+            </ru.forblitz.statistics.widget.common.DifferenceViewFlipper>
 
             <View
                 android:layout_width="match_parent"
@@ -336,6 +336,6 @@
 
         </LinearLayout>
 
-    </android.widget.DifferenceViewFlipper>
+    </ru.forblitz.statistics.widget.common.DifferenceViewFlipper>
 
 </LinearLayout>

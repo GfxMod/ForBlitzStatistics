@@ -1,7 +1,9 @@
-package android.widget;
+package ru.forblitz.statistics.widget.data;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -9,17 +11,17 @@ import ru.forblitz.statistics.data.BigClanData;
 import ru.forblitz.statistics.data.SmallClanData;
 import ru.forblitz.statistics.utils.ParseUtils;
 
-public class GClanSmall extends LinearLayout {
+public class ClanSmall extends LinearLayout {
 
-    public GClanSmall(Context context) {
+    public ClanSmall(Context context) {
         super(context);
     }
 
-    public GClanSmall(Context context, @Nullable AttributeSet attrs) {
+    public ClanSmall(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public GClanSmall(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public ClanSmall(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

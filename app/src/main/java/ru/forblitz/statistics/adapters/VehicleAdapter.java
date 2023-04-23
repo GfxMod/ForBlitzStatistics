@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.GDetailsLayout;
+import ru.forblitz.statistics.widget.data.DetailsLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -67,7 +67,7 @@ public class VehicleAdapter extends ArrayAdapter<Vehicle> {
         details.setOnClickListener(l -> {
             ViewFlipper tanksLayoutsFlipper = ((Activity) context).findViewById(R.id.tanks_layouts_flipper);
 
-            ((GDetailsLayout) ((Activity) context).findViewById(R.id.tanks_details_layout)).setData(vehicle.getData());
+            ((DetailsLayout) ((Activity) context).findViewById(R.id.tanks_details_layout)).setData(vehicle.getData());
 
             tanksLayoutsFlipper.setDisplayedChild(1);
         });

@@ -1,8 +1,11 @@
-package android.widget;
+package ru.forblitz.statistics.widget.data;
 
 import android.content.Context;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -12,17 +15,17 @@ import ru.forblitz.statistics.data.BigClanData;
 import ru.forblitz.statistics.utils.InterfaceUtils;
 import ru.forblitz.statistics.utils.ParseUtils;
 
-public class GClanInfo extends LinearLayout {
+public class ClanInfo extends LinearLayout {
 
-    public GClanInfo(Context context) {
+    public ClanInfo(Context context) {
         super(context);
     }
 
-    public GClanInfo(Context context, @Nullable AttributeSet attrs) {
+    public ClanInfo(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public GClanInfo(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public ClanInfo(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

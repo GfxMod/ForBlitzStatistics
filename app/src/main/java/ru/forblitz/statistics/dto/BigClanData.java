@@ -1,60 +1,13 @@
-package ru.forblitz.statistics.data;
+package ru.forblitz.statistics.dto;
 
-import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class BigClanData {
-
-    @Keep
-    public static class RecruitingOptions {
-
-        @SerializedName("vehicles_level")
-        public String vehiclesLevel;
-        @SerializedName("wins_ratio")
-        public String winsRatio;
-        @SerializedName("average_battles_per_day")
-        public String averageBattlesPerDay;
-        @SerializedName("battles")
-        public String battles;
-        @SerializedName("average_damage")
-        public String averageDamage;
-
-    }
-
-    public static class Member {
-
-        @SerializedName("role")
-        String role;
-        @SerializedName("joined_at")
-        String joinedAt;
-        @SerializedName("account_id")
-        String accountId;
-        @SerializedName("account_name")
-        String accountName;
-
-        public String getRole() {
-            return role;
-        }
-
-        public String getJoinedAt() {
-            return joinedAt;
-        }
-
-        public String getAccountId() {
-            return accountId;
-        }
-
-        public String getAccountName() {
-            return accountName;
-        }
-
-    }
 
     @SerializedName("recruiting_options")
     private RecruitingOptions recruitingOptions;

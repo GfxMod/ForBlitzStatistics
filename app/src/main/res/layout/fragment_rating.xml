@@ -30,7 +30,8 @@
             app:layout_constraintStart_toStartOf="parent"
             android:weightSum="1">
 
-            <android.widget.LinearLayout
+            <ru.forblitz.statistics.widget.data.PlayerFastStat
+                android:id="@+id/rating_fast_stat"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.55"
@@ -39,7 +40,7 @@
                 android:padding="@dimen/padding_big">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/rating_text_nick"
+                    android:tag="nickname"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.1"
@@ -57,21 +58,21 @@
                     android:layout_height="0dp"
                     android:layout_weight="0.025" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <ru.forblitz.statistics.widget.data.ClanSmall
+                    android:id="@+id/rating_clan"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.15"
                     android:background="@drawable/background_layout_nested">
 
-                    <ru.forblitz.statistics.widget.data.ClanSmall
-                        android:id="@+id/clan_true_rating"
+                    <android.widget.LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:padding="@dimen/padding"
-                        app:layout_constraintTop_toTopOf="parent"
+                        android:visibility="visible"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:visibility="visible">
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:tag="clan_name"
@@ -100,10 +101,9 @@
                             android:typeface="normal"
                             app:autoSizeTextType="uniform" />
 
-                    </ru.forblitz.statistics.widget.data.ClanSmall>
+                    </android.widget.LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/clan_false_rating"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/inter"
@@ -119,15 +119,14 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </ru.forblitz.statistics.widget.data.ClanSmall>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.1" />
 
-                <ru.forblitz.statistics.widget.data.PlayerFastStat
-                    android:id="@+id/rating_fast_stat"
+                <android.widget.LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.755"
@@ -408,9 +407,9 @@
 
                     </LinearLayout>
 
-                </ru.forblitz.statistics.widget.data.PlayerFastStat>
+                </android.widget.LinearLayout>
 
-            </android.widget.LinearLayout>
+            </ru.forblitz.statistics.widget.data.PlayerFastStat>
 
             <View
                 android:layout_width="match_parent"

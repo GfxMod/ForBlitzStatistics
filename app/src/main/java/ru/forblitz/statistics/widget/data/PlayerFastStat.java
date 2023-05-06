@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 
 import ru.forblitz.statistics.R;
 import ru.forblitz.statistics.data.Constants;
-import ru.forblitz.statistics.data.StatisticsData;
+import ru.forblitz.statistics.dto.StatisticsData;
 import ru.forblitz.statistics.utils.InterfaceUtils;
 
 public class PlayerFastStat extends LinearLayout {
@@ -63,6 +63,8 @@ public class PlayerFastStat extends LinearLayout {
         winRate.setTextColor(winRateColor);
         averageDamage.setTextColor(averageDamageColor);
         efficiency.setTextColor(efficiencyColor);
+
+        ((TextView) this.findViewWithTag("nickname")).setText(statisticsData.getNickname());
 
     }
 

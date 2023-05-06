@@ -1,4 +1,4 @@
-package ru.forblitz.statistics.utils;
+package ru.forblitz.statistics.service;
 
 import android.content.Context;
 import android.util.Log;
@@ -21,14 +21,17 @@ import com.yandex.mobile.ads.interstitial.InterstitialAdEventListener;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class AdUtils {
+import ru.forblitz.statistics.utils.InterfaceUtils;
+import ru.forblitz.statistics.utils.Utils;
+
+public class AdService {
 
     private final Context context;
     private final HashMap<Integer, Long> banners = new HashMap<>();
 
     private long dateOfTheLastImpression = System.currentTimeMillis();
 
-    public AdUtils(Context context) {
+    public AdService(Context context) {
         this.context = context;
     }
 

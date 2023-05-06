@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import ru.forblitz.statistics.data.StatisticsData;
+import ru.forblitz.statistics.dto.StatisticsData;
 
 public class DetailsLayout extends LinearLayout {
 

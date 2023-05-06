@@ -14,6 +14,21 @@ public class Constants {
         public static final int SETTINGS = 3;
     }
 
+    public static class StatisticsViewFlipperItems {
+        public static final int STATISTICS = 0;
+        public static final int FALSE = 1;
+    }
+
+    public static class ClanViewFlipperItems {
+        public static final int IS_A_MEMBER = 0;
+        public static final int NOT_IS_A_MEMBER = 1;
+    }
+
+    public static class ClanInfoViewFlipperItems {
+        public static final int INFO = 0;
+        public static final int RECRUITING_OPTIONS = 1;
+    }
+
     public static final Map<String, String> baseUrl = new HashMap<>();
     static {
         baseUrl.put("ru", "https://api.wotblitz.ru/");

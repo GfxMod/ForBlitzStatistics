@@ -1,8 +1,8 @@
-package ru.forblitz.statistics.data;
+package ru.forblitz.statistics.dto;
 
 import androidx.annotation.NonNull;
 
-import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Locale;
@@ -290,7 +290,7 @@ public class StatisticsData {
     @NonNull
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return new GsonBuilder().setPrettyPrinting().create().toJson(this);
     }
 
 }

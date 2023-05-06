@@ -30,7 +30,8 @@
             app:layout_constraintStart_toStartOf="parent"
             android:weightSum="1">
 
-            <LinearLayout
+            <ru.forblitz.statistics.widget.data.PlayerFastStat
+                android:id="@+id/random_fast_stat"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.55"
@@ -39,7 +40,7 @@
                 android:padding="@dimen/padding_big">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/text_nick"
+                    android:tag="nickname"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.1"
@@ -57,14 +58,14 @@
                     android:layout_height="0dp"
                     android:layout_weight="0.025" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <ru.forblitz.statistics.widget.data.ClanSmall
+                    android:id="@+id/random_clan"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.15"
                     android:background="@drawable/background_layout_nested">
 
-                    <ru.forblitz.statistics.widget.data.ClanSmall
-                        android:id="@+id/clan_true_random"
+                    <android.widget.LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
@@ -100,10 +101,9 @@
                             android:typeface="normal"
                             app:autoSizeTextType="uniform" />
 
-                    </ru.forblitz.statistics.widget.data.ClanSmall>
+                    </android.widget.LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/clan_false_random"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/inter"
@@ -119,15 +119,14 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </ru.forblitz.statistics.widget.data.ClanSmall>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.1" />
 
-                <ru.forblitz.statistics.widget.data.PlayerFastStat
-                    android:id="@+id/random_fast_stat"
+                <android.widget.LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.755"
@@ -408,9 +407,9 @@
 
                     </LinearLayout>
 
-                </ru.forblitz.statistics.widget.data.PlayerFastStat>
+                </android.widget.LinearLayout>
 
-            </LinearLayout>
+            </ru.forblitz.statistics.widget.data.PlayerFastStat>
 
             <View
                 android:layout_width="match_parent"
@@ -439,47 +438,57 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.05625" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/random_session_stat_button"
+            
+            <ru.forblitz.statistics.widget.data.SessionButtonsLayout
+                android:id="@+id/random_session_buttons"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_weight="0.075"
-                android:background="@drawable/background_sessions_true"
-                android:fontFamily="@font/inter"
-                android:gravity="center"
-                android:paddingHorizontal="30dp"
-                android:paddingVertical="@dimen/padding_very_big"
-                android:text="@string/to_session_stat"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:typeface="normal"
-                app:autoSizeTextType="uniform" />
+                android:layout_weight="0.20625"
+                android:orientation="vertical"
+                android:weightSum="0.20625">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.05625" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/random_session_stat_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.075"
+                    android:background="@drawable/background_sessions_true"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:paddingHorizontal="30dp"
+                    android:paddingVertical="@dimen/padding_very_big"
+                    android:text="@string/to_session_stat"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="normal"
+                    app:autoSizeTextType="uniform" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/random_sessions_list_button"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_weight="0.075"
-                android:background="@drawable/background_sessions_true"
-                android:fontFamily="@font/inter"
-                android:gravity="center"
-                android:paddingHorizontal="30dp"
-                android:paddingVertical="@dimen/padding_very_big"
-                android:text="@string/select_session"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:typeface="normal"
-                app:autoSizeTextType="uniform" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.05625" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/random_sessions_list_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.075"
+                    android:background="@drawable/background_sessions_true"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:paddingHorizontal="30dp"
+                    android:paddingVertical="@dimen/padding_very_big"
+                    android:text="@string/select_session"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="normal"
+                    app:autoSizeTextType="uniform" />
+
+            </ru.forblitz.statistics.widget.data.SessionButtonsLayout>
 
         </android.widget.LinearLayout>
 

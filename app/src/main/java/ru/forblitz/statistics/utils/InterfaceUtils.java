@@ -1,5 +1,8 @@
 package ru.forblitz.statistics.utils;
 
+import static ru.forblitz.statistics.data.Constants.StatisticsViewFlipperItems.FALSE;
+import static ru.forblitz.statistics.data.Constants.StatisticsViewFlipperItems.STATISTICS;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -23,6 +26,10 @@ import androidx.appcompat.content.res.AppCompatResources;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import ru.forblitz.statistics.R;
+import ru.forblitz.statistics.dto.StatisticsData;
+import ru.forblitz.statistics.widget.common.DifferenceViewFlipper;
+import ru.forblitz.statistics.widget.data.DetailsLayout;
+import ru.forblitz.statistics.widget.data.PlayerFastStat;
 
 public class InterfaceUtils {
 
@@ -234,4 +241,45 @@ public class InterfaceUtils {
         return alertDialog;
     }
 
+    /**
+     * Sets {@link R.layout#fragment_random base statisticsData} values
+     * @param activity required to get resources
+     * @param statisticsData statisticsData to be set
+     */
+    public static void setBaseStatistics(Activity activity, StatisticsData statisticsData, boolean needToHide) {
+
+        if (needToHide && !statisticsData.getBattles().equals("0")) {
+            activity.runOnUiThread(() ->
+                    ((DifferenceViewFlipper) activity.findViewById(R.id.fragment_random)).setDisplayedChild(STATISTICS));
+        } else if (needToHide && statisticsData.getBattles().equals("0")) {
+            activity.runOnUiThread(() ->
+                    ((DifferenceViewFlipper) activity.findViewById(R.id.fragment_random)).setDisplayedChild(FALSE));
+        }
+        activity.runOnUiThread(() -> {
+            ((PlayerFastStat) activity.findViewById(R.id.random_fast_stat)).setData(statisticsData);
+            ((DetailsLayout) activity.findViewById(R.id.random_details_layout)).setData(statisticsData);
+        });
+    }
+
+    /**
+     * Sets {@link R.layout#fragment_rating rating statistics} values
+     * @param activity required to get resources
+     * @param statisticsData statistics to be set
+     */
+    public static void setRatingStatistics(Activity activity, StatisticsData statisticsData, boolean needToHide) {
+
+        if (needToHide && !statisticsData.getBattles().equals("0")) {
+            activity.runOnUiThread(() ->
+                    ((DifferenceViewFlipper) activity.findViewById(R.id.fragment_rating)).setDisplayedChild(STATISTICS));
+        } else if (needToHide && statisticsData.getBattles().equals("0")) {
+            activity.runOnUiThread(() ->
+                    ((DifferenceViewFlipper) activity.findViewById(R.id.fragment_rating)).setDisplayedChild(FALSE));
+        }
+
+        activity.runOnUiThread(() -> {
+            ((PlayerFastStat) activity.findViewById(R.id.rating_fast_stat)).setData(statisticsData);
+            ((DetailsLayout) activity.findViewById(R.id.rating_details_layout)).setData(statisticsData);
+        });
+
+    }
 }

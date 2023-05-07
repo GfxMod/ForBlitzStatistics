@@ -164,6 +164,7 @@ class MainActivity : AppCompatActivity() {
         app.vehicleSpecsService = VehicleSpecsService(app.apiService)
         app.vehicleStatService = VehicleStatService(app.apiService)
         app.adService = AdService(this@MainActivity)
+        app.connectivityService = ConnectivityService()
 
         // Creates a session directory
 
@@ -243,6 +244,16 @@ class MainActivity : AppCompatActivity() {
 
         MobileAds.initialize(this) { Log.i("YandexMobileAds", "SDK initialized") }
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        app.connectivityService.subscribe(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        app.connectivityService.unsubscribe(this)
     }
 
     /**

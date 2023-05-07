@@ -28,6 +28,14 @@ class VehicleSpecsService(private var apiService: ApiService) {
 
     }
 
+    // TODO: во многих сервисах нет смысла выделять request в отдельный метод,
+    // но хорошая практика использовать вспомогательные переменные.
+    // результатом любого запроса должна быть уже десериализованная сущность
+
+    // сервис <== мы здесь
+    // --------------------------- все, что ниже, следует воспринимать как единый этап
+    // сериализатор/десериализатор
+    // отправитель http-запросов
     private suspend fun request(): String {
 
         return Utils.toJson(apiService.getAllInformationAboutVehicles())

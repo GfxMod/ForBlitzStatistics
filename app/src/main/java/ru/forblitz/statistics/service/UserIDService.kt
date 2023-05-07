@@ -14,6 +14,9 @@ class UserIDService(private var context: Context, private var apiService: ApiSer
     private var userID: String? = null
     private var objectException: ObjectException? = null
 
+
+    // TODO: пусть кусок кода parse(request(...)) в случае бросает исключение
+
     @Throws(ObjectException::class)
     suspend fun get(nickname: String): String {
 

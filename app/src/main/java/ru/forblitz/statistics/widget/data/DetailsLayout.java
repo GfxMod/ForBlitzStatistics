@@ -41,6 +41,7 @@ public class DetailsLayout extends LinearLayout {
         }
     }
 
+    // TODO: add private
     ArrayList<View> getAllChildren(LinearLayout linearLayout) {
         ArrayList<View> children = new ArrayList<>();
 

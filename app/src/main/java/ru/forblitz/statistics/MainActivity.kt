@@ -21,6 +21,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateLayoutParams
 import androidx.viewpager.widget.ViewPager
+import com.google.android.datatransport.BuildConfig
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.yandex.mobile.ads.banner.BannerAdView
@@ -53,6 +54,7 @@ import kotlin.collections.HashMap
 
 class MainActivity : AppCompatActivity() {
 
+    // TODO: все еще рассмотрите создание класса Application и хранить сервисы там
     private lateinit var preferences: SharedPreferences
 
     private lateinit var apiService: ApiService
@@ -71,10 +73,16 @@ class MainActivity : AppCompatActivity() {
     //
     //
 
+    private lateinit var app : MyApplication
+
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        app = (application as MyApplication)
+
+        // TODO: change services to app.service
 
         // Configures ViewPager
 

@@ -49,6 +49,7 @@ class VehicleStatService(private var apiService: ApiService) {
 
     }
 
+    // TODO: нейминг, лучше splitIntoBatches
     private fun separate(vehiclesIds: Array<String>): ArrayList<String> {
         val separatedIds = ArrayList<String>()
 

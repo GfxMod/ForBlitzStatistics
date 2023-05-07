@@ -11,6 +11,8 @@ class ClanService(private var apiService: ApiService) {
 
     private var bigClanData: BigClanData? = null
 
+    // TODO: **может быть,** имеет смысл пересмотреть нейминг - ClanDataPreview ClanDataDetailed ...
+
     suspend fun get(smallClanData: SmallClanData): BigClanData? {
 
         return if (bigClanData != null) {

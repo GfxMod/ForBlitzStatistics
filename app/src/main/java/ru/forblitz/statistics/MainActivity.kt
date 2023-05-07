@@ -21,7 +21,6 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateLayoutParams
 import androidx.viewpager.widget.ViewPager
-import com.google.android.datatransport.BuildConfig
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.yandex.mobile.ads.banner.BannerAdView
@@ -55,32 +54,14 @@ import kotlin.collections.HashMap
 class MainActivity : AppCompatActivity() {
 
     // TODO: все еще рассмотрите создание класса Application и хранить сервисы там
-    private lateinit var preferences: SharedPreferences
-
-    private lateinit var apiService: ApiService
-    private lateinit var userIDService: UserIDService
-    private lateinit var randomService: RandomService
-    private lateinit var ratingService: RatingService
-    private lateinit var userClanService: UserClanService
-    private lateinit var clanService: ClanService
-    private lateinit var sessionService: SessionService
-    private lateinit var versionService: VersionService
-    private lateinit var vehicleSpecsService: VehicleSpecsService
-    private lateinit var vehicleStatService: VehicleStatService
-    private lateinit var adService: AdService
-
-    //
-    //
-    //
-
-    private lateinit var app : MyApplication
+    private lateinit var app: ForBlitzStatisticsApplication
 
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        app = (application as MyApplication)
+        app = application as ForBlitzStatisticsApplication
 
         // TODO: change services to app.service
 
@@ -172,36 +153,36 @@ class MainActivity : AppCompatActivity() {
 
         // Initialization of services
 
-        apiService = ApiService(this@MainActivity)
-        userIDService = UserIDService(context = this@MainActivity, apiService = apiService)
-        randomService = RandomService(apiService = apiService)
-        ratingService = RatingService(apiService = apiService)
-        userClanService = UserClanService(apiService = apiService)
-        clanService = ClanService(apiService = apiService)
-        sessionService = SessionService(context = applicationContext)
-        versionService = VersionService(activity = this@MainActivity)
-        vehicleSpecsService = VehicleSpecsService(apiService = apiService)
-        vehicleStatService = VehicleStatService(apiService = apiService)
-        adService = AdService(this@MainActivity)
+        app.apiService = ApiService(this@MainActivity)
+        app.userIDService = UserIDService(this@MainActivity, app.apiService)
+        app.randomService = RandomService(app.apiService)
+        app.ratingService = RatingService(app.apiService)
+        app.userClanService = UserClanService(app.apiService)
+        app.clanService = ClanService(app.apiService)
+        app.sessionService = SessionService(context = applicationContext)
+        app.versionService = VersionService(activity = this@MainActivity)
+        app.vehicleSpecsService = VehicleSpecsService(app.apiService)
+        app.vehicleStatService = VehicleStatService(app.apiService)
+        app.adService = AdService(this@MainActivity)
 
         // Creates a session directory
 
-        sessionService.createSessionDir()
+        app.sessionService.createSessionDir()
 
-        // Get preferences
+        // Get app.preferences
 
-        preferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
+        app.preferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
 
         // Sets region
 
         setRegion()
 
-        // Sets preferences listeners
+        // Sets app.preferences listeners
 
-        findViewById<View>(R.id.select_region_ru).setOnClickListener { preferences.edit().putString("region", "ru").apply(); setRegion() }
-        findViewById<View>(R.id.select_region_eu).setOnClickListener { preferences.edit().putString("region", "eu").apply(); setRegion() }
-        findViewById<View>(R.id.select_region_na).setOnClickListener { preferences.edit().putString("region", "na").apply(); setRegion() }
-        findViewById<View>(R.id.select_region_asia).setOnClickListener { preferences.edit().putString("region", "asia").apply(); setRegion() }
+        findViewById<View>(R.id.select_region_ru).setOnClickListener { app.preferences.edit().putString("region", "ru").apply(); setRegion() }
+        findViewById<View>(R.id.select_region_eu).setOnClickListener { app.preferences.edit().putString("region", "eu").apply(); setRegion() }
+        findViewById<View>(R.id.select_region_na).setOnClickListener { app.preferences.edit().putString("region", "na").apply(); setRegion() }
+        findViewById<View>(R.id.select_region_asia).setOnClickListener { app.preferences.edit().putString("region", "asia").apply(); setRegion() }
 
         // set onBackPressed
 
@@ -250,7 +231,7 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             versionCheck()
             // get vehicle specifications
-            vehicleSpecsService.get()
+            app.vehicleSpecsService.get()
 
             if (mainLayoutsFlipper.displayedChild == MainViewFlipperItems.STATISTICS) {
                 setVehiclesStat()
@@ -367,18 +348,18 @@ class MainActivity : AppCompatActivity() {
 
         // Gets the data of the player you are looking for
 
-        adService.showInterstitial {
+        app.adService.showInterstitial {
             CoroutineScope(Dispatchers.IO).launch {
 
                 try {
 
-                    userIDService.clear()
-                    userIDService.get(searchField.text.toString())
+                    app.userIDService.clear()
+                    app.userIDService.get(searchField.text.toString())
 
                     // set player statistics
 
-                    sessionService.clear()
-                    vehicleStatService.clear()
+                    app.sessionService.clear()
+                    app.vehicleStatService.clear()
 
                     setRandomStat()
                     setRatingStat()
@@ -444,40 +425,44 @@ class MainActivity : AppCompatActivity() {
      */
     private suspend fun versionCheck() {
 
-        if (BuildConfig.VERSION_CODE in versionService.getMinimalAppVersion() until versionService.getCurrentAppVersion()) {
+        if (BuildConfig.VERSION_CODE in app.versionService.getMinimalAppVersion() until app.versionService.getCurrentAppVersion()) {
 
-            InterfaceUtils.createAlertDialog(
-                this@MainActivity,
-                this@MainActivity.getString(R.string.update_available),
-                this@MainActivity.getString(R.string.update_available_desc),
-                this@MainActivity.getString(R.string.update),
-                Runnable {
-                    try {
-                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
-                    } catch (e: ActivityNotFoundException) {
-                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+            runOnUiThread {
+                InterfaceUtils.createAlertDialog(
+                    this@MainActivity,
+                    this@MainActivity.getString(R.string.update_available),
+                    this@MainActivity.getString(R.string.update_available_desc),
+                    this@MainActivity.getString(R.string.update),
+                    Runnable {
+                        try {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+                        } catch (e: ActivityNotFoundException) {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+                        }
+                    },
+                    this@MainActivity.getString(android.R.string.cancel),
+                    Runnable {  }
+                ).show()
+            }
+
+        } else if (BuildConfig.VERSION_CODE < app.versionService.getMinimalAppVersion()) {
+
+            runOnUiThread {
+                InterfaceUtils.createAlertDialog(
+                    this@MainActivity,
+                    this@MainActivity.getString(R.string.update_available),
+                    this@MainActivity.getString(R.string.update_available_desc),
+                    this@MainActivity.getString(R.string.update),
+                    Runnable {
+                        try {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+                        } catch (e: ActivityNotFoundException) {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+                        }
+                        finish()
                     }
-                },
-                this@MainActivity.getString(android.R.string.cancel),
-                Runnable {  }
-            ).show()
-
-        } else if (BuildConfig.VERSION_CODE < versionService.getMinimalAppVersion()) {
-
-            InterfaceUtils.createAlertDialog(
-                this@MainActivity,
-                this@MainActivity.getString(R.string.update_available),
-                this@MainActivity.getString(R.string.update_available_desc),
-                this@MainActivity.getString(R.string.update),
-                Runnable {
-                    try {
-                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
-                    } catch (e: ActivityNotFoundException) {
-                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
-                    }
-                    finish()
-                }
-            ).show()
+                ).show()
+            }
 
         }
 
@@ -486,11 +471,11 @@ class MainActivity : AppCompatActivity() {
     private fun setRandomStat() {
         CoroutineScope(Dispatchers.IO).launch {
 
-            randomService.clear()
+            app.randomService.clear()
             try {
                 InterfaceUtils.setBaseStatistics(
                     this@MainActivity,
-                    randomService.get(userIDService.get()),
+                    app.randomService.get(app.userIDService.get()),
                     true)
                 setSessionStat(0)
             } catch (e: ObjectException) {
@@ -509,9 +494,9 @@ class MainActivity : AppCompatActivity() {
     private fun setRatingStat() {
         CoroutineScope(Dispatchers.IO).launch {
 
-            ratingService.clear()
+            app.ratingService.clear()
             InterfaceUtils.setRatingStatistics(this@MainActivity,
-                ratingService.get(userIDService.get()),
+                app.ratingService.get(app.userIDService.get()),
                 true)
             setSessionStat(0)
 
@@ -519,33 +504,33 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setSessionStat(index: Int) {
-        if (randomService.get() == null || ratingService.get() == null || sessionService.alreadySet) {
+        if (app.randomService.get() == null || app.ratingService.get() == null || app.sessionService.alreadySet) {
             return
         }
-        sessionService.alreadySet = true
+        app.sessionService.alreadySet = true
 
-        sessionService.createSessionFile(
-            randomService.getJson(),
-            userIDService.get(),
-            ParseUtils.timestamp(randomService.getJson(), false),
-            preferences.getString("region", "notSpecified")!!
+        app.sessionService.createSessionFile(
+            app.randomService.getJson(),
+            app.userIDService.get(),
+            ParseUtils.timestamp(app.randomService.getJson(), false),
+            app.preferences.getString("region", "notSpecified")!!
         )
-        sessionService.getList(userIDService.get(), preferences.getString("region", "notSpecified")!!)
+        app.sessionService.getList(app.userIDService.get(), app.preferences.getString("region", "notSpecified")!!)
 
         if (
-            ParseUtils.timestamp(randomService.getJson(), false)
+            ParseUtils.timestamp(app.randomService.getJson(), false)
             ==
-            ParseUtils.timestamp(sessionService.getList()[0], true)
+            ParseUtils.timestamp(app.sessionService.getList()[0], true)
         ) {
-            sessionService.getList().removeAt(0)
+            app.sessionService.getList().removeAt(0)
         }
 
         val sessions = ArrayList<Session>(0)
-        for (i in 0 until sessionService.getList().size) {
+        for (i in 0 until app.sessionService.getList().size) {
             val session = Session()
-            session.path = sessionService.getList()[i]
+            session.path = app.sessionService.getList()[i]
             session.set = Runnable {
-                sessionService.clear()
+                app.sessionService.clear()
                 setSessionStat(i)
                 findViewById<DifferenceViewFlipper>(R.id.random_layouts_flipper).displayedChild = 0
             }
@@ -559,13 +544,13 @@ class MainActivity : AppCompatActivity() {
                         this@MainActivity.getString(R.string.delete_alert),
                         this@MainActivity.getString(R.string.delete),
                         Runnable {
-                            if (File(sessionService.getList()[i]).delete()) {
+                            if (File(app.sessionService.getList()[i]).delete()) {
                                 Toast.makeText(this@MainActivity, this@MainActivity.getString(R.string.delete_successfully), Toast.LENGTH_SHORT).show()
                                 if (index != sessions.size - 1) {
-                                    sessionService.clear()
+                                    app.sessionService.clear()
                                     setSessionStat(index)
                                 } else {
-                                    sessionService.clear()
+                                    app.sessionService.clear()
                                     setSessionStat(index - 1)
                                 }
                                 findViewById<DifferenceViewFlipper>(R.id.random_layouts_flipper).displayedChild = 0
@@ -593,7 +578,7 @@ class MainActivity : AppCompatActivity() {
         runOnUiThread {
 
             randomSessionButtons.setButtonsVisibility(
-                when(sessionService.getList().size) {
+                when(app.sessionService.getList().size) {
                     0 -> {
                         ButtonsVisibility.NOTHING
                     }
@@ -607,15 +592,15 @@ class MainActivity : AppCompatActivity() {
             )
 
             randomFastStat.setSessionData(
-                when(sessionService.getList().size) {
+                when(app.sessionService.getList().size) {
                     0 -> {
                         StatisticsData()
                     }
                     else -> {
                         SessionUtils.calculateDifferences(
-                            randomService.get(),
+                            app.randomService.get(),
                             ParseUtils.statisticsData(
-                                File(sessionService.getList()[index]).readText(),
+                                File(app.sessionService.getList()[index]).readText(),
                                 "all"
                             )
                         )
@@ -624,15 +609,15 @@ class MainActivity : AppCompatActivity() {
             )
 
             ratingFastStat.setSessionData(
-                when(sessionService.getList().size) {
+                when(app.sessionService.getList().size) {
                     0 -> {
                         StatisticsData()
                     }
                     else -> {
                         SessionUtils.calculateDifferences(
-                            ratingService.get(),
+                            app.ratingService.get(),
                             ParseUtils.statisticsData(
-                                File(sessionService.getList()[index]).readText(),
+                                File(app.sessionService.getList()[index]).readText(),
                                 "rating"
                             )
                         )
@@ -646,8 +631,8 @@ class MainActivity : AppCompatActivity() {
 
             if (randomSessionStatButton.isActivated) {
                 randomSessionStatButton.setText(R.string.to_session_stat)
-                randomFastStat.setData(randomService.get())
-                ratingFastStat.setData(ratingService.get())
+                randomFastStat.setData(app.randomService.get())
+                ratingFastStat.setData(app.ratingService.get())
                 randomSessionStatButton.isActivated = false
             }
             randomSessionStatButton.setOnClickListener {
@@ -659,16 +644,16 @@ class MainActivity : AppCompatActivity() {
                         randomSessionStatButton.text = getString(R.string.from_session_stat)
 
                         randomFastStat.setData(SessionUtils.calculate(
-                            randomService.get(),
+                            app.randomService.get(),
                             ParseUtils.statisticsData(
-                                File(sessionService.getList()[index]).readText(),
+                                File(app.sessionService.getList()[index]).readText(),
                                 "all"
                             )
                         ))
                         ratingFastStat.setData(SessionUtils.calculate(
-                            ratingService.get(),
+                            app.ratingService.get(),
                             ParseUtils.statisticsData(
-                                File(sessionService.getList()[index]).readText(),
+                                File(app.sessionService.getList()[index]).readText(),
                                 "rating"
                             )
                         ))
@@ -681,8 +666,8 @@ class MainActivity : AppCompatActivity() {
                     Handler(Looper.getMainLooper()).postDelayed({
                         randomSessionStatButton.text = getString(R.string.to_session_stat)
 
-                        randomFastStat.setData(randomService.get())
-                        ratingFastStat.setData(ratingService.get())
+                        randomFastStat.setData(app.randomService.get())
+                        ratingFastStat.setData(app.ratingService.get())
 
                         fragmentRandom.startAnimation(fragmentRandom.inAnimation)
                         fragmentRating.startAnimation(fragmentRating.inAnimation)
@@ -706,7 +691,7 @@ class MainActivity : AppCompatActivity() {
      * statistics.
      */
     private fun setVehiclesStat() {
-        if (vehicleSpecsService.getListSize() != 0) {
+        if (app.vehicleSpecsService.getListSize() != 0) {
 
             val tanksLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.tanks_layouts_flipper)
             val tanksApplyFilters = findViewById<View>(R.id.tanks_apply_filters)
@@ -726,8 +711,8 @@ class MainActivity : AppCompatActivity() {
 
                 val pairs = HashMap<String, Pair<VehicleSpecs, VehicleStat>>()
 
-                vehicleStatService.get(userIDService.get(), vehicleSpecsService.get().keys.toTypedArray()).forEach {
-                    pairs[it.key] = Pair(vehicleSpecsService.get()[it.key]!!, it.value)
+                app.vehicleStatService.get(app.userIDService.get(), app.vehicleSpecsService.get().keys.toTypedArray()).forEach {
+                    pairs[it.key] = Pair(app.vehicleSpecsService.get()[it.key]!!, it.value)
                 }
 
                 //
@@ -855,7 +840,7 @@ class MainActivity : AppCompatActivity() {
                         tanksList.adapter = VehicleAdapter(this@MainActivity, vehiclesToCreate)
 
                         val adView = findViewById<BannerAdView>(R.id.tanks_list_banner)
-                        adService.setBanner(
+                        app.adService.setBanner(
                             InterfaceUtils.getX() - resources.getDimensionPixelSize(R.dimen.padding_big),
                             adView
                         )
@@ -875,31 +860,31 @@ class MainActivity : AppCompatActivity() {
     private fun setClanStat() {
         CoroutineScope(Dispatchers.IO).launch {
 
-            userClanService.clear()
-            clanService.clear()
+            app.userClanService.clear()
+            app.clanService.clear()
 
-            if (userClanService.get(userIDService.get()) != null) {
+            if (app.userClanService.get(app.userIDService.get()) != null) {
                 runOnUiThread {
-                    findViewById<ClanSmall>(R.id.random_clan).setData(userClanService.get())
-                    findViewById<ClanSmall>(R.id.rating_clan).setData(userClanService.get())
+                    findViewById<ClanSmall>(R.id.random_clan).setData(app.userClanService.get())
+                    findViewById<ClanSmall>(R.id.rating_clan).setData(app.userClanService.get())
                 }
-                clanService.get(userClanService.get())
+                app.clanService.get(app.userClanService.get())
                 runOnUiThread {
-                    findViewById<ClanScreen>(R.id.fragment_clan).setData(userClanService.get(), clanService.get())
+                    findViewById<ClanScreen>(R.id.fragment_clan).setData(app.userClanService.get(), app.clanService.get())
                 }
             } else {
-                findViewById<ClanScreen>(R.id.fragment_clan).setData(null, clanService.get())
+                findViewById<ClanScreen>(R.id.fragment_clan).setData(null, app.clanService.get())
             }
 
         }
     }
 
     /**
-     * Sets the background for the region selection buttons, change region in [apiService]
+     * Sets the background for the region selection buttons, change region in [ForBlitzStatisticsApplication.apiService]
      */
     private fun setRegion() {
         findViewById<EditText>(R.id.search_field).setText("", TextView.BufferType.EDITABLE)
-        when (preferences.getString("region", "notSpecified")) {
+        when (app.preferences.getString("region", "notSpecified")) {
             "notSpecified" -> {
 
                 InterfaceUtils.createAlertDialog(
@@ -907,7 +892,7 @@ class MainActivity : AppCompatActivity() {
                     this@MainActivity.getString(R.string.terms_of_service),
                     this@MainActivity.getString(R.string.terms_of_service_desc),
                     this@MainActivity.getString(R.string.accept),
-                    Runnable { preferences.edit().putString("region", "ru").apply() },
+                    Runnable { app.preferences.edit().putString("region", "ru").apply() },
                     this@MainActivity.getString(R.string.exit),
                     Runnable { finish() }
                 ).show()
@@ -917,7 +902,7 @@ class MainActivity : AppCompatActivity() {
                     0
                 )
 
-                apiService.setRegion("ru")
+                app.apiService.setRegion("ru")
 
             }
             "ru" -> {
@@ -926,7 +911,7 @@ class MainActivity : AppCompatActivity() {
                     0
                 )
 
-                apiService.setRegion("ru")
+                app.apiService.setRegion("ru")
             }
             "eu" -> {
                 InterfaceUtils.setSelectedRegion(
@@ -934,7 +919,7 @@ class MainActivity : AppCompatActivity() {
                     1
                 )
 
-                apiService.setRegion("eu")
+                app.apiService.setRegion("eu")
             }
             "na" -> {
                 InterfaceUtils.setSelectedRegion(
@@ -942,7 +927,7 @@ class MainActivity : AppCompatActivity() {
                     2
                 )
 
-                apiService.setRegion("na")
+                app.apiService.setRegion("na")
             }
             "asia" -> {
                 InterfaceUtils.setSelectedRegion(
@@ -950,7 +935,7 @@ class MainActivity : AppCompatActivity() {
                     3
                 )
 
-                apiService.setRegion("asia")
+                app.apiService.setRegion("asia")
             }
         }
         updateLastSearch()
@@ -964,7 +949,7 @@ class MainActivity : AppCompatActivity() {
         val lastSearchedFlipper = findViewById<DifferenceViewFlipper>(R.id.last_searched_flipper)
         val enterNicknameText = findViewById<TextView>(R.id.enter_nickname_text)
 
-        val lastFile = sessionService.getLastFile(preferences.getString("region", "notSpecified")!!)
+        val lastFile = app.sessionService.getLastFile(app.preferences.getString("region", "notSpecified")!!)
 
         if (lastFile != null) {
             val lastSearchedName = findViewById<TextView>(R.id.last_searched_name)

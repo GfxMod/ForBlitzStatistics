@@ -42,7 +42,7 @@ public class DetailsLayout extends LinearLayout {
     }
 
     // TODO: add private
-    ArrayList<View> getAllChildren(LinearLayout linearLayout) {
+    private ArrayList<View> getAllChildren(LinearLayout linearLayout) {
         ArrayList<View> children = new ArrayList<>();
 
         for (int i = 0; i < linearLayout.getChildCount(); i++) {

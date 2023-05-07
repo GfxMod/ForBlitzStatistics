@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ForBlitz"
-        android:name=".MyApplication">
+        android:name=".ForBlitzStatisticsApplication">
         <activity
             android:name="ru.forblitz.statistics.MainActivity"
             android:screenOrientation="portrait"

@@ -14,31 +14,17 @@ class VehicleSpecsService(private var apiService: ApiService) {
         return list.size
     }
 
-    suspend fun get(): HashMap<String, VehicleSpecs> {
+    suspend fun getVehiclesSpecsList(): HashMap<String, VehicleSpecs> {
 
         if (list.size == 0) {
 
-            Gson().fromJson(request(), ApiResponse::class.java).data.entries.forEach { entry: Map.Entry<String, VehicleSpecs> ->
+            Gson().fromJson(Utils.toJson(apiService.getAllInformationAboutVehicles()), ApiResponse::class.java).data.entries.forEach { entry: Map.Entry<String, VehicleSpecs> ->
                 list[entry.key] = entry.value
             }
 
         }
 
         return list
-
-    }
-
-    // TODO: во многих сервисах нет смысла выделять request в отдельный метод,
-    // но хорошая практика использовать вспомогательные переменные.
-    // результатом любого запроса должна быть уже десериализованная сущность
-
-    // сервис <== мы здесь
-    // --------------------------- все, что ниже, следует воспринимать как единый этап
-    // сериализатор/десериализатор
-    // отправитель http-запросов
-    private suspend fun request(): String {
-
-        return Utils.toJson(apiService.getAllInformationAboutVehicles())
 
     }
 

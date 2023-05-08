@@ -9,7 +9,7 @@ class RatingService(private var apiService: ApiService) {
 
     private var statisticsData: StatisticsData? = null
 
-    suspend fun get(userID: String): StatisticsData {
+    suspend fun getStatisticsData(userID: String): StatisticsData {
 
         return if (statisticsData != null) {
 
@@ -27,7 +27,7 @@ class RatingService(private var apiService: ApiService) {
 
     }
 
-    fun get(): StatisticsData? {
+    fun getStatisticsData(): StatisticsData? {
         return statisticsData
     }
 

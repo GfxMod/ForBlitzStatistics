@@ -3,49 +3,41 @@ package ru.forblitz.statistics.service
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import ru.forblitz.statistics.api.ApiService
-import ru.forblitz.statistics.dto.BigClanData
-import ru.forblitz.statistics.dto.SmallClanData
+import ru.forblitz.statistics.dto.FullClanInfo
+import ru.forblitz.statistics.dto.ShortClanInfo
 import ru.forblitz.statistics.utils.Utils
 
 class ClanService(private var apiService: ApiService) {
 
-    private var bigClanData: BigClanData? = null
+    private var fullClanInfo: FullClanInfo? = null
 
-    // TODO: **может быть,** имеет смысл пересмотреть нейминг - ClanDataPreview ClanDataDetailed ...
+    suspend fun getFullClanInfo(shortClanInfo: ShortClanInfo): FullClanInfo? {
 
-    suspend fun get(smallClanData: SmallClanData): BigClanData? {
+        return if (fullClanInfo != null) {
 
-        return if (bigClanData != null) {
+            fullClanInfo as FullClanInfo
 
-            bigClanData as BigClanData
-
-        } else if (smallClanData.clanId == null) {
+        } else if (shortClanInfo.clanId == null) {
 
             null
 
         } else {
 
-            bigClanData = parse(request(smallClanData.clanId), smallClanData.clanId)
+            fullClanInfo = parse(Utils.toJson(apiService.getFullClanInfo(shortClanInfo.clanId)), shortClanInfo.clanId)
 
-            bigClanData as BigClanData
+            fullClanInfo as FullClanInfo
 
         }
 
     }
 
-    fun get(): BigClanData? {
+    fun getFullClanInfo(): FullClanInfo? {
 
-        return bigClanData
-
-    }
-
-    private suspend fun request(clanID: String): String {
-
-        return Utils.toJson(apiService.getFullClanInfo(clanID))
+        return fullClanInfo
 
     }
 
-    private fun parse(json: String, clanID: String): BigClanData? {
+    private fun parse(json: String, clanID: String): FullClanInfo? {
 
         return Gson().fromJson(
             JsonParser
@@ -53,13 +45,13 @@ class ClanService(private var apiService: ApiService) {
                 .asJsonObject
                 .getAsJsonObject("data")
                 .getAsJsonObject(clanID),
-            BigClanData::class.java
+            FullClanInfo::class.java
         )
 
     }
 
     fun clear() {
-        bigClanData = null
+        fullClanInfo = null
     }
 
 }

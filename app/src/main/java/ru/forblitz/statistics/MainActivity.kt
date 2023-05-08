@@ -1,7 +1,8 @@
 package ru.forblitz.statistics
 
-import android.annotation.SuppressLint
-import android.content.*
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
@@ -25,12 +26,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.yandex.mobile.ads.banner.BannerAdView
 import com.yandex.mobile.ads.common.MobileAds
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Runnable
+import kotlinx.coroutines.launch
 import ru.forblitz.statistics.adapters.SessionAdapter
 import ru.forblitz.statistics.adapters.VehicleAdapter
 import ru.forblitz.statistics.adapters.ViewPagerAdapter
-import ru.forblitz.statistics.api.*
-import ru.forblitz.statistics.data.*
+import ru.forblitz.statistics.api.ApiService
 import ru.forblitz.statistics.data.Constants.*
 import ru.forblitz.statistics.dto.Session
 import ru.forblitz.statistics.dto.StatisticsData
@@ -38,7 +41,9 @@ import ru.forblitz.statistics.dto.VehicleSpecs
 import ru.forblitz.statistics.dto.VehicleStat
 import ru.forblitz.statistics.exception.ObjectException
 import ru.forblitz.statistics.service.*
-import ru.forblitz.statistics.utils.*
+import ru.forblitz.statistics.utils.InterfaceUtils
+import ru.forblitz.statistics.utils.ParseUtils
+import ru.forblitz.statistics.utils.SessionUtils
 import ru.forblitz.statistics.widget.common.DifferenceViewFlipper
 import ru.forblitz.statistics.widget.data.ClanScreen
 import ru.forblitz.statistics.widget.data.ClanSmall
@@ -46,24 +51,18 @@ import ru.forblitz.statistics.widget.data.PlayerFastStat
 import ru.forblitz.statistics.widget.data.SessionButtonsLayout
 import ru.forblitz.statistics.widget.data.SessionButtonsLayout.ButtonsVisibility
 import java.io.File
-import java.nio.file.Files.*
 import java.util.*
-import kotlin.collections.HashMap
 
 
 class MainActivity : AppCompatActivity() {
 
-    // TODO: все еще рассмотрите создание класса Application и хранить сервисы там
     private lateinit var app: ForBlitzStatisticsApplication
 
-    @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         app = application as ForBlitzStatisticsApplication
-
-        // TODO: change services to app.service
 
         // Configures ViewPager
 
@@ -153,18 +152,18 @@ class MainActivity : AppCompatActivity() {
 
         // Initialization of services
 
-        app.apiService = ApiService(this@MainActivity)
+        app.connectivityService = ConnectivityService()
+        app.apiService = ApiService(app.connectivityService)
         app.userIDService = UserIDService(this@MainActivity, app.apiService)
         app.randomService = RandomService(app.apiService)
         app.ratingService = RatingService(app.apiService)
         app.userClanService = UserClanService(app.apiService)
         app.clanService = ClanService(app.apiService)
-        app.sessionService = SessionService(context = applicationContext)
-        app.versionService = VersionService(activity = this@MainActivity)
+        app.sessionService = SessionService(applicationContext)
+        app.versionService = VersionService(app.connectivityService)
         app.vehicleSpecsService = VehicleSpecsService(app.apiService)
         app.vehicleStatService = VehicleStatService(app.apiService)
         app.adService = AdService(this@MainActivity)
-        app.connectivityService = ConnectivityService()
 
         // Creates a session directory
 
@@ -232,7 +231,7 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             versionCheck()
             // get vehicle specifications
-            app.vehicleSpecsService.get()
+            app.vehicleSpecsService.getVehiclesSpecsList()
 
             if (mainLayoutsFlipper.displayedChild == MainViewFlipperItems.STATISTICS) {
                 setVehiclesStat()
@@ -365,7 +364,7 @@ class MainActivity : AppCompatActivity() {
                 try {
 
                     app.userIDService.clear()
-                    app.userIDService.get(searchField.text.toString())
+                    app.userIDService.getUserID(searchField.text.toString())
 
                     // set player statistics
 
@@ -486,7 +485,7 @@ class MainActivity : AppCompatActivity() {
             try {
                 InterfaceUtils.setBaseStatistics(
                     this@MainActivity,
-                    app.randomService.get(app.userIDService.get()),
+                    app.randomService.getStatisticsData(app.userIDService.getUserID()),
                     true)
                 setSessionStat(0)
             } catch (e: ObjectException) {
@@ -507,7 +506,7 @@ class MainActivity : AppCompatActivity() {
 
             app.ratingService.clear()
             InterfaceUtils.setRatingStatistics(this@MainActivity,
-                app.ratingService.get(app.userIDService.get()),
+                app.ratingService.getStatisticsData(app.userIDService.getUserID()),
                 true)
             setSessionStat(0)
 
@@ -515,31 +514,31 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setSessionStat(index: Int) {
-        if (app.randomService.get() == null || app.ratingService.get() == null || app.sessionService.alreadySet) {
+        if (app.randomService.getStatisticsData() == null || app.ratingService.getStatisticsData() == null || app.sessionService.alreadySet) {
             return
         }
         app.sessionService.alreadySet = true
 
         app.sessionService.createSessionFile(
             app.randomService.getJson(),
-            app.userIDService.get(),
+            app.userIDService.getUserID(),
             ParseUtils.timestamp(app.randomService.getJson(), false),
             app.preferences.getString("region", "notSpecified")!!
         )
-        app.sessionService.getList(app.userIDService.get(), app.preferences.getString("region", "notSpecified")!!)
+        app.sessionService.getSessionsList(app.userIDService.getUserID(), app.preferences.getString("region", "notSpecified")!!)
 
         if (
             ParseUtils.timestamp(app.randomService.getJson(), false)
             ==
-            ParseUtils.timestamp(app.sessionService.getList()[0], true)
+            ParseUtils.timestamp(app.sessionService.getSessionsList()[0], true)
         ) {
-            app.sessionService.getList().removeAt(0)
+            app.sessionService.getSessionsList().removeAt(0)
         }
 
         val sessions = ArrayList<Session>(0)
-        for (i in 0 until app.sessionService.getList().size) {
+        for (i in 0 until app.sessionService.getSessionsList().size) {
             val session = Session()
-            session.path = app.sessionService.getList()[i]
+            session.path = app.sessionService.getSessionsList()[i]
             session.set = Runnable {
                 app.sessionService.clear()
                 setSessionStat(i)
@@ -555,7 +554,7 @@ class MainActivity : AppCompatActivity() {
                         this@MainActivity.getString(R.string.delete_alert),
                         this@MainActivity.getString(R.string.delete),
                         Runnable {
-                            if (File(app.sessionService.getList()[i]).delete()) {
+                            if (File(app.sessionService.getSessionsList()[i]).delete()) {
                                 Toast.makeText(this@MainActivity, this@MainActivity.getString(R.string.delete_successfully), Toast.LENGTH_SHORT).show()
                                 if (index != sessions.size - 1) {
                                     app.sessionService.clear()
@@ -589,7 +588,7 @@ class MainActivity : AppCompatActivity() {
         runOnUiThread {
 
             randomSessionButtons.setButtonsVisibility(
-                when(app.sessionService.getList().size) {
+                when(app.sessionService.getSessionsList().size) {
                     0 -> {
                         ButtonsVisibility.NOTHING
                     }
@@ -603,15 +602,15 @@ class MainActivity : AppCompatActivity() {
             )
 
             randomFastStat.setSessionData(
-                when(app.sessionService.getList().size) {
+                when(app.sessionService.getSessionsList().size) {
                     0 -> {
                         StatisticsData()
                     }
                     else -> {
                         SessionUtils.calculateDifferences(
-                            app.randomService.get(),
+                            app.randomService.getStatisticsData(),
                             ParseUtils.statisticsData(
-                                File(app.sessionService.getList()[index]).readText(),
+                                File(app.sessionService.getSessionsList()[index]).readText(),
                                 "all"
                             )
                         )
@@ -620,15 +619,15 @@ class MainActivity : AppCompatActivity() {
             )
 
             ratingFastStat.setSessionData(
-                when(app.sessionService.getList().size) {
+                when(app.sessionService.getSessionsList().size) {
                     0 -> {
                         StatisticsData()
                     }
                     else -> {
                         SessionUtils.calculateDifferences(
-                            app.ratingService.get(),
+                            app.ratingService.getStatisticsData(),
                             ParseUtils.statisticsData(
-                                File(app.sessionService.getList()[index]).readText(),
+                                File(app.sessionService.getSessionsList()[index]).readText(),
                                 "rating"
                             )
                         )
@@ -642,8 +641,8 @@ class MainActivity : AppCompatActivity() {
 
             if (randomSessionStatButton.isActivated) {
                 randomSessionStatButton.setText(R.string.to_session_stat)
-                randomFastStat.setData(app.randomService.get())
-                ratingFastStat.setData(app.ratingService.get())
+                randomFastStat.setData(app.randomService.getStatisticsData())
+                ratingFastStat.setData(app.ratingService.getStatisticsData())
                 randomSessionStatButton.isActivated = false
             }
             randomSessionStatButton.setOnClickListener {
@@ -655,16 +654,16 @@ class MainActivity : AppCompatActivity() {
                         randomSessionStatButton.text = getString(R.string.from_session_stat)
 
                         randomFastStat.setData(SessionUtils.calculate(
-                            app.randomService.get(),
+                            app.randomService.getStatisticsData(),
                             ParseUtils.statisticsData(
-                                File(app.sessionService.getList()[index]).readText(),
+                                File(app.sessionService.getSessionsList()[index]).readText(),
                                 "all"
                             )
                         ))
                         ratingFastStat.setData(SessionUtils.calculate(
-                            app.ratingService.get(),
+                            app.ratingService.getStatisticsData(),
                             ParseUtils.statisticsData(
-                                File(app.sessionService.getList()[index]).readText(),
+                                File(app.sessionService.getSessionsList()[index]).readText(),
                                 "rating"
                             )
                         ))
@@ -677,8 +676,8 @@ class MainActivity : AppCompatActivity() {
                     Handler(Looper.getMainLooper()).postDelayed({
                         randomSessionStatButton.text = getString(R.string.to_session_stat)
 
-                        randomFastStat.setData(app.randomService.get())
-                        ratingFastStat.setData(app.ratingService.get())
+                        randomFastStat.setData(app.randomService.getStatisticsData())
+                        ratingFastStat.setData(app.ratingService.getStatisticsData())
 
                         fragmentRandom.startAnimation(fragmentRandom.inAnimation)
                         fragmentRating.startAnimation(fragmentRating.inAnimation)
@@ -722,8 +721,8 @@ class MainActivity : AppCompatActivity() {
 
                 val pairs = HashMap<String, Pair<VehicleSpecs, VehicleStat>>()
 
-                app.vehicleStatService.get(app.userIDService.get(), app.vehicleSpecsService.get().keys.toTypedArray()).forEach {
-                    pairs[it.key] = Pair(app.vehicleSpecsService.get()[it.key]!!, it.value)
+                app.vehicleStatService.getVehicleStat(app.userIDService.getUserID(), app.vehicleSpecsService.getVehiclesSpecsList().keys.toTypedArray()).forEach {
+                    pairs[it.key] = Pair(app.vehicleSpecsService.getVehiclesSpecsList()[it.key]!!, it.value)
                 }
 
                 //
@@ -874,17 +873,19 @@ class MainActivity : AppCompatActivity() {
             app.userClanService.clear()
             app.clanService.clear()
 
-            if (app.userClanService.get(app.userIDService.get()) != null) {
+            if (app.userClanService.getShortClanInfo(app.userIDService.getUserID()) != null) {
                 runOnUiThread {
-                    findViewById<ClanSmall>(R.id.random_clan).setData(app.userClanService.get())
-                    findViewById<ClanSmall>(R.id.rating_clan).setData(app.userClanService.get())
+                    findViewById<ClanSmall>(R.id.random_clan).setData(app.userClanService.getShortClanInfo())
+                    findViewById<ClanSmall>(R.id.rating_clan).setData(app.userClanService.getShortClanInfo())
                 }
-                app.clanService.get(app.userClanService.get())
+                app.clanService.getFullClanInfo(app.userClanService.getShortClanInfo())
                 runOnUiThread {
-                    findViewById<ClanScreen>(R.id.fragment_clan).setData(app.userClanService.get(), app.clanService.get())
+                    findViewById<ClanScreen>(R.id.fragment_clan).setData(app.userClanService.getShortClanInfo(), app.clanService.getFullClanInfo())
                 }
             } else {
-                findViewById<ClanScreen>(R.id.fragment_clan).setData(null, app.clanService.get())
+                runOnUiThread {
+                    findViewById<ClanScreen>(R.id.fragment_clan).setData(null, app.clanService.getFullClanInfo())
+                }
             }
 
         }

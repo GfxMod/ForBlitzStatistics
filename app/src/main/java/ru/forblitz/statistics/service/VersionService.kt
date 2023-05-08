@@ -1,6 +1,5 @@
 package ru.forblitz.statistics.service
 
-import android.app.Activity
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import ru.forblitz.statistics.api.ApiInterfaceVersion
@@ -8,7 +7,7 @@ import ru.forblitz.statistics.api.NetworkConnectionInterceptor
 import ru.forblitz.statistics.utils.ParseUtils
 import ru.forblitz.statistics.utils.Utils
 
-class VersionService(private var activity: Activity) {
+class VersionService(private var connectivityService: ConnectivityService) {
 
     private var json: String? = null
 
@@ -19,7 +18,7 @@ class VersionService(private var activity: Activity) {
                 .baseUrl("https://forblitz.ru/")
                 .client(
                     OkHttpClient.Builder()
-                        .addInterceptor(NetworkConnectionInterceptor(activity))
+                        .addInterceptor(NetworkConnectionInterceptor(connectivityService))
                         .build()
                 )
                 .build()

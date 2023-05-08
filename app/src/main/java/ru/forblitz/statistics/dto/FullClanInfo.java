@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
 
-public class BigClanData {
+public class FullClanInfo {
 
     @SerializedName("recruiting_options")
     private RecruitingOptions recruitingOptions;

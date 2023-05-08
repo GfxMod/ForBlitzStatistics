@@ -12,10 +12,10 @@ class VehicleStatService(private var apiService: ApiService) {
 
     private var list = HashMap<String, VehicleStat>()
 
-    suspend fun get(userID: String, vehiclesIds: Array<String>): HashMap<String, VehicleStat> {
+    suspend fun getVehicleStat(userID: String, vehiclesIds: Array<String>): HashMap<String, VehicleStat> {
 
         if (list.size == 0) {
-            val separatedIds = separate(vehiclesIds)
+            val separatedIds = splitIntoBatches(vehiclesIds)
 
             for (i in 0 until separatedIds.size) {
 
@@ -49,8 +49,7 @@ class VehicleStatService(private var apiService: ApiService) {
 
     }
 
-    // TODO: нейминг, лучше splitIntoBatches
-    private fun separate(vehiclesIds: Array<String>): ArrayList<String> {
+    private fun splitIntoBatches(vehiclesIds: Array<String>): ArrayList<String> {
         val separatedIds = ArrayList<String>()
 
         // According to the WoT/Tanks Blitz API documentation, the maximum number of IDs is 100.

@@ -12,7 +12,7 @@ class SessionService(private var context: Context) {
     private lateinit var list: ArrayList<String>
     var alreadySet: Boolean = false
 
-    fun getList(userID: String, region: String): ArrayList<String> {
+    fun getSessionsList(userID: String, region: String): ArrayList<String> {
         list = ArrayList()
 
         Files.walk(Paths.get(getSessionDir().toString()))
@@ -56,7 +56,7 @@ class SessionService(private var context: Context) {
         return lastFile
     }
 
-    fun getList(): ArrayList<String> {
+    fun getSessionsList(): ArrayList<String> {
         return list
     }
 

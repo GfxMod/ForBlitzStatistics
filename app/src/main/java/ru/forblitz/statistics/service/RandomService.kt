@@ -14,8 +14,7 @@ class RandomService(private var apiService: ApiService) {
         return json!!
     }
 
-    // TODO: хороший нейминг - писать не просто гет, а getЧтоКонкретно
-    suspend fun get(userID: String): StatisticsData {
+    suspend fun getStatisticsData(userID: String): StatisticsData {
 
         return if (statisticsData != null) {
 
@@ -31,7 +30,7 @@ class RandomService(private var apiService: ApiService) {
 
     }
 
-    fun get(): StatisticsData? {
+    fun getStatisticsData(): StatisticsData? {
         return statisticsData
     }
 

@@ -8,8 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import ru.forblitz.statistics.R;
-import ru.forblitz.statistics.dto.BigClanData;
-import ru.forblitz.statistics.dto.SmallClanData;
+import ru.forblitz.statistics.dto.FullClanInfo;
+import ru.forblitz.statistics.dto.ShortClanInfo;
 
 public class ClanInfo extends LinearLayout {
 
@@ -25,12 +25,12 @@ public class ClanInfo extends LinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setData(SmallClanData smallClanData, BigClanData bigClanData) {
+    public void setData(ShortClanInfo shortClanInfo, FullClanInfo fullClanInfo) {
 
-        ((TextView) this.findViewById(R.id.clan_motto)).setText(bigClanData.getMotto());
-        ((TextView) this.findViewById(R.id.clan_description)).setText(bigClanData.getDescription());
+        ((TextView) this.findViewById(R.id.clan_motto)).setText(fullClanInfo.getMotto());
+        ((TextView) this.findViewById(R.id.clan_description)).setText(fullClanInfo.getDescription());
 
-        ((ClanSmall) this.findViewById(R.id.clan_clan)).setData(smallClanData);
+        ((ClanSmall) this.findViewById(R.id.clan_clan)).setData(shortClanInfo);
 
     }
 

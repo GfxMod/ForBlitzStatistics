@@ -11,9 +11,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import ru.forblitz.statistics.R;
 import ru.forblitz.statistics.adapters.MemberAdapter;
-import ru.forblitz.statistics.dto.BigClanData;
+import ru.forblitz.statistics.dto.FullClanInfo;
 import ru.forblitz.statistics.dto.Member;
-import ru.forblitz.statistics.dto.SmallClanData;
+import ru.forblitz.statistics.dto.ShortClanInfo;
 import ru.forblitz.statistics.widget.common.DifferenceViewFlipper;
 
 public class ClanScreen extends DifferenceViewFlipper {
@@ -26,20 +26,20 @@ public class ClanScreen extends DifferenceViewFlipper {
         super(context, attrs);
     }
 
-    public void setData(SmallClanData smallClanData, BigClanData bigClanData) {
+    public void setData(ShortClanInfo shortClanInfo, FullClanInfo fullClanInfo) {
 
-        if (bigClanData != null) {
+        if (fullClanInfo != null) {
 
             this.setDisplayedChild(IS_A_MEMBER);
 
-            ((ClanInfo) this.findViewById(R.id.clan_info)).setData(smallClanData, bigClanData);
+            ((ClanInfo) this.findViewById(R.id.clan_info)).setData(shortClanInfo, fullClanInfo);
 
-            ((ClanDetails) this.findViewById(R.id.clan_details)).setData(bigClanData);
+            ((ClanDetails) this.findViewById(R.id.clan_details)).setData(fullClanInfo);
 
             ((ListView) this.findViewById(R.id.clan_members_list)).setAdapter(
                     new MemberAdapter(
                             getContext(),
-                            bigClanData
+                            fullClanInfo
                                     .getMembers()
                                     .values()
                                     .toArray(new Member[0])

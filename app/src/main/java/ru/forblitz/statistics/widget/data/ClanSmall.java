@@ -7,7 +7,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import ru.forblitz.statistics.dto.SmallClanData;
+import ru.forblitz.statistics.dto.ShortClanInfo;
 import ru.forblitz.statistics.utils.ParseUtils;
 import ru.forblitz.statistics.widget.common.DifferenceViewFlipper;
 
@@ -21,14 +21,14 @@ public class ClanSmall extends DifferenceViewFlipper {
         super(context, attrs);
     }
 
-    public void setData(SmallClanData smallClanData) {
+    public void setData(ShortClanInfo shortClanInfo) {
 
-        if (smallClanData.clanData != null) {
+        if (shortClanInfo.clanData != null) {
 
             this.setDisplayedChild(IS_A_MEMBER);
 
-            String name = "[" + smallClanData.clanData.tag + "] " + smallClanData.clanData.name;
-            String role = ParseUtils.role(this.getContext(), smallClanData.role);
+            String name = "[" + shortClanInfo.clanData.tag + "] " + shortClanInfo.clanData.name;
+            String role = ParseUtils.role(this.getContext(), shortClanInfo.role);
 
             ((TextView) this.findViewWithTag("clan_name")).setText(name);
             ((TextView) this.findViewWithTag("clan_role")).setText(role);

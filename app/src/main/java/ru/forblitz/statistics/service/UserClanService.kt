@@ -3,42 +3,36 @@ package ru.forblitz.statistics.service
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import ru.forblitz.statistics.api.ApiService
-import ru.forblitz.statistics.dto.SmallClanData
+import ru.forblitz.statistics.dto.ShortClanInfo
 import ru.forblitz.statistics.utils.Utils
 
 class UserClanService(private var apiService: ApiService) {
 
-    private var smallClanData: SmallClanData? = null
+    private var shortClanInfo: ShortClanInfo? = null
 
-    suspend fun get(userID: String): SmallClanData? {
+    suspend fun getShortClanInfo(userID: String): ShortClanInfo? {
 
-        return if (smallClanData != null) {
+        return if (shortClanInfo != null) {
 
-            smallClanData
+            shortClanInfo
 
         } else {
 
-            smallClanData = parse(request(userID), userID)
+            shortClanInfo = parse(Utils.toJson(apiService.getClanInfo(userID)), userID)
 
-            smallClanData
+            shortClanInfo
 
         }
 
     }
 
-    fun get(): SmallClanData {
+    fun getShortClanInfo(): ShortClanInfo {
 
-        return smallClanData!!
-
-    }
-
-    private suspend fun request(userID: String): String {
-
-        return Utils.toJson(apiService.getClanInfo(userID))
+        return shortClanInfo!!
 
     }
 
-    private fun parse(json: String, userID: String): SmallClanData? {
+    private fun parse(json: String, userID: String): ShortClanInfo? {
 
         val smallJsonObject = JsonParser
             .parseString(json)
@@ -47,18 +41,18 @@ class UserClanService(private var apiService: ApiService) {
             .getAsJsonObject(userID)
 
         if (smallJsonObject != null) {
-            smallClanData = Gson().fromJson(
+            shortClanInfo = Gson().fromJson(
                 smallJsonObject,
-                SmallClanData::class.java
+                ShortClanInfo::class.java
             )
         }
 
-        return smallClanData
+        return shortClanInfo
 
     }
 
     fun clear() {
-        smallClanData = null
+        shortClanInfo = null
     }
 
 }

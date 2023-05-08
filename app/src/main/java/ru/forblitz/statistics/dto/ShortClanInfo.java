@@ -6,10 +6,8 @@ import androidx.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
-import ru.forblitz.statistics.dto.ClanData;
-
 @Keep
-public class SmallClanData {
+public class ShortClanInfo {
 
     @SerializedName("account_id")
     public String accountId;

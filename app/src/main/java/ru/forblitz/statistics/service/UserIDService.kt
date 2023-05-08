@@ -12,25 +12,17 @@ import ru.forblitz.statistics.utils.Utils
 class UserIDService(private var context: Context, private var apiService: ApiService) {
 
     private var userID: String? = null
-    private var objectException: ObjectException? = null
-
-
-    // TODO: пусть кусок кода parse(request(...)) в случае бросает исключение
 
     @Throws(ObjectException::class)
-    suspend fun get(nickname: String): String {
+    suspend fun getUserID(nickname: String): String {
 
         return if (userID != null) {
-
-            if (objectException != null) { throw objectException as ObjectException }
 
             userID.toString()
 
         } else {
 
-            userID = parse(request(nickname))
-
-            if (objectException != null) { throw objectException as ObjectException }
+            userID = parse(Utils.toJson(apiService.getAccountId(nickname)))
 
             userID as String
 
@@ -39,16 +31,9 @@ class UserIDService(private var context: Context, private var apiService: ApiSer
     }
 
     @Throws(ObjectException::class)
-    fun get(): String {
+    fun getUserID(): String {
 
-        if (objectException != null) { throw objectException as ObjectException }
         return userID!!
-
-    }
-
-    private suspend fun request(nickname: String): String {
-
-        return Utils.toJson(apiService.getAccountId(nickname))
 
     }
 
@@ -66,7 +51,7 @@ class UserIDService(private var context: Context, private var apiService: ApiSer
                 ErrorDTO::class.java
             )
 
-            objectException = ObjectException(error)
+            throw ObjectException(error)
 
         } else if (
             JsonParser
@@ -77,7 +62,7 @@ class UserIDService(private var context: Context, private var apiService: ApiSer
                 .asInt == 0
         ) {
 
-            objectException =  ObjectException(
+            throw ObjectException(
                 ErrorDTO(
                     context.getString(R.string.nickname_not_found),
                     "404"
@@ -102,7 +87,6 @@ class UserIDService(private var context: Context, private var apiService: ApiSer
     }
 
     fun clear() {
-        objectException = null
         userID = null
     }
 

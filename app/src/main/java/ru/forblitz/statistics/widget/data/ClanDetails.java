@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import ru.forblitz.statistics.R;
-import ru.forblitz.statistics.dto.BigClanData;
+import ru.forblitz.statistics.dto.FullClanInfo;
 import ru.forblitz.statistics.utils.InterfaceUtils;
 import ru.forblitz.statistics.utils.ParseUtils;
 
@@ -32,7 +32,7 @@ public class ClanDetails extends LinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setData(BigClanData bigClanData) {
+    public void setData(FullClanInfo fullClanInfo) {
 
         TextView clanCreator = this.findViewById(R.id.clan_creator);
         TextView clanCreatedAt = this.findViewById(R.id.clan_created_at);
@@ -60,28 +60,28 @@ public class ClanDetails extends LinearLayout {
         clanInfoButton.setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical);
         clanInfoRecruitingButton.setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical);
 
-        clanCreator.setText(bigClanData.getCreatorName());
-        if (!bigClanData.getCreatorName().equals("")) {
-            clanCreator.setOnClickListener(l -> InterfaceUtils.search(clanCreator.getContext(), bigClanData.getCreatorName()));
+        clanCreator.setText(fullClanInfo.getCreatorName());
+        if (!fullClanInfo.getCreatorName().equals("")) {
+            clanCreator.setOnClickListener(l -> InterfaceUtils.search(clanCreator.getContext(), fullClanInfo.getCreatorName()));
         }
-        clanCreatedAt.setText(ParseUtils.time(bigClanData.getCreatedAt()));
-        if (bigClanData.getOldName() != null) {
-            clanOldName.setText(bigClanData.getOldName());
+        clanCreatedAt.setText(ParseUtils.time(fullClanInfo.getCreatedAt()));
+        if (fullClanInfo.getOldName() != null) {
+            clanOldName.setText(fullClanInfo.getOldName());
         } else {
             clanOldName.setText(this.getContext().getString(R.string.empty));
         }
-        if (bigClanData.getOldTag() != null) {
-            clanOldTag.setText(bigClanData.getOldTag());
+        if (fullClanInfo.getOldTag() != null) {
+            clanOldTag.setText(fullClanInfo.getOldTag());
         } else {
             clanOldTag.setText(this.getContext().getString(R.string.empty));
         }
-        if (bigClanData.getRenamedAt() != null) {
-            clanRenamedAt.setText(ParseUtils.time(bigClanData.getRenamedAt()));
+        if (fullClanInfo.getRenamedAt() != null) {
+            clanRenamedAt.setText(ParseUtils.time(fullClanInfo.getRenamedAt()));
         } else {
             clanRenamedAt.setText(this.getContext().getString(R.string.empty));
         }
 
-        if (bigClanData.getRecruitingPolicy().equals("open")) {
+        if (fullClanInfo.getRecruitingPolicy().equals("open")) {
 
             clanInfoRecruitingButton.setPaintFlags(Paint.LINEAR_TEXT_FLAG);
             clanInfoButton.setOnClickListener(l -> {
@@ -103,11 +103,11 @@ public class ClanDetails extends LinearLayout {
                 clanInfoFlipper.setDisplayedChild(RECRUITING_OPTIONS);
             });
 
-            clanRecruitingOptionsBattles.setText(bigClanData.getRecruitingOptions().battles);
-            clanRecruitingOptionsWinsRatio.setText(bigClanData.getRecruitingOptions().winsRatio);
-            clanRecruitingOptionsAverageDamage.setText(bigClanData.getRecruitingOptions().averageDamage);
-            clanRecruitingOptionsAverageBattlesPerDay.setText(bigClanData.getRecruitingOptions().averageBattlesPerDay);
-            clanRecruitingOptionsVehiclesLevel.setText(bigClanData.getRecruitingOptions().vehiclesLevel);
+            clanRecruitingOptionsBattles.setText(fullClanInfo.getRecruitingOptions().battles);
+            clanRecruitingOptionsWinsRatio.setText(fullClanInfo.getRecruitingOptions().winsRatio);
+            clanRecruitingOptionsAverageDamage.setText(fullClanInfo.getRecruitingOptions().averageDamage);
+            clanRecruitingOptionsAverageBattlesPerDay.setText(fullClanInfo.getRecruitingOptions().averageBattlesPerDay);
+            clanRecruitingOptionsVehiclesLevel.setText(fullClanInfo.getRecruitingOptions().vehiclesLevel);
 
         } else {
             clanInfoRecruitingButton.setPaintFlags(clanInfoRecruitingButton.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);

@@ -46,7 +46,6 @@ public class DifferenceIndicatorView extends AppCompatTextView {
     public DifferenceIndicatorView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        // TODO: try-with warning
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DifferenceIndicatorView, defStyleAttr, 0);
 
         plusBackground = a.getDrawable(R.styleable.DifferenceIndicatorView_plusBackground);

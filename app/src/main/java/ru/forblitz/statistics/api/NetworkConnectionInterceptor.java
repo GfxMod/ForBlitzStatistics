@@ -43,7 +43,7 @@ public class NetworkConnectionInterceptor implements Interceptor {
             return chain.proceed(chain.request().newBuilder().build());
         }
 
-        throw new IllegalStateException("Печаль-беда, почему-то ни одна активность сейчас не зарегана");
+        throw new IllegalStateException("intercept: ConnectivityService does not contain any activity");
 
     }
 
@@ -56,7 +56,7 @@ public class NetworkConnectionInterceptor implements Interceptor {
             return (netInfo != null && netInfo.isConnected());
         }
 
-        throw new IllegalStateException("Печаль-беда, почему-то ни одна активность сейчас не зарегана");
+        throw new IllegalStateException("isConnected(): ConnectivityService does not contain any activity");
     }
 
 }

@@ -23,7 +23,7 @@ public class ClanSmall extends DifferenceViewFlipper {
 
     public void setData(ShortClanInfo shortClanInfo) {
 
-        if (shortClanInfo.clanData != null) {
+        if (shortClanInfo != null && shortClanInfo.clanData != null) {
 
             this.setDisplayedChild(IS_A_MEMBER);
 

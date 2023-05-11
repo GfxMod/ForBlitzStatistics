@@ -885,6 +885,8 @@ class MainActivity : AppCompatActivity() {
             } else {
                 runOnUiThread {
                     findViewById<ClanScreen>(R.id.fragment_clan).setData(null, app.clanService.getFullClanInfo())
+                    findViewById<ClanSmall>(R.id.random_clan).setData(null)
+                    findViewById<ClanSmall>(R.id.rating_clan).setData(null)
                 }
             }
 

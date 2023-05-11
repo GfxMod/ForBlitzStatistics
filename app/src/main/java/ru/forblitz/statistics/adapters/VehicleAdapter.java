@@ -10,6 +10,7 @@ import android.widget.Button;
 
 import ru.forblitz.statistics.dto.VehicleSpecs;
 import ru.forblitz.statistics.dto.VehicleStat;
+import ru.forblitz.statistics.utils.ParseUtils;
 import ru.forblitz.statistics.utils.VehicleUtils;
 import ru.forblitz.statistics.widget.data.DetailsLayout;
 import android.widget.ListView;
@@ -62,9 +63,9 @@ public class VehicleAdapter extends ArrayAdapter<Pair<VehicleSpecs, VehicleStat>
         efficiency.setTextColor(VehicleUtils.getEfficiencyColor(getContext(), Double.parseDouble(vehicleStat.all.getEfficiency())));
 
         name.setText(vehicleSpecs.name);
-        battles.setText(vehicleStat.all.getBattles());
+        battles.setText(ParseUtils.splitByThousands(vehicleStat.all.getBattles()));
         winRate.setText(vehicleStat.all.getWinRate());
-        averageDamage.setText(vehicleStat.all.getAverageDamage());
+        averageDamage.setText(ParseUtils.splitByThousands(vehicleStat.all.getAverageDamage()));
         efficiency.setText(vehicleStat.all.getEfficiency());
         survived.setText(vehicleStat.all.getSurvived());
         hitsFromShots.setText(vehicleStat.all.getHitsFromShots());

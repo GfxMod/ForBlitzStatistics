@@ -11,6 +11,7 @@ import ru.forblitz.statistics.R;
 import ru.forblitz.statistics.data.Constants;
 import ru.forblitz.statistics.dto.StatisticsData;
 import ru.forblitz.statistics.utils.InterfaceUtils;
+import ru.forblitz.statistics.utils.ParseUtils;
 
 public class PlayerFastStat extends LinearLayout {
 
@@ -52,9 +53,9 @@ public class PlayerFastStat extends LinearLayout {
         if (survivedValue.equals("NaN")) { survivedValue = getContext().getString(R.string.empty); }
         if (hitsFromShotsValue.equals("NaN")) { hitsFromShotsValue = getContext().getString(R.string.empty); }
 
-        battles.setText(battlesValue);
+        battles.setText(ParseUtils.splitByThousands(battlesValue));
         winRate.setText(winRateValue);
-        averageDamage.setText(averageDamageValue);
+        averageDamage.setText(ParseUtils.splitByThousands(averageDamageValue));
         efficiency.setText(efficiencyValue);
         survived.setText(survivedValue);
         hitsFromShots.setText(hitsFromShotsValue);

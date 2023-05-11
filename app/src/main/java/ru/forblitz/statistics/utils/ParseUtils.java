@@ -7,6 +7,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import ru.forblitz.statistics.R;
 import ru.forblitz.statistics.dto.StatisticsData;
 
@@ -93,6 +98,22 @@ public class ParseUtils {
                 .getAsJsonObject("statisticAppVersion");
 
         return dataObject.get("currentAppVersion").getAsInt();
+
+    }
+
+    public static String splitByThousands(String number) {
+
+        DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+        DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+
+        symbols.setGroupingSeparator(' ');
+        formatter.setDecimalFormatSymbols(symbols);
+
+        try {
+            return formatter.format(Double.parseDouble(number));
+        } catch (java.lang.IllegalArgumentException e) {
+            return number;
+        }
 
     }
 

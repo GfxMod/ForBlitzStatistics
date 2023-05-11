@@ -12,6 +12,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import ru.forblitz.statistics.dto.StatisticsData;
+import ru.forblitz.statistics.utils.ParseUtils;
 
 public class DetailsLayout extends LinearLayout {
 
@@ -33,7 +34,7 @@ public class DetailsLayout extends LinearLayout {
                 try {
                     Field field = StatisticsData.class.getDeclaredField(String.valueOf(view.getTag()));
                     field.setAccessible(true);
-                    ((TextView) view).setText((String) field.get(statisticsData));
+                    ((TextView) view).setText(ParseUtils.splitByThousands((String) field.get(statisticsData)));
                 } catch (NoSuchFieldException|IllegalAccessException e) {
                     e.printStackTrace();
                 }

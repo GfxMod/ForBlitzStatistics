@@ -982,6 +982,7 @@ class MainActivity : AppCompatActivity() {
                 findViewById<EditText>(R.id.search_field).setText(lastSearchedName.text, TextView.BufferType.EDITABLE)
                 onClickSearchButton(findViewById(R.id.search_button))
             }
+            lastSearchedFlipper.isClickable = true
 
             lastSearchedFlipper.displayedChild = 0
 
@@ -989,6 +990,7 @@ class MainActivity : AppCompatActivity() {
             enterNicknameText.setText(R.string.enter_nickname)
 
             lastSearchedFlipper.displayedChild = 1
+            lastSearchedFlipper.isClickable = false
         }
 
     }

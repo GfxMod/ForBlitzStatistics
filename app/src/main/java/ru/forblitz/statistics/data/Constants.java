@@ -7,6 +7,8 @@ public class Constants {
     public static final String lestaAppId = "1957e1f71656310342971b3b1aa2efef";
     public static final String wgAppId = "ac75820d6c10195c86370ec1bc9f21de";
 
+    public static int TABS_COUNT = 4;
+
 
     public static class MainViewFlipperItems {
         public static final int ENTER_NICKNAME = 0;

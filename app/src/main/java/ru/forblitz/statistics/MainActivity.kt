@@ -70,13 +70,13 @@ class MainActivity : AppCompatActivity() {
         val tabLayout = findViewById<TabLayout>(R.id.tabs)
         val mainLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
 
-        viewPager.adapter = ViewPagerAdapter(supportFragmentManager, tabLayout.tabCount)
+        viewPager.adapter = ViewPagerAdapter(supportFragmentManager, TABS_COUNT)
         tabLayout.setupWithViewPager(viewPager)
 
         val tabLayoutHeight = (InterfaceUtils.getY(
             this@MainActivity
         ) * 0.905 * 0.1).toInt()
-        for (i in 0 until tabLayout.tabCount) {
+        for (i in 0 until TABS_COUNT) {
             var icon: Drawable
             var contentDescription: String
             when (i) {
@@ -115,7 +115,11 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, contentDescription, Toast.LENGTH_SHORT).show()
                 true
             }
-            tabLayout.getTabAt(i)?.customView = view
+            if (tabLayout.getTabAt(i) == null) {
+                tabLayout.addTab(tabLayout.newTab().setCustomView(view))
+            } else {
+                tabLayout.getTabAt(i)?.customView = view
+            }
         }
 
         viewPager.offscreenPageLimit = 3

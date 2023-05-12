@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:whatever="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,7 +20,7 @@
         android:padding="@dimen/padding_giant"
         android:orientation="horizontal">
 
-        <androidx.appcompat.widget.AppCompatImageButton
+        <ru.forblitz.statistics.widget.common.SquareImageButton
             android:id="@+id/search_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -27,7 +28,8 @@
             android:layout_weight="0.15"
             android:background="@null"
             android:onClick="onClickSearchButton"
-            android:src="@drawable/ic_outline_person_search_36" />
+            android:src="@drawable/ic_outline_person_search_36"
+            whatever:main_dimension="vertical" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/search_field"
@@ -50,7 +52,7 @@
             android:typeface="monospace"
             app:autoSizeTextType="uniform" />
 
-        <androidx.appcompat.widget.AppCompatImageButton
+        <ru.forblitz.statistics.widget.common.SquareImageButton
             android:id="@+id/settings_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -58,7 +60,8 @@
             android:layout_weight="0.15"
             android:background="@null"
             android:onClick="onClickSettingsButton"
-            android:src="@drawable/ic_outline_settings_36" />
+            android:src="@drawable/ic_outline_settings_36"
+            whatever:main_dimension="vertical" />
 
     </LinearLayout>
 
@@ -217,29 +220,7 @@
                 app:tabPaddingTop="@dimen/padding_very_big"
                 app:tabPaddingStart="@dimen/padding_giant"
                 app:tabPaddingBottom="@dimen/padding_very_big"
-                app:tabPaddingEnd="@dimen/padding_giant">
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:icon="@drawable/ic_outline_bar_chart_36" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:icon="@drawable/ic_outline_auto_graph_36" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:icon="@drawable/ic_outline_group_36" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:icon="@drawable/ic_tanks" />
-
-            </com.google.android.material.tabs.TabLayout>
+                app:tabPaddingEnd="@dimen/padding_giant" />
 
         </LinearLayout>
 

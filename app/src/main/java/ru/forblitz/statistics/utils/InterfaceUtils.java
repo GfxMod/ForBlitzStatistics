@@ -18,10 +18,14 @@ import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.content.res.AppCompatResources;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.transition.ChangeBounds;
+import androidx.transition.Fade;
+import androidx.transition.TransitionManager;
+import androidx.transition.TransitionSet;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -111,13 +115,6 @@ public class InterfaceUtils {
         return new BitmapDrawable(context.getResources(), bitmap);
     }
 
-    public static void randomToMain(Activity activity) {
-
-        ViewFlipper flipper = activity.findViewById(R.id.random_layouts_flipper);
-        flipper.setDisplayedChild(0);
-
-    }
-
     public static void playCycledAnimation(@NonNull View view, Boolean needToSetClickable) {
         if (needToSetClickable) { view.setClickable(false); }
         ScaleAnimation animTo = new ScaleAnimation(
@@ -137,42 +134,6 @@ public class InterfaceUtils {
         view.startAnimation(animTo);
         new Handler().postDelayed(() -> view.startAnimation(animFrom), 125);
         if (needToSetClickable) { new Handler().postDelayed(() -> view.setClickable(true), 250); }
-    }
-
-    public static void setSelectedRegion(Activity activity, int number) {
-        View ru = activity.findViewById(R.id.select_region_ru);
-        View eu = activity.findViewById(R.id.select_region_eu);
-        View na = activity.findViewById(R.id.select_region_na);
-        View asia = activity.findViewById(R.id.select_region_asia);
-
-        if (number == 0) {
-            ru.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested_selected));
-            eu.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-            na.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-            asia.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-        } else if (number == 1) {
-            ru.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-            eu.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested_selected));
-            na.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-            asia.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-        } else if (number == 2) {
-            ru.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-            eu.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-            na.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested_selected));
-            asia.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-        } else if (number == 3) {
-            ru.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-            eu.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-            na.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-            asia.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested_selected));
-        }
-
-        int padding = activity.getResources().getDimensionPixelSize(R.dimen.padding_very_big);
-        ru.setPadding(padding, padding, padding, padding);
-        eu.setPadding(padding, padding, padding, padding);
-        na.setPadding(padding, padding, padding, padding);
-        asia.setPadding(padding, padding, padding, padding);
-
     }
 
     public static int pxToDp(Context context, int px) {
@@ -282,4 +243,74 @@ public class InterfaceUtils {
         });
 
     }
+
+    public static void setRegionAlertVisibility(
+            Context context,
+            ConstraintLayout constraintLayout,
+            View text,
+            View buttons,
+            boolean visible
+    ) {
+        int buttonsMargin = ((ConstraintLayout.LayoutParams) buttons.getLayoutParams()).topMargin;
+
+        TransitionSet transitionSet = new TransitionSet();
+        transitionSet.addTransition(new ChangeBounds());
+        transitionSet.addTransition(new Fade());
+        transitionSet.setDuration(context.getResources().getInteger(android.R.integer.config_shortAnimTime));
+        TransitionManager.beginDelayedTransition(constraintLayout, transitionSet);
+
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        constraintSet.clear(text.getId(), ConstraintSet.BOTTOM);
+        constraintSet.clear(text.getId(), ConstraintSet.TOP);
+
+        if (visible) {
+            constraintSet.clear(text.getId(), ConstraintSet.BOTTOM);
+            constraintSet.connect(
+                    text.getId(),
+                    ConstraintSet.TOP,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.TOP,
+                    0
+            );
+            constraintSet.clear(buttons.getId(), ConstraintSet.BOTTOM);
+            constraintSet.connect(
+                    buttons.getId(),
+                    ConstraintSet.TOP,
+                    text.getId(),
+                    ConstraintSet.BOTTOM,
+                    0
+            );
+        } else {
+            constraintSet.clear(text.getId(), ConstraintSet.TOP);
+            constraintSet.connect(
+                    text.getId(),
+                    ConstraintSet.BOTTOM,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.BOTTOM,
+                    0
+            );
+            constraintSet.clear(buttons.getId(), ConstraintSet.TOP);
+            constraintSet.connect(
+                    buttons.getId(),
+                    ConstraintSet.BOTTOM,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.BOTTOM,
+                    0
+            );
+        }
+
+        constraintSet.applyTo(constraintLayout);
+        if (visible) {
+            buttons.setVisibility(View.VISIBLE);
+        } else {
+            buttons.setVisibility(View.INVISIBLE);
+        }
+
+        ConstraintLayout.LayoutParams buttonsLayoutParams =
+                (ConstraintLayout.LayoutParams) buttons.getLayoutParams();
+        buttonsLayoutParams.topMargin = buttonsMargin;
+        buttons.setLayoutParams(buttonsLayoutParams);
+    }
+
 }

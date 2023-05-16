@@ -3,6 +3,7 @@ package ru.forblitz.statistics
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
@@ -11,11 +12,18 @@ import android.os.Looper
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
-import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.AbsListView
+import android.widget.EditText
+import android.widget.ListView
+import android.widget.RadioGroup
+import android.widget.TextSwitcher
+import android.widget.TextView
+import android.widget.Toast
+import android.widget.ViewFlipper
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
@@ -30,33 +38,51 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Runnable
 import kotlinx.coroutines.launch
+import org.jetbrains.anko.contentView
 import ru.forblitz.statistics.adapters.SessionAdapter
 import ru.forblitz.statistics.adapters.VehicleAdapter
 import ru.forblitz.statistics.adapters.ViewPagerAdapter
 import ru.forblitz.statistics.api.ApiService
-import ru.forblitz.statistics.data.Constants.*
+import ru.forblitz.statistics.data.Constants
+import ru.forblitz.statistics.data.Constants.ClanViewFlipperItems
+import ru.forblitz.statistics.data.Constants.MainViewFlipperItems
+import ru.forblitz.statistics.data.Constants.StatisticsViewFlipperItems
+import ru.forblitz.statistics.data.Constants.TABS_COUNT
 import ru.forblitz.statistics.dto.Session
 import ru.forblitz.statistics.dto.StatisticsData
 import ru.forblitz.statistics.dto.VehicleSpecs
 import ru.forblitz.statistics.dto.VehicleStat
 import ru.forblitz.statistics.exception.ObjectException
-import ru.forblitz.statistics.service.*
+import ru.forblitz.statistics.service.AdService
+import ru.forblitz.statistics.service.ClanService
+import ru.forblitz.statistics.service.ConnectivityService
+import ru.forblitz.statistics.service.RandomService
+import ru.forblitz.statistics.service.RatingService
+import ru.forblitz.statistics.service.SessionService
+import ru.forblitz.statistics.service.UserClanService
+import ru.forblitz.statistics.service.UserIDService
+import ru.forblitz.statistics.service.VehicleSpecsService
+import ru.forblitz.statistics.service.VehicleStatService
+import ru.forblitz.statistics.service.VersionService
 import ru.forblitz.statistics.utils.InterfaceUtils
 import ru.forblitz.statistics.utils.ParseUtils
 import ru.forblitz.statistics.utils.SessionUtils
 import ru.forblitz.statistics.widget.common.DifferenceViewFlipper
+import ru.forblitz.statistics.widget.common.ExtendedRadioGroup
 import ru.forblitz.statistics.widget.data.ClanScreen
 import ru.forblitz.statistics.widget.data.ClanSmall
 import ru.forblitz.statistics.widget.data.PlayerFastStat
 import ru.forblitz.statistics.widget.data.SessionButtonsLayout
 import ru.forblitz.statistics.widget.data.SessionButtonsLayout.ButtonsVisibility
 import java.io.File
-import java.util.*
+import java.util.Collections
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var app: ForBlitzStatisticsApplication
+
+    private var isKeyboardShowing: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,9 +99,7 @@ class MainActivity : AppCompatActivity() {
         viewPager.adapter = ViewPagerAdapter(supportFragmentManager, TABS_COUNT)
         tabLayout.setupWithViewPager(viewPager)
 
-        val tabLayoutHeight = (InterfaceUtils.getY(
-            this@MainActivity
-        ) * 0.905 * 0.1).toInt()
+        val tabLayoutHeight = (InterfaceUtils.getY(this@MainActivity) * 0.905 * 0.1).toInt()
         for (i in 0 until TABS_COUNT) {
             var icon: Drawable
             var contentDescription: String
@@ -124,6 +148,55 @@ class MainActivity : AppCompatActivity() {
 
         viewPager.offscreenPageLimit = 3
 
+        //
+
+        val enterNicknameText = findViewById<TextSwitcher>(R.id.enter_nickname_text)
+
+        enterNicknameText.inAnimation = AnimationUtils.loadAnimation(
+            this@MainActivity,
+            R.anim.appearance
+        ).apply { duration =
+            resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+        }
+        enterNicknameText.outAnimation = AnimationUtils.loadAnimation(
+            this@MainActivity,
+            R.anim.disappearance
+        ).apply { duration =
+            resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+        }
+
+        //
+
+        findViewById<View>(R.id.enter_nickname_text)
+            .updateLayoutParams<ConstraintLayout.LayoutParams> {
+                width = ConstraintLayout.LayoutParams.MATCH_PARENT
+                height = (InterfaceUtils.getY(this@MainActivity) * 0.905 * 0.1).toInt()
+                startToStart = R.id.enter_nickname_layout
+                endToEnd = R.id.enter_nickname_layout
+                bottomToBottom = R.id.enter_nickname_layout
+            }
+
+        //
+
+        contentView!!.viewTreeObserver.addOnGlobalLayoutListener {
+            val displayFrameRect = Rect()
+            contentView?.getWindowVisibleDisplayFrame(displayFrameRect)
+            val screenHeight = contentView!!.rootView.height
+
+            val keypadHeight = screenHeight - displayFrameRect.bottom
+            if (keypadHeight > screenHeight * 0.15) {
+                if (!isKeyboardShowing) {
+                    isKeyboardShowing = true
+                    onKeyboardVisibilityChanged()
+                }
+            } else {
+                if (isKeyboardShowing) {
+                    isKeyboardShowing = false
+                    onKeyboardVisibilityChanged()
+                }
+            }
+        }
+
         // Hides statistics elements and shows nickname input elements
 
         mainLayoutsFlipper.displayedChild = MainViewFlipperItems.ENTER_NICKNAME
@@ -139,9 +212,6 @@ class MainActivity : AppCompatActivity() {
                 }
                 else -> false
             }
-        }
-        searchField.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
-            searchField.isCursorVisible = hasFocus
         }
 
         searchField.setOnKeyListener(object : View.OnKeyListener {
@@ -183,10 +253,27 @@ class MainActivity : AppCompatActivity() {
 
         // Sets app.preferences listeners
 
-        findViewById<View>(R.id.select_region_ru).setOnClickListener { app.preferences.edit().putString("region", "ru").apply(); setRegion() }
-        findViewById<View>(R.id.select_region_eu).setOnClickListener { app.preferences.edit().putString("region", "eu").apply(); setRegion() }
-        findViewById<View>(R.id.select_region_na).setOnClickListener { app.preferences.edit().putString("region", "na").apply(); setRegion() }
-        findViewById<View>(R.id.select_region_asia).setOnClickListener { app.preferences.edit().putString("region", "asia").apply(); setRegion() }
+        val searchRegionLayout = findViewById<ExtendedRadioGroup>(R.id.search_region_layout)
+        val settingsRegionLayout = findViewById<ExtendedRadioGroup>(R.id.settings_region_layout)
+
+        for (i in 0 until searchRegionLayout.childCount) {
+            val view = searchRegionLayout.getChildAt(i)
+            view.setOnClickListener {
+                if (Constants.baseUrl.containsKey((view.tag.toString()))) {
+                    app.preferences.edit().putString("region", view.tag.toString()).apply()
+                    setRegion()
+                }
+            }
+        }
+        for (i in 0 until settingsRegionLayout.childCount) {
+            val view = settingsRegionLayout.getChildAt(i)
+            view.setOnClickListener {
+                if (Constants.baseUrl.containsKey((view.tag.toString()))) {
+                    app.preferences.edit().putString("region", view.tag.toString()).apply()
+                    setRegion()
+                }
+            }
+        }
 
         // set onBackPressed
 
@@ -230,19 +317,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        // Check version and fill vehicles specifications
-
-        CoroutineScope(Dispatchers.IO).launch {
-            versionCheck()
-            // get vehicle specifications
-            app.vehicleSpecsService.getVehiclesSpecsList()
-
-            if (mainLayoutsFlipper.displayedChild == MainViewFlipperItems.STATISTICS) {
-                setVehiclesStat()
-            }
-
-        }
-
         // Initialization of ads
 
         MobileAds.initialize(this) { Log.i("YandexMobileAds", "SDK initialized") }
@@ -252,11 +326,48 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         app.connectivityService.subscribe(this)
+
+        // Check version and fill vehicles specifications
+
+        CoroutineScope(Dispatchers.IO).launch {
+            versionCheck()
+            // get vehicle specifications
+            app.vehicleSpecsService.getVehiclesSpecsList()
+
+            if (findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
+                    .displayedChild == MainViewFlipperItems.STATISTICS
+            ) {
+                setVehiclesStat()
+            }
+
+        }
     }
 
     override fun onStop() {
         super.onStop()
         app.connectivityService.unsubscribe(this)
+    }
+
+    private fun onKeyboardVisibilityChanged() {
+        findViewById<EditText>(R.id.search_field).isCursorVisible = isKeyboardShowing
+
+        CoroutineScope(Dispatchers.Main).launch {
+            InterfaceUtils.setRegionAlertVisibility(
+                this@MainActivity,
+                findViewById(R.id.enter_nickname_layout),
+                findViewById(R.id.enter_nickname_text),
+                findViewById(R.id.search_region_layout),
+                isKeyboardShowing
+            )
+
+            if (isKeyboardShowing) {
+                findViewById<TextSwitcher>(R.id.enter_nickname_text).setText(getString(
+                    R.string.region_select
+                ))
+            } else {
+                updateLastSearch()
+            }
+        }
     }
 
     /**
@@ -297,8 +408,7 @@ class MainActivity : AppCompatActivity() {
         searchButton.isClickable = false
         lastSearched.isClickable = false
         findViewById<View>(R.id.settings_button).isActivated = false
-        findViewById<SessionButtonsLayout>(R.id.random_session_buttons).setButtonsVisibility(
-            ButtonsVisibility.NOTHING)
+        findViewById<SessionButtonsLayout>(R.id.random_session_buttons).setButtonsVisibility(ButtonsVisibility.NOTHING)
 
         // Plays animation
 
@@ -773,19 +883,19 @@ class MainActivity : AppCompatActivity() {
                 val sortedVehicles: ArrayList<Pair<VehicleSpecs, VehicleStat>> = ArrayList(pairs.values)
                 val vehiclesToCreate: ArrayList<Pair<VehicleSpecs, VehicleStat>> = ArrayList(0)
 
-                val comparatorByBattles: Comparator<Pair<VehicleSpecs, VehicleStat>> = Comparator<Pair<VehicleSpecs, VehicleStat>> {
+                val comparatorByBattles: Comparator<Pair<VehicleSpecs, VehicleStat>> = Comparator {
                         v1, v2 -> v1.second.all.battles.toInt().compareTo(v2.second.all.battles.toInt())
                 }
-                val comparatorByAverageDamage: Comparator<Pair<VehicleSpecs, VehicleStat>> = Comparator<Pair<VehicleSpecs, VehicleStat>> {
+                val comparatorByAverageDamage: Comparator<Pair<VehicleSpecs, VehicleStat>> = Comparator {
                         v1, v2 -> v1.second.all.averageDamage.toDouble().compareTo(v2.second.all.averageDamage.toDouble())
                 }
-                val comparatorByWinRate: Comparator<Pair<VehicleSpecs, VehicleStat>> = Comparator<Pair<VehicleSpecs, VehicleStat>> {
+                val comparatorByWinRate: Comparator<Pair<VehicleSpecs, VehicleStat>> = Comparator {
                         v1, v2 -> v1.second.all.winRate.toDouble().compareTo(v2.second.all.winRate.toDouble())
                 }
-                val comparatorByAverageXp: Comparator<Pair<VehicleSpecs, VehicleStat>> = Comparator<Pair<VehicleSpecs, VehicleStat>> {
+                val comparatorByAverageXp: Comparator<Pair<VehicleSpecs, VehicleStat>> = Comparator {
                         v1, v2 -> v1.second.all.averageXp.toDouble().compareTo(v2.second.all.averageXp.toDouble())
                 }
-                val comparatorByEfficiency: Comparator<Pair<VehicleSpecs, VehicleStat>> = Comparator<Pair<VehicleSpecs, VehicleStat>> {
+                val comparatorByEfficiency: Comparator<Pair<VehicleSpecs, VehicleStat>> = Comparator {
                         v1, v2 -> v1.second.all.efficiency.toDouble().compareTo(v2.second.all.efficiency.toDouble())
                 }
 
@@ -902,61 +1012,25 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setRegion() {
         findViewById<EditText>(R.id.search_field).setText("", TextView.BufferType.EDITABLE)
-        when (app.preferences.getString("region", "notSpecified")) {
-            "notSpecified" -> {
-
-                InterfaceUtils.createAlertDialog(
-                    this@MainActivity,
-                    this@MainActivity.getString(R.string.terms_of_service),
-                    this@MainActivity.getString(R.string.terms_of_service_desc),
-                    this@MainActivity.getString(R.string.accept),
-                    Runnable { app.preferences.edit().putString("region", "ru").apply() },
-                    this@MainActivity.getString(R.string.exit),
-                    Runnable { finish() }
-                ).show()
-
-                InterfaceUtils.setSelectedRegion(
-                    this@MainActivity,
-                    0
-                )
-
-                app.apiService.setRegion("ru")
-
-            }
-            "ru" -> {
-                InterfaceUtils.setSelectedRegion(
-                    this@MainActivity,
-                    0
-                )
-
-                app.apiService.setRegion("ru")
-            }
-            "eu" -> {
-                InterfaceUtils.setSelectedRegion(
-                    this@MainActivity,
-                    1
-                )
-
-                app.apiService.setRegion("eu")
-            }
-            "na" -> {
-                InterfaceUtils.setSelectedRegion(
-                    this@MainActivity,
-                    2
-                )
-
-                app.apiService.setRegion("na")
-            }
-            "asia" -> {
-                InterfaceUtils.setSelectedRegion(
-                    this@MainActivity,
-                    3
-                )
-
-                app.apiService.setRegion("asia")
-            }
+        if (app.preferences.getString("region", "notSpecified") == "notSpecified") {
+            app.preferences.edit().putString("region", "ru").apply()
+            app.apiService.setRegion(app.preferences.getString("region", "notSpecified")!!)
+            InterfaceUtils.createAlertDialog(
+                this@MainActivity,
+                this@MainActivity.getString(R.string.terms_of_service),
+                this@MainActivity.getString(R.string.terms_of_service_desc),
+                this@MainActivity.getString(R.string.accept),
+                Runnable {  },
+                this@MainActivity.getString(R.string.exit),
+                Runnable { finish() }
+            ).show()
+            setRegion()
+        } else {
+            app.apiService.setRegion(app.preferences.getString("region", "notSpecified")!!)
+            findViewById<ExtendedRadioGroup>(R.id.search_region_layout).setCheckedItem(app.preferences.getString("region", "notSpecified")!!)
+            findViewById<ExtendedRadioGroup>(R.id.settings_region_layout).setCheckedItem(app.preferences.getString("region", "notSpecified")!!)
+            updateLastSearch()
         }
-        updateLastSearch()
     }
 
     /**
@@ -965,7 +1039,7 @@ class MainActivity : AppCompatActivity() {
     private fun updateLastSearch() {
 
         val lastSearchedFlipper = findViewById<DifferenceViewFlipper>(R.id.last_searched_flipper)
-        val enterNicknameText = findViewById<TextView>(R.id.enter_nickname_text)
+        val enterNicknameText = findViewById<TextSwitcher>(R.id.enter_nickname_text)
 
         val lastFile = app.sessionService.getLastFile(app.preferences.getString("region", "notSpecified")!!)
 
@@ -976,7 +1050,9 @@ class MainActivity : AppCompatActivity() {
             lastSearchedName.text = ParseUtils.statisticsData(lastFile.readText(), "all").nickname
             val lastSearchedInfoText = getString(R.string.last_search) + ParseUtils.time((lastFile.lastModified() / 1000).toString())
             lastSearchedInfo.text = lastSearchedInfoText
-            enterNicknameText.setText(R.string.enter_nickname_or_select)
+            if (!isKeyboardShowing) {
+                enterNicknameText.setText(getString(R.string.enter_nickname_or_select))
+            }
 
             lastSearchedFlipper.setOnClickListener {
                 findViewById<EditText>(R.id.search_field).setText(lastSearchedName.text, TextView.BufferType.EDITABLE)
@@ -985,9 +1061,10 @@ class MainActivity : AppCompatActivity() {
             lastSearchedFlipper.isClickable = true
 
             lastSearchedFlipper.displayedChild = 0
-
         } else {
-            enterNicknameText.setText(R.string.enter_nickname)
+            if (!isKeyboardShowing) {
+                enterNicknameText.setText(getString(R.string.enter_nickname))
+            }
 
             lastSearchedFlipper.displayedChild = 1
             lastSearchedFlipper.isClickable = false

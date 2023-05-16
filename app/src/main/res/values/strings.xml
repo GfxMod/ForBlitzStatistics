@@ -141,4 +141,14 @@
     <string name="clan">Clan information</string>
     <string name="tanks">Tanks statistics</string>
 
+    <string name="region_ru">RU</string>
+    <string name="region_eu">EU</string>
+    <string name="region_na">NA</string>
+    <string name="region_asia">ASIA</string>
+
+    <string name="region_select">Please select the region where the account is located</string>
+
+    <string name="search">Search</string>
+    <string name="settings">Settings</string>
+
 </resources>

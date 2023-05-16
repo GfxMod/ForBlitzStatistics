@@ -32,5 +32,10 @@
         <attr name="minusTextColor" format="color" />
         <attr name="plusTextColor" format="color" />
     </declare-styleable>
+    <declare-styleable name="ExtendedRadioGroup">
+        <attr name="background_checked" format="reference|color" />
+        <attr name="background_unchecked" format="reference|color" />
+        <attr name="anim_duration" format="integer" />
+    </declare-styleable>
 
 </resources>

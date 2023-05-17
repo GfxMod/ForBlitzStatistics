@@ -12,31 +12,31 @@
     style="@style/Theme.ForBlitz"
     tools:context="ru.forblitz.statistics.MainActivity">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.095"
         android:background="@drawable/background_layout_insets"
-        android:padding="@dimen/padding_giant"
-        android:orientation="horizontal">
+        android:padding="@dimen/padding_giant">
 
         <ru.forblitz.statistics.widget.common.SquareImageButton
             android:id="@+id/search_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_weight="0.15"
             android:background="@null"
             android:onClick="onClickSearchButton"
             android:src="@drawable/ic_outline_person_search_36"
             android:contentDescription="@string/search"
-            whatever:main_dimension="vertical" />
+            whatever:main_dimension="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/search_field"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.75"
             android:autofillHints=""
             android:background="@drawable/background_layout_nested"
             android:cursorVisible="true"
@@ -51,21 +51,29 @@
             android:textColorHint="@color/transparent_white"
             android:textStyle="bold"
             android:typeface="monospace"
-            app:autoSizeTextType="uniform" />
+            app:autoSizeTextType="uniform"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/search_button"
+            app:layout_constraintEnd_toStartOf="@id/settings_button"
+            android:layout_marginStart="@dimen/padding_big"
+            android:layout_marginEnd="@dimen/padding_big" />
 
         <ru.forblitz.statistics.widget.common.SquareImageButton
             android:id="@+id/settings_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_weight="0.15"
             android:background="@null"
             android:onClick="onClickSettingsButton"
             android:src="@drawable/ic_outline_settings_36"
             android:contentDescription="@string/settings"
-            whatever:main_dimension="vertical" />
+            whatever:main_dimension="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ru.forblitz.statistics.widget.common.DifferenceViewFlipper
         android:id="@+id/main_layouts_flipper"

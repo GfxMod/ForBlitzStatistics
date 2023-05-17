@@ -166,7 +166,7 @@ public class InterfaceUtils {
     public static MaterialAlertDialogBuilder createAlertDialog(
             Context context,
             String title,
-            String message
+            CharSequence message
     ) {
         MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
         alertDialog.setTitle(title);
@@ -178,8 +178,8 @@ public class InterfaceUtils {
 
     public static MaterialAlertDialogBuilder createAlertDialog(
             Context context, 
-            String title, 
-            String message, 
+            String title,
+            CharSequence message,
             String positiveButtonText, 
             Runnable positiveButtonAction
     ) {
@@ -191,7 +191,7 @@ public class InterfaceUtils {
     public static MaterialAlertDialogBuilder createAlertDialog(
             Context context,
             String title,
-            String message,
+            CharSequence message,
             String positiveButtonText,
             Runnable positiveButtonAction,
             String negativeButtonText,

@@ -122,7 +122,7 @@
     <string name="update_available_desc">Пожалуйста, обновите ForBlitz Statistics до последней версии</string>
 
     <string name="terms_of_service">Условия использования</string>
-    <string name="terms_of_service_desc">Пользуясь приложением, вы принимаете нашу политику конфиденциальности (https://forblitz.ru/forblitzstats-privacy/)</string>
+    <string name="terms_of_service_desc"><![CDATA[Пользуясь приложением, вы принимаете нашу политику конфиденциальности (<a href="https://forblitz.ru/forblitzstats-privacy/">https://forblitz.ru/forblitzstats-privacy/</a>]]>)</string>
     <string name="accept">Принять</string>
     <string name="exit">Выход</string>
 

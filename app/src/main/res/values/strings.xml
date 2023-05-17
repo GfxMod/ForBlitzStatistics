@@ -122,7 +122,7 @@
     <string name="update">Update</string>
 
     <string name="terms_of_service">Terms of service</string>
-    <string name="terms_of_service_desc">By using the app, you accept our privacy policy (https://forblitz.ru/forblitzstats-privacy/)</string>
+    <string name="terms_of_service_desc"><![CDATA[By using the app, you accept our privacy policy (<a href="https://forblitz.ru/forblitzstats-privacy/">https://forblitz.ru/forblitzstats-privacy/</a>]]>)</string>
     <string name="accept">Accept</string>
     <string name="exit">Exit</string>
 

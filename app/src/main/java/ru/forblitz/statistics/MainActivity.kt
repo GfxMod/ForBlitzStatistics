@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
@@ -28,6 +29,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.text.HtmlCompat
 import androidx.core.view.updateLayoutParams
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -1015,15 +1017,20 @@ class MainActivity : AppCompatActivity() {
         if (app.preferences.getString("region", "notSpecified") == "notSpecified") {
             app.preferences.edit().putString("region", "ru").apply()
             app.apiService.setRegion(app.preferences.getString("region", "notSpecified")!!)
+            Log.d("my link", this@MainActivity.getString(R.string.terms_of_service_desc))
+
             InterfaceUtils.createAlertDialog(
                 this@MainActivity,
                 this@MainActivity.getString(R.string.terms_of_service),
-                this@MainActivity.getString(R.string.terms_of_service_desc),
+                HtmlCompat.fromHtml(this@MainActivity.getString(R.string.terms_of_service_desc), HtmlCompat.FROM_HTML_MODE_LEGACY),
                 this@MainActivity.getString(R.string.accept),
                 Runnable {  },
                 this@MainActivity.getString(R.string.exit),
                 Runnable { finish() }
-            ).show()
+            )
+                .show()
+                .findViewById<TextView>(android.R.id.message)!!.movementMethod = LinkMovementMethod.getInstance()
+
             setRegion()
         } else {
             app.apiService.setRegion(app.preferences.getString("region", "notSpecified")!!)

@@ -20,6 +20,11 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class android.widget.**{ *; }
+-keep class ru.forblitz.statistics.widget.**{ *; }
+-keep class ru.forblitz.statistics.dto.**{ *; }
+
+-keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
+-keep,allowobfuscation,allowshrinking interface retrofit2.Call
+-keep,allowobfuscation,allowshrinking class retrofit2.Response
 -keepattributes SourceFile,LineNumberTable        # Keep file names and line numbers.
 -keep public class * extends java.lang.Exception  # Optional: Keep custom exceptions.

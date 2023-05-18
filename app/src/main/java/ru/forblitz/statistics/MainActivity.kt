@@ -604,6 +604,7 @@ class MainActivity : AppCompatActivity() {
                     app.randomService.getStatisticsData(app.userIDService.getUserID()),
                     true)
                 setSessionStat(0)
+                findViewById<EditText>(R.id.search_field).setText(app.randomService.getStatisticsData(app.userIDService.getUserID()).nickname)
             } catch (e: ObjectException) {
                 InterfaceUtils.createAlertDialog(
                     this@MainActivity,

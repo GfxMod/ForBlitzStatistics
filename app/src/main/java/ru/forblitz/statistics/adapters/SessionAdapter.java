@@ -16,7 +16,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import java.util.ArrayList;
 
 import ru.forblitz.statistics.R;
-import ru.forblitz.statistics.data.Session;
+import ru.forblitz.statistics.dto.Session;
 import ru.forblitz.statistics.utils.InterfaceUtils;
 import ru.forblitz.statistics.utils.ParseUtils;
 
@@ -42,7 +42,7 @@ public class SessionAdapter extends ArrayAdapter<Session> {
                 (int) (InterfaceUtils.getX() * 0.15)
         ));
 
-        String date = ParseUtils.parseTime(session.getPath().substring(session.getPath().lastIndexOf("-") + 1, session.getPath().lastIndexOf(".")));
+        String date = ParseUtils.time(session.getPath().substring(session.getPath().lastIndexOf("-") + 1, session.getPath().lastIndexOf(".")));
 
         TextView sessionDate = convertView.findViewById(R.id.session_date);
         View sessionRemove = convertView.findViewById(R.id.session_remove);

@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import ru.forblitz.statistics.R;
-import ru.forblitz.statistics.data.BigClanData.*;
+import ru.forblitz.statistics.dto.Member;
 import ru.forblitz.statistics.utils.InterfaceUtils;
 import ru.forblitz.statistics.utils.ParseUtils;
 
@@ -43,7 +43,7 @@ public class MemberAdapter extends ArrayAdapter<Member> {
         convertView.setOnClickListener(l -> InterfaceUtils.search(context, member.getAccountName()));
 
         String name = member.getAccountName();
-        String details = ParseUtils.parseRole(getContext(), member.getRole()) + "; " + getContext().getResources().getString(R.string.joined_at) + ParseUtils.parseTime(member.getJoinedAt());
+        String details = ParseUtils.role(getContext(), member.getRole()) + "; " + getContext().getResources().getString(R.string.joined_at) + ParseUtils.time(member.getJoinedAt());
 
         TextView memberName = convertView.findViewById(R.id.member_name);
         TextView memberDetails = convertView.findViewById(R.id.member_details);

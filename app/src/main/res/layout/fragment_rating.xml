@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.widget.DifferenceViewFlipper
+<ru.forblitz.statistics.widget.common.DifferenceViewFlipper
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -13,7 +13,7 @@
     android:paddingHorizontal="@dimen/padding_big"
     tools:context="ru.forblitz.statistics.RatingFragment" >
 
-    <android.widget.DifferenceViewFlipper
+    <ru.forblitz.statistics.widget.common.DifferenceViewFlipper
         android:id="@+id/rating_layouts_flipper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,9 +27,11 @@
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            android:weightSum="1">
 
-            <android.widget.LinearLayout
+            <ru.forblitz.statistics.widget.data.PlayerFastStat
+                android:id="@+id/rating_fast_stat"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.55"
@@ -38,7 +40,7 @@
                 android:padding="@dimen/padding_big">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/rating_text_nick"
+                    android:tag="nickname"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.1"
@@ -56,24 +58,24 @@
                     android:layout_height="0dp"
                     android:layout_weight="0.025" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <ru.forblitz.statistics.widget.data.ClanSmall
+                    android:id="@+id/rating_clan"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.15"
                     android:background="@drawable/background_layout_nested">
 
-                    <LinearLayout
-                        android:id="@+id/clan_true_rating"
+                    <android.widget.LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:padding="@dimen/padding"
-                        app:layout_constraintTop_toTopOf="parent"
+                        android:visibility="visible"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:visibility="visible">
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/rating_clan_name"
+                            android:tag="clan_name"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.5"
@@ -87,7 +89,7 @@
                             app:autoSizeTextType="uniform" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/rating_clan_role"
+                            android:tag="clan_role"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.4"
@@ -99,10 +101,9 @@
                             android:typeface="normal"
                             app:autoSizeTextType="uniform" />
 
-                    </LinearLayout>
+                    </android.widget.LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/clan_false_rating"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/inter"
@@ -118,14 +119,14 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </ru.forblitz.statistics.widget.data.ClanSmall>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.1" />
 
-                <LinearLayout
+                <android.widget.LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.755"
@@ -139,7 +140,6 @@
                         android:orientation="vertical">
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/rating_text_battles"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.1"
@@ -151,7 +151,7 @@
                             app:autoSizeTextType="uniform" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/rating_text_battles_info"
+                            android:tag="battles"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.2"
@@ -162,8 +162,8 @@
                             android:typeface="monospace"
                             app:autoSizeTextType="uniform" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/rating_text_battles_session_info"
+                        <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
+                            android:tag="battlesDiff"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_gravity="center"
@@ -183,7 +183,6 @@
                             android:layout_weight="0.05" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/rating_text_damage"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.1"
@@ -195,7 +194,7 @@
                             app:autoSizeTextType="uniform" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/rating_text_damage_info"
+                            android:tag="averageDamage"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.2"
@@ -206,8 +205,8 @@
                             android:typeface="monospace"
                             app:autoSizeTextType="uniform" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/rating_text_average_damage_session_info"
+                        <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
+                            android:tag="averageDamageDiff"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_gravity="center"
@@ -227,7 +226,6 @@
                             android:layout_weight="0.05" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/rating_text_survived"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.1"
@@ -239,7 +237,7 @@
                             app:autoSizeTextType="uniform" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/rating_text_survived_info"
+                            android:tag="survived"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.2"
@@ -250,8 +248,8 @@
                             android:typeface="monospace"
                             app:autoSizeTextType="uniform" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/rating_text_survived_session_info"
+                        <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
+                            android:tag="survivedDiff"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_gravity="center"
@@ -279,7 +277,6 @@
                         android:orientation="vertical">
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/rating_text_wins"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.1"
@@ -291,7 +288,7 @@
                             app:autoSizeTextType="uniform" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/rating_text_wins_info"
+                            android:tag="winRate"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.2"
@@ -302,8 +299,8 @@
                             android:typeface="monospace"
                             app:autoSizeTextType="uniform" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/rating_text_win_rate_session_info"
+                        <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
+                            android:tag="winRateDiff"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_gravity="center"
@@ -323,7 +320,6 @@
                             android:layout_weight="0.05" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/rating_text_efficiency"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.1"
@@ -335,7 +331,7 @@
                             app:autoSizeTextType="uniform" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/rating_text_efficiency_info"
+                            android:tag="efficiency"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.2"
@@ -346,8 +342,8 @@
                             android:typeface="monospace"
                             app:autoSizeTextType="uniform" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/rating_text_efficiency_session_info"
+                        <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
+                            android:tag="efficiencyDiff"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_gravity="center"
@@ -367,7 +363,6 @@
                             android:layout_weight="0.05" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/rating_text_hits_from_shots"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.1"
@@ -379,7 +374,7 @@
                             app:autoSizeTextType="uniform" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/rating_text_hits_from_shots_info"
+                            android:tag="hitsFromShots"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.2"
@@ -390,8 +385,8 @@
                             android:typeface="monospace"
                             app:autoSizeTextType="uniform" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/rating_text_hits_from_shots_session_info"
+                        <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
+                            android:tag="hitsFromShotsDiff"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_gravity="center"
@@ -399,11 +394,11 @@
                             android:background="@drawable/background_sessions_false"
                             android:fontFamily="@font/inter"
                             android:gravity="center"
+                            android:paddingHorizontal="@dimen/padding"
                             android:textColor="@color/session_red"
                             android:typeface="monospace"
                             app:autoSizeTextType="uniform"
-                            tools:text="@string/empty"
-                            android:paddingHorizontal="@dimen/padding" />
+                            tools:text="@string/empty" />
 
                         <View
                             android:layout_width="match_parent"
@@ -412,14 +407,14 @@
 
                     </LinearLayout>
 
-                </LinearLayout>
+                </android.widget.LinearLayout>
 
-            </android.widget.LinearLayout>
+            </ru.forblitz.statistics.widget.data.PlayerFastStat>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.05" />
+                android:layout_weight="0.05625" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/rating_details_button"
@@ -439,14 +434,10 @@
                 android:typeface="normal"
                 app:autoSizeTextType="uniform" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.275" />
-
         </android.widget.LinearLayout>
 
-        <android.widget.LinearLayout
+        <ru.forblitz.statistics.widget.data.DetailsLayout
+            android:id="@+id/rating_details_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/background_layout"
@@ -475,7 +466,7 @@
                     android:textStyle="bold"
                     app:autoSizeTextType="uniform" />
 
-                <android.widget.SquareImageButton
+                <ru.forblitz.statistics.widget.common.SquareImageButton
                     android:id="@+id/rating_details_back"
                     android:layout_width="0px"
                     android:layout_height="match_parent"
@@ -522,7 +513,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_wins"
+                        android:tag="wins"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -568,7 +559,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_losses"
+                        android:tag="losses"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -632,7 +623,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_win_and_survive"
+                        android:tag="winAndSurvived"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -678,7 +669,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_survive"
+                        android:tag="survivedBattles"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -731,7 +722,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_xp"
+                        android:tag="xp"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -777,7 +768,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_frags"
+                        android:tag="frags"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -830,7 +821,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_shots"
+                        android:tag="shots"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -876,7 +867,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_hits"
+                        android:tag="hits"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -929,7 +920,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_spotted"
+                        android:tag="spotted"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -975,7 +966,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_frags8p"
+                        android:tag="frags8p"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -1028,7 +1019,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_captured_points"
+                        android:tag="capturedPoints"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -1074,7 +1065,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_dropped"
+                        android:tag="droppedCapturePoints"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -1127,7 +1118,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_damage_dealt"
+                        android:tag="damageDealt"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -1173,7 +1164,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rating_damage_received"
+                        android:tag="damageReceived"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -1198,9 +1189,9 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.11" />
 
-        </android.widget.LinearLayout>
+        </ru.forblitz.statistics.widget.data.DetailsLayout>
 
-    </android.widget.DifferenceViewFlipper>
+    </ru.forblitz.statistics.widget.common.DifferenceViewFlipper>
 
     <LinearLayout
         android:id="@+id/rating_false"
@@ -1235,4 +1226,4 @@
 
     </LinearLayout>
 
-</android.widget.DifferenceViewFlipper>
+</ru.forblitz.statistics.widget.common.DifferenceViewFlipper>

@@ -1,8 +1,8 @@
-package ru.forblitz.statistics.data;
+package ru.forblitz.statistics.dto;
 
 import androidx.annotation.NonNull;
 
-import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Locale;
@@ -280,7 +280,7 @@ public class StatisticsData {
 
     public void calculate() {
         this.winRate = String.format(Locale.US, "%.2f", Double.parseDouble(wins) / Double.parseDouble(battles) * 100);
-        this.averageDamage = String.format(Locale.US, "%.2f", Double.parseDouble(damageDealt) / Double.parseDouble(battles));
+        this.averageDamage = Integer.toString((int) (Double.parseDouble(damageDealt) / Double.parseDouble(battles)));
         this.efficiency = String.format(Locale.US, "%.2f", Double.parseDouble(damageDealt) / Double.parseDouble(damageReceived));
         this.survived = String.format(Locale.US, "%.2f", Double.parseDouble(survivedBattles) / Double.parseDouble(battles) * 100);
         this.hitsFromShots = String.format(Locale.US, "%.2f", Double.parseDouble(hits) / Double.parseDouble(shots) * 100);
@@ -290,7 +290,7 @@ public class StatisticsData {
     @NonNull
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return new GsonBuilder().setPrettyPrinting().create().toJson(this);
     }
 
 }

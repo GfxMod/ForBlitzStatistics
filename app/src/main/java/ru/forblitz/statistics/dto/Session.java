@@ -1,4 +1,4 @@
-package ru.forblitz.statistics.data;
+package ru.forblitz.statistics.dto;
 
 public class Session {
 

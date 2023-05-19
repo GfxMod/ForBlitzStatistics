@@ -1,94 +1,108 @@
 package ru.forblitz.statistics
 
-import android.annotation.SuppressLint
-import android.content.*
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
-import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.AbsListView
+import android.widget.EditText
+import android.widget.ListView
+import android.widget.RadioGroup
+import android.widget.TextSwitcher
+import android.widget.TextView
+import android.widget.Toast
+import android.widget.ViewFlipper
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.text.HtmlCompat
 import androidx.core.view.updateLayoutParams
-import androidx.core.widget.doOnTextChanged
 import androidx.viewpager.widget.ViewPager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonParser
 import com.yandex.mobile.ads.banner.BannerAdView
 import com.yandex.mobile.ads.common.MobileAds
-import kotlinx.coroutines.*
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Runnable
+import kotlinx.coroutines.launch
+import org.jetbrains.anko.contentView
 import ru.forblitz.statistics.adapters.SessionAdapter
 import ru.forblitz.statistics.adapters.VehicleAdapter
 import ru.forblitz.statistics.adapters.ViewPagerAdapter
-import ru.forblitz.statistics.api.*
-import ru.forblitz.statistics.data.*
-import ru.forblitz.statistics.utils.*
+import ru.forblitz.statistics.api.ApiService
+import ru.forblitz.statistics.data.Constants
+import ru.forblitz.statistics.data.Constants.ClanViewFlipperItems
+import ru.forblitz.statistics.data.Constants.MainViewFlipperItems
+import ru.forblitz.statistics.data.Constants.StatisticsViewFlipperItems
+import ru.forblitz.statistics.data.Constants.TABS_COUNT
+import ru.forblitz.statistics.dto.Session
+import ru.forblitz.statistics.dto.StatisticsData
+import ru.forblitz.statistics.dto.VehicleSpecs
+import ru.forblitz.statistics.dto.VehicleStat
+import ru.forblitz.statistics.exception.ObjectException
+import ru.forblitz.statistics.service.AdService
+import ru.forblitz.statistics.service.ClanService
+import ru.forblitz.statistics.service.ConnectivityService
+import ru.forblitz.statistics.service.RandomService
+import ru.forblitz.statistics.service.RatingService
+import ru.forblitz.statistics.service.SessionService
+import ru.forblitz.statistics.service.UserClanService
+import ru.forblitz.statistics.service.UserIDService
+import ru.forblitz.statistics.service.VehicleSpecsService
+import ru.forblitz.statistics.service.VehicleStatService
+import ru.forblitz.statistics.service.VersionService
+import ru.forblitz.statistics.utils.InterfaceUtils
+import ru.forblitz.statistics.utils.ParseUtils
+import ru.forblitz.statistics.utils.SessionUtils
+import ru.forblitz.statistics.widget.common.DifferenceViewFlipper
+import ru.forblitz.statistics.widget.common.ExtendedRadioGroup
+import ru.forblitz.statistics.widget.data.ClanScreen
+import ru.forblitz.statistics.widget.data.ClanSmall
+import ru.forblitz.statistics.widget.data.PlayerFastStat
+import ru.forblitz.statistics.widget.data.SessionButtonsLayout
+import ru.forblitz.statistics.widget.data.SessionButtonsLayout.ButtonsVisibility
 import java.io.File
-import java.io.FileWriter
-import java.io.IOException
-import java.nio.file.Files.*
-import java.nio.file.Paths
-import java.util.*
-import kotlin.math.ceil
+import java.util.Collections
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var preferences: SharedPreferences
+    private lateinit var app: ForBlitzStatisticsApplication
 
-    private var service: ApiService = ApiService(this@MainActivity)
+    private var isKeyboardShowing: Boolean = false
 
-    private var baseStatisticsData: StatisticsData = StatisticsData()
-    private var ratingStatisticsData: StatisticsData = StatisticsData()
-    private var sessionBaseStatisticsData: StatisticsData = StatisticsData()
-    private var sessionRatingStatisticsData: StatisticsData = StatisticsData()
-    private var sessionBaseDifferencesStatisticsData: StatisticsData = StatisticsData()
-    private var sessionRatingDifferencesStatisticsData: StatisticsData = StatisticsData()
-    private var vehicles: Vehicles = Vehicles()
-    private var clanData: Clan = Clan()
-
-    private var userID = ""
-    private var fillVehiclesInfoJob: Job? = null
-    private var getVehiclesStatisticsJob: ArrayList<Job?> = ArrayList(0)
-    
-    private val adUtils = AdUtils(this@MainActivity)
-
-    //
-    //
-    //
-
-    @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        app = application as ForBlitzStatisticsApplication
 
         // Configures ViewPager
 
         val viewPager = findViewById<ViewPager>(R.id.view_pager)
         val tabLayout = findViewById<TabLayout>(R.id.tabs)
-        val mainLayoutsFlipper = findViewById<ViewFlipper>(R.id.main_layouts_flipper)
+        val mainLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
 
-        viewPager.adapter = ViewPagerAdapter(supportFragmentManager, tabLayout.tabCount)
+        viewPager.adapter = ViewPagerAdapter(supportFragmentManager, TABS_COUNT)
         tabLayout.setupWithViewPager(viewPager)
 
-        val tabLayoutHeight = (InterfaceUtils.getY(
-            this@MainActivity
-        ) * 0.905 * 0.1).toInt()
-        for (i in 0 until tabLayout.tabCount) {
+        val tabLayoutHeight = (InterfaceUtils.getY(this@MainActivity) * 0.905 * 0.1).toInt()
+        for (i in 0 until TABS_COUNT) {
             var icon: Drawable
             var contentDescription: String
             when (i) {
@@ -127,14 +141,67 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, contentDescription, Toast.LENGTH_SHORT).show()
                 true
             }
-            tabLayout.getTabAt(i)?.customView = view
+            if (tabLayout.getTabAt(i) == null) {
+                tabLayout.addTab(tabLayout.newTab().setCustomView(view))
+            } else {
+                tabLayout.getTabAt(i)?.customView = view
+            }
         }
 
         viewPager.offscreenPageLimit = 3
 
+        //
+
+        val enterNicknameText = findViewById<TextSwitcher>(R.id.enter_nickname_text)
+
+        enterNicknameText.inAnimation = AnimationUtils.loadAnimation(
+            this@MainActivity,
+            R.anim.appearance
+        ).apply { duration =
+            resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+        }
+        enterNicknameText.outAnimation = AnimationUtils.loadAnimation(
+            this@MainActivity,
+            R.anim.disappearance
+        ).apply { duration =
+            resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+        }
+
+        //
+
+        findViewById<View>(R.id.enter_nickname_text)
+            .updateLayoutParams<ConstraintLayout.LayoutParams> {
+                width = ConstraintLayout.LayoutParams.MATCH_PARENT
+                height = (InterfaceUtils.getY(this@MainActivity) * 0.905 * 0.1).toInt()
+                startToStart = R.id.enter_nickname_layout
+                endToEnd = R.id.enter_nickname_layout
+                bottomToBottom = R.id.enter_nickname_layout
+            }
+
+        //
+
+        contentView!!.viewTreeObserver.addOnGlobalLayoutListener {
+            val displayFrameRect = Rect()
+            contentView?.getWindowVisibleDisplayFrame(displayFrameRect)
+            val screenHeight = contentView!!.rootView.height
+
+            val keypadHeight = screenHeight - displayFrameRect.bottom
+            if (keypadHeight > screenHeight * 0.15) {
+                if (!isKeyboardShowing) {
+                    isKeyboardShowing = true
+                    onKeyboardVisibilityChanged()
+                }
+            } else {
+                if (isKeyboardShowing) {
+                    isKeyboardShowing = false
+                    onKeyboardVisibilityChanged()
+                }
+            }
+        }
+
         // Hides statistics elements and shows nickname input elements
 
-        mainLayoutsFlipper.displayedChild = Constants.MainViewFlipperItems.ENTER_NICKNAME
+        mainLayoutsFlipper.displayedChild = MainViewFlipperItems.ENTER_NICKNAME
 
         // Sets the action when the search button is pressed from the keyboard
 
@@ -148,9 +215,6 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
-        searchField.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
-            searchField.isCursorVisible = hasFocus
-        }
 
         searchField.setOnKeyListener(object : View.OnKeyListener {
             override fun onKey(v: View?, keyCode: Int, event: KeyEvent): Boolean {
@@ -162,44 +226,78 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        // Initialization of services
+
+        app.connectivityService = ConnectivityService()
+        app.apiService = ApiService(app.connectivityService)
+        app.userIDService = UserIDService(this@MainActivity, app.apiService)
+        app.randomService = RandomService(app.apiService)
+        app.ratingService = RatingService(app.apiService)
+        app.userClanService = UserClanService(app.apiService)
+        app.clanService = ClanService(app.apiService)
+        app.sessionService = SessionService(applicationContext)
+        app.versionService = VersionService(app.connectivityService)
+        app.vehicleSpecsService = VehicleSpecsService(app.apiService)
+        app.vehicleStatService = VehicleStatService(app.apiService)
+        app.adService = AdService(this@MainActivity)
+
         // Creates a session directory
 
-        val sessionsDir = File(applicationContext.filesDir, "sessions")
-        createDirectories(Paths.get(sessionsDir.toString()))
+        app.sessionService.createSessionDir()
 
-        // Get preferences
+        // Get app.preferences
 
-        preferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
+        app.preferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
+
+        // Sets region
+
         setRegion()
 
-        // Sets preferences listeners
+        // Sets app.preferences listeners
 
-        findViewById<View>(R.id.select_region_ru).setOnClickListener { preferences.edit().putString("region", "ru").apply(); setRegion() }
-        findViewById<View>(R.id.select_region_eu).setOnClickListener { preferences.edit().putString("region", "eu").apply(); setRegion() }
-        findViewById<View>(R.id.select_region_na).setOnClickListener { preferences.edit().putString("region", "na").apply(); setRegion() }
-        findViewById<View>(R.id.select_region_asia).setOnClickListener { preferences.edit().putString("region", "asia").apply(); setRegion() }
+        val searchRegionLayout = findViewById<ExtendedRadioGroup>(R.id.search_region_layout)
+        val settingsRegionLayout = findViewById<ExtendedRadioGroup>(R.id.settings_region_layout)
+
+        for (i in 0 until searchRegionLayout.childCount) {
+            val view = searchRegionLayout.getChildAt(i)
+            view.setOnClickListener {
+                if (Constants.baseUrl.containsKey((view.tag.toString()))) {
+                    app.preferences.edit().putString("region", view.tag.toString()).apply()
+                    setRegion()
+                }
+            }
+        }
+        for (i in 0 until settingsRegionLayout.childCount) {
+            val view = settingsRegionLayout.getChildAt(i)
+            view.setOnClickListener {
+                if (Constants.baseUrl.containsKey((view.tag.toString()))) {
+                    app.preferences.edit().putString("region", view.tag.toString()).apply()
+                    setRegion()
+                }
+            }
+        }
 
         // set onBackPressed
 
         onBackPressedDispatcher.addCallback(this@MainActivity, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                val randomLayoutsFlipper = findViewById<ViewFlipper>(R.id.random_layouts_flipper)
-                val ratingLayoutsFlipper = findViewById<ViewFlipper>(R.id.rating_layouts_flipper)
-                val clanLayoutsFlipper = findViewById<ViewFlipper>(R.id.clan_layouts_flipper)
-                val tanksLayoutsFlipper = findViewById<ViewFlipper>(R.id.tanks_layouts_flipper)
+                val randomLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.random_layouts_flipper)
+                val ratingLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.rating_layouts_flipper)
+                val clanLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.clan_layouts_flipper)
+                val tanksLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.tanks_layouts_flipper)
 
-                if (mainLayoutsFlipper.displayedChild == Constants.MainViewFlipperItems.SETTINGS) {
+                if (mainLayoutsFlipper.displayedChild == MainViewFlipperItems.SETTINGS) {
                     onClickSettingsButton(findViewById(R.id.settings_button))
                 } else {
                     when (viewPager.currentItem) {
                         0 -> {
                             if (randomLayoutsFlipper.displayedChild != 0) {
-                                randomLayoutsFlipper.displayedChild = 0
+                                randomLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
                             }
                         }
                         1 -> {
                             if (ratingLayoutsFlipper.displayedChild != 0) {
-                                ratingLayoutsFlipper.displayedChild = 0
+                                ratingLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
                             }
                         }
                         2 -> {
@@ -221,17 +319,57 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        // Check version and fill vehicles specifications
-
-        CoroutineScope(Dispatchers.IO).launch {
-            versionCheck().join()
-            fillVehiclesSpecifications()
-        }
-
         // Initialization of ads
 
         MobileAds.initialize(this) { Log.i("YandexMobileAds", "SDK initialized") }
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        app.connectivityService.subscribe(this)
+
+        // Check version and fill vehicles specifications
+
+        CoroutineScope(Dispatchers.IO).launch {
+            versionCheck()
+            // get vehicle specifications
+            app.vehicleSpecsService.getVehiclesSpecsList()
+
+            if (findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
+                    .displayedChild == MainViewFlipperItems.STATISTICS
+            ) {
+                setVehiclesStat()
+            }
+
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        app.connectivityService.unsubscribe(this)
+    }
+
+    private fun onKeyboardVisibilityChanged() {
+        findViewById<EditText>(R.id.search_field).isCursorVisible = isKeyboardShowing
+
+        CoroutineScope(Dispatchers.Main).launch {
+            InterfaceUtils.setRegionAlertVisibility(
+                this@MainActivity,
+                findViewById(R.id.enter_nickname_layout),
+                findViewById(R.id.enter_nickname_text),
+                findViewById(R.id.search_region_layout),
+                isKeyboardShowing
+            )
+
+            if (isKeyboardShowing) {
+                findViewById<TextSwitcher>(R.id.enter_nickname_text).setText(getString(
+                    R.string.region_select
+                ))
+            } else {
+                updateLastSearch()
+            }
+        }
     }
 
     /**
@@ -246,15 +384,14 @@ class MainActivity : AppCompatActivity() {
         val imm: InputMethodManager = this.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
         val viewPager = findViewById<ViewPager>(R.id.view_pager)
-        val randomLayoutsFlipper = findViewById<ViewFlipper>(R.id.random_layouts_flipper)
-        val ratingLayoutsFlipper = findViewById<ViewFlipper>(R.id.rating_layouts_flipper)
-        val clanLayoutsFlipper = findViewById<ViewFlipper>(R.id.clan_layouts_flipper)
-        val tanksLayoutsFlipper = findViewById<ViewFlipper>(R.id.tanks_layouts_flipper)
+        val randomLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.random_layouts_flipper)
+        val ratingLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.rating_layouts_flipper)
+        val clanLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.clan_layouts_flipper)
+        val tanksLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.tanks_layouts_flipper)
 
         val randomDetailsButtonView = findViewById<View>(R.id.random_details_button)
         val randomDetailsBack = findViewById<View>(R.id.random_details_back)
-        val randomSessionsButtonView = findViewById<View>(R.id.random_sessions_button)
-        val randomSessionStatButton = findViewById<View>(R.id.random_session_stat_button)
+        val randomSessionListButton = findViewById<View>(R.id.random_sessions_list_button)
         val ratingDetailsButtonView = findViewById<View>(R.id.rating_details_button)
         val ratingDetailsBack = findViewById<View>(R.id.rating_details_back)
         val clanMembersButton = findViewById<View>(R.id.clan_members_button)
@@ -263,15 +400,17 @@ class MainActivity : AppCompatActivity() {
         val tanksList = findViewById<ListView>(R.id.tanks_list)
         val tanksFilters = findViewById<View>(R.id.tanks_filters)
 
-        val mainFlipper = findViewById<ViewFlipper>(R.id.main_layouts_flipper)
+        val mainFlipper = findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
         val searchButton = findViewById<View>(R.id.search_button)
         val lastSearched = findViewById<View>(R.id.last_searched_flipper)
 
         //
 
-        mainFlipper.displayedChild = Constants.MainViewFlipperItems.LOADING
+        mainFlipper.displayedChild = MainViewFlipperItems.LOADING
         searchButton.isClickable = false
         lastSearched.isClickable = false
+        findViewById<View>(R.id.settings_button).isActivated = false
+        findViewById<SessionButtonsLayout>(R.id.random_session_buttons).setButtonsVisibility(ButtonsVisibility.NOTHING)
 
         // Plays animation
 
@@ -288,41 +427,32 @@ class MainActivity : AppCompatActivity() {
         // Scrolls to main statistics item for each ViewFlipper/ViewPager
 
         viewPager.setCurrentItem(0, true)
-        randomLayoutsFlipper.displayedChild = 0
-        ratingLayoutsFlipper.displayedChild = 0
+        randomLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
+        ratingLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
         clanLayoutsFlipper.displayedChild = 0
 
         // Sets listeners for buttons
 
         randomDetailsButtonView.setOnClickListener {
-            randomLayoutsFlipper.displayedChild = 1
+            randomLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.FALSE
         }
         randomDetailsBack.setOnClickListener {
-            randomLayoutsFlipper.displayedChild = 0
+            randomLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
         }
-        randomSessionsButtonView.setOnClickListener {
+        randomSessionListButton.setOnClickListener {
             randomLayoutsFlipper.displayedChild = 2
         }
-        randomSessionStatButton.setOnClickListener {
-            if (!randomSessionStatButton.isActivated) {
-                adUtils.showInterstitial(
-                    Runnable { SessionUtils.to(this, baseStatisticsData, sessionBaseStatisticsData, ratingStatisticsData, sessionRatingStatisticsData) }
-                )
-            } else {
-                SessionUtils.from(this, baseStatisticsData, ratingStatisticsData)
-            }
-        }
         ratingDetailsButtonView.setOnClickListener {
-            ratingLayoutsFlipper.displayedChild = 1
+            ratingLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.FALSE
         }
         ratingDetailsBack.setOnClickListener {
-            ratingLayoutsFlipper.displayedChild = 0
+            ratingLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
         }
         clanMembersButton.setOnClickListener {
-            clanLayoutsFlipper.displayedChild = 1
+            clanLayoutsFlipper.displayedChild = ClanViewFlipperItems.NOT_IS_A_MEMBER
         }
         clanMembersListBackView.setOnClickListener {
-            clanLayoutsFlipper.displayedChild = 0
+            clanLayoutsFlipper.displayedChild = ClanViewFlipperItems.IS_A_MEMBER
         }
         tanksDetailsBack.setOnClickListener {
             tanksLayoutsFlipper.displayedChild = 0
@@ -331,60 +461,49 @@ class MainActivity : AppCompatActivity() {
             tanksLayoutsFlipper.displayedChild = 3
         }
 
-        // Clears all data
-
-        vehicles.clear()
-
         // set params of tanksList
 
         tanksList.emptyView = findViewById(R.id.item_nothing_found)
 
-        val footer = View(this@MainActivity)
-        val width = InterfaceUtils.getX() - resources.getDimensionPixelSize(R.dimen.padding_very_big) * 2
-        footer.layoutParams = AbsListView.LayoutParams(width, (width * 0.15).toInt())
-        tanksList.addFooterView(footer)
+        if (tanksList.footerViewsCount == 0) {
+            val footer = View(this@MainActivity)
+            val width = InterfaceUtils.getX() - resources.getDimensionPixelSize(R.dimen.padding_very_big) * 2
+            footer.layoutParams = AbsListView.LayoutParams(width, (width * 0.15).toInt())
+            tanksList.addFooterView(footer)
+        }
 
         // Gets the data of the player you are looking for
 
-        adUtils.showInterstitial {
+        app.adService.showInterstitial {
             CoroutineScope(Dispatchers.IO).launch {
 
-                val getIDCoroutine = getID()
-                getIDCoroutine.join()
-                getIDCoroutine.cancel()
-                if (userID != "error") {
-                    setPlayerStatistics()
+                try {
+
+                    app.userIDService.clear()
+                    app.userIDService.getUserID(searchField.text.toString())
+
+                    // set player statistics
+
+                    app.sessionService.clear()
+                    app.vehicleStatService.clear()
+
+                    setRandomStat()
+                    setRatingStat()
                     setClanStat()
+                    setVehiclesStat()
 
-                    // Displays the loading screen on tanks layout and waits for data loading to finish
-
-                    runOnUiThread { tanksLayoutsFlipper.displayedChild = 2 }
-                    if (fillVehiclesInfoJob?.isCompleted == false) {
-                        fillVehiclesInfoJob!!.join()
-                    }
-                    fillVehiclesStatistics().join()
-                    getVehiclesStatisticsJob.forEach { it?.join() }
-
-                    // Hides the loading screen on tanks layout
-
-                    runOnUiThread { tanksLayoutsFlipper.displayedChild = 0 }
-
-                    // all processes are finished, can unlock the button
-
+                } catch (e: ObjectException) {
                     runOnUiThread {
-                        mainFlipper.displayedChild = Constants.MainViewFlipperItems.STATISTICS
+                        mainFlipper.displayedChild = MainViewFlipperItems.ENTER_NICKNAME
                         searchButton.isClickable = true
                         lastSearched.isClickable = true
+                        searchField.setText("", TextView.BufferType.EDITABLE)
 
-                        // create base list of tanks
-
-                        onClickApplyFilters(findViewById(R.id.tanks_apply_filters))
-                    }
-                } else {
-                    runOnUiThread {
-                        mainFlipper.displayedChild = Constants.MainViewFlipperItems.ENTER_NICKNAME
-                        searchButton.isClickable = true
-                        lastSearched.isClickable = true
+                        InterfaceUtils.createAlertDialog(
+                            this@MainActivity,
+                            getString(R.string.error) + " " + e.error.code,
+                            e.message.toString()
+                        ).show()
                     }
                 }
 
@@ -409,15 +528,15 @@ class MainActivity : AppCompatActivity() {
 
         // Shows/hides the settings layout
 
-        val mainLayoutsFlipper = findViewById<ViewFlipper>(R.id.main_layouts_flipper)
+        val mainLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
 
         if (!view.isActivated) {
 
-            mainLayoutsFlipper.displayedChild = Constants.MainViewFlipperItems.SETTINGS
+            mainLayoutsFlipper.displayedChild = MainViewFlipperItems.SETTINGS
 
         } else if (view.isActivated) {
 
-            mainLayoutsFlipper.displayedChild = Constants.MainViewFlipperItems.ENTER_NICKNAME
+            mainLayoutsFlipper.displayedChild = MainViewFlipperItems.ENTER_NICKNAME
 
         }
 
@@ -428,431 +547,438 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
+     * Gets app version from the server and compares it with the [BuildConfig.VERSION_CODE]
+     */
+    private suspend fun versionCheck() {
+
+        if (BuildConfig.VERSION_CODE in app.versionService.getMinimalAppVersion() until app.versionService.getCurrentAppVersion()) {
+
+            runOnUiThread {
+                InterfaceUtils.createAlertDialog(
+                    this@MainActivity,
+                    this@MainActivity.getString(R.string.update_available),
+                    this@MainActivity.getString(R.string.update_available_desc),
+                    this@MainActivity.getString(R.string.update),
+                    Runnable {
+                        try {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+                        } catch (e: ActivityNotFoundException) {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+                        }
+                    },
+                    this@MainActivity.getString(android.R.string.cancel),
+                    Runnable {  }
+                ).show()
+            }
+
+        } else if (BuildConfig.VERSION_CODE < app.versionService.getMinimalAppVersion()) {
+
+            runOnUiThread {
+                InterfaceUtils.createAlertDialog(
+                    this@MainActivity,
+                    this@MainActivity.getString(R.string.update_available),
+                    this@MainActivity.getString(R.string.update_available_desc),
+                    this@MainActivity.getString(R.string.update),
+                    Runnable {
+                        try {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+                        } catch (e: ActivityNotFoundException) {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+                        }
+                        finish()
+                    }
+                ).show()
+            }
+
+        }
+
+    }
+
+    private fun setRandomStat() {
+        CoroutineScope(Dispatchers.IO).launch {
+
+            app.randomService.clear()
+            try {
+                InterfaceUtils.setBaseStatistics(
+                    this@MainActivity,
+                    app.randomService.getStatisticsData(app.userIDService.getUserID()),
+                    true)
+                setSessionStat(0)
+                findViewById<EditText>(R.id.search_field).setText(app.randomService.getStatisticsData(app.userIDService.getUserID()).nickname)
+            } catch (e: ObjectException) {
+                InterfaceUtils.createAlertDialog(
+                    this@MainActivity,
+                    e.error.code,
+                    e.message
+                )
+                findViewById<ViewFlipper>(R.id.main_layouts_flipper).displayedChild = MainViewFlipperItems.ENTER_NICKNAME
+                findViewById<View>(R.id.settings_button).isActivated = false
+            }
+
+        }
+    }
+
+    private fun setRatingStat() {
+        CoroutineScope(Dispatchers.IO).launch {
+
+            app.ratingService.clear()
+            InterfaceUtils.setRatingStatistics(this@MainActivity,
+                app.ratingService.getStatisticsData(app.userIDService.getUserID()),
+                true)
+            setSessionStat(0)
+
+        }
+    }
+
+    private fun setSessionStat(index: Int) {
+        if (app.randomService.getStatisticsData() == null || app.ratingService.getStatisticsData() == null || app.sessionService.alreadySet) {
+            return
+        }
+        app.sessionService.alreadySet = true
+
+        app.sessionService.createSessionFile(
+            app.randomService.getJson(),
+            app.userIDService.getUserID(),
+            ParseUtils.timestamp(app.randomService.getJson(), false),
+            app.preferences.getString("region", "notSpecified")!!
+        )
+        app.sessionService.getSessionsList(app.userIDService.getUserID(), app.preferences.getString("region", "notSpecified")!!)
+
+        if (
+            ParseUtils.timestamp(app.randomService.getJson(), false)
+            ==
+            ParseUtils.timestamp(app.sessionService.getSessionsList()[0], true)
+        ) {
+            app.sessionService.getSessionsList().removeAt(0)
+        }
+
+        val sessions = ArrayList<Session>(0)
+        for (i in 0 until app.sessionService.getSessionsList().size) {
+            val session = Session()
+            session.path = app.sessionService.getSessionsList()[i]
+            session.set = Runnable {
+                app.sessionService.clear()
+                setSessionStat(i)
+                findViewById<DifferenceViewFlipper>(R.id.random_layouts_flipper).displayedChild = 0
+            }
+            session.delete = Runnable {
+                if (i == index) {
+                    Toast.makeText(this@MainActivity, getString(R.string.delete_select), Toast.LENGTH_SHORT).show()
+                } else {
+                    InterfaceUtils.createAlertDialog(
+                        this@MainActivity,
+                        this@MainActivity.getString(R.string.delete),
+                        this@MainActivity.getString(R.string.delete_alert),
+                        this@MainActivity.getString(R.string.delete),
+                        Runnable {
+                            if (File(app.sessionService.getSessionsList()[i]).delete()) {
+                                Toast.makeText(this@MainActivity, this@MainActivity.getString(R.string.delete_successfully), Toast.LENGTH_SHORT).show()
+                                if (index != sessions.size - 1) {
+                                    app.sessionService.clear()
+                                    setSessionStat(index)
+                                } else {
+                                    app.sessionService.clear()
+                                    setSessionStat(index - 1)
+                                }
+                                findViewById<DifferenceViewFlipper>(R.id.random_layouts_flipper).displayedChild = 0
+                            } else {
+                                Toast.makeText(this@MainActivity, this@MainActivity.getString(R.string.delete_failed), Toast.LENGTH_SHORT).show()
+                            }
+                        },
+                        this@MainActivity.getString(android.R.string.cancel),
+                        Runnable {  }
+                    ).show()
+                }
+            }
+            session.isSelected = i == index
+            sessions.add(session)
+        }
+
+        val randomSessionButtons = findViewById<SessionButtonsLayout>(R.id.random_session_buttons)
+        val randomFastStat = findViewById<PlayerFastStat>(R.id.random_fast_stat)
+        val ratingFastStat = findViewById<PlayerFastStat>(R.id.rating_fast_stat)
+        val randomSessionsList = findViewById<ListView>(R.id.random_sessions_list)
+        val randomSessionStatButton = findViewById<TextView>(R.id.random_session_stat_button)
+        val fragmentRandom = findViewById<ViewFlipper>(R.id.fragment_random)
+        val fragmentRating = findViewById<ViewFlipper>(R.id.fragment_rating)
+
+        runOnUiThread {
+
+            randomSessionButtons.setButtonsVisibility(
+                when(app.sessionService.getSessionsList().size) {
+                    0 -> {
+                        ButtonsVisibility.NOTHING
+                    }
+                    1 -> {
+                        ButtonsVisibility.ONLY_FLIP
+                    }
+                    else -> {
+                        ButtonsVisibility.ALL
+                    }
+                }
+            )
+
+            randomFastStat.setSessionData(
+                when(app.sessionService.getSessionsList().size) {
+                    0 -> {
+                        StatisticsData()
+                    }
+                    else -> {
+                        SessionUtils.calculateDifferences(
+                            app.randomService.getStatisticsData(),
+                            ParseUtils.statisticsData(
+                                File(app.sessionService.getSessionsList()[index]).readText(),
+                                "all"
+                            )
+                        )
+                    }
+                }
+            )
+
+            ratingFastStat.setSessionData(
+                when(app.sessionService.getSessionsList().size) {
+                    0 -> {
+                        StatisticsData()
+                    }
+                    else -> {
+                        SessionUtils.calculateDifferences(
+                            app.ratingService.getStatisticsData(),
+                            ParseUtils.statisticsData(
+                                File(app.sessionService.getSessionsList()[index]).readText(),
+                                "rating"
+                            )
+                        )
+                    }
+                }
+            )
+
+            randomSessionsList.adapter = SessionAdapter(
+                this@MainActivity, sessions
+            )
+
+            if (randomSessionStatButton.isActivated) {
+                randomSessionStatButton.setText(R.string.to_session_stat)
+                randomFastStat.setData(app.randomService.getStatisticsData())
+                ratingFastStat.setData(app.ratingService.getStatisticsData())
+                randomSessionStatButton.isActivated = false
+            }
+            randomSessionStatButton.setOnClickListener {
+                fragmentRandom.startAnimation(fragmentRandom.outAnimation)
+                fragmentRating.startAnimation(fragmentRating.outAnimation)
+
+                if (!randomSessionStatButton.isActivated) {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        randomSessionStatButton.text = getString(R.string.from_session_stat)
+
+                        randomFastStat.setData(SessionUtils.calculate(
+                            app.randomService.getStatisticsData(),
+                            ParseUtils.statisticsData(
+                                File(app.sessionService.getSessionsList()[index]).readText(),
+                                "all"
+                            )
+                        ))
+                        ratingFastStat.setData(SessionUtils.calculate(
+                            app.ratingService.getStatisticsData(),
+                            ParseUtils.statisticsData(
+                                File(app.sessionService.getSessionsList()[index]).readText(),
+                                "rating"
+                            )
+                        ))
+
+                        fragmentRandom.startAnimation(fragmentRandom.inAnimation)
+                        fragmentRating.startAnimation(fragmentRating.inAnimation)
+                        randomSessionStatButton.isActivated = true
+                    }, 125)
+                } else {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        randomSessionStatButton.text = getString(R.string.to_session_stat)
+
+                        randomFastStat.setData(app.randomService.getStatisticsData())
+                        ratingFastStat.setData(app.ratingService.getStatisticsData())
+
+                        fragmentRandom.startAnimation(fragmentRandom.inAnimation)
+                        fragmentRating.startAnimation(fragmentRating.inAnimation)
+                        randomSessionStatButton.isActivated = false
+                    }, 125)
+                }
+            }
+
+            // Displays the loading screen on tanks layout and waits for data loading to finish
+
+            findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper).displayedChild = MainViewFlipperItems.STATISTICS
+            findViewById<View>(R.id.search_button).isClickable = true
+            findViewById<View>(R.id.last_searched_flipper).isClickable = true
+        }
+    }
+
+    /**
      * Called when the [apply filters button]
      * [ru.forblitz.statistics.R.id.tanks_apply_filters] or the search
      * button on the keyboard is pressed. Creates a display of suitable vehicle
      * statistics.
      */
-    fun onClickApplyFilters(view: View) {
+    private fun setVehiclesStat() {
+        if (app.vehicleSpecsService.getListSize() != 0) {
 
-        if (!view.isClickable) { return }
+            val tanksLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.tanks_layouts_flipper)
+            val tanksApplyFilters = findViewById<View>(R.id.tanks_apply_filters)
 
-        val tanksLayoutsFlipper = findViewById<ViewFlipper>(R.id.tanks_layouts_flipper)
-        val tanksList = findViewById<ListView>(R.id.tanks_list)
-
-        val lt = findViewById<View>(R.id.tanks_type_lt)
-        val mt = findViewById<View>(R.id.tanks_type_mt)
-        val ht = findViewById<View>(R.id.tanks_type_ht)
-        val at = findViewById<View>(R.id.tanks_type_at)
-
-        val cn = findViewById<View>(R.id.cn)
-        val eu = findViewById<View>(R.id.eu)
-        val fr = findViewById<View>(R.id.fr)
-        val gb = findViewById<View>(R.id.gb)
-        val de = findViewById<View>(R.id.de)
-        val jp = findViewById<View>(R.id.jp)
-        val other = findViewById<View>(R.id.other)
-        val us = findViewById<View>(R.id.us)
-        val su = findViewById<View>(R.id.su)
-
-        val i = findViewById<View>(R.id.tanks_tier_i)
-        val ii = findViewById<View>(R.id.tanks_tier_ii)
-        val iii = findViewById<View>(R.id.tanks_tier_iii)
-        val iv = findViewById<View>(R.id.tanks_tier_iv)
-        val v = findViewById<View>(R.id.tanks_tier_v)
-        val vi = findViewById<View>(R.id.tanks_tier_vi)
-        val vii = findViewById<View>(R.id.tanks_tier_vii)
-        val viii = findViewById<View>(R.id.tanks_tier_viii)
-        val ix = findViewById<View>(R.id.tanks_tier_ix)
-        val x = findViewById<View>(R.id.tanks_tier_x)
-
-        val tanksFilters = findViewById<FloatingActionButton>(R.id.tanks_filters)
-
-        InterfaceUtils.playCycledAnimation(
-            view,
-            true
-        )
-        tanksLayoutsFlipper.displayedChild = 0
-
-        //
-        ////
-        //////
-        ////
-        //
-
-        val sortedVehicles: ArrayList<Vehicle> = ArrayList(vehicles.list.values)
-        val vehiclesToCreate: ArrayList<Vehicle> = ArrayList(0)
-        
-        val comparatorByBattles: Comparator<Vehicle> = Comparator<Vehicle> {
-                v1, v2 -> v1.battles.toInt().compareTo(v2.battles.toInt())
-        }
-        val comparatorByAverageDamage: Comparator<Vehicle> = Comparator<Vehicle> {
-                v1, v2 -> v1.averageDamage.toDouble().compareTo(v2.averageDamage.toDouble())
-        }
-        val comparatorByWinRate: Comparator<Vehicle> = Comparator<Vehicle> {
-                v1, v2 -> v1.winRate.toDouble().compareTo(v2.winRate.toDouble())
-        }
-        val comparatorByAverageXp: Comparator<Vehicle> = Comparator<Vehicle> {
-                v1, v2 -> v1.averageXp.toDouble().compareTo(v2.averageXp.toDouble())
-        }
-        val comparatorByEfficiency: Comparator<Vehicle> = Comparator<Vehicle> {
-                v1, v2 -> v1.efficiency.toDouble().compareTo(v2.efficiency.toDouble())
-        }
-
-        val tanksSort = findViewById<RadioGroup>(R.id.tanks_sort)
-        when (tanksSort.indexOfChild(findViewById(tanksSort.checkedRadioButtonId))) {
-            0 -> {
-                Collections.sort(sortedVehicles, comparatorByBattles)
+            runOnUiThread {
+                tanksLayoutsFlipper.displayedChild = 2
             }
-            1 -> {
-                Collections.sort(sortedVehicles, comparatorByAverageDamage)
-            }
-            2 -> {
-                Collections.sort(sortedVehicles, comparatorByEfficiency)
-            }
-            3 -> {
-                Collections.sort(sortedVehicles, comparatorByAverageXp)
-            }
-            4 -> {
-                Collections.sort(sortedVehicles, comparatorByWinRate)
-            }
-        }
-
-        sortedVehicles.reverse()
-
-        sortedVehicles
-            .filter { it.battles.toInt() > 0 }
-            .filter {
-                if (!lt.isActivated and
-                    !mt.isActivated and
-                    !ht.isActivated and
-                    !at.isActivated
-                ) {
+            tanksApplyFilters.setOnClickListener {
+                setVehiclesStat()
+                InterfaceUtils.playCycledAnimation(
+                    tanksApplyFilters,
                     true
-                } else if (lt.isActivated and (it.type == "lightTank") ) {
-                    true
-                } else if (mt.isActivated and (it.type == "mediumTank") ) {
-                    true
-                } else if (ht.isActivated and (it.type == "heavyTank") ) {
-                    true
-                } else {
-                    at.isActivated and (it.type == "AT-SPG")
+                )
+            }
+
+            CoroutineScope(Dispatchers.IO).launch {
+
+                val pairs = HashMap<String, Pair<VehicleSpecs, VehicleStat>>()
+
+                app.vehicleStatService.getVehicleStat(app.userIDService.getUserID(), app.vehicleSpecsService.getVehiclesSpecsList().keys.toTypedArray()).forEach {
+                    pairs[it.key] = Pair(app.vehicleSpecsService.getVehiclesSpecsList()[it.key]!!, it.value)
                 }
-            }
-            .filter {
-                if (
-                    !cn.isActivated and
-                    !eu.isActivated and
-                    !fr.isActivated and
-                    !gb.isActivated and
-                    !de.isActivated and
-                    !jp.isActivated and
-                    !other.isActivated and
-                    !us.isActivated and
-                    !su.isActivated
-                ) {
-                    true
-                } else if (cn.isActivated and (it.nation == "china") ) {
-                    true
-                } else if (eu.isActivated and (it.nation == "european") ) {
-                    true
-                } else if (fr.isActivated and (it.nation == "france") ) {
-                    true
-                } else if (gb.isActivated and (it.nation == "uk") ) {
-                    true
-                } else if (de.isActivated and (it.nation == "germany") ) {
-                    true
-                } else if (jp.isActivated and (it.nation == "japan") ) {
-                    true
-                } else if (other.isActivated and (it.nation == "other") ) {
-                    true
-                } else if (us.isActivated and (it.nation == "usa") ) {
-                    true
-                } else {
-                    su.isActivated and (it.nation == "ussr")
+
+                //
+
+                val tanksList = findViewById<ListView>(R.id.tanks_list)
+                
+                val type = HashMap<String, View>()
+                type["lightTank"] = findViewById(R.id.tanks_type_lt)
+                type["mediumTank"] = findViewById(R.id.tanks_type_mt)
+                type["heavyTank"] = findViewById(R.id.tanks_type_ht)
+                type["AT-SPG"] = findViewById(R.id.tanks_type_at)
+                
+                val nation = HashMap<String, View>()
+                nation["china"] = findViewById(R.id.cn)
+                nation["european"] = findViewById(R.id.eu)
+                nation["france"] = findViewById(R.id.fr)
+                nation["uk"] = findViewById(R.id.gb)
+                nation["germany"] = findViewById(R.id.de)
+                nation["japan"] = findViewById(R.id.jp)
+                nation["other"] = findViewById(R.id.other)
+                nation["usa"] = findViewById(R.id.us)
+                nation["ussr"] = findViewById(R.id.su)
+
+                val tier = HashMap<Int, View>()
+                tier[1] = findViewById(R.id.tanks_tier_i)
+                tier[2] = findViewById(R.id.tanks_tier_ii)
+                tier[3] = findViewById(R.id.tanks_tier_iii)
+                tier[4] = findViewById(R.id.tanks_tier_iv)
+                tier[5] = findViewById(R.id.tanks_tier_v)
+                tier[6] = findViewById(R.id.tanks_tier_vi)
+                tier[7] = findViewById(R.id.tanks_tier_vii)
+                tier[8] = findViewById(R.id.tanks_tier_viii)
+                tier[9] = findViewById(R.id.tanks_tier_ix)
+                tier[10] = findViewById(R.id.tanks_tier_x)
+
+                val tanksFilters = findViewById<FloatingActionButton>(R.id.tanks_filters)
+
+                //
+                ////
+                //////
+                ////
+                //
+
+                val sortedVehicles: ArrayList<Pair<VehicleSpecs, VehicleStat>> = ArrayList(pairs.values)
+                val vehiclesToCreate: ArrayList<Pair<VehicleSpecs, VehicleStat>> = ArrayList(0)
+
+                val comparatorByBattles: Comparator<Pair<VehicleSpecs, VehicleStat>> = Comparator {
+                        v1, v2 -> v1.second.all.battles.toInt().compareTo(v2.second.all.battles.toInt())
                 }
-            }
-            .filter {
-
-                if (
-                    !i.isActivated and
-                    !ii.isActivated and
-                    !iii.isActivated and
-                    !iv.isActivated and
-                    !v.isActivated and
-                    !vi.isActivated and
-                    !vii.isActivated and
-                    !viii.isActivated and
-                    !ix.isActivated and
-                    !x.isActivated
-                ) {
-                    true
-                } else {
-                    if (i.isActivated && it.tier == 1) { true }
-                    else if (ii.isActivated && it.tier == 2) { true }
-                    else if (iii.isActivated && it.tier == 3) { true }
-                    else if (iv.isActivated && it.tier == 4) { true }
-                    else if (v.isActivated && it.tier == 5) { true }
-                    else if (vi.isActivated && it.tier == 6) { true }
-                    else if (vii.isActivated && it.tier == 7) { true }
-                    else if (viii.isActivated && it.tier == 8) { true }
-                    else if (ix.isActivated && it.tier == 9) { true }
-                    else { (x.isActivated && it.tier == 10) }
+                val comparatorByAverageDamage: Comparator<Pair<VehicleSpecs, VehicleStat>> = Comparator {
+                        v1, v2 -> v1.second.all.averageDamage.toDouble().compareTo(v2.second.all.averageDamage.toDouble())
                 }
-            }
-            .forEach {
-                vehiclesToCreate.add(it)
-            }
+                val comparatorByWinRate: Comparator<Pair<VehicleSpecs, VehicleStat>> = Comparator {
+                        v1, v2 -> v1.second.all.winRate.toDouble().compareTo(v2.second.all.winRate.toDouble())
+                }
+                val comparatorByAverageXp: Comparator<Pair<VehicleSpecs, VehicleStat>> = Comparator {
+                        v1, v2 -> v1.second.all.averageXp.toDouble().compareTo(v2.second.all.averageXp.toDouble())
+                }
+                val comparatorByEfficiency: Comparator<Pair<VehicleSpecs, VehicleStat>> = Comparator {
+                        v1, v2 -> v1.second.all.efficiency.toDouble().compareTo(v2.second.all.efficiency.toDouble())
+                }
 
-        if (vehiclesToCreate.size == 1) {
-            tanksFilters.hide()
-        } else {
-            tanksFilters.show()
-        }
-        tanksList.adapter = VehicleAdapter(this, vehiclesToCreate)
-
-        val adView = findViewById<BannerAdView>(R.id.tanks_list_banner)
-        adUtils.setBanner(InterfaceUtils.getX() - resources.getDimensionPixelSize(R.dimen.padding_big), adView)
-        adView.updateLayoutParams<ConstraintLayout.LayoutParams> { bottomToBottom = R.id.tanks_list_layout }
-
-    }
-
-    /**
-     * Gets app version from the server and compares it with the [BuildConfig.VERSION_CODE]
-     */
-    private suspend fun versionCheck(): Job {
-
-        return CoroutineScope(Dispatchers.IO).launch {
-            try {
-
-                val serverVersion = Retrofit.Builder()
-                    .baseUrl("https://forblitz.ru/")
-                    .client(OkHttpClient.Builder().addInterceptor(
-                        NetworkConnectionInterceptor(
-                            this@MainActivity
-                        )
-                    ).build())
-                    .build()
-                    .create(ApiInterfaceVersion::class.java)
-                    .getCurrent()
-
-                if (serverVersion.isSuccessful) {
-                    withContext(Dispatchers.Main) {
-                        val serverVersionJson = GsonBuilder().setPrettyPrinting().create().toJson(
-                            JsonParser.parseString(
-                                serverVersion.body()
-                                    ?.string()
-                            )
-                        )
-
-                        val versionCodeServer = serverVersionJson
-                            .substringAfter("\"statisticAppVersion\": {")
-                            .substringAfter("\"currentAppVersion\": \"")
-                            .substringBefore("\",")
-                            .toInt()
-
-                        val minimalVersionCodeServer = serverVersionJson
-                            .substringAfter("\"statisticAppVersion\": {")
-                            .substringAfter("\"minimalAppVersion\": \"")
-                            .substringBefore("\",")
-                            .toInt()
-
-                        if (BuildConfig.VERSION_CODE in minimalVersionCodeServer until versionCodeServer) {
-
-                            MaterialAlertDialogBuilder(this@MainActivity)
-                                .setTitle(this@MainActivity.getString(R.string.update_available))
-                                .setMessage(this@MainActivity.getString(R.string.update_available_desc))
-                                .setCancelable(false)
-                                .setNegativeButton(this@MainActivity.getString(android.R.string.cancel)) { _: DialogInterface?, _: Int -> }
-                                .setPositiveButton(this@MainActivity.getString(R.string.update)) { _: DialogInterface?, _: Int -> Runnable {
-
-                                    try {
-                                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
-                                    } catch (e: ActivityNotFoundException) {
-                                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
-                                    }
-
-                                }.run()
-                                }.show()
-
-                            this@launch.cancel()
-
-                        } else if (BuildConfig.VERSION_CODE < minimalVersionCodeServer) {
-
-                            MaterialAlertDialogBuilder(this@MainActivity)
-                                .setTitle(this@MainActivity.getString(R.string.update_available))
-                                .setMessage(this@MainActivity.getString(R.string.update_available_desc))
-                                .setCancelable(false)
-                                .setPositiveButton(
-                                    this@MainActivity.getString(R.string.update)
-                                ) { _: DialogInterface?, _: Int -> Runnable {
-
-                                    try {
-                                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
-                                    } catch (e: ActivityNotFoundException) {
-                                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
-                                    }
-                                    finish()
-
-                                }.run()
-                                }.show()
-
-                        }
-
-                        this@launch.cancel()
-
+                val tanksSort = findViewById<RadioGroup>(R.id.tanks_sort)
+                when (tanksSort.indexOfChild(findViewById(tanksSort.checkedRadioButtonId))) {
+                    0 -> {
+                        Collections.sort(sortedVehicles, comparatorByBattles)
+                    }
+                    1 -> {
+                        Collections.sort(sortedVehicles, comparatorByAverageDamage)
+                    }
+                    2 -> {
+                        Collections.sort(sortedVehicles, comparatorByEfficiency)
+                    }
+                    3 -> {
+                        Collections.sort(sortedVehicles, comparatorByAverageXp)
+                    }
+                    4 -> {
+                        Collections.sort(sortedVehicles, comparatorByWinRate)
                     }
                 }
 
-            } catch (e: IOException) {
-                this.cancel()
-            }
-        }
-
-    }
-
-    /**
-     * Gets ID for nickname in [search field][ru.forblitz.statistics.R.id.search_field]
-     */
-    private suspend fun getID(): Job  {
-        userID = ""
-        val searchField = findViewById<EditText>(R.id.search_field)
-
-        return CoroutineScope(Dispatchers.IO).launch {
-
-            try {
-
-                val userIdJson = service.getAccountId(searchField.text.toString())
-
-                withContext(Dispatchers.Main) {
-
-                    val userIDList = GsonBuilder().setPrettyPrinting().create().toJson(
-                        JsonParser.parseString(
-                            userIdJson.body()
-                                ?.string()
-                        )
-                    )
-                    if (userIDList.contains("error")) {
-                        userID = "error"
-                        val jsonObject = JsonParser.parseString(userIDList).asJsonObject
-                        val data = jsonObject.getAsJsonObject("error")
-                        val error = Gson().fromJson(
-                            data,
-                            ru.forblitz.statistics.jsonobjects.Error::class.java
-                        )
-                        InterfaceUtils.createErrorAlertDialog(
-                            this@MainActivity,
-                            "Error ${error.code}",
-                            error.message
-                        )
-                        searchField.text.clear()
-                    } else if (userIDList.contains("\"count\": 0")) {
-                        userID = "error"
-                        InterfaceUtils.createErrorAlertDialog(
-                            this@MainActivity,
-                            getString(R.string.error),
-                            getString(R.string.nickname_not_found)
-                        )
-                    } else {
-                        userID = userIDList.substringAfter("\"account_id\": ").substringBefore("\n")
-                    }
-
+                sortedVehicles.reverse()
+                if (sortedVehicles.filter { it.second.all.battles.toInt() > 1 }.size < 2) {
+                    runOnUiThread { tanksFilters.hide() }
+                } else {
+                    runOnUiThread { tanksFilters.show() }
                 }
 
-            } catch (e: IOException) {
-                @Suppress("ControlFlowWithEmptyBody") val mainCor = CoroutineScope(Dispatchers.IO).launch {
-                    InterfaceUtils.createNetworkAlertDialog(
-                        this@MainActivity
-                    ) {
-                        CoroutineScope(Dispatchers.IO).launch {
-                            val cor = getID()
-                            cor.join()
-                            cor.cancel()
-                        }
-                    }
-                    while (userID == "") {  }
-                }
-                mainCor.join()
-                mainCor.cancel()
-            }
-
-            this.cancel()
-        }
-
-    }
-
-    /**
-     * Gets player statistics and shows statistics interface elements
-     */
-    private fun setPlayerStatistics() {
-
-        CoroutineScope(Dispatchers.IO).launch {
-
-            try {
-
-                val response = service.getUsers(userID)
-
-                if (response.isSuccessful) {
-                    withContext(Dispatchers.Main) {
-
-                        val prettyJson1 = GsonBuilder().setPrettyPrinting().create().toJson(
-                            JsonParser.parseString(
-                                response.body()
-                                    ?.string()
-
-                            )
-                        )
-
-                        if (prettyJson1.contains("error")) {
-
-                            val message = prettyJson1.substringAfter("\"message\": \"").substringBefore("\"")
-                            val code = prettyJson1.substringAfter("\"code\": ").substringBefore(",")
-                            Toast.makeText(applicationContext, "Error $code: $message", Toast.LENGTH_SHORT).show()
-
-                            findViewById<ViewFlipper>(R.id.main_layouts_flipper).displayedChild = Constants.MainViewFlipperItems.ENTER_NICKNAME
-                            findViewById<View>(R.id.settings_button).isActivated = false
-
+                sortedVehicles
+                    .filter { it.second.all.battles.toInt() > 0 }
+                    .filter {
+                        var filterIsActivated = false
+                        type.forEach { typeView -> if (typeView.value.isActivated) { filterIsActivated = true } }
+                        if (filterIsActivated) {
+                            type[it.first.type]!!.isActivated
                         } else {
+                            true
+                        }
+                    }
+                    .filter {
+                        var filterIsActivated = false
+                        nation.forEach { nationView -> if (nationView.value.isActivated) { filterIsActivated = true } }
 
-                            baseStatisticsData = ParseUtils.parseStatisticsData(prettyJson1, "all", userID)
-                            ratingStatisticsData = ParseUtils.parseStatisticsData(prettyJson1, "rating", userID)
+                        if (filterIsActivated) {
+                            nation[it.first.nation]!!.isActivated
+                        } else {
+                            true
+                        }
+                    }
+                    .filter {
+                        var filterIsActivated = false
+                        tier.forEach { tierView -> if (tierView.value.isActivated) { filterIsActivated = true } }
 
-                            StatisticsSet.setBaseStatistics(this@MainActivity, baseStatisticsData)
-                            StatisticsSet.setRatingStatistics(this@MainActivity, ratingStatisticsData)
+                        if (filterIsActivated) {
+                            tier[it.first.tier]!!.isActivated
+                        } else {
+                            true
+                        }
+                    }
+                    .forEach {
+                        vehiclesToCreate.add(it)
+                    }
 
-                            setSessionStatistics(prettyJson1, 0)
+                    runOnUiThread {
+                        tanksList.adapter = VehicleAdapter(this@MainActivity, vehiclesToCreate)
 
-                            //
-
-                            val searchField = findViewById<EditText>(R.id.search_field)
-                            val searchButton = findViewById<ImageButton>(R.id.search_button)
-
-                            searchField.setText(baseStatisticsData.nickname, TextView.BufferType.EDITABLE)
-                            searchField.doOnTextChanged { _, _, _, _ -> searchButton.setImageResource(R.drawable.ic_outline_person_search_36) }
-                            searchButton.setImageResource(R.drawable.ic_outline_change_circle_36)
-
-                            findViewById<TextView>(R.id.text_nick).text = baseStatisticsData.nickname
-                            findViewById<TextView>(R.id.rating_text_nick).text = baseStatisticsData.nickname
-
-                            findViewById<ViewFlipper>(R.id.main_layouts_flipper).displayedChild = Constants.MainViewFlipperItems.STATISTICS
-                            findViewById<View>(R.id.settings_button).isActivated = false
-
+                        val adView = findViewById<BannerAdView>(R.id.tanks_list_banner)
+                        app.adService.setBanner(
+                            InterfaceUtils.getX() - resources.getDimensionPixelSize(R.dimen.padding_big),
+                            adView
+                        )
+                        adView.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                            bottomToBottom = R.id.tanks_list_layout
                         }
 
+                        tanksLayoutsFlipper.displayedChild = 0
                     }
-                }
-
-            } catch (e: IOException) {
-                InterfaceUtils.createNetworkAlertDialog(
-                    this@MainActivity
-                ) {
-                    setPlayerStatistics()
-                    this.cancel()
-                }
             }
-
         }
-
     }
 
     /**
@@ -860,411 +986,59 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setClanStat() {
         CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val clanInfoJson = service.getClanInfo(userID)
 
-                if (clanInfoJson.isSuccessful) {
-                    withContext(Dispatchers.Main) {
+            app.userClanService.clear()
+            app.clanService.clear()
 
-                        val smallJson = GsonBuilder().setPrettyPrinting().create().toJson(
-                            JsonParser.parseString(
-                                clanInfoJson.body()
-                                    ?.string()
-                            )
-                        )
-
-                        val smallJsonObject = JsonParser
-                            .parseString(smallJson)
-                            .asJsonObject
-                            .getAsJsonObject("data")
-                            .getAsJsonObject(userID)
-
-                        if (smallJsonObject != null) {
-                            clanData.small = Gson().fromJson(
-                                smallJsonObject,
-                                SmallClanData::class.java
-                            )
-
-                            if (clanData.small.clanId != null) {
-                                try {
-
-                                    val fullClanInfoJson = service.getFullClanInfo(clanData.small.clanId)
-
-                                    withContext(Dispatchers.Main) {
-
-                                        val bigJson = GsonBuilder().setPrettyPrinting().create().toJson(
-                                            JsonParser.parseString(
-                                                fullClanInfoJson.body()
-                                                    ?.string()
-                                            )
-                                        )
-
-                                        val bigJsonObject = JsonParser
-                                            .parseString(bigJson)
-                                            .asJsonObject
-                                            .getAsJsonObject("data")
-                                            .getAsJsonObject(clanData.small.clanId)
-
-                                        val bigClanData: BigClanData = Gson().fromJson(
-                                            bigJsonObject,
-                                            BigClanData::class.java
-                                        )
-
-                                        clanData.show(this@MainActivity)
-                                        clanData.setBigClanData(bigClanData)
-                                        clanData.set(this@MainActivity)
-
-                                    }
-
-                                } catch (e: IOException) {
-                                    InterfaceUtils.createNetworkAlertDialog(
-                                        this@MainActivity
-                                    ) {
-                                        setClanStat()
-                                        this.cancel()
-                                    }
-                                }
-                            } else {
-                                clanData.hide(this@MainActivity)
-                            }
-                        } else {
-                            clanData.hide(this@MainActivity)
-                        }
-
-                    }
+            if (app.userClanService.getShortClanInfo(app.userIDService.getUserID()) != null) {
+                runOnUiThread {
+                    findViewById<ClanSmall>(R.id.random_clan).setData(app.userClanService.getShortClanInfo())
+                    findViewById<ClanSmall>(R.id.rating_clan).setData(app.userClanService.getShortClanInfo())
                 }
-            } catch (e: IOException) {
-                InterfaceUtils.createNetworkAlertDialog(
-                    this@MainActivity
-                ) {
-                    setClanStat()
-                    this.cancel()
+                app.clanService.getFullClanInfo(app.userClanService.getShortClanInfo())
+                runOnUiThread {
+                    findViewById<ClanScreen>(R.id.fragment_clan).setData(app.userClanService.getShortClanInfo(), app.clanService.getFullClanInfo())
                 }
-            }
-        }
-    }
-
-    /**
-     * Gets a list of vehicles and their specifications. These are NOT
-     * statistics, but just the characteristics of vehicles. Called from [onCreate]
-     */
-    private fun fillVehiclesSpecifications() {
-
-        fillVehiclesInfoJob = CoroutineScope(Dispatchers.IO).launch {
-
-            try {
-
-                val vehiclesInfoListJson = service.getAllInformationAboutVehicles()
-
-                withContext(Dispatchers.Main) {
-                    val vehiclesInfoList = GsonBuilder().setPrettyPrinting().create().toJson(
-                        JsonParser.parseString(
-                            vehiclesInfoListJson.body()
-                                ?.string()
-                        )
-                    )
-                    
-                    vehicles.fillVehiclesSpecifications(vehiclesInfoList)
-
-                }
-
-            } catch (e: IOException) {
-                InterfaceUtils.createNetworkAlertDialog(
-                    this@MainActivity
-                ) {
-                    fillVehiclesSpecifications()
-                    this.cancel()
+            } else {
+                runOnUiThread {
+                    findViewById<ClanScreen>(R.id.fragment_clan).setData(null, app.clanService.getFullClanInfo())
+                    findViewById<ClanSmall>(R.id.random_clan).setData(null)
+                    findViewById<ClanSmall>(R.id.rating_clan).setData(null)
                 }
             }
 
         }
-
     }
 
     /**
-     * Gets statistics for each id list and fills in [vehicles] with it
-     * @param idLists contains id lists having no more than 100 items each (the
-     * API does not allow you to request the characteristics of more than 100
-     * tanks per request)
-     */
-    private fun getVehiclesStatistics(idLists: Array<Array<String>>): Job {
-
-        return CoroutineScope(Dispatchers.IO).launch {
-            for (i in idLists.indices) {
-
-                getVehiclesStatisticsJob.add(CoroutineScope(Dispatchers.IO).launch {
-
-                    var ids = ""
-                    for (j in idLists[i].indices) {
-                        ids += idLists[i][j] + ","
-                    }
-                    ids = ids.substringBeforeLast(",")
-
-                    try {
-
-                        val vehiclesStatisticsJson = service.getTankStatistics(userID, ids)
-
-                        withContext(Dispatchers.Main) {
-                            val vehicleStatistics = GsonBuilder().setPrettyPrinting().create().toJson(
-                                JsonParser.parseString(
-                                    vehiclesStatisticsJson.body()
-                                        ?.string()
-                                )
-                            )
-
-                            vehicles.fillVehiclesStatistics(vehicleStatistics)
-
-                        }
-
-                    } catch (e: IOException) {
-                        InterfaceUtils.createNetworkAlertDialog(
-                            this@MainActivity
-                        ) {
-                            getVehiclesStatistics(idLists)
-                            this.cancel()
-                        }
-                    }
-
-                })
-
-            }
-        }
-
-    }
-
-    /**
-     * Creates an array consisting of arrays of vehicle IDs. The API does not
-     * allow us to request characteristics of more than 100 tanks per request,
-     * so we are forced to distribute all identifiers into arrays containing
-     * 100 or less elements
-     */
-    private fun fillVehiclesStatistics(): Job {
-        return CoroutineScope(Dispatchers.IO).launch {
-
-            val idLists: Array<Array<String>> = Array(
-                ceil((vehicles.count - 1).toDouble() / 100).toInt()
-            ) { Array(0) { "" } }
-
-            for(i in idLists.indices) {
-
-                idLists[i] = Array(if ((i + 1) * 100 <= vehicles.count) { 100 } else { vehicles.count % 100 }) { "" }
-
-                for (j in idLists[i].indices) {
-                    idLists[i][j] = vehicles.list.values.toList()[i * 100 + j].tankId
-                }
-
-            }
-            getVehiclesStatistics(idLists).join()
-        }
-    }
-
-    /**
-     * Creates session file with name format "accountID-lastBattleTime"
-     */
-    private fun createSessionFile(text: String) {
-        val filename =
-            text
-                .substringAfter("\"account_id\": ")
-                .substringBefore(",") + "-" +
-                    text
-                        .substringAfter("\"last_battle_time\": ")
-                        .substringBefore(",") +
-                    "." + preferences.getString("region", "notSpecified")
-
-
-        val dir = File(applicationContext.filesDir, "sessions")
-        val file = File(dir, filename)
-
-        if (!file.exists()) {
-            createFile(Paths.get("$file"))
-            FileWriter("$file").use { it.write(text) }
-        }
-    }
-
-    /**
-     * Sets all session statistics
-     */
-    private fun setSessionStatistics(prettyJson1: String, number: Int) {
-
-        val randomSessionsList = findViewById<ListView>(R.id.random_sessions_list)
-
-        val files: ArrayList<String> = ArrayList(0)
-
-        val dir = File(applicationContext.filesDir, "sessions")
-        val resourcesPath = Paths.get(dir.toString())
-        walk(resourcesPath)
-            .filter { item -> isRegularFile(item) }
-            .forEach { if (
-                "$it".substringAfterLast("/").substringBefore("-") == userID
-                &&
-                "$it".substringAfterLast(".") == preferences.getString("region", "notSpecified")
-            ) { files.add("$it") } }
-
-        files.sort()
-        files.reverse()
-
-        val todo = when (files.size) {
-            0 -> {
-                0
-            }
-            1 -> {
-                val currentDate = prettyJson1.substringAfter("\"last_battle_time\": ").substringBefore(",")
-                val sessionDate = files[0].substringAfter("-").substringBeforeLast(".")
-                if (currentDate == sessionDate) { 1 } else { 2 }
-            }
-            else -> {
-                val currentDate = prettyJson1.substringAfter("\"last_battle_time\": ").substringBefore(",")
-                val sessionDate = files[0].substringAfter("-").substringBeforeLast(".")
-                if (currentDate == sessionDate) { 3 } else { 4 }
-            }
-        }
-
-        if (todo == 3) { files.removeAt(0) }
-
-        val sessions = ArrayList<Session>(0)
-        for (i in 0 until files.size) {
-            val session = Session()
-            session.path = files[i]
-            session.set = Runnable {
-                setSessionStatistics(prettyJson1, i); InterfaceUtils.randomToMain(
-                this@MainActivity
-            )
-            }
-            session.delete = Runnable {
-                if (i == number) {
-                    Toast.makeText(
-                        this@MainActivity,
-                        getString(R.string.delete_select),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    val alertDialog = MaterialAlertDialogBuilder(this@MainActivity)
-                    alertDialog.setTitle(getString(R.string.delete))
-                    alertDialog.setMessage(getString(R.string.delete_alert))
-                    alertDialog.setPositiveButton(
-                        getString(R.string.delete)
-                    ) { _: DialogInterface?, _: Int ->
-                        if (File(files[i]).delete()) {
-                            Toast.makeText(
-                                this@MainActivity,
-                                this@MainActivity.getString(R.string.delete_successfully),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            setSessionStatistics(prettyJson1, i)
-                        } else {
-                            Toast.makeText(
-                                this@MainActivity,
-                                this@MainActivity.getString(R.string.delete_failed),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                    alertDialog.setNegativeButton(getString(android.R.string.cancel)) { _: DialogInterface?, _: Int -> }
-                    alertDialog.show()
-                }
-            }
-            session.isSelected = i == number
-            sessions.add(session)
-        }
-
-        when(todo) {
-            0 -> {
-                createSessionFile(prettyJson1)
-                SessionUtils.hide(this@MainActivity)
-            }
-            1 -> {
-                SessionUtils.hide(this@MainActivity)
-            }
-            2 -> {
-                createSessionFile(prettyJson1)
-                SessionUtils.show(this@MainActivity)
-                SessionUtils.hideSelect(this@MainActivity)
-                val session = File(files[0]).readText()
-                sessionBaseStatisticsData = ParseUtils.parseStatisticsData(session, "all", userID)
-                sessionRatingStatisticsData = ParseUtils.parseStatisticsData(session, "rating", userID)
-                sessionBaseDifferencesStatisticsData = SessionUtils.calculateDifferences(baseStatisticsData, sessionBaseStatisticsData)
-                sessionRatingDifferencesStatisticsData = SessionUtils.calculateDifferences(ratingStatisticsData, sessionRatingStatisticsData)
-                SessionUtils.set(this@MainActivity, baseStatisticsData, ratingStatisticsData, sessionBaseDifferencesStatisticsData, sessionRatingDifferencesStatisticsData)
-            }
-            else -> {
-                createSessionFile(prettyJson1)
-                SessionUtils.show(this@MainActivity)
-                val sessionJson = File(files[number]).readText()
-                sessionBaseStatisticsData = ParseUtils.parseStatisticsData(sessionJson, "all", userID)
-                sessionRatingStatisticsData = ParseUtils.parseStatisticsData(sessionJson, "rating", userID)
-                sessionBaseDifferencesStatisticsData = SessionUtils.calculateDifferences(baseStatisticsData, sessionBaseStatisticsData)
-                sessionRatingDifferencesStatisticsData = SessionUtils.calculateDifferences(ratingStatisticsData, sessionRatingStatisticsData)
-                SessionUtils.set(this@MainActivity, baseStatisticsData, ratingStatisticsData, sessionBaseDifferencesStatisticsData, sessionRatingDifferencesStatisticsData)
-                randomSessionsList.adapter = SessionAdapter(this@MainActivity, sessions)
-            }
-        }
-
-    }
-
-    /**
-     * Sets the background for the region selection buttons, change region in [service]
+     * Sets the background for the region selection buttons, change region in [ForBlitzStatisticsApplication.apiService]
      */
     private fun setRegion() {
         findViewById<EditText>(R.id.search_field).setText("", TextView.BufferType.EDITABLE)
-        when (preferences.getString("region", "notSpecified")) {
-            "notSpecified" -> {
+        if (app.preferences.getString("region", "notSpecified") == "notSpecified") {
+            app.preferences.edit().putString("region", "ru").apply()
+            app.apiService.setRegion(app.preferences.getString("region", "notSpecified")!!)
+            Log.d("my link", this@MainActivity.getString(R.string.terms_of_service_desc))
 
-                MaterialAlertDialogBuilder(this@MainActivity)
-                    .setTitle(this@MainActivity.getString(R.string.terms_of_service))
-                    .setMessage(this@MainActivity.getString(R.string.terms_of_service_desc))
-                    .setCancelable(false)
-                    .setNegativeButton(this@MainActivity.getString(R.string.exit)) { _: DialogInterface?, _: Int -> Runnable {
-                        finish()
-                    }.run()
-                    }
-                    .setPositiveButton(this@MainActivity.getString(R.string.accept)) { _: DialogInterface?, _: Int -> Runnable {
-                        preferences.edit().putString("region", "ru").apply()
-                    }.run()
-                    }
-                    .show()
+            InterfaceUtils.createAlertDialog(
+                this@MainActivity,
+                this@MainActivity.getString(R.string.terms_of_service),
+                HtmlCompat.fromHtml(this@MainActivity.getString(R.string.terms_of_service_desc), HtmlCompat.FROM_HTML_MODE_LEGACY),
+                this@MainActivity.getString(R.string.accept),
+                Runnable {  },
+                this@MainActivity.getString(R.string.exit),
+                Runnable { finish() }
+            )
+                .show()
+                .findViewById<TextView>(android.R.id.message)!!.movementMethod = LinkMovementMethod.getInstance()
 
-                InterfaceUtils.setSelectedRegion(
-                    this@MainActivity,
-                    0
-                )
-
-                service.setRegion("ru")
-
-            }
-            "ru" -> {
-                InterfaceUtils.setSelectedRegion(
-                    this@MainActivity,
-                    0
-                )
-
-                service.setRegion("ru")
-            }
-            "eu" -> {
-                InterfaceUtils.setSelectedRegion(
-                    this@MainActivity,
-                    1
-                )
-
-                service.setRegion("eu")
-            }
-            "na" -> {
-                InterfaceUtils.setSelectedRegion(
-                    this@MainActivity,
-                    2
-                )
-
-                service.setRegion("na")
-            }
-            "asia" -> {
-                InterfaceUtils.setSelectedRegion(
-                    this@MainActivity,
-                    3
-                )
-
-                service.setRegion("asia")
-            }
+            setRegion()
+        } else {
+            app.apiService.setRegion(app.preferences.getString("region", "notSpecified")!!)
+            findViewById<ExtendedRadioGroup>(R.id.search_region_layout).setCheckedItem(app.preferences.getString("region", "notSpecified")!!)
+            findViewById<ExtendedRadioGroup>(R.id.settings_region_layout).setCheckedItem(app.preferences.getString("region", "notSpecified")!!)
+            updateLastSearch()
         }
-        updateLastSearch()
     }
 
     /**
@@ -1272,44 +1046,36 @@ class MainActivity : AppCompatActivity() {
      */
     private fun updateLastSearch() {
 
-        val sessionsDir = File(applicationContext.filesDir, "sessions")
-        var lastFile = File("")
-        val resourcesPath = Paths.get(sessionsDir.toString())
+        val lastSearchedFlipper = findViewById<DifferenceViewFlipper>(R.id.last_searched_flipper)
+        val enterNicknameText = findViewById<TextSwitcher>(R.id.enter_nickname_text)
 
-        walk(resourcesPath)
-            .filter { item -> isRegularFile(item) }
-            .forEach { if (
-                it.toFile().lastModified() > lastFile.lastModified()
-                &&
-                it.toFile().toString().substringAfterLast(".") == preferences.getString("region", "notSpecified")
-            ) { lastFile = it.toFile() } }
+        val lastFile = app.sessionService.getLastFile(app.preferences.getString("region", "notSpecified")!!)
 
-        val lastSearchedFlipper = findViewById<ViewFlipper>(R.id.last_searched_flipper)
-        val enterNicknameText = findViewById<TextView>(R.id.enter_nickname_text)
-
-        if (lastFile != File("")) {
-            lastSearchedFlipper.displayedChild = 0
-
+        if (lastFile != null) {
             val lastSearchedName = findViewById<TextView>(R.id.last_searched_name)
             val lastSearchedInfo = findViewById<TextView>(R.id.last_searched_info)
 
-            lastSearchedName.text = lastFile.readText().substringAfter("\"nickname\": \"").substringBefore("\"")
-            val lastSearchedInfoText = getString(R.string.last_search) + ParseUtils.parseTime(
-                (lastFile.lastModified() / 1000).toString()
-            )
+            lastSearchedName.text = ParseUtils.statisticsData(lastFile.readText(), "all").nickname
+            val lastSearchedInfoText = getString(R.string.last_search) + ParseUtils.time((lastFile.lastModified() / 1000).toString())
             lastSearchedInfo.text = lastSearchedInfoText
-            enterNicknameText.setText(R.string.enter_nickname_or_select)
-
-            lastSearchedFlipper.setOnClickListener {
-                findViewById<EditText>(R.id.search_field).setText(lastFile.readText().substringAfter("\"nickname\": \"").substringBefore("\""), TextView.BufferType.EDITABLE)
-                onClickSearchButton(findViewById(R.id.search_button))
+            if (!isKeyboardShowing) {
+                enterNicknameText.setText(getString(R.string.enter_nickname_or_select))
             }
 
+            lastSearchedFlipper.setOnClickListener {
+                findViewById<EditText>(R.id.search_field).setText(lastSearchedName.text, TextView.BufferType.EDITABLE)
+                onClickSearchButton(findViewById(R.id.search_button))
+            }
+            lastSearchedFlipper.isClickable = true
+
+            lastSearchedFlipper.displayedChild = 0
         } else {
+            if (!isKeyboardShowing) {
+                enterNicknameText.setText(getString(R.string.enter_nickname))
+            }
 
             lastSearchedFlipper.displayedChild = 1
-            enterNicknameText.setText(R.string.enter_nickname)
-
+            lastSearchedFlipper.isClickable = false
         }
 
     }

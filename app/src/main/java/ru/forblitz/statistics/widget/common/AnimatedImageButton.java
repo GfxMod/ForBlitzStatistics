@@ -1,10 +1,10 @@
-package android.widget;
+package ru.forblitz.statistics.widget.common;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,9 +51,7 @@ public class AnimatedImageButton extends AppCompatImageButton {
     }
 
     private void setOnClickListener() {
-        super.setOnClickListener(l -> {
-            setActivated(!isActivated());
-        });
+        super.setOnClickListener(l -> setActivated(!isActivated()));
     }
 
     private void setOnLongClickListener() {

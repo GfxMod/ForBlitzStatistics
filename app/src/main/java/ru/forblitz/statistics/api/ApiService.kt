@@ -1,13 +1,13 @@
 package ru.forblitz.statistics.api
 
-import android.app.Activity
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
 import ru.forblitz.statistics.data.Constants.*
+import ru.forblitz.statistics.service.ConnectivityService
 
-class ApiService(private val activity: Activity) {
+class ApiService(private val connectivityService: ConnectivityService) {
 
     private lateinit var region: String
     private lateinit var apiInterface: ApiInterface
@@ -16,7 +16,7 @@ class ApiService(private val activity: Activity) {
         this.region = region
         apiInterface = Retrofit.Builder()
             .client(OkHttpClient.Builder().addInterceptor(
-                NetworkConnectionInterceptor(activity)
+                NetworkConnectionInterceptor(connectivityService)
             ).build())
             .baseUrl(baseUrl[region].toString())
             .build().create(ApiInterface::class.java)

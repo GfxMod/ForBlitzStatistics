@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+
 import androidx.annotation.NonNull;
+
 import java.io.IOException;
+
 import okhttp3.Interceptor;
-import okhttp3.Request;
 import okhttp3.Response;
+import ru.forblitz.statistics.service.ConnectivityService;
 
 /**
  * Before each and every API call intercept(Chain chain) method will be called
@@ -18,27 +21,42 @@ import okhttp3.Response;
  */
 public class NetworkConnectionInterceptor implements Interceptor {
 
-    private final Activity activity;
+    private final ConnectivityService connectivityService;
 
-    public NetworkConnectionInterceptor(Activity activity) {
-        this.activity = activity;
+    public NetworkConnectionInterceptor(ConnectivityService connectivityService) {
+        this.connectivityService = connectivityService;
     }
 
     @NonNull
     @Override
     public Response intercept(@NonNull Chain chain) throws IOException {
-        if (!isConnected()) {
-            throw new NoConnectivityException();
+
+        Activity activity = connectivityService.getResponsibleActivity();
+        if (activity != null) {
+
+            if (!isConnected()) {
+                connectivityService.showAlertDialog(activity);
+                while (!isConnected()) {  }
+                connectivityService.killAlertDialog(activity);
+            }
+
+            return chain.proceed(chain.request().newBuilder().build());
         }
 
-        Request.Builder builder = chain.request().newBuilder();
-        return chain.proceed(builder.build());
+        throw new IllegalStateException("intercept: ConnectivityService does not contain any activity");
+
     }
 
-    public boolean isConnected(){
-        ConnectivityManager connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
-        return (netInfo != null && netInfo.isConnected());
+    public boolean isConnected() {
+        Activity activity = connectivityService.getResponsibleActivity();
+
+        if (activity != null) {
+            ConnectivityManager connectivityManager = (ConnectivityManager) connectivityService.getResponsibleActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
+            return (netInfo != null && netInfo.isConnected());
+        }
+
+        throw new IllegalStateException("isConnected(): ConnectivityService does not contain any activity");
     }
 
 }

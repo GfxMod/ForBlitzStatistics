@@ -122,14 +122,14 @@
     <string name="update_available_desc">Пожалуйста, обновите ForBlitz Statistics до последней версии</string>
 
     <string name="terms_of_service">Условия использования</string>
-    <string name="terms_of_service_desc">Пользуясь приложением, вы принимаете нашу политику конфиденциальности (https://forblitz.ru/forblitzstats-privacy/)</string>
+    <string name="terms_of_service_desc"><![CDATA[Пользуясь приложением, вы принимаете нашу политику конфиденциальности (<a href="https://forblitz.ru/forblitzstats-privacy/">https://forblitz.ru/forblitzstats-privacy/</a>]]>)</string>
     <string name="accept">Принять</string>
     <string name="exit">Выход</string>
 
     <string name="filters">Фильтры</string>
 
-    <string name="nickname_not_found">Не удалось найти игроков с введенным вами ником</string>
     <string name="error">Ошибка</string>
+    <string name="nickname_not_found">Не удалось найти игроков с введенным вами ником</string>
 
     <string name="lt">Легкий танк</string>
     <string name="mt">Средний танк</string>
@@ -140,5 +140,15 @@
     <string name="rating">Рейтинговые бои</string>
     <string name="clan">Информация о клане</string>
     <string name="tanks">Статистика танков</string>
+
+    <string name="region_ru">RU</string>
+    <string name="region_eu">EU</string>
+    <string name="region_na">NA</string>
+    <string name="region_asia">ASIA</string>
+
+    <string name="region_select">Пожалуйста, выберите регион, на котором находится аккаунт</string>
+
+    <string name="search">Поиск</string>
+    <string name="settings">Настройки</string>
 
 </resources>

@@ -122,7 +122,7 @@
     <string name="update">Update</string>
 
     <string name="terms_of_service">Terms of service</string>
-    <string name="terms_of_service_desc">By using the app, you accept our privacy policy (https://forblitz.ru/forblitzstats-privacy/)</string>
+    <string name="terms_of_service_desc"><![CDATA[By using the app, you accept our privacy policy (<a href="https://forblitz.ru/forblitzstats-privacy/">https://forblitz.ru/forblitzstats-privacy/</a>]]>)</string>
     <string name="accept">Accept</string>
     <string name="exit">Exit</string>
 
@@ -140,5 +140,15 @@
     <string name="rating">Rating battles</string>
     <string name="clan">Clan information</string>
     <string name="tanks">Tanks statistics</string>
+
+    <string name="region_ru">RU</string>
+    <string name="region_eu">EU</string>
+    <string name="region_na">NA</string>
+    <string name="region_asia">ASIA</string>
+
+    <string name="region_select">Please select the region where the account is located</string>
+
+    <string name="search">Search</string>
+    <string name="settings">Settings</string>
 
 </resources>

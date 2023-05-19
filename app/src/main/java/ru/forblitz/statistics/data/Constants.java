@@ -7,11 +7,29 @@ public class Constants {
     public static final String lestaAppId = "1957e1f71656310342971b3b1aa2efef";
     public static final String wgAppId = "ac75820d6c10195c86370ec1bc9f21de";
 
+    public static int TABS_COUNT = 4;
+
+
     public static class MainViewFlipperItems {
         public static final int ENTER_NICKNAME = 0;
         public static final int LOADING = 1;
         public static final int STATISTICS = 2;
         public static final int SETTINGS = 3;
+    }
+
+    public static class StatisticsViewFlipperItems {
+        public static final int STATISTICS = 0;
+        public static final int FALSE = 1;
+    }
+
+    public static class ClanViewFlipperItems {
+        public static final int IS_A_MEMBER = 0;
+        public static final int NOT_IS_A_MEMBER = 1;
+    }
+
+    public static class ClanInfoViewFlipperItems {
+        public static final int INFO = 0;
+        public static final int RECRUITING_OPTIONS = 1;
     }
 
     public static final Map<String, String> baseUrl = new HashMap<>();
@@ -39,6 +57,13 @@ public class Constants {
         apiId.put("eu", wgAppId);
         apiId.put("na", wgAppId);
         apiId.put("asia", wgAppId);
+    }
+
+    public static class Steps {
+        public static final double[] battles = new double[] { 2000, 10000, 25000 };
+        public static final double[] winRate = new double[] { 50, 60, 70 };
+        public static final double[] averageDamage = new double[] { 1000, 1500, 2000 };
+        public static final double[] efficiency = new double[] { 1, 1.25, 1.5 };
     }
 
 }

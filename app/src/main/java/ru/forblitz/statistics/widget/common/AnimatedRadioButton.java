@@ -1,4 +1,4 @@
-package android.widget;
+package ru.forblitz.statistics.widget.common;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,6 +7,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.util.AttributeSet;
 import android.util.StateSet;
 import android.view.animation.ScaleAnimation;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatRadioButton;

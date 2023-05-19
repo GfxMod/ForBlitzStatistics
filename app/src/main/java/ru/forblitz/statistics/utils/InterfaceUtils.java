@@ -1,5 +1,8 @@
 package ru.forblitz.statistics.utils;
 
+import static ru.forblitz.statistics.data.Constants.StatisticsViewFlipperItems.FALSE;
+import static ru.forblitz.statistics.data.Constants.StatisticsViewFlipperItems.STATISTICS;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -15,15 +18,22 @@ import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.content.ContextCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.transition.ChangeBounds;
+import androidx.transition.Fade;
+import androidx.transition.TransitionManager;
+import androidx.transition.TransitionSet;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import ru.forblitz.statistics.R;
+import ru.forblitz.statistics.dto.StatisticsData;
+import ru.forblitz.statistics.widget.common.DifferenceViewFlipper;
+import ru.forblitz.statistics.widget.data.DetailsLayout;
+import ru.forblitz.statistics.widget.data.PlayerFastStat;
 
 public class InterfaceUtils {
 
@@ -67,67 +77,6 @@ public class InterfaceUtils {
         return animFrom;
     }
 
-    /**
-     * Sets displayed child for {@link ru.forblitz.statistics.R.layout#fragment_random base statistics}
-     * @param activity required to get resources
-     * @param v visibility value to be set
-     */
-    public static void setBaseStatisticsVisibility(Activity activity, boolean v) {
-
-        ViewFlipper randomFlipper = activity.findViewById(R.id.fragment_random);
-        ViewFlipper tanksFlipper = activity.findViewById(R.id.fragment_tanks);
-
-        if (v) {
-            randomFlipper.setDisplayedChild(0);
-            tanksFlipper.setDisplayedChild(0);
-        } else {
-            randomFlipper.setDisplayedChild(1);
-            tanksFlipper.setDisplayedChild(1);
-        }
-
-    }
-
-    /**
-     * Sets displayed child for {@link R.layout#fragment_rating rating statistics}
-     * @param activity required to get resources
-     * @param v visibility value to be set
-     */
-    public static void setRatingStatisticsVisibility(Activity activity, boolean v) {
-
-        ViewFlipper ratingFlipper = activity.findViewById(R.id.fragment_rating);
-
-        if (v) {
-            ratingFlipper.setDisplayedChild(0);
-        } else {
-            ratingFlipper.setDisplayedChild(1);
-        }
-
-    }
-
-    public static MaterialAlertDialogBuilder createNetworkAlertDialog(Activity activity, Runnable r) {
-
-        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(activity);
-        alertDialog.setTitle(activity.getString(R.string.network_error));
-        alertDialog.setMessage(activity.getString(R.string.network_error_desc));
-        alertDialog.setCancelable(false);
-        alertDialog.setPositiveButton(activity.getString(R.string.network_error_try_again), (d, w) -> r.run());
-        activity.runOnUiThread(alertDialog::show);
-        return alertDialog;
-
-    }
-
-    public static MaterialAlertDialogBuilder createErrorAlertDialog(Activity activity, String title, String message) {
-
-        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(activity);
-        alertDialog.setTitle(title);
-        alertDialog.setMessage(message);
-        alertDialog.setCancelable(false);
-        alertDialog.setPositiveButton(activity.getString(android.R.string.ok), (d, w) -> {});
-        activity.runOnUiThread(alertDialog::show);
-        return alertDialog;
-
-    }
-
     public static Bitmap drawableToBitmap (@NonNull Drawable drawable) {
         Bitmap bitmap;
 
@@ -166,43 +115,6 @@ public class InterfaceUtils {
         return new BitmapDrawable(context.getResources(), bitmap);
     }
 
-    public static void randomToMain(Activity activity) {
-
-        ViewFlipper flipper = activity.findViewById(R.id.random_layouts_flipper);
-        flipper.setDisplayedChild(0);
-
-    }
-
-    /**
-     * Sets green background and green text color for {@link TextView textView}; called when difference is greater then 0
-     * @param activity required to get resources
-     * @param textView session info TextView
-     * @param value difference that should be set
-     */
-    public static void setSessionTrueValue(Activity activity, @NonNull TextView textView, String value) {
-        int color = ContextCompat.getColor(activity, R.color.session_green);
-        Drawable background = AppCompatResources.getDrawable(activity, R.drawable.background_sessions_true);
-
-        textView.setText(value);
-        textView.setTextColor(color);
-        textView.setBackground(background);
-    }
-
-    /**
-     * Sets red background and red text color for {@link TextView textView}; called when difference is less then 0
-     * @param activity required to get resources
-     * @param textView session info TextView
-     * @param value difference that should be set
-     */
-    public static void setSessionFalseValue(Activity activity, @NonNull TextView textView, String value) {
-        int color = ContextCompat.getColor(activity, R.color.session_red);
-        Drawable background = AppCompatResources.getDrawable(activity, R.drawable.background_sessions_false);
-
-        textView.setText(value);
-        textView.setTextColor(color);
-        textView.setBackground(background);
-    }
-
     public static void playCycledAnimation(@NonNull View view, Boolean needToSetClickable) {
         if (needToSetClickable) { view.setClickable(false); }
         ScaleAnimation animTo = new ScaleAnimation(
@@ -224,42 +136,6 @@ public class InterfaceUtils {
         if (needToSetClickable) { new Handler().postDelayed(() -> view.setClickable(true), 250); }
     }
 
-    public static void setSelectedRegion(Activity activity, int number) {
-        View ru = activity.findViewById(R.id.select_region_ru);
-        View eu = activity.findViewById(R.id.select_region_eu);
-        View na = activity.findViewById(R.id.select_region_na);
-        View asia = activity.findViewById(R.id.select_region_asia);
-
-        if (number == 0) {
-            ru.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested_selected));
-            eu.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-            na.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-            asia.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-        } else if (number == 1) {
-            ru.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-            eu.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested_selected));
-            na.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-            asia.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-        } else if (number == 2) {
-            ru.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-            eu.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-            na.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested_selected));
-            asia.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-        } else if (number == 3) {
-            ru.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-            eu.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-            na.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested));
-            asia.setBackground(AppCompatResources.getDrawable(activity, R.drawable.background_layout_nested_selected));
-        }
-
-        int padding = activity.getResources().getDimensionPixelSize(R.dimen.padding_very_big);
-        ru.setPadding(padding, padding, padding, padding);
-        eu.setPadding(padding, padding, padding, padding);
-        na.setPadding(padding, padding, padding, padding);
-        asia.setPadding(padding, padding, padding, padding);
-
-    }
-
     public static int pxToDp(Context context, int px) {
         return (int) ((double) px / ( (double) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT));
     }
@@ -267,6 +143,174 @@ public class InterfaceUtils {
     public static void search(Context context, String nickname) {
         ((EditText) ((Activity) context).findViewById(R.id.search_field)).setText(nickname, TextView.BufferType.EDITABLE);
         ((Activity) context).findViewById(R.id.search_button).performClick();
+    }
+
+    public static int getValueColor(Context context, double value, double[] steps) {
+        if (value < steps[0]) {
+            return context.getColor(R.color.white);
+        }
+        if (value < steps[1]) {
+            return context.getColor(R.color.green);
+        }
+        if (value < steps[2]) {
+            return context.getColor(R.color.blue);
+        } else {
+            return context.getColor(R.color.violet);
+        }
+    }
+
+    public static int getValueColor(Context context, String stringValue, double[] steps) {
+        return getValueColor(context, Double.parseDouble(stringValue), steps);
+    }
+
+    public static MaterialAlertDialogBuilder createAlertDialog(
+            Context context,
+            String title,
+            CharSequence message
+    ) {
+        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setCancelable(false);
+        alertDialog.setPositiveButton(context.getString(android.R.string.ok), (d, w) -> {});
+        return alertDialog;
+    }
+
+    public static MaterialAlertDialogBuilder createAlertDialog(
+            Context context, 
+            String title,
+            CharSequence message,
+            String positiveButtonText, 
+            Runnable positiveButtonAction
+    ) {
+        MaterialAlertDialogBuilder alertDialog = createAlertDialog(context, title, message);
+        alertDialog.setPositiveButton(positiveButtonText, (d, w) -> positiveButtonAction.run());
+        return alertDialog;
+    }
+
+    public static MaterialAlertDialogBuilder createAlertDialog(
+            Context context,
+            String title,
+            CharSequence message,
+            String positiveButtonText,
+            Runnable positiveButtonAction,
+            String negativeButtonText,
+            Runnable negativeButtonAction
+    ) {
+        MaterialAlertDialogBuilder alertDialog = createAlertDialog(context, title, message, positiveButtonText, positiveButtonAction);
+        alertDialog.setNegativeButton(negativeButtonText, (d, w) -> negativeButtonAction.run());
+        return alertDialog;
+    }
+
+    /**
+     * Sets {@link R.layout#fragment_random base statisticsData} values
+     * @param activity required to get resources
+     * @param statisticsData statisticsData to be set
+     */
+    public static void setBaseStatistics(Activity activity, StatisticsData statisticsData, boolean needToHide) {
+
+        if (needToHide && !statisticsData.getBattles().equals("0")) {
+            activity.runOnUiThread(() ->
+                    ((DifferenceViewFlipper) activity.findViewById(R.id.fragment_random)).setDisplayedChild(STATISTICS));
+        } else if (needToHide && statisticsData.getBattles().equals("0")) {
+            activity.runOnUiThread(() ->
+                    ((DifferenceViewFlipper) activity.findViewById(R.id.fragment_random)).setDisplayedChild(FALSE));
+        }
+        activity.runOnUiThread(() -> {
+            ((PlayerFastStat) activity.findViewById(R.id.random_fast_stat)).setData(statisticsData);
+            ((DetailsLayout) activity.findViewById(R.id.random_details_layout)).setData(statisticsData);
+        });
+    }
+
+    /**
+     * Sets {@link R.layout#fragment_rating rating statistics} values
+     * @param activity required to get resources
+     * @param statisticsData statistics to be set
+     */
+    public static void setRatingStatistics(Activity activity, StatisticsData statisticsData, boolean needToHide) {
+
+        if (needToHide && !statisticsData.getBattles().equals("0")) {
+            activity.runOnUiThread(() ->
+                    ((DifferenceViewFlipper) activity.findViewById(R.id.fragment_rating)).setDisplayedChild(STATISTICS));
+        } else if (needToHide && statisticsData.getBattles().equals("0")) {
+            activity.runOnUiThread(() ->
+                    ((DifferenceViewFlipper) activity.findViewById(R.id.fragment_rating)).setDisplayedChild(FALSE));
+        }
+
+        activity.runOnUiThread(() -> {
+            ((PlayerFastStat) activity.findViewById(R.id.rating_fast_stat)).setData(statisticsData);
+            ((DetailsLayout) activity.findViewById(R.id.rating_details_layout)).setData(statisticsData);
+        });
+
+    }
+
+    public static void setRegionAlertVisibility(
+            Context context,
+            ConstraintLayout constraintLayout,
+            View text,
+            View buttons,
+            boolean visible
+    ) {
+        int buttonsMargin = ((ConstraintLayout.LayoutParams) buttons.getLayoutParams()).topMargin;
+
+        TransitionSet transitionSet = new TransitionSet();
+        transitionSet.addTransition(new ChangeBounds());
+        transitionSet.addTransition(new Fade());
+        transitionSet.setDuration(context.getResources().getInteger(android.R.integer.config_shortAnimTime));
+        TransitionManager.beginDelayedTransition(constraintLayout, transitionSet);
+
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        constraintSet.clear(text.getId(), ConstraintSet.BOTTOM);
+        constraintSet.clear(text.getId(), ConstraintSet.TOP);
+
+        if (visible) {
+            constraintSet.clear(text.getId(), ConstraintSet.BOTTOM);
+            constraintSet.connect(
+                    text.getId(),
+                    ConstraintSet.TOP,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.TOP,
+                    0
+            );
+            constraintSet.clear(buttons.getId(), ConstraintSet.BOTTOM);
+            constraintSet.connect(
+                    buttons.getId(),
+                    ConstraintSet.TOP,
+                    text.getId(),
+                    ConstraintSet.BOTTOM,
+                    0
+            );
+        } else {
+            constraintSet.clear(text.getId(), ConstraintSet.TOP);
+            constraintSet.connect(
+                    text.getId(),
+                    ConstraintSet.BOTTOM,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.BOTTOM,
+                    0
+            );
+            constraintSet.clear(buttons.getId(), ConstraintSet.TOP);
+            constraintSet.connect(
+                    buttons.getId(),
+                    ConstraintSet.BOTTOM,
+                    ConstraintSet.PARENT_ID,
+                    ConstraintSet.BOTTOM,
+                    0
+            );
+        }
+
+        constraintSet.applyTo(constraintLayout);
+        if (visible) {
+            buttons.setVisibility(View.VISIBLE);
+        } else {
+            buttons.setVisibility(View.INVISIBLE);
+        }
+
+        ConstraintLayout.LayoutParams buttonsLayoutParams =
+                (ConstraintLayout.LayoutParams) buttons.getLayoutParams();
+        buttonsLayoutParams.topMargin = buttonsMargin;
+        buttons.setLayoutParams(buttonsLayoutParams);
     }
 
 }

@@ -1,7 +1,8 @@
-package android.widget;
+package ru.forblitz.statistics.widget.common;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.ViewFlipper;
 
 /**
  * It's ViewFlipper, but setDisplayedChild() works only if whichChild

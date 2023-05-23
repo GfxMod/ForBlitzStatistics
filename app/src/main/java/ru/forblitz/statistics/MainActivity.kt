@@ -180,25 +180,6 @@ class MainActivity : AppCompatActivity() {
 
         //
 
-        contentView!!.viewTreeObserver.addOnGlobalLayoutListener {
-            val displayFrameRect = Rect()
-            contentView?.getWindowVisibleDisplayFrame(displayFrameRect)
-            val screenHeight = contentView!!.rootView.height
-
-            val keypadHeight = screenHeight - displayFrameRect.bottom
-            if (keypadHeight > screenHeight * 0.15) {
-                if (!isKeyboardShowing) {
-                    isKeyboardShowing = true
-                    onKeyboardVisibilityChanged()
-                }
-            } else {
-                if (isKeyboardShowing) {
-                    isKeyboardShowing = false
-                    onKeyboardVisibilityChanged()
-                }
-            }
-        }
-
         // Hides statistics elements and shows nickname input elements
 
         mainLayoutsFlipper.displayedChild = MainViewFlipperItems.ENTER_NICKNAME
@@ -248,10 +229,6 @@ class MainActivity : AppCompatActivity() {
         // Get app.preferences
 
         app.preferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
-
-        // Sets region
-
-        setRegion()
 
         // Sets app.preferences listeners
 
@@ -328,6 +305,31 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         app.connectivityService.subscribe(this)
+
+        // Set keyboard visibility listener
+
+        contentView!!.viewTreeObserver.addOnGlobalLayoutListener {
+            val displayFrameRect = Rect()
+            contentView?.getWindowVisibleDisplayFrame(displayFrameRect)
+            val screenHeight = contentView!!.rootView.height
+
+            val keypadHeight = screenHeight - displayFrameRect.bottom
+            if (keypadHeight > screenHeight * 0.15) {
+                if (!isKeyboardShowing) {
+                    isKeyboardShowing = true
+                    onKeyboardVisibilityChanged()
+                }
+            } else {
+                if (isKeyboardShowing) {
+                    isKeyboardShowing = false
+                    onKeyboardVisibilityChanged()
+                }
+            }
+        }
+
+        // Set region
+
+        setRegion()
 
         // Check version and fill vehicles specifications
 

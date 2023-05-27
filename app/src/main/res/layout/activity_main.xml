@@ -82,6 +82,22 @@
             android:layout_marginBottom="@dimen/padding_giant"
             android:layout_marginEnd="@dimen/padding_giant" />
 
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/search_progress_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:trackThickness="@dimen/padding_small"
+            android:indeterminate="true"
+            app:trackColor="@android:color/transparent"
+            app:indicatorColor="@color/transparent_white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="@dimen/padding_big"
+            android:layout_marginEnd="@dimen/padding_big"
+            android:layout_marginBottom="@dimen/padding_big"
+            android:visibility="gone" />
+
     </ru.forblitz.statistics.widget.common.MaskableConstraintLayout>
 
     <ru.forblitz.statistics.widget.common.DifferenceViewFlipper

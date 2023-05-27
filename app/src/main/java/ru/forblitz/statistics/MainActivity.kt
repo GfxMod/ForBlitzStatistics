@@ -33,6 +33,7 @@ import androidx.core.text.HtmlCompat
 import androidx.core.view.updateLayoutParams
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.yandex.mobile.ads.banner.BannerAdView
@@ -406,6 +407,7 @@ class MainActivity : AppCompatActivity() {
         val mainFlipper = findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
         val searchButton = findViewById<View>(R.id.search_button)
         val lastSearched = findViewById<View>(R.id.last_searched_flipper)
+        val searchProgressIndicator = findViewById<LinearProgressIndicator>(R.id.search_progress_indicator)
 
         //
 
@@ -414,6 +416,7 @@ class MainActivity : AppCompatActivity() {
         lastSearched.isClickable = false
         findViewById<View>(R.id.settings_button).isActivated = false
         findViewById<SessionButtonsLayout>(R.id.random_session_buttons).setButtonsVisibility(ButtonsVisibility.NOTHING)
+        searchProgressIndicator.show()
 
         // Plays animation
 
@@ -479,7 +482,6 @@ class MainActivity : AppCompatActivity() {
 
         app.adService.showInterstitial {
             CoroutineScope(Dispatchers.IO).launch {
-
                 try {
 
                     app.userIDService.clear()
@@ -501,6 +503,7 @@ class MainActivity : AppCompatActivity() {
                         searchButton.isClickable = true
                         lastSearched.isClickable = true
                         searchField.setText("", TextView.BufferType.EDITABLE)
+                        searchProgressIndicator.hide()
 
                         InterfaceUtils.createAlertDialog(
                             this@MainActivity,
@@ -509,7 +512,6 @@ class MainActivity : AppCompatActivity() {
                         ).show()
                     }
                 }
-
             }
         }
 
@@ -813,6 +815,7 @@ class MainActivity : AppCompatActivity() {
             findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper).displayedChild = MainViewFlipperItems.STATISTICS
             findViewById<View>(R.id.search_button).isClickable = true
             findViewById<View>(R.id.last_searched_flipper).isClickable = true
+            findViewById<LinearProgressIndicator>(R.id.search_progress_indicator).hide()
         }
     }
 

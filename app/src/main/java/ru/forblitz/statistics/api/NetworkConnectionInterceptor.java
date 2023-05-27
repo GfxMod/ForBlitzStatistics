@@ -4,10 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
-
-import java.io.IOException;
 
 import okhttp3.Interceptor;
 import okhttp3.Response;
@@ -29,7 +28,7 @@ public class NetworkConnectionInterceptor implements Interceptor {
 
     @NonNull
     @Override
-    public Response intercept(@NonNull Chain chain) throws IOException {
+    public Response intercept(@NonNull Chain chain) {
 
         Activity activity = connectivityService.getResponsibleActivity();
         if (activity != null) {
@@ -40,7 +39,14 @@ public class NetworkConnectionInterceptor implements Interceptor {
                 connectivityService.killAlertDialog(activity);
             }
 
-            return chain.proceed(chain.request().newBuilder().build());
+            try {
+                return chain.proceed(chain.request().newBuilder().build());
+            } catch (Throwable th) {
+                Log.e("Interceptor error", th.getMessage(), th);
+                // This means that the connection was lost while the response
+                // was being loaded. We need to intercept again
+                return intercept(chain);
+            }
         }
 
         throw new IllegalStateException("intercept: ConnectivityService does not contain any activity");

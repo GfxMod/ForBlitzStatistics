@@ -12,8 +12,8 @@ android {
         applicationId 'ru.forblitz.statistics'
         minSdk 26
         targetSdk 33
-        versionCode 6
-        versionName '0.4-beta'
+        versionCode 7
+        versionName '0.4.1-beta'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -56,5 +56,5 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'org.jetbrains.anko:anko-commons:0.10.1'
-    implementation 'com.yandex.android:mobileads:5.7.0'
+    implementation 'com.yandex.android:mobileads:5.8.0'
 }

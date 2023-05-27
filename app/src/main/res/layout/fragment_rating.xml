@@ -145,7 +145,7 @@
                             android:layout_weight="0.1"
                             android:fontFamily="@font/inter"
                             android:gravity="center"
-                            android:text="@string/battles"
+                            android:text="@string/rating_battles"
                             android:textColor="@android:color/white"
                             android:typeface="monospace"
                             app:autoSizeTextType="uniform" />

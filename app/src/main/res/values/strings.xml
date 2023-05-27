@@ -3,7 +3,8 @@
     <string name="loading">Loading&#8230;</string>
     <string name="input_nickname">Enter your nickname here</string>
 
-    <string name="battles">BATTLES</string>
+    <string name="random_battles">RANDOM BATTLES</string>
+    <string name="rating_battles">RATING BATTLES</string>
     <string name="win_rate">VICTORIES, %</string>
     <string name="average_damage">AVERAGE DAMAGE</string>
     <string name="efficiency">EFFICIENCY</string>

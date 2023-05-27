@@ -33,6 +33,7 @@ import androidx.core.text.HtmlCompat
 import androidx.core.view.updateLayoutParams
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.yandex.mobile.ads.banner.BannerAdView
 import com.yandex.mobile.ads.common.MobileAds
@@ -654,6 +655,8 @@ class MainActivity : AppCompatActivity() {
             app.sessionService.getSessionsList().removeAt(0)
         }
 
+        val randomLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.random_layouts_flipper)
+
         val sessions = ArrayList<Session>(0)
         for (i in 0 until app.sessionService.getSessionsList().size) {
             val session = Session()
@@ -661,11 +664,11 @@ class MainActivity : AppCompatActivity() {
             session.set = Runnable {
                 app.sessionService.clear()
                 setSessionStat(i)
-                findViewById<DifferenceViewFlipper>(R.id.random_layouts_flipper).displayedChild = 0
+                randomLayoutsFlipper.displayedChild = 0
             }
             session.delete = Runnable {
                 if (i == index) {
-                    Toast.makeText(this@MainActivity, getString(R.string.delete_select), Toast.LENGTH_SHORT).show()
+                    Snackbar.make(randomLayoutsFlipper, getString(R.string.delete_select), Snackbar.LENGTH_SHORT).show()
                 } else {
                     InterfaceUtils.createAlertDialog(
                         this@MainActivity,
@@ -674,7 +677,7 @@ class MainActivity : AppCompatActivity() {
                         this@MainActivity.getString(R.string.delete),
                         Runnable {
                             if (File(app.sessionService.getSessionsList()[i]).delete()) {
-                                Toast.makeText(this@MainActivity, this@MainActivity.getString(R.string.delete_successfully), Toast.LENGTH_SHORT).show()
+                                Snackbar.make(randomLayoutsFlipper, getString(R.string.delete_successfully), Snackbar.LENGTH_SHORT).show()
                                 if (index != sessions.size - 1) {
                                     app.sessionService.clear()
                                     setSessionStat(index)
@@ -682,9 +685,9 @@ class MainActivity : AppCompatActivity() {
                                     app.sessionService.clear()
                                     setSessionStat(index - 1)
                                 }
-                                findViewById<DifferenceViewFlipper>(R.id.random_layouts_flipper).displayedChild = 0
+                                randomLayoutsFlipper.displayedChild = 0
                             } else {
-                                Toast.makeText(this@MainActivity, this@MainActivity.getString(R.string.delete_failed), Toast.LENGTH_SHORT).show()
+                                Snackbar.make(randomLayoutsFlipper, getString(R.string.delete_failed), Snackbar.LENGTH_SHORT).show()
                             }
                         },
                         this@MainActivity.getString(android.R.string.cancel),

@@ -12,12 +12,13 @@
     style="@style/Theme.ForBlitz"
     tools:context="ru.forblitz.statistics.MainActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ru.forblitz.statistics.widget.common.MaskableConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.095"
-        android:background="@drawable/background_layout_insets"
-        android:padding="@dimen/padding_giant">
+        android:background="@drawable/background_layout"
+        whatever:maskPadding="@dimen/padding_big"
+        whatever:corner="@dimen/padding_very_big">
 
         <ru.forblitz.statistics.widget.common.SquareImageButton
             android:id="@+id/search_button"
@@ -31,7 +32,10 @@
             whatever:main_dimension="vertical"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/padding_giant"
+            android:layout_marginBottom="@dimen/padding_giant"
+            android:layout_marginStart="@dimen/padding_giant" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/search_field"
@@ -56,6 +60,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/search_button"
             app:layout_constraintEnd_toStartOf="@id/settings_button"
+            android:layout_marginTop="@dimen/padding_giant"
+            android:layout_marginBottom="@dimen/padding_giant"
             android:layout_marginStart="@dimen/padding_big"
             android:layout_marginEnd="@dimen/padding_big" />
 
@@ -71,9 +77,12 @@
             whatever:main_dimension="vertical"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/padding_giant"
+            android:layout_marginBottom="@dimen/padding_giant"
+            android:layout_marginEnd="@dimen/padding_giant" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </ru.forblitz.statistics.widget.common.MaskableConstraintLayout>
 
     <ru.forblitz.statistics.widget.common.DifferenceViewFlipper
         android:id="@+id/main_layouts_flipper"
@@ -95,26 +104,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.3925">
-
-<!--
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/enter_nickname_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:background="@drawable/background_layout"
-                    android:fontFamily="@font/inter"
-                    android:gravity="center"
-                    android:padding="@dimen/padding_very_big"
-                    android:text="@string/enter_nickname"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    android:typeface="monospace"
-                    app:autoSizeTextType="uniform"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
--->
 
                 <TextSwitcher
                     android:id="@+id/enter_nickname_text"

@@ -508,7 +508,7 @@ class MainActivity : AppCompatActivity() {
                         InterfaceUtils.createAlertDialog(
                             this@MainActivity,
                             getString(R.string.error) + " " + e.error.code,
-                            e.message.toString()
+                            e.message.toString().replace("XXX", app.preferences.getString("region", "notSpecified")!!.uppercase()),
                         ).show()
                     }
                 }

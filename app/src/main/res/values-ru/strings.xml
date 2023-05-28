@@ -130,7 +130,7 @@
     <string name="filters">Фильтры</string>
 
     <string name="error">Ошибка</string>
-    <string name="nickname_not_found">Не удалось найти игроков с введенным вами ником</string>
+    <string name="nickname_not_found">Не удалось найти игроков с введенным вами ником. Вы уверены, что аккаунт находится именно на XXX-кластере, который выбран вами сейчас?</string>
 
     <string name="lt">Легкий танк</string>
     <string name="mt">Средний танк</string>

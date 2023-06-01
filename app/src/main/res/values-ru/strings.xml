@@ -3,7 +3,8 @@
     <string name="loading">Загрузка&#8230;</string>
     <string name="input_nickname">Введите никнейм</string>
 
-    <string name="battles">БОЁВ</string>
+    <string name="random_battles">СЛУЧАЙНЫХ БОЁВ</string>
+    <string name="rating_battles">РЕЙТИНГОВЫХ БОЁВ</string>
     <string name="win_rate">ПОБЕД, %</string>
     <string name="average_damage">СРЕДНИЙ УРОН</string>
     <string name="efficiency">ЭФФЕКТИВНОСТЬ</string>
@@ -129,7 +130,7 @@
     <string name="filters">Фильтры</string>
 
     <string name="error">Ошибка</string>
-    <string name="nickname_not_found">Не удалось найти игроков с введенным вами ником</string>
+    <string name="nickname_not_found">Не удалось найти игроков с введенным вами ником. Вы уверены, что аккаунт находится именно на XXX-кластере, который выбран вами сейчас?</string>
 
     <string name="lt">Легкий танк</string>
     <string name="mt">Средний танк</string>

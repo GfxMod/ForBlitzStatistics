@@ -37,5 +37,13 @@
         <attr name="background_unchecked" format="reference|color" />
         <attr name="anim_duration" format="integer" />
     </declare-styleable>
+    <declare-styleable name="MaskableConstraintLayout">
+        <attr name="corner" format="dimension" />
+        <attr name="maskPadding" format="dimension" />
+        <attr name="maskPaddingStart" format="dimension" />
+        <attr name="maskPaddingEnd" format="dimension" />
+        <attr name="maskPaddingTop" format="dimension" />
+        <attr name="maskPaddingBottom" format="dimension" />
+    </declare-styleable>
 
 </resources>

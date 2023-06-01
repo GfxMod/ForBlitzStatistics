@@ -33,6 +33,8 @@ import androidx.core.text.HtmlCompat
 import androidx.core.view.updateLayoutParams
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.yandex.mobile.ads.banner.BannerAdView
 import com.yandex.mobile.ads.common.MobileAds
@@ -347,11 +349,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        app.connectivityService.unsubscribe(this)
-    }
-
     private fun onKeyboardVisibilityChanged() {
         findViewById<EditText>(R.id.search_field).isCursorVisible = isKeyboardShowing
 
@@ -405,6 +402,7 @@ class MainActivity : AppCompatActivity() {
         val mainFlipper = findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
         val searchButton = findViewById<View>(R.id.search_button)
         val lastSearched = findViewById<View>(R.id.last_searched_flipper)
+        val searchProgressIndicator = findViewById<LinearProgressIndicator>(R.id.search_progress_indicator)
 
         //
 
@@ -413,6 +411,7 @@ class MainActivity : AppCompatActivity() {
         lastSearched.isClickable = false
         findViewById<View>(R.id.settings_button).isActivated = false
         findViewById<SessionButtonsLayout>(R.id.random_session_buttons).setButtonsVisibility(ButtonsVisibility.NOTHING)
+        searchProgressIndicator.show()
 
         // Plays animation
 
@@ -478,7 +477,6 @@ class MainActivity : AppCompatActivity() {
 
         app.adService.showInterstitial {
             CoroutineScope(Dispatchers.IO).launch {
-
                 try {
 
                     app.userIDService.clear()
@@ -500,15 +498,15 @@ class MainActivity : AppCompatActivity() {
                         searchButton.isClickable = true
                         lastSearched.isClickable = true
                         searchField.setText("", TextView.BufferType.EDITABLE)
+                        searchProgressIndicator.hide()
 
                         InterfaceUtils.createAlertDialog(
                             this@MainActivity,
                             getString(R.string.error) + " " + e.error.code,
-                            e.message.toString()
+                            e.message.toString().replace("XXX", app.preferences.getString("region", "notSpecified")!!.uppercase()),
                         ).show()
                     }
                 }
-
             }
         }
 
@@ -654,6 +652,8 @@ class MainActivity : AppCompatActivity() {
             app.sessionService.getSessionsList().removeAt(0)
         }
 
+        val randomLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.random_layouts_flipper)
+
         val sessions = ArrayList<Session>(0)
         for (i in 0 until app.sessionService.getSessionsList().size) {
             val session = Session()
@@ -661,11 +661,11 @@ class MainActivity : AppCompatActivity() {
             session.set = Runnable {
                 app.sessionService.clear()
                 setSessionStat(i)
-                findViewById<DifferenceViewFlipper>(R.id.random_layouts_flipper).displayedChild = 0
+                randomLayoutsFlipper.displayedChild = 0
             }
             session.delete = Runnable {
                 if (i == index) {
-                    Toast.makeText(this@MainActivity, getString(R.string.delete_select), Toast.LENGTH_SHORT).show()
+                    Snackbar.make(randomLayoutsFlipper, getString(R.string.delete_select), Snackbar.LENGTH_SHORT).show()
                 } else {
                     InterfaceUtils.createAlertDialog(
                         this@MainActivity,
@@ -674,7 +674,7 @@ class MainActivity : AppCompatActivity() {
                         this@MainActivity.getString(R.string.delete),
                         Runnable {
                             if (File(app.sessionService.getSessionsList()[i]).delete()) {
-                                Toast.makeText(this@MainActivity, this@MainActivity.getString(R.string.delete_successfully), Toast.LENGTH_SHORT).show()
+                                Snackbar.make(randomLayoutsFlipper, getString(R.string.delete_successfully), Snackbar.LENGTH_SHORT).show()
                                 if (index != sessions.size - 1) {
                                     app.sessionService.clear()
                                     setSessionStat(index)
@@ -682,9 +682,9 @@ class MainActivity : AppCompatActivity() {
                                     app.sessionService.clear()
                                     setSessionStat(index - 1)
                                 }
-                                findViewById<DifferenceViewFlipper>(R.id.random_layouts_flipper).displayedChild = 0
+                                randomLayoutsFlipper.displayedChild = 0
                             } else {
-                                Toast.makeText(this@MainActivity, this@MainActivity.getString(R.string.delete_failed), Toast.LENGTH_SHORT).show()
+                                Snackbar.make(randomLayoutsFlipper, getString(R.string.delete_failed), Snackbar.LENGTH_SHORT).show()
                             }
                         },
                         this@MainActivity.getString(android.R.string.cancel),
@@ -810,6 +810,7 @@ class MainActivity : AppCompatActivity() {
             findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper).displayedChild = MainViewFlipperItems.STATISTICS
             findViewById<View>(R.id.search_button).isClickable = true
             findViewById<View>(R.id.last_searched_flipper).isClickable = true
+            findViewById<LinearProgressIndicator>(R.id.search_progress_indicator).hide()
         }
     }
 

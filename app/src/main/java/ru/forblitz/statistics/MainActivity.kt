@@ -349,11 +349,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        app.connectivityService.unsubscribe(this)
-    }
-
     private fun onKeyboardVisibilityChanged() {
         findViewById<EditText>(R.id.search_field).isCursorVisible = isKeyboardShowing
 

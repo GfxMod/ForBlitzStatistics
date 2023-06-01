@@ -19,6 +19,9 @@ public class ConnectivityService {
     private AlertDialog networkAlertDialog;
 
     public synchronized void subscribe(Activity activity) {
+        if (activities.size() != 0) {
+            unsubscribe(getResponsibleActivity());
+        }
         activities.add(activity);
     }
 

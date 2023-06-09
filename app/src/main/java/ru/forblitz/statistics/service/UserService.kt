@@ -9,13 +9,13 @@ import ru.forblitz.statistics.exception.ObjectException
 import ru.forblitz.statistics.dto.ErrorDTO
 import ru.forblitz.statistics.utils.Utils
 
-class UserIDService(private var context: Context, private var apiService: ApiService) {
+class UserService(private var context: Context, private var apiService: ApiService) {
 
     private var userID: String? = null
+    private var nickname: String? = null
 
     @Throws(ObjectException::class)
     suspend fun getUserID(nickname: String): String {
-
         return if (userID != null) {
 
             userID.toString()
@@ -27,18 +27,17 @@ class UserIDService(private var context: Context, private var apiService: ApiSer
             userID as String
 
         }
-
     }
 
-    @Throws(ObjectException::class)
     fun getUserID(): String {
-
         return userID!!
+    }
 
+    fun getNickname(): String {
+        return nickname!!
     }
 
     private fun parse(json: String): String? {
-
         if (
             JsonParser
                 .parseString(json)
@@ -80,14 +79,23 @@ class UserIDService(private var context: Context, private var apiService: ApiSer
                 .get("account_id")
                 .asString
 
+            nickname = JsonParser
+                .parseString(json)
+                .asJsonObject
+                .getAsJsonArray("data")
+                .get(0)
+                .asJsonObject
+                .get("nickname")
+                .asString
+
         }
 
         return userID
-
     }
 
     fun clear() {
         userID = null
+        nickname = null
     }
 
 }

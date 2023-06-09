@@ -113,13 +113,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingHorizontal="@dimen/padding_big">
+            android:paddingHorizontal="@dimen/padding_big"
+            android:weightSum="1">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/enter_nickname_layout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.3925">
+                android:layout_weight="0.375">
 
                 <TextSwitcher
                     android:id="@+id/enter_nickname_text"
@@ -250,60 +251,25 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.1" />
+                android:layout_weight="0.05" />
 
-            <ru.forblitz.statistics.widget.common.DifferenceViewFlipper
-                android:id="@+id/last_searched_flipper"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.1"
-                android:inAnimation="@anim/appearance"
-                android:outAnimation="@anim/disappearance">
+                android:layout_weight="0.575">
 
-                <LinearLayout
+                <ListView
+                    android:id="@+id/last_searched_list"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:background="@drawable/background_layout_nested"
-                    android:padding="@dimen/padding_big">
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:divider="@android:color/transparent"
+                    android:background="@drawable/background_layout"
+                    android:padding="@dimen/padding_big" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/last_searched_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:textColor="@color/white"
-                        android:fontFamily="@font/inter"
-                        android:textStyle="bold"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:padding="@dimen/padding"
-                        android:autoSizeTextType="uniform" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/last_searched_info"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:textColor="@color/grey"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:padding="@dimen/padding"
-                        android:autoSizeTextType="uniform" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </ru.forblitz.statistics.widget.common.DifferenceViewFlipper>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.2925" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 

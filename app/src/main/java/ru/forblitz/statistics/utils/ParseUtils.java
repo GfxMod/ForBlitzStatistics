@@ -1,7 +1,7 @@
 package ru.forblitz.statistics.utils;
 
 import android.content.Context;
-import android.icu.util.TimeZone;
+import android.icu.util.Calendar;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -39,9 +39,16 @@ public class ParseUtils {
         return statisticsData;
     }
 
-    public static String time(String timestamp) {
-        long offset = TimeZone.getDefault().getRawOffset() / 1000L; // насколько в секундах отличается часовой пояс в большую сторону относительно обычного Timestamp
+    public static String timeSeconds(String timestamp) {
+        long offset = Calendar.getInstance().getTimeZone().getRawOffset() / 1000;
         String time = java.time.format.DateTimeFormatter.ISO_INSTANT.format(java.time.Instant.ofEpochSecond(Long.parseLong(timestamp) + offset));
+        time = time.substring(0, 4) +  "." + time.substring(5, 7) + "." + time.substring(8, 10) + " " + time.substring(11, time.length() - 1);
+        return time;
+    }
+
+    public static String timeMillis(String timestamp) {
+        long offset = Calendar.getInstance().getTimeZone().getRawOffset();
+        String time = java.time.format.DateTimeFormatter.ISO_INSTANT.format(java.time.Instant.ofEpochMilli(Long.parseLong(timestamp) + offset));
         time = time.substring(0, 4) +  "." + time.substring(5, 7) + "." + time.substring(8, 10) + " " + time.substring(11, time.length() - 1);
         return time;
     }

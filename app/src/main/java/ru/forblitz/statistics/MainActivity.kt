@@ -31,6 +31,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.text.HtmlCompat
 import androidx.core.view.updateLayoutParams
+import androidx.room.Room.databaseBuilder
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
@@ -43,6 +44,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Runnable
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.contentView
+import ru.forblitz.statistics.adapters.LastSearchedAdapter
 import ru.forblitz.statistics.adapters.SessionAdapter
 import ru.forblitz.statistics.adapters.VehicleAdapter
 import ru.forblitz.statistics.adapters.ViewPagerAdapter
@@ -52,6 +54,8 @@ import ru.forblitz.statistics.data.Constants.ClanViewFlipperItems
 import ru.forblitz.statistics.data.Constants.MainViewFlipperItems
 import ru.forblitz.statistics.data.Constants.StatisticsViewFlipperItems
 import ru.forblitz.statistics.data.Constants.TABS_COUNT
+import ru.forblitz.statistics.data.RecordDatabase
+import ru.forblitz.statistics.dto.Record
 import ru.forblitz.statistics.dto.Session
 import ru.forblitz.statistics.dto.StatisticsData
 import ru.forblitz.statistics.dto.VehicleSpecs
@@ -64,7 +68,7 @@ import ru.forblitz.statistics.service.RandomService
 import ru.forblitz.statistics.service.RatingService
 import ru.forblitz.statistics.service.SessionService
 import ru.forblitz.statistics.service.UserClanService
-import ru.forblitz.statistics.service.UserIDService
+import ru.forblitz.statistics.service.UserService
 import ru.forblitz.statistics.service.VehicleSpecsService
 import ru.forblitz.statistics.service.VehicleStatService
 import ru.forblitz.statistics.service.VersionService
@@ -213,7 +217,7 @@ class MainActivity : AppCompatActivity() {
 
         app.connectivityService = ConnectivityService()
         app.apiService = ApiService(app.connectivityService)
-        app.userIDService = UserIDService(this@MainActivity, app.apiService)
+        app.userService = UserService(this@MainActivity, app.apiService)
         app.randomService = RandomService(app.apiService)
         app.ratingService = RatingService(app.apiService)
         app.userClanService = UserClanService(app.apiService)
@@ -223,6 +227,11 @@ class MainActivity : AppCompatActivity() {
         app.vehicleSpecsService = VehicleSpecsService(app.apiService)
         app.vehicleStatService = VehicleStatService(app.apiService)
         app.adService = AdService(this@MainActivity)
+        app.recordDatabase = databaseBuilder(
+            applicationContext,
+            RecordDatabase::class.java, "history-database"
+        ).build()
+
 
         // Creates a session directory
 
@@ -401,14 +410,12 @@ class MainActivity : AppCompatActivity() {
 
         val mainFlipper = findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
         val searchButton = findViewById<View>(R.id.search_button)
-        val lastSearched = findViewById<View>(R.id.last_searched_flipper)
         val searchProgressIndicator = findViewById<LinearProgressIndicator>(R.id.search_progress_indicator)
 
         //
 
         mainFlipper.displayedChild = MainViewFlipperItems.LOADING
         searchButton.isClickable = false
-        lastSearched.isClickable = false
         findViewById<View>(R.id.settings_button).isActivated = false
         findViewById<SessionButtonsLayout>(R.id.random_session_buttons).setButtonsVisibility(ButtonsVisibility.NOTHING)
         searchProgressIndicator.show()
@@ -479,8 +486,21 @@ class MainActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 try {
 
-                    app.userIDService.clear()
-                    app.userIDService.getUserID(searchField.text.toString())
+                    app.userService.clear()
+                    app.userService.getUserID(searchField.text.toString())
+
+                    findViewById<EditText>(R.id.search_field).setText(
+                        app.userService.getNickname(),
+                        TextView.BufferType.EDITABLE
+                    )
+                    app.recordDatabase.recordDao().addRecord(
+                        Record(
+                            app.userService.getUserID(),
+                            app.userService.getNickname(),
+                            System.currentTimeMillis().toString(),
+                            app.preferences.getString("region", "notSpecified")!!
+                        )
+                    )
 
                     // set player statistics
 
@@ -496,7 +516,6 @@ class MainActivity : AppCompatActivity() {
                     runOnUiThread {
                         mainFlipper.displayedChild = MainViewFlipperItems.ENTER_NICKNAME
                         searchButton.isClickable = true
-                        lastSearched.isClickable = true
                         searchField.setText("", TextView.BufferType.EDITABLE)
                         searchProgressIndicator.hide()
 
@@ -601,10 +620,9 @@ class MainActivity : AppCompatActivity() {
             try {
                 InterfaceUtils.setBaseStatistics(
                     this@MainActivity,
-                    app.randomService.getStatisticsData(app.userIDService.getUserID()),
+                    app.randomService.getStatisticsData(app.userService.getUserID()),
                     true)
                 setSessionStat(0)
-                findViewById<EditText>(R.id.search_field).setText(app.randomService.getStatisticsData(app.userIDService.getUserID()).nickname)
             } catch (e: ObjectException) {
                 InterfaceUtils.createAlertDialog(
                     this@MainActivity,
@@ -623,7 +641,7 @@ class MainActivity : AppCompatActivity() {
 
             app.ratingService.clear()
             InterfaceUtils.setRatingStatistics(this@MainActivity,
-                app.ratingService.getStatisticsData(app.userIDService.getUserID()),
+                app.ratingService.getStatisticsData(app.userService.getUserID()),
                 true)
             setSessionStat(0)
 
@@ -638,11 +656,11 @@ class MainActivity : AppCompatActivity() {
 
         app.sessionService.createSessionFile(
             app.randomService.getJson(),
-            app.userIDService.getUserID(),
+            app.userService.getUserID(),
             ParseUtils.timestamp(app.randomService.getJson(), false),
             app.preferences.getString("region", "notSpecified")!!
         )
-        app.sessionService.getSessionsList(app.userIDService.getUserID(), app.preferences.getString("region", "notSpecified")!!)
+        app.sessionService.getSessionsList(app.userService.getUserID(), app.preferences.getString("region", "notSpecified")!!)
 
         if (
             ParseUtils.timestamp(app.randomService.getJson(), false)
@@ -809,7 +827,6 @@ class MainActivity : AppCompatActivity() {
 
             findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper).displayedChild = MainViewFlipperItems.STATISTICS
             findViewById<View>(R.id.search_button).isClickable = true
-            findViewById<View>(R.id.last_searched_flipper).isClickable = true
             findViewById<LinearProgressIndicator>(R.id.search_progress_indicator).hide()
         }
     }
@@ -841,7 +858,7 @@ class MainActivity : AppCompatActivity() {
 
                 val pairs = HashMap<String, Pair<VehicleSpecs, VehicleStat>>()
 
-                app.vehicleStatService.getVehicleStat(app.userIDService.getUserID(), app.vehicleSpecsService.getVehiclesSpecsList().keys.toTypedArray()).forEach {
+                app.vehicleStatService.getVehicleStat(app.userService.getUserID(), app.vehicleSpecsService.getVehiclesSpecsList().keys.toTypedArray()).forEach {
                     pairs[it.key] = Pair(app.vehicleSpecsService.getVehiclesSpecsList()[it.key]!!, it.value)
                 }
 
@@ -993,7 +1010,7 @@ class MainActivity : AppCompatActivity() {
             app.userClanService.clear()
             app.clanService.clear()
 
-            if (app.userClanService.getShortClanInfo(app.userIDService.getUserID()) != null) {
+            if (app.userClanService.getShortClanInfo(app.userService.getUserID()) != null) {
                 runOnUiThread {
                     findViewById<ClanSmall>(R.id.random_clan).setData(app.userClanService.getShortClanInfo())
                     findViewById<ClanSmall>(R.id.rating_clan).setData(app.userClanService.getShortClanInfo())
@@ -1048,39 +1065,40 @@ class MainActivity : AppCompatActivity() {
      * Searches for saved sessions to suggest them instead of entering a nickname
      */
     private fun updateLastSearch() {
+        CoroutineScope(Dispatchers.IO).launch {
 
-        val lastSearchedFlipper = findViewById<DifferenceViewFlipper>(R.id.last_searched_flipper)
-        val enterNicknameText = findViewById<TextSwitcher>(R.id.enter_nickname_text)
+            val records =
+                app
+                    .recordDatabase
+                    .recordDao()
+                    .getDistinctRecordsByRegion(
+                        app.preferences.getString("region", "notSpecified"),
+                        3
+                    )
+                    .toTypedArray()
 
-        val lastFile = app.sessionService.getLastFile(app.preferences.getString("region", "notSpecified")!!)
+            runOnUiThread {
+                val lastSearchedList = findViewById<ListView>(R.id.last_searched_list)
+                val enterNicknameSwitcher = findViewById<TextSwitcher>(R.id.enter_nickname_text)
 
-        if (lastFile != null) {
-            val lastSearchedName = findViewById<TextView>(R.id.last_searched_name)
-            val lastSearchedInfo = findViewById<TextView>(R.id.last_searched_info)
+                if (records.isNotEmpty()) {
+                    enterNicknameSwitcher.setText(getString(R.string.enter_nickname_or_select))
+                    lastSearchedList.visibility = View.VISIBLE
 
-            lastSearchedName.text = ParseUtils.statisticsData(lastFile.readText(), "all").nickname
-            val lastSearchedInfoText = getString(R.string.last_search) + ParseUtils.time((lastFile.lastModified() / 1000).toString())
-            lastSearchedInfo.text = lastSearchedInfoText
-            if (!isKeyboardShowing) {
-                enterNicknameText.setText(getString(R.string.enter_nickname_or_select))
+                    lastSearchedList.dividerHeight = resources.getDimensionPixelSize(R.dimen.padding_big)
+                    lastSearchedList.adapter = LastSearchedAdapter(
+                        this@MainActivity,
+                        records,
+                        (InterfaceUtils.getY(this@MainActivity) * 0.905 * 0.1).toInt()
+                    )
+
+                } else {
+                    enterNicknameSwitcher.setText(getString(R.string.enter_nickname))
+                    lastSearchedList.visibility = View.GONE
+                }
             }
 
-            lastSearchedFlipper.setOnClickListener {
-                findViewById<EditText>(R.id.search_field).setText(lastSearchedName.text, TextView.BufferType.EDITABLE)
-                onClickSearchButton(findViewById(R.id.search_button))
-            }
-            lastSearchedFlipper.isClickable = true
-
-            lastSearchedFlipper.displayedChild = 0
-        } else {
-            if (!isKeyboardShowing) {
-                enterNicknameText.setText(getString(R.string.enter_nickname))
-            }
-
-            lastSearchedFlipper.displayedChild = 1
-            lastSearchedFlipper.isClickable = false
         }
-
     }
 
 }

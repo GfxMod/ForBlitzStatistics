@@ -42,7 +42,7 @@ public class SessionAdapter extends ArrayAdapter<Session> {
                 (int) (InterfaceUtils.getX() * 0.15)
         ));
 
-        String date = ParseUtils.time(session.getPath().substring(session.getPath().lastIndexOf("-") + 1, session.getPath().lastIndexOf(".")));
+        String date = ParseUtils.timeSeconds(session.getPath().substring(session.getPath().lastIndexOf("-") + 1, session.getPath().lastIndexOf(".")));
 
         TextView sessionDate = convertView.findViewById(R.id.session_date);
         View sessionRemove = convertView.findViewById(R.id.session_remove);

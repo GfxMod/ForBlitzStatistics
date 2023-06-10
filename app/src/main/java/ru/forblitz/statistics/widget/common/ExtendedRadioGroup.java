@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 
 import ru.forblitz.statistics.R;
+import ru.forblitz.statistics.utils.InterfaceUtils;
 
 public class ExtendedRadioGroup extends LinearLayout {
 
@@ -21,6 +22,8 @@ public class ExtendedRadioGroup extends LinearLayout {
     private Drawable checkedBackground;
 
     private Drawable uncheckedBackground;
+
+    private int childHeight;
 
     public ExtendedRadioGroup(Context context) {
         super(context);
@@ -34,6 +37,7 @@ public class ExtendedRadioGroup extends LinearLayout {
         checkedBackground = a.getDrawable(R.styleable.ExtendedRadioGroup_background_checked);
         uncheckedBackground = a.getDrawable(R.styleable.ExtendedRadioGroup_background_unchecked);
         animDuration = a.getInt(R.styleable.ExtendedRadioGroup_anim_duration, 0);
+        childHeight = a.getInt(R.styleable.ExtendedRadioGroup_child_height, -1);
 
         a.recycle();
     }
@@ -46,6 +50,7 @@ public class ExtendedRadioGroup extends LinearLayout {
         checkedBackground = a.getDrawable(R.styleable.ExtendedRadioGroup_background_checked);
         uncheckedBackground = a.getDrawable(R.styleable.ExtendedRadioGroup_background_unchecked);
         animDuration = a.getInt(R.styleable.ExtendedRadioGroup_anim_duration, 0);
+        childHeight = a.getInt(R.styleable.ExtendedRadioGroup_child_height, -1);
 
         a.recycle();
     }
@@ -85,21 +90,59 @@ public class ExtendedRadioGroup extends LinearLayout {
         this.setCheckedItem(this.findViewWithTag(tag));
     }
 
+    public int getChildHeight() {
+        return childHeight;
+    }
+
+    public void setChildHeight(int childHeight) {
+        this.childHeight = childHeight;
+
+        if (childHeight != -1) {
+            for (int i = 0; i < this.getChildCount(); i++) {
+                View child = this.getChildAt(i);
+
+                InterfaceUtils.doBySavingThePadding(
+                        child,
+                        () -> {
+                            LayoutParams layoutParams = (LayoutParams) child.getLayoutParams();
+                            layoutParams.height = childHeight;
+                            layoutParams.weight = 0;
+                            child.setLayoutParams(layoutParams);
+                        }
+                );
+            }
+        }
+    }
+
+    private void setChildHeight() {
+        setChildHeight(childHeight);
+    }
+
     private void setCheckedItem(View view) {
         if (checkedBackground != null && uncheckedBackground != null) {
 
             if (indexOfCheckedItem != this.indexOfChild(view)) {
 
-                TransitionDrawable transitionDrawableCheck = new TransitionDrawable(new Drawable[] { uncheckedBackground, checkedBackground });
-                transitionDrawableCheck.setCrossFadeEnabled(true);
-                transitionDrawableCheck.startTransition(animDuration);
-                view.setBackground(transitionDrawableCheck);
+                InterfaceUtils.doBySavingThePadding(
+                        view,
+                        () -> {
+                            TransitionDrawable transitionDrawableCheck = new TransitionDrawable(new Drawable[] { uncheckedBackground, checkedBackground });
+                            transitionDrawableCheck.setCrossFadeEnabled(true);
+                            transitionDrawableCheck.startTransition(animDuration);
+                            view.setBackground(transitionDrawableCheck);
+                        }
+                );
 
                 if (indexOfCheckedItem != -1) {
-                    TransitionDrawable transitionDrawableUncheck = new TransitionDrawable(new Drawable[] { checkedBackground, uncheckedBackground });
-                    transitionDrawableUncheck.setCrossFadeEnabled(true);
-                    transitionDrawableUncheck.startTransition(animDuration);
-                    this.getChildAt(indexOfCheckedItem).setBackground(transitionDrawableUncheck);
+                    InterfaceUtils.doBySavingThePadding(
+                            this.getChildAt(indexOfCheckedItem),
+                            () -> {
+                                TransitionDrawable transitionDrawableUncheck = new TransitionDrawable(new Drawable[] { checkedBackground, uncheckedBackground });
+                                transitionDrawableUncheck.setCrossFadeEnabled(true);
+                                transitionDrawableUncheck.startTransition(animDuration);
+                                this.getChildAt(indexOfCheckedItem).setBackground(transitionDrawableUncheck);
+                            }
+                    );
                 }
 
             }
@@ -113,7 +156,9 @@ public class ExtendedRadioGroup extends LinearLayout {
     public void onViewAdded(View child) {
         super.onViewAdded(child);
         if (uncheckedBackground != null) {
-            child.setBackground(uncheckedBackground);
+            InterfaceUtils.doBySavingThePadding(
+                    child, () -> child.setBackground(uncheckedBackground)
+            );
         }
     }
 }

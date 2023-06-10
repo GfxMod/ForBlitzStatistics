@@ -265,6 +265,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        settingsRegionLayout.childHeight = (InterfaceUtils.getY(this@MainActivity) * 0.905 * 0.1).toInt()
+
         // set onBackPressed
 
         onBackPressedDispatcher.addCallback(this@MainActivity, object : OnBackPressedCallback(true) {
@@ -1085,7 +1087,6 @@ class MainActivity : AppCompatActivity() {
                     enterNicknameSwitcher.setText(getString(R.string.enter_nickname_or_select))
                     lastSearchedList.visibility = View.VISIBLE
 
-                    lastSearchedList.dividerHeight = resources.getDimensionPixelSize(R.dimen.padding_big)
                     lastSearchedList.adapter = LastSearchedAdapter(
                         this@MainActivity,
                         records,

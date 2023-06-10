@@ -313,4 +313,17 @@ public class InterfaceUtils {
         buttons.setLayoutParams(buttonsLayoutParams);
     }
 
+    public static void doBySavingThePadding(View view, Runnable runnable) {
+
+        final int paddingLeft = view.getPaddingLeft();
+        final int paddingTop = view.getPaddingTop();
+        final int paddingRight = view.getPaddingRight();
+        final int paddingBottom = view.getPaddingBottom();
+
+        runnable.run();
+
+        view.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+
+    }
+
 }

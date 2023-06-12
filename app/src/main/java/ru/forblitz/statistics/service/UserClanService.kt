@@ -10,6 +10,11 @@ class UserClanService(private var apiService: ApiService) {
 
     private var shortClanInfo: ShortClanInfo? = null
 
+    /**
+     * Load [ShortClanInfo] for [userID]
+     * @param userID player ID
+     * @return [ShortClanInfo] for [userID]
+     */
     suspend fun getShortClanInfo(userID: String): ShortClanInfo? {
 
         return if (shortClanInfo != null) {
@@ -26,6 +31,11 @@ class UserClanService(private var apiService: ApiService) {
 
     }
 
+    /**
+     * Short form of [getShortClanInfo()][getShortClanInfo]
+     * @throws [NullPointerException] if data not already loaded
+     * @return [ShortClanInfo] object
+     */
     fun getShortClanInfo(): ShortClanInfo {
 
         return shortClanInfo!!
@@ -51,6 +61,9 @@ class UserClanService(private var apiService: ApiService) {
 
     }
 
+    /**
+     * Clears saved data
+     */
     fun clear() {
         shortClanInfo = null
     }

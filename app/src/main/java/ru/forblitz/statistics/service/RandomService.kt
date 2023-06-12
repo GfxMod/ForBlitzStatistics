@@ -10,10 +10,18 @@ class RandomService(private var apiService: ApiService) {
     private var statisticsData: StatisticsData? = null
     private var json: String? = null
 
+    /**
+     * @return Last uploaded after clearing json
+     */
     fun getJson(): String {
         return json!!
     }
 
+    /**
+     * Load StatisticsData for [userID]
+     * @param userID player ID
+     * @return [StatisticsData] for [userID]
+     */
     suspend fun getStatisticsData(userID: String): StatisticsData {
 
         return if (statisticsData != null) {
@@ -30,6 +38,10 @@ class RandomService(private var apiService: ApiService) {
 
     }
 
+    /**
+     * Short form of [getStatisticsData()][getStatisticsData]
+     * @return [StatisticsData] object if it exists, null if not
+     */
     fun getStatisticsData(): StatisticsData? {
         return statisticsData
     }
@@ -41,6 +53,9 @@ class RandomService(private var apiService: ApiService) {
 
     }
 
+    /**
+     * Clears saved data
+     */
     fun clear() {
         json = null
         statisticsData = null

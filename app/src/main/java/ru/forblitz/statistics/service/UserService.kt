@@ -1,13 +1,12 @@
 package ru.forblitz.statistics.service
 
 import android.content.Context
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import ru.forblitz.statistics.R
 import ru.forblitz.statistics.api.ApiService
-import ru.forblitz.statistics.exception.ObjectException
 import ru.forblitz.statistics.dto.ErrorDTO
+import ru.forblitz.statistics.exception.ObjectException
 import ru.forblitz.statistics.utils.Utils
 
 class UserService(private var context: Context, private var apiService: ApiService) {
@@ -15,6 +14,11 @@ class UserService(private var context: Context, private var apiService: ApiServi
     private var userID: String? = null
     private var nickname: String? = null
 
+    /**
+     * Load userID for [nickname]
+     * @param nickname player nickname
+     * @return [userID] for [nickname]
+     */
     @Throws(ObjectException::class)
     suspend fun getUserID(nickname: String): String {
         return if (userID != null) {
@@ -94,6 +98,9 @@ class UserService(private var context: Context, private var apiService: ApiServi
         return userID
     }
 
+    /**
+     * Clears saved data
+     */
     fun clear() {
         userID = null
         nickname = null

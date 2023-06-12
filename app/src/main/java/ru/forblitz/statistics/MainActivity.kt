@@ -88,17 +88,25 @@ import java.util.Collections
 
 class MainActivity : AppCompatActivity() {
 
+    /**
+    * Variable for accessing application services
+     */
     private lateinit var app: ForBlitzStatisticsApplication
 
+    /**
+    * Is the keyboard currently showing
+     */
     private var isKeyboardShowing: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Initialization of app variable
+
         app = application as ForBlitzStatisticsApplication
 
-        // Configures ViewPager
+        // Configures ViewPager and TabLayout
 
         val viewPager = findViewById<ViewPager>(R.id.view_pager)
         val tabLayout = findViewById<TabLayout>(R.id.tabs)
@@ -156,7 +164,7 @@ class MainActivity : AppCompatActivity() {
 
         viewPager.offscreenPageLimit = 3
 
-        //
+        // Sets animations and dimensions for 'enter nickname' TextSwitcher
 
         val enterNicknameText = findViewById<TextSwitcher>(R.id.enter_nickname_text)
 
@@ -184,9 +192,7 @@ class MainActivity : AppCompatActivity() {
                 bottomToBottom = R.id.enter_nickname_layout
             }
 
-        //
-
-        // Hides statistics elements and shows nickname input elements
+        // Shows 'enter nickname' screen
 
         mainLayoutsFlipper.displayedChild = MainViewFlipperItems.ENTER_NICKNAME
 
@@ -237,7 +243,7 @@ class MainActivity : AppCompatActivity() {
 
         app.sessionService.createSessionDir()
 
-        // Get app.preferences
+        // Initialization of app.preferences
 
         app.preferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
 
@@ -360,6 +366,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Called when the keyboard visibility has changed
+     */
     private fun onKeyboardVisibilityChanged() {
         findViewById<EditText>(R.id.search_field).isCursorVisible = isKeyboardShowing
 
@@ -383,10 +392,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Called when the [search button]
-     * [ru.forblitz.statistics.R.id.search_button] or the search button
-     * on the keyboard is pressed. Performs necessary all actions to view
-     * statistics.
+     * It is called when you press the [search button]
+     * [ru.forblitz.statistics.R.id.search_button], the search button on the
+     * keyboard, or the Enter button while entering a nickname. Performs
+     * necessary all actions to view statistics. It can also be called forcibly
+     * to perform a search.
      */
     fun onClickSearchButton(view: View) {
 
@@ -414,7 +424,8 @@ class MainActivity : AppCompatActivity() {
         val searchButton = findViewById<View>(R.id.search_button)
         val searchProgressIndicator = findViewById<LinearProgressIndicator>(R.id.search_progress_indicator)
 
-        //
+        // Shows the loading screen and the loading indicator, blocks all
+        // interactive elements during loading
 
         mainFlipper.displayedChild = MainViewFlipperItems.LOADING
         searchButton.isClickable = false
@@ -471,7 +482,7 @@ class MainActivity : AppCompatActivity() {
             tanksLayoutsFlipper.displayedChild = 3
         }
 
-        // set params of tanksList
+        // Set params of tanksList
 
         tanksList.emptyView = findViewById(R.id.item_nothing_found)
 
@@ -482,7 +493,7 @@ class MainActivity : AppCompatActivity() {
             tanksList.addFooterView(footer)
         }
 
-        // Gets the data of the player you are looking for
+        // Does everything to show statistics, but first shows ads if necessary
 
         app.adService.showInterstitial {
             CoroutineScope(Dispatchers.IO).launch {
@@ -535,8 +546,8 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * Called when the [settings button]
-     * [ru.forblitz.statistics.R.id.settings_button] is pressed. Shows
-     * the settings layout.
+     * [ru.forblitz.statistics.R.id.settings_button] is pressed. Shows the
+     * settings screen or returns to the start screen.
      */
     fun onClickSettingsButton(view: View) {
 
@@ -547,7 +558,7 @@ class MainActivity : AppCompatActivity() {
             true
         )
 
-        // Shows/hides the settings layout
+        // Shows the settings screen or returns to the start screen
 
         val mainLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
 
@@ -568,9 +579,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Gets app version from the server and compares it with the [BuildConfig.VERSION_CODE]
+     * Gets minimal and recommended app version from the server and compares it with the
+     * [BuildConfig.VERSION_CODE]. Shows an [AlertDialog][androidx.appcompat.app.AlertDialog] about the update, if necessary.
      */
     private suspend fun versionCheck() {
+
+        // If the version is less than the minimum, it is necessary to show an
+        // unclosable AlertDialog about the need for an update. If it is less
+        // than recommended, then it is necessary to show a closable
+        // AlertDialog that an update is recommended.
 
         if (BuildConfig.VERSION_CODE in app.versionService.getMinimalAppVersion() until app.versionService.getCurrentAppVersion()) {
 
@@ -615,6 +632,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Gets 'random' statistics and sets it to the 'random' screen. At the end
+     * of the work, it calls 'setSessionStat()'
+     */
     private fun setRandomStat() {
         CoroutineScope(Dispatchers.IO).launch {
 
@@ -638,6 +659,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Gets 'rating' statistics and sets it to the 'rating' screen. At the end
+     * of the work, it calls 'setSessionStat()'
+     */
     private fun setRatingStat() {
         CoroutineScope(Dispatchers.IO).launch {
 
@@ -650,11 +675,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Gets 'session' statistics and sets it for all 'session' elements
+     */
     private fun setSessionStat(index: Int) {
+
+        // If the statistics data 'random' or statistics data 'rating' have not
+        // been loaded yet, then there is nothing to compare with, the function
+        // is terminated. If session statistics are already set, then the
+        // function is also terminated.
+
         if (app.randomService.getStatisticsData() == null || app.ratingService.getStatisticsData() == null || app.sessionService.alreadySet) {
             return
         }
         app.sessionService.alreadySet = true
+
+        // Saves the current session to a file
 
         app.sessionService.createSessionFile(
             app.randomService.getJson(),
@@ -664,6 +700,9 @@ class MainActivity : AppCompatActivity() {
         )
         app.sessionService.getSessionsList(app.userService.getUserID(), app.preferences.getString("region", "notSpecified")!!)
 
+        // Checks whether the current session matches the last one. If yes,
+        // then removes it from the list.
+
         if (
             ParseUtils.timestamp(app.randomService.getJson(), false)
             ==
@@ -671,6 +710,8 @@ class MainActivity : AppCompatActivity() {
         ) {
             app.sessionService.getSessionsList().removeAt(0)
         }
+
+        // Fills in the list of sessions that will be displayed with actions
 
         val randomLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.random_layouts_flipper)
 
@@ -715,6 +756,8 @@ class MainActivity : AppCompatActivity() {
             session.isSelected = i == index
             sessions.add(session)
         }
+
+        // Displays on the screen
 
         val randomSessionButtons = findViewById<SessionButtonsLayout>(R.id.random_session_buttons)
         val randomFastStat = findViewById<PlayerFastStat>(R.id.random_fast_stat)
@@ -858,13 +901,16 @@ class MainActivity : AppCompatActivity() {
 
             CoroutineScope(Dispatchers.IO).launch {
 
+                // Creates pairs of vehicles characteristics and vehicles
+                // statistics. The key is the ID of the vehicle
+
                 val pairs = HashMap<String, Pair<VehicleSpecs, VehicleStat>>()
 
                 app.vehicleStatService.getVehicleStat(app.userService.getUserID(), app.vehicleSpecsService.getVehiclesSpecsList().keys.toTypedArray()).forEach {
                     pairs[it.key] = Pair(app.vehicleSpecsService.getVehiclesSpecsList()[it.key]!!, it.value)
                 }
 
-                //
+                // Initializing widget variables
 
                 val tanksList = findViewById<ListView>(R.id.tanks_list)
                 
@@ -899,11 +945,7 @@ class MainActivity : AppCompatActivity() {
 
                 val tanksFilters = findViewById<FloatingActionButton>(R.id.tanks_filters)
 
-                //
-                ////
-                //////
-                ////
-                //
+                // Sorting and filtering
 
                 val sortedVehicles: ArrayList<Pair<VehicleSpecs, VehicleStat>> = ArrayList(pairs.values)
                 val vehiclesToCreate: ArrayList<Pair<VehicleSpecs, VehicleStat>> = ArrayList(0)
@@ -985,26 +1027,28 @@ class MainActivity : AppCompatActivity() {
                         vehiclesToCreate.add(it)
                     }
 
-                    runOnUiThread {
-                        tanksList.adapter = VehicleAdapter(this@MainActivity, vehiclesToCreate)
+                // Displaying data and ad banners
 
-                        val adView = findViewById<BannerAdView>(R.id.tanks_list_banner)
-                        app.adService.setBanner(
-                            InterfaceUtils.getX() - resources.getDimensionPixelSize(R.dimen.padding_big),
-                            adView
-                        )
-                        adView.updateLayoutParams<ConstraintLayout.LayoutParams> {
-                            bottomToBottom = R.id.tanks_list_layout
-                        }
+                runOnUiThread {
+                    tanksList.adapter = VehicleAdapter(this@MainActivity, vehiclesToCreate)
 
-                        tanksLayoutsFlipper.displayedChild = 0
+                    val adView = findViewById<BannerAdView>(R.id.tanks_list_banner)
+                    app.adService.setBanner(
+                        InterfaceUtils.getX() - resources.getDimensionPixelSize(R.dimen.padding_big),
+                        adView
+                    )
+                    adView.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                        bottomToBottom = R.id.tanks_list_layout
                     }
+
+                    tanksLayoutsFlipper.displayedChild = 0
+                }
             }
         }
     }
 
     /**
-     * Gets clan statistics and shows statistics interface elements
+     * Gets 'clan' statistics and sets it for all 'clan' elements
      */
     private fun setClanStat() {
         CoroutineScope(Dispatchers.IO).launch {
@@ -1033,10 +1077,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Sets the background for the region selection buttons, change region in [ForBlitzStatisticsApplication.apiService]
+     * Change region in [ForBlitzStatisticsApplication.apiService], sets the
+     * appropriate item in ['search' region selector]
+     * [R.id.search_region_layout] and [settings region selector]
+     * [R.id.settings_region_layout]
      */
     private fun setRegion() {
         findViewById<EditText>(R.id.search_field).setText("", TextView.BufferType.EDITABLE)
+
+        // If the region is not set, it means that the application is launched
+        // for the first time. An AlertDialog about the privacy policy is
+        // created, and the region is automatically set to 'ru'. In any other
+        // case, the specified region is set and updateLastSearch() is called
+        // (because the region has changed, the search history has changed)
+
         if (app.preferences.getString("region", "notSpecified") == "notSpecified") {
             app.preferences.edit().putString("region", "ru").apply()
             app.apiService.setRegion(app.preferences.getString("region", "notSpecified")!!)
@@ -1064,7 +1118,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Searches for saved sessions to suggest them instead of entering a nickname
+     * Fills [Last search list][R.id.last_searched_list] and sets the
+     * appropriate text in ['enter nickname' switcher]
+     * [R.id.enter_nickname_text]
      */
     private fun updateLastSearch() {
         CoroutineScope(Dispatchers.IO).launch {

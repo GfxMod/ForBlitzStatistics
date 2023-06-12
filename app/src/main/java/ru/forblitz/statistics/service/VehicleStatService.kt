@@ -12,6 +12,11 @@ class VehicleStatService(private var apiService: ApiService) {
 
     private var list = HashMap<String, VehicleStat>()
 
+    /**
+     * Load statistics for [vehiclesIds]
+     * @return [HashMap], where the key is the vehicle ID, and the contents are
+     * [statistics][VehicleStat]
+     */
     suspend fun getVehicleStat(userID: String, vehiclesIds: Array<String>): HashMap<String, VehicleStat> {
 
         if (list.size == 0) {

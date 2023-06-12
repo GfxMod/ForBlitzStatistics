@@ -14,6 +14,11 @@ class VehicleSpecsService(private var apiService: ApiService) {
         return list.size
     }
 
+    /**
+     * Load all vehicles specifications
+     * @return [HashMap], where the key is the vehicle ID, and the contents are
+     * [specifications][VehicleSpecs]
+     */
     suspend fun getVehiclesSpecsList(): HashMap<String, VehicleSpecs> {
 
         if (list.size == 0) {

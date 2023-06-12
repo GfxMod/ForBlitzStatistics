@@ -7,6 +7,10 @@ import ru.forblitz.statistics.api.NetworkConnectionInterceptor
 import ru.forblitz.statistics.utils.ParseUtils
 import ru.forblitz.statistics.utils.Utils
 
+/**
+ * The [VersionService] class handles operations related to obtaining the
+ * minimum and recommended versions of the application
+ */
 class VersionService(private var connectivityService: ConnectivityService) {
 
     private var json: String? = null

@@ -5,6 +5,11 @@ import ru.forblitz.statistics.dto.StatisticsData
 import ru.forblitz.statistics.utils.ParseUtils
 import ru.forblitz.statistics.utils.Utils
 
+/**
+ * The [RatingService] class handles rating-related operations.
+ *
+ * @property statisticsData The last data loaded after the cleanup.
+ */
 class RatingService(private var apiService: ApiService) {
 
     private var statisticsData: StatisticsData? = null

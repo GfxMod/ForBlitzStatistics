@@ -13,9 +13,9 @@ import ru.forblitz.statistics.R;
 import ru.forblitz.statistics.utils.InterfaceUtils;
 
 /**
- * The ConnectivityService class provides functionality for managing operations
+ * The {@link ConnectivityService} class provides functionality for managing operations
  * related to network connectivity. It stores the current activity and an
- * AlertDialog about the absence of a network
+ * {@link AlertDialog} about the absence of a network
  */
 public class ConnectivityService {
 

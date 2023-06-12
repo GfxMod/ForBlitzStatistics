@@ -9,6 +9,12 @@ import ru.forblitz.statistics.dto.ErrorDTO
 import ru.forblitz.statistics.exception.ObjectException
 import ru.forblitz.statistics.utils.Utils
 
+/**
+ * The [UserService] class handles rating-related operations.
+ *
+ * @property userID The last player ID loaded after the cleanup.
+ * @property nickname The last nickname loaded after the cleanup.
+ */
 class UserService(private var context: Context, private var apiService: ApiService) {
 
     private var userID: String? = null

@@ -10,7 +10,7 @@ import ru.forblitz.statistics.utils.Utils
 /**
  * The [ClanService] class handles clan-related operations.
  *
- * @property fullClanInfo The.
+ * @property fullClanInfo The last data loaded after the cleanup.
  */
 class ClanService(private var apiService: ApiService) {
 

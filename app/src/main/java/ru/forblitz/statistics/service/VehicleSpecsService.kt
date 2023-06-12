@@ -6,6 +6,13 @@ import ru.forblitz.statistics.dto.ApiResponse
 import ru.forblitz.statistics.dto.VehicleSpecs
 import ru.forblitz.statistics.utils.Utils
 
+/**
+ * The [VehicleSpecsService] class handles operations related to getting a list
+ * of vehicles in the game and their [characteristics][VehicleSpecs].
+ *
+ * @property list [HashMap], where the key is the vehicle ID, and the content
+ * is the [characteristics of the vehicle][VehicleSpecs]
+ */
 class VehicleSpecsService(private var apiService: ApiService) {
 
     private val list = HashMap<String, VehicleSpecs>()
@@ -16,8 +23,8 @@ class VehicleSpecsService(private var apiService: ApiService) {
 
     /**
      * Load all vehicles specifications
-     * @return [HashMap], where the key is the vehicle ID, and the contents are
-     * [specifications][VehicleSpecs]
+     * @return [HashMap], where the key is the vehicle ID, and the content is
+     * the [characteristics of the vehicle][VehicleSpecs]
      */
     suspend fun getVehiclesSpecsList(): HashMap<String, VehicleSpecs> {
 

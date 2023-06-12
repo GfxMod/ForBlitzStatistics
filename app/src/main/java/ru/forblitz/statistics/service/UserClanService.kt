@@ -6,6 +6,12 @@ import ru.forblitz.statistics.api.ApiService
 import ru.forblitz.statistics.dto.ShortClanInfo
 import ru.forblitz.statistics.utils.Utils
 
+/**
+ * The [UserClanService] class handles operations related to the user's clan, such
+ * as getting the ID of the clan the user belongs to and others.
+ *
+ * @property shortClanInfo The last data loaded after the cleanup.
+ */
 class UserClanService(private var apiService: ApiService) {
 
     private var shortClanInfo: ShortClanInfo? = null

@@ -63,7 +63,7 @@ public class AdService {
         if (!banners.containsKey(adView.getId())) {
             banners.put(adView.getId(), 0L);
             adView.setAdUnitId(Objects.requireNonNull(Utils.getProperties("adUnitIds.properties", context)).getProperty("bannerAdUnitId"));
-            adView.setAdSize(AdSize.stickySize(InterfaceUtils.pxToDp(context, width)));
+            adView.setAdSize(AdSize.stickySize(context, InterfaceUtils.pxToDp(context, width)));
         }
 
         // Создание объекта таргетирования рекламы.

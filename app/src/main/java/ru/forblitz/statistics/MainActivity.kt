@@ -3,11 +3,13 @@ package ru.forblitz.statistics
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.os.LocaleList
 import android.os.Looper
 import android.text.method.LinkMovementMethod
 import android.util.Log
@@ -19,6 +21,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.AbsListView
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.RadioGroup
 import android.widget.TextSwitcher
@@ -27,8 +30,10 @@ import android.widget.Toast
 import android.widget.ViewFlipper
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.os.LocaleListCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.view.updateLayoutParams
 import androidx.room.Room.databaseBuilder
@@ -84,6 +89,7 @@ import ru.forblitz.statistics.widget.data.SessionButtonsLayout
 import ru.forblitz.statistics.widget.data.SessionButtonsLayout.ButtonsVisibility
 import java.io.File
 import java.util.Collections
+import java.util.Locale
 
 
 class MainActivity : AppCompatActivity() {
@@ -251,6 +257,7 @@ class MainActivity : AppCompatActivity() {
 
         val searchRegionLayout = findViewById<ExtendedRadioGroup>(R.id.search_region_layout)
         val settingsRegionLayout = findViewById<ExtendedRadioGroup>(R.id.settings_region_layout)
+        val settingsLocaleLayout = findViewById<ExtendedRadioGroup>(R.id.settings_locale_layout)
 
         for (i in 0 until searchRegionLayout.childCount) {
             val view = searchRegionLayout.getChildAt(i)
@@ -270,10 +277,27 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        for (i in 0 until settingsLocaleLayout.childCount) {
+            val view = settingsLocaleLayout.getChildAt(i)
+            view.setOnClickListener {
+                changeLocale(view.tag.toString())
+            }
+        }
+
+        // Configured settings dimensions
 
         settingsRegionLayout.childHeight = (InterfaceUtils.getY(this@MainActivity) * 0.905 * 0.1).toInt()
+        settingsLocaleLayout.childHeight = (InterfaceUtils.getY(this@MainActivity) * 0.905 * 0.1).toInt()
 
-        // set onBackPressed
+        findViewById<View>(R.id.settings_region).updateLayoutParams<LinearLayout.LayoutParams> {
+            height = (InterfaceUtils.getY(this@MainActivity) * 0.905 * 0.05).toInt()
+        }
+
+        findViewById<View>(R.id.settings_locale).updateLayoutParams<LinearLayout.LayoutParams> {
+            height = (InterfaceUtils.getY(this@MainActivity) * 0.905 * 0.05).toInt()
+        }
+
+        // Sets onBackPressed
 
         onBackPressedDispatcher.addCallback(this@MainActivity, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -350,6 +374,13 @@ class MainActivity : AppCompatActivity() {
 
         setRegion()
 
+        // Displays the selected locale in the settings
+
+        val prefLocale = app.preferences.getString("locale", "notSpecified")
+        if (prefLocale != "notSpecified" && prefLocale != null) {
+            findViewById<ExtendedRadioGroup>(R.id.settings_locale_layout).setCheckedItem(prefLocale)
+        }
+
         // Check version and fill vehicles specifications
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -364,6 +395,46 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    @Suppress("deprecation")
+    private fun changeLocale(locale: String) {
+        app.preferences.edit().putString("locale", locale).apply()
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU){
+            val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags(locale)
+            AppCompatDelegate.setApplicationLocales(appLocale)
+        } else{
+            val newLocale = Locale(locale)
+            resources.configuration.setLocale(newLocale)
+
+            val localeList = LocaleList(newLocale)
+            LocaleList.setDefault(localeList)
+            resources.configuration.setLocales(localeList)
+
+            resources.updateConfiguration(resources.configuration, resources.displayMetrics)
+
+            val intent = intent
+            finish()
+            startActivity(intent)
+        }
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(newBase)
+        applyOverrideConfiguration(Configuration())
+    }
+
+    override fun applyOverrideConfiguration(overrideConfiguration: Configuration?) {
+        val config = Configuration(overrideConfiguration)
+
+        val prefLocale = getSharedPreferences("settings", Context.MODE_PRIVATE)
+            .getString("locale", "notSpecified")
+        if (prefLocale != "notSpecified" && prefLocale != null) {
+            config.setLocale(Locale(prefLocale))
+        }
+
+        super.applyOverrideConfiguration(config)
     }
 
     /**

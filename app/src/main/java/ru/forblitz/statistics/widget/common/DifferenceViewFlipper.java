@@ -5,8 +5,9 @@ import android.util.AttributeSet;
 import android.widget.ViewFlipper;
 
 /**
- * It's ViewFlipper, but setDisplayedChild() works only if whichChild
- * difference by already displayed child
+ * {@link DifferenceViewFlipper} is a custom widget that extends
+ * {@link ViewFlipper}, but {@link DifferenceViewFlipper#setDisplayedChild}
+ * works only if whichChild difference by already displayed child.
  */
 public class DifferenceViewFlipper extends ViewFlipper {
 

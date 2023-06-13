@@ -43,7 +43,7 @@ public class MemberAdapter extends ArrayAdapter<Member> {
         convertView.setOnClickListener(l -> InterfaceUtils.search(context, member.getAccountName()));
 
         String name = member.getAccountName();
-        String details = ParseUtils.role(getContext(), member.getRole()) + "; " + getContext().getResources().getString(R.string.joined_at) + ParseUtils.time(member.getJoinedAt());
+        String details = ParseUtils.formatClanRole(getContext(), member.getRole()) + "; " + getContext().getResources().getString(R.string.joined_at) + ParseUtils.formatSecondsTimestampToDate(member.getJoinedAt());
 
         TextView memberName = convertView.findViewById(R.id.member_name);
         TextView memberDetails = convertView.findViewById(R.id.member_details);

@@ -13,6 +13,19 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import ru.forblitz.statistics.R.styleable;
 import ru.forblitz.statistics.utils.InterfaceUtils;
 
+/**
+ * {@link AnimatedImageButton} is a custom widget that extends
+ * {@link AppCompatImageButton} to create an animated image button with toggle
+ * functionality. This widget displays different images based on its activation
+ * state and provides click and and displays the
+ * {@link android.R.attr#contentDescription} with a long press
+ * <ul>
+ *     <li>{@link ru.forblitz.statistics.R.attr#button_checked} The drawable
+ *     resource for the button when it is activated.</li>
+ *     <li>{@link ru.forblitz.statistics.R.attr#button_unchecked} The drawable
+ *     resource for the button when it is not activated.</li>
+ * </ul>
+ */
 public class AnimatedImageButton extends AppCompatImageButton {
 
     private Drawable drawableOn;

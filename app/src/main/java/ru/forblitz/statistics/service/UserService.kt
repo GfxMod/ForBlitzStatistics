@@ -5,17 +5,28 @@ import com.google.gson.Gson
 import com.google.gson.JsonParser
 import ru.forblitz.statistics.R
 import ru.forblitz.statistics.api.ApiService
-import ru.forblitz.statistics.exception.ObjectException
 import ru.forblitz.statistics.dto.ErrorDTO
+import ru.forblitz.statistics.exception.ObjectException
 import ru.forblitz.statistics.utils.Utils
 
-class UserIDService(private var context: Context, private var apiService: ApiService) {
+/**
+ * The [UserService] class handles rating-related operations.
+ *
+ * @property userID The last player ID loaded after the cleanup.
+ * @property nickname The last nickname loaded after the cleanup.
+ */
+class UserService(private var context: Context, private var apiService: ApiService) {
 
     private var userID: String? = null
+    private var nickname: String? = null
 
+    /**
+     * Load userID for [nickname]
+     * @param nickname player nickname
+     * @return [userID] for [nickname]
+     */
     @Throws(ObjectException::class)
     suspend fun getUserID(nickname: String): String {
-
         return if (userID != null) {
 
             userID.toString()
@@ -27,18 +38,17 @@ class UserIDService(private var context: Context, private var apiService: ApiSer
             userID as String
 
         }
-
     }
 
-    @Throws(ObjectException::class)
     fun getUserID(): String {
-
         return userID!!
+    }
 
+    fun getNickname(): String {
+        return nickname!!
     }
 
     private fun parse(json: String): String? {
-
         if (
             JsonParser
                 .parseString(json)
@@ -80,14 +90,26 @@ class UserIDService(private var context: Context, private var apiService: ApiSer
                 .get("account_id")
                 .asString
 
+            nickname = JsonParser
+                .parseString(json)
+                .asJsonObject
+                .getAsJsonArray("data")
+                .get(0)
+                .asJsonObject
+                .get("nickname")
+                .asString
+
         }
 
         return userID
-
     }
 
+    /**
+     * Clears saved data
+     */
     fun clear() {
         userID = null
+        nickname = null
     }
 
 }

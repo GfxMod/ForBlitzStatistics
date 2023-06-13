@@ -13,10 +13,9 @@ import okhttp3.Response;
 import ru.forblitz.statistics.service.ConnectivityService;
 
 /**
- * Before each and every API call intercept(Chain chain) method will be called
- * and it will check for internet connectivity. If no network found then it
- * will interrupts the normal flow of execution and throw
- * NoConnectivityException exception
+ * Before each and every API call {@link #intercept(Chain chain)} method will
+ * be called and it will check for internet connectivity. If the network is not
+ * detected, the stream will be suspended until it appears.
  */
 public class NetworkConnectionInterceptor implements Interceptor {
 

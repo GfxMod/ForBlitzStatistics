@@ -10,6 +10,13 @@ import androidx.appcompat.widget.AppCompatImageButton;
 
 import ru.forblitz.statistics.R;
 
+/**
+ * A custom Android widget that extends {@link AppCompatImageButton} to display
+ * a square image button.
+ * <p>
+ * The length of one of the dimensions is applied to the second side. Dimension
+ * can be specified using the {@link R.attr#main_dimension} attribute.
+ */
 public class SquareImageButton extends AppCompatImageButton {
 
     int orientation;

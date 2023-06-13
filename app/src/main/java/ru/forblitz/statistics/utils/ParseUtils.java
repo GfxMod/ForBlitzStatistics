@@ -1,7 +1,7 @@
 package ru.forblitz.statistics.utils;
 
 import android.content.Context;
-import android.icu.util.TimeZone;
+import android.icu.util.Calendar;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -15,9 +15,9 @@ import java.util.Locale;
 import ru.forblitz.statistics.R;
 import ru.forblitz.statistics.dto.StatisticsData;
 
-public class ParseUtils {
+public class  ParseUtils {
 
-    public static StatisticsData statisticsData(String json, String key) {
+    public static StatisticsData parseStatisticsData(String json, String key) {
 
         JsonObject dataObject = JsonParser
                 .parseString(json)
@@ -39,14 +39,21 @@ public class ParseUtils {
         return statisticsData;
     }
 
-    public static String time(String timestamp) {
-        long offset = TimeZone.getDefault().getRawOffset() / 1000L; // насколько в секундах отличается часовой пояс в большую сторону относительно обычного Timestamp
+    public static String formatSecondsTimestampToDate(String timestamp) {
+        long offset = Calendar.getInstance().getTimeZone().getRawOffset() / 1000;
         String time = java.time.format.DateTimeFormatter.ISO_INSTANT.format(java.time.Instant.ofEpochSecond(Long.parseLong(timestamp) + offset));
         time = time.substring(0, 4) +  "." + time.substring(5, 7) + "." + time.substring(8, 10) + " " + time.substring(11, time.length() - 1);
         return time;
     }
 
-    public static String role(Context context, String role) {
+    public static String formatMillisTimestampToDate(String timestamp) {
+        long offset = Calendar.getInstance().getTimeZone().getRawOffset();
+        String time = java.time.format.DateTimeFormatter.ISO_INSTANT.format(java.time.Instant.ofEpochMilli(Long.parseLong(timestamp) + offset));
+        time = time.substring(0, 4) +  "." + time.substring(5, 7) + "." + time.substring(8, 10) + " " + time.substring(11, time.length() - 1);
+        return time;
+    }
+
+    public static String formatClanRole(Context context, String role) {
         if (role.equals("private")) {
             return context.getResources().getString(R.string.clan_role_private);
         } else if (role.equals("executive_officer")) {
@@ -56,7 +63,7 @@ public class ParseUtils {
         }
     }
 
-    public static String timestamp(String string, boolean isFilename) {
+    public static String parseTimestamp(String string, boolean isFilename) {
 
         if (!isFilename) {
 
@@ -79,7 +86,7 @@ public class ParseUtils {
 
     }
 
-    public static int minimalAppVersion(String json) {
+    public static int parseMinimalAppVersion(String json) {
 
         JsonObject dataObject = JsonParser
                 .parseString(json)
@@ -90,7 +97,7 @@ public class ParseUtils {
 
     }
 
-    public static int currentAppVersion(String json) {
+    public static int parseCurrentAppVersion(String json) {
 
         JsonObject dataObject = JsonParser
                 .parseString(json)
@@ -101,6 +108,11 @@ public class ParseUtils {
 
     }
 
+    /**
+     * Divides every third digit of the number with a space.
+     * @param number number to split
+     * @return formatted number
+     */
     public static String splitByThousands(String number) {
 
         DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);

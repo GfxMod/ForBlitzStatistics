@@ -8,10 +8,22 @@ import ru.forblitz.statistics.utils.Utils
 import java.util.*
 import kotlin.math.ceil
 
+/**
+ * The [VehicleStatService] class handles operations related to getting a list
+ * of vehicles [statistics][VehicleStat].
+ *
+ * @property list [HashMap], where the key is the vehicle ID, and the content
+ * is the [statistics of the vehicle][VehicleStat]
+ */
 class VehicleStatService(private var apiService: ApiService) {
 
     private var list = HashMap<String, VehicleStat>()
 
+    /**
+     * Load statistics for [vehiclesIds]
+     * @return [HashMap], where the key is the vehicle ID, and the content is
+     * the [statistics of the vehicle][VehicleStat]
+     */
     suspend fun getVehicleStat(userID: String, vehiclesIds: Array<String>): HashMap<String, VehicleStat> {
 
         if (list.size == 0) {

@@ -44,7 +44,7 @@
                     android:orientation="horizontal"
                     android:layout_weight="0.2">
 
-                    <ru.forblitz.statistics.widget.data.ClanSmall
+                    <ru.forblitz.statistics.widget.data.ClanBrief
                         android:id="@+id/clan_clan"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -105,7 +105,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                    </ru.forblitz.statistics.widget.data.ClanSmall>
+                    </ru.forblitz.statistics.widget.data.ClanBrief>
 
                     <View
                         android:layout_width="0dp"

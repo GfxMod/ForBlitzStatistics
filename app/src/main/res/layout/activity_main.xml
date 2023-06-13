@@ -113,13 +113,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingHorizontal="@dimen/padding_big">
+            android:paddingHorizontal="@dimen/padding_big"
+            android:weightSum="1">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/enter_nickname_layout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.3925">
+                android:layout_weight="0.375">
 
                 <TextSwitcher
                     android:id="@+id/enter_nickname_text"
@@ -250,60 +251,26 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.1" />
+                android:layout_weight="0.05" />
 
-            <ru.forblitz.statistics.widget.common.DifferenceViewFlipper
-                android:id="@+id/last_searched_flipper"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.1"
-                android:inAnimation="@anim/appearance"
-                android:outAnimation="@anim/disappearance">
+                android:layout_weight="0.575">
 
-                <LinearLayout
+                <ListView
+                    android:id="@+id/last_searched_list"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:background="@drawable/background_layout_nested"
-                    android:padding="@dimen/padding_big">
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:divider="@android:color/transparent"
+                    android:dividerHeight="@dimen/padding_big"
+                    android:background="@drawable/background_layout"
+                    android:padding="@dimen/padding_big" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/last_searched_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:textColor="@color/white"
-                        android:fontFamily="@font/inter"
-                        android:textStyle="bold"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:padding="@dimen/padding"
-                        android:autoSizeTextType="uniform" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/last_searched_info"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:textColor="@color/grey"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:padding="@dimen/padding"
-                        android:autoSizeTextType="uniform" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </ru.forblitz.statistics.widget.common.DifferenceViewFlipper>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.2925" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 
@@ -374,116 +341,315 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@drawable/background_layout_insets"
-            android:padding="@dimen/padding_giant"
-            android:weightSum="20">
+            android:divider="@drawable/divider_big"
+            android:showDividers="middle"
+            android:paddingHorizontal="@dimen/padding_big">
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1.5"
-                android:fontFamily="@font/inter"
-                android:gravity="center"
-                android:padding="0dp"
-                android:text="@string/select_region"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:typeface="monospace"
-                app:autoSizeTextType="uniform"
-                android:layout_marginBottom="@dimen/padding_big" />
-
-            <ru.forblitz.statistics.widget.common.ExtendedRadioGroup
-                android:id="@+id/settings_region_layout"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="10"
-                whatever:background_unchecked="@drawable/background_layout_nested"
-                whatever:background_checked="@drawable/background_layout_nested_selected"
-                whatever:anim_duration="@android:integer/config_shortAnimTime"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_big"
+                android:background="@drawable/background_layout"
                 android:orientation="vertical"
-                android:padding="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="@dimen/padding_big">
+                android:divider="@drawable/divider_big"
+                android:showDividers="middle">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:tag="ru"
+                    android:id="@+id/settings_region"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="2"
-                    android:background="@drawable/background_layout_nested"
+                    android:text="@string/select_region"
+                    android:textColor="@color/white"
                     android:fontFamily="@font/inter"
+                    android:textStyle="bold"
                     android:gravity="center"
                     android:maxLines="1"
-                    android:paddingStart="@dimen/padding_very_big"
-                    android:paddingEnd="@dimen/padding_very_big"
-                    android:text="@string/select_region_ru"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    android:typeface="monospace"
-                    app:autoSizeTextType="uniform"
-                    android:layout_marginBottom="@dimen/padding_big" />
+                    android:padding="@dimen/padding_small"
+                    android:autoSizeTextType="uniform" />
+
+                <ru.forblitz.statistics.widget.common.ExtendedRadioGroup
+                    android:id="@+id/settings_region_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    whatever:background_unchecked="@drawable/background_layout_nested"
+                    whatever:background_checked="@drawable/background_layout_nested_selected"
+                    whatever:anim_duration="@android:integer/config_shortAnimTime"
+                    android:orientation="vertical"
+                    android:divider="@drawable/divider_big"
+                    android:showDividers="middle">
+
+                    <LinearLayout
+                        android:tag="ru"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="vertical"
+                        android:padding="@dimen/padding_big"
+                        android:background="@drawable/background_layout_nested"
+                        android:descendantFocusability="afterDescendants"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:text="@string/select_region_ru"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/inter"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:padding="@dimen/padding_small"
+                            android:autoSizeTextType="uniform" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:text="@string/select_region_lesta"
+                            android:textColor="@color/grey"
+                            android:fontFamily="@font/inter"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:padding="@dimen/padding_small"
+                            android:autoSizeTextType="uniform" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:tag="eu"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="vertical"
+                        android:padding="@dimen/padding_big"
+                        android:background="@drawable/background_layout_nested"
+                        android:descendantFocusability="afterDescendants"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:text="@string/select_region_eu"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/inter"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:padding="@dimen/padding_small"
+                            android:autoSizeTextType="uniform" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:text="@string/select_region_wargaming"
+                            android:textColor="@color/grey"
+                            android:fontFamily="@font/inter"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:padding="@dimen/padding_small"
+                            android:autoSizeTextType="uniform" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:tag="na"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="vertical"
+                        android:padding="@dimen/padding_big"
+                        android:background="@drawable/background_layout_nested"
+                        android:descendantFocusability="afterDescendants"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:tag="nickname"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:text="@string/select_region_na"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/inter"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:padding="@dimen/padding_small"
+                            android:autoSizeTextType="uniform" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:tag="date"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:text="@string/select_region_wargaming"
+                            android:textColor="@color/grey"
+                            android:fontFamily="@font/inter"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:padding="@dimen/padding_small"
+                            android:autoSizeTextType="uniform" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:tag="asia"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="vertical"
+                        android:padding="@dimen/padding_big"
+                        android:background="@drawable/background_layout_nested"
+                        android:descendantFocusability="afterDescendants"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:tag="nickname"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:text="@string/select_region_asia"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/inter"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:padding="@dimen/padding_small"
+                            android:autoSizeTextType="uniform" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:tag="date"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:text="@string/select_region_wargaming"
+                            android:textColor="@color/grey"
+                            android:fontFamily="@font/inter"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:padding="@dimen/padding_small"
+                            android:autoSizeTextType="uniform" />
+
+                    </LinearLayout>
+
+                </ru.forblitz.statistics.widget.common.ExtendedRadioGroup>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_big"
+                android:background="@drawable/background_layout"
+                android:orientation="vertical"
+                android:divider="@drawable/divider_big"
+                android:showDividers="middle">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:tag="eu"
+                    android:id="@+id/settings_locale"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="2"
-                    android:background="@drawable/background_layout_nested"
+                    android:text="@string/locale"
+                    android:textColor="@color/white"
                     android:fontFamily="@font/inter"
+                    android:textStyle="bold"
                     android:gravity="center"
                     android:maxLines="1"
-                    android:paddingStart="@dimen/padding_very_big"
-                    android:paddingEnd="@dimen/padding_very_big"
-                    android:text="@string/select_region_eu"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    android:typeface="monospace"
-                    app:autoSizeTextType="uniform"
-                    android:layout_marginBottom="@dimen/padding_big" />
+                    android:padding="@dimen/padding_small"
+                    android:autoSizeTextType="uniform" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:tag="na"
+                <ru.forblitz.statistics.widget.common.ExtendedRadioGroup
+                    android:id="@+id/settings_locale_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="2"
-                    android:background="@drawable/background_layout_nested"
-                    android:fontFamily="@font/inter"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:paddingStart="@dimen/padding_very_big"
-                    android:paddingEnd="@dimen/padding_very_big"
-                    android:text="@string/select_region_na"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    android:typeface="monospace"
-                    app:autoSizeTextType="uniform"
-                    android:layout_marginBottom="@dimen/padding_big" />
+                    android:layout_height="wrap_content"
+                    whatever:background_unchecked="@drawable/background_layout_nested"
+                    whatever:background_checked="@drawable/background_layout_nested_selected"
+                    whatever:anim_duration="@android:integer/config_shortAnimTime"
+                    android:orientation="vertical"
+                    android:divider="@drawable/divider_big"
+                    android:showDividers="middle">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:tag="asia"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="2"
-                    android:background="@drawable/background_layout_nested"
-                    android:fontFamily="@font/inter"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:paddingStart="@dimen/padding_very_big"
-                    android:paddingEnd="@dimen/padding_very_big"
-                    android:text="@string/select_region_asia"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    android:typeface="monospace"
-                    app:autoSizeTextType="uniform" />
+                    <LinearLayout
+                        android:tag="ru"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="vertical"
+                        android:padding="@dimen/padding_big"
+                        android:background="@drawable/background_layout_nested"
+                        android:descendantFocusability="afterDescendants"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false">
 
-            </ru.forblitz.statistics.widget.common.ExtendedRadioGroup>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:text="@string/locale_ru"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/inter"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:padding="@dimen/padding_small"
+                            android:autoSizeTextType="uniform" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:text="@string/locale_ru_desc"
+                            android:textColor="@color/grey"
+                            android:fontFamily="@font/inter"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:padding="@dimen/padding_small"
+                            android:autoSizeTextType="uniform" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:tag="en"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:orientation="vertical"
+                        android:padding="@dimen/padding_big"
+                        android:background="@drawable/background_layout_nested"
+                        android:descendantFocusability="afterDescendants"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:text="@string/locale_en"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/inter"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:padding="@dimen/padding_small"
+                            android:autoSizeTextType="uniform" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:text="@string/locale_en_desc"
+                            android:textColor="@color/grey"
+                            android:fontFamily="@font/inter"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:padding="@dimen/padding_small"
+                            android:autoSizeTextType="uniform" />
+
+                    </LinearLayout>
+
+                </ru.forblitz.statistics.widget.common.ExtendedRadioGroup>
+
+            </LinearLayout>
 
         </LinearLayout>
 

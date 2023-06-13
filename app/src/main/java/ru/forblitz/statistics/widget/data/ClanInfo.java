@@ -30,7 +30,7 @@ public class ClanInfo extends LinearLayout {
         ((TextView) this.findViewById(R.id.clan_motto)).setText(fullClanInfo.getMotto());
         ((TextView) this.findViewById(R.id.clan_description)).setText(fullClanInfo.getDescription());
 
-        ((ClanSmall) this.findViewById(R.id.clan_clan)).setData(shortClanInfo);
+        ((ClanBrief) this.findViewById(R.id.clan_clan)).setData(shortClanInfo);
 
     }
 

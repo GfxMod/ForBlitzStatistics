@@ -6,10 +6,21 @@ import ru.forblitz.statistics.api.ApiService
 import ru.forblitz.statistics.dto.ShortClanInfo
 import ru.forblitz.statistics.utils.Utils
 
+/**
+ * The [UserClanService] class handles operations related to the user's clan, such
+ * as getting the ID of the clan the user belongs to and others.
+ *
+ * @property shortClanInfo The last data loaded after the cleanup.
+ */
 class UserClanService(private var apiService: ApiService) {
 
     private var shortClanInfo: ShortClanInfo? = null
 
+    /**
+     * Load [ShortClanInfo] for [userID]
+     * @param userID player ID
+     * @return [ShortClanInfo] for [userID]
+     */
     suspend fun getShortClanInfo(userID: String): ShortClanInfo? {
 
         return if (shortClanInfo != null) {
@@ -26,6 +37,11 @@ class UserClanService(private var apiService: ApiService) {
 
     }
 
+    /**
+     * Short form of [getShortClanInfo()][getShortClanInfo]
+     * @throws [NullPointerException] if data not already loaded
+     * @return [ShortClanInfo] object
+     */
     fun getShortClanInfo(): ShortClanInfo {
 
         return shortClanInfo!!
@@ -51,6 +67,9 @@ class UserClanService(private var apiService: ApiService) {
 
     }
 
+    /**
+     * Clears saved data
+     */
     fun clear() {
         shortClanInfo = null
     }

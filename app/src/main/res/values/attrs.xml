@@ -36,6 +36,7 @@
         <attr name="background_checked" format="reference|color" />
         <attr name="background_unchecked" format="reference|color" />
         <attr name="anim_duration" format="integer" />
+        <attr name="child_height" format="dimension" />
     </declare-styleable>
     <declare-styleable name="MaskableConstraintLayout">
         <attr name="corner" format="dimension" />

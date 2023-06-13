@@ -11,13 +11,13 @@ import ru.forblitz.statistics.dto.ShortClanInfo;
 import ru.forblitz.statistics.utils.ParseUtils;
 import ru.forblitz.statistics.widget.common.DifferenceViewFlipper;
 
-public class ClanSmall extends DifferenceViewFlipper {
+public class ClanBrief extends DifferenceViewFlipper {
 
-    public ClanSmall(Context context) {
+    public ClanBrief(Context context) {
         super(context);
     }
 
-    public ClanSmall(Context context, AttributeSet attrs) {
+    public ClanBrief(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -28,7 +28,7 @@ public class ClanSmall extends DifferenceViewFlipper {
             this.setDisplayedChild(IS_A_MEMBER);
 
             String name = "[" + shortClanInfo.clanData.tag + "] " + shortClanInfo.clanData.name;
-            String role = ParseUtils.role(this.getContext(), shortClanInfo.role);
+            String role = ParseUtils.formatClanRole(this.getContext(), shortClanInfo.role);
 
             ((TextView) this.findViewWithTag("clan_name")).setText(name);
             ((TextView) this.findViewWithTag("clan_role")).setText(role);

@@ -38,7 +38,7 @@ import ru.forblitz.statistics.widget.data.PlayerFastStat;
 public class InterfaceUtils {
 
     /**
-     * @return width of app window
+     * @return width of app window in pixels
      */
     public static int getX() {
         return Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -46,7 +46,7 @@ public class InterfaceUtils {
 
     /**
      * @param context required to get resources
-     * @return height of app window
+     * @return height of app window in pixels
      */
     @SuppressLint({"InternalInsetResource", "DiscouragedApi"})
     public static int getY(Context context) {
@@ -57,6 +57,9 @@ public class InterfaceUtils {
         return height;
     }
 
+    /**
+     * @return the base {@link ScaleAnimation} to zoom out
+     */
     public static ScaleAnimation getAnimTo() {
         ScaleAnimation animTo = new ScaleAnimation(
                 1f, 0.85f, 1f, 0.85f,
@@ -67,6 +70,9 @@ public class InterfaceUtils {
         return animTo;
     }
 
+    /**
+     * @return the base {@link ScaleAnimation} to zoom in
+     */
     public static ScaleAnimation getAnimFrom() {
         ScaleAnimation animFrom = new ScaleAnimation(
                 0.85f, 1f, 0.85f, 1f,
@@ -77,6 +83,10 @@ public class InterfaceUtils {
         return animFrom;
     }
 
+    /**
+     * @param drawable {@link Drawable} to be converted to {@link Bitmap}
+     * @return Converted {@link Bitmap}
+     */
     public static Bitmap drawableToBitmap (@NonNull Drawable drawable) {
         Bitmap bitmap;
 
@@ -99,6 +109,15 @@ public class InterfaceUtils {
         return bitmap;
     }
 
+    /**
+     * @param context The {@link Context}
+     * @param drawable {@link Drawable} for conversion
+     * @param canvasSize The length in pixels of the side of the final canvas
+     * @param drawableSize The length in pixels of the side of the drawing
+     *                    object inscribed in a square on the final canvas
+     * @return Drawable, inscribed in a square with the drawableSize side and
+     * located in the center of the square with the canvasSize side
+     */
     public static BitmapDrawable createScaledSquareDrawable(Context context, Drawable drawable, int canvasSize, int drawableSize) {
         Bitmap bitmap = Bitmap.createBitmap(canvasSize, canvasSize, Bitmap.Config.ARGB_8888);
         new Canvas(bitmap).drawBitmap(
@@ -115,6 +134,11 @@ public class InterfaceUtils {
         return new BitmapDrawable(context.getResources(), bitmap);
     }
 
+    /**
+     * @param view The view on which the animation will be played
+     * @param needToSetClickable The need to make the View non-clickable for
+     *                           the duration of the animation
+     */
     public static void playCycledAnimation(@NonNull View view, Boolean needToSetClickable) {
         if (needToSetClickable) { view.setClickable(false); }
         ScaleAnimation animTo = new ScaleAnimation(
@@ -136,10 +160,22 @@ public class InterfaceUtils {
         if (needToSetClickable) { new Handler().postDelayed(() -> view.setClickable(true), 250); }
     }
 
+    /**
+     * Converts pixels to density-independent pixels (dp).
+     * @param context The Context
+     * @param px Pixels for conversion
+     * @return Density-independent pixels (dp)
+     */
     public static int pxToDp(Context context, int px) {
         return (int) ((double) px / ( (double) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
+    /**
+     * Substitutes a nickname in the search field and simulates a click on the
+     * search button
+     * @param context The Context
+     * @param nickname Nickname for search
+     */
     public static void search(Context context, String nickname) {
         ((EditText) ((Activity) context).findViewById(R.id.search_field)).setText(nickname, TextView.BufferType.EDITABLE);
         ((Activity) context).findViewById(R.id.search_button).performClick();
@@ -311,6 +347,19 @@ public class InterfaceUtils {
                 (ConstraintLayout.LayoutParams) buttons.getLayoutParams();
         buttonsLayoutParams.topMargin = buttonsMargin;
         buttons.setLayoutParams(buttonsLayoutParams);
+    }
+
+    public static void doBySavingThePadding(View view, Runnable runnable) {
+
+        final int paddingLeft = view.getPaddingLeft();
+        final int paddingTop = view.getPaddingTop();
+        final int paddingRight = view.getPaddingRight();
+        final int paddingBottom = view.getPaddingBottom();
+
+        runnable.run();
+
+        view.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+
     }
 
 }

@@ -7,10 +7,22 @@ import ru.forblitz.statistics.dto.FullClanInfo
 import ru.forblitz.statistics.dto.ShortClanInfo
 import ru.forblitz.statistics.utils.Utils
 
+/**
+ * The [ClanService] class handles clan-related operations.
+ *
+ * @property fullClanInfo The last data loaded after the cleanup.
+ */
 class ClanService(private var apiService: ApiService) {
 
     private var fullClanInfo: FullClanInfo? = null
 
+    /**
+     * Load full clan info for [shortClanInfo.clanId][ShortClanInfo.clanId]
+     * if it not exists
+     *
+     * @param shortClanInfo shortClanInfo, from where the clan ID will be taken if necessary
+     * @return [FullClanInfo] for [shortClanInfo.clanId][ShortClanInfo.clanId]
+     */
     suspend fun getFullClanInfo(shortClanInfo: ShortClanInfo): FullClanInfo? {
 
         return if (fullClanInfo != null) {
@@ -31,12 +43,23 @@ class ClanService(private var apiService: ApiService) {
 
     }
 
+    /**
+     * Short form of [getFullClanInfo()][getFullClanInfo]
+     * @return [FullClanInfo] object if it exists, null if not
+     */
     fun getFullClanInfo(): FullClanInfo? {
 
         return fullClanInfo
 
     }
 
+    /**
+     * Serializes [json] to [FullClanInfo]
+     *
+     * @param json json to serialize
+     * @param clanID clan ID
+     * @return Serialized [FullClanInfo] object
+     */
     private fun parse(json: String, clanID: String): FullClanInfo? {
 
         return Gson().fromJson(
@@ -50,6 +73,9 @@ class ClanService(private var apiService: ApiService) {
 
     }
 
+    /**
+     * Clears saved data
+     */
     fun clear() {
         fullClanInfo = null
     }

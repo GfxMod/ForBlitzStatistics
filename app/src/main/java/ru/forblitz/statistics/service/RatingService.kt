@@ -29,7 +29,7 @@ class RatingService(private var apiService: ApiService) {
 
             val json = request(userID)
 
-            statisticsData = ParseUtils.statisticsData(json, "rating")
+            statisticsData = ParseUtils.parseStatisticsData(json, "rating")
 
             statisticsData as StatisticsData
 

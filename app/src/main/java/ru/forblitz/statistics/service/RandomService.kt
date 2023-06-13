@@ -36,7 +36,7 @@ class RandomService(private var apiService: ApiService) {
 
         } else {
 
-            statisticsData = ParseUtils.statisticsData(request(userID), "all")
+            statisticsData = ParseUtils.parseStatisticsData(request(userID), "all")
 
             statisticsData as StatisticsData
 

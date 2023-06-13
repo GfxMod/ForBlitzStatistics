@@ -64,7 +64,7 @@ public class ClanDetails extends LinearLayout {
         if (!fullClanInfo.getCreatorName().equals("")) {
             clanCreator.setOnClickListener(l -> InterfaceUtils.search(clanCreator.getContext(), fullClanInfo.getCreatorName()));
         }
-        clanCreatedAt.setText(ParseUtils.timeSeconds(fullClanInfo.getCreatedAt()));
+        clanCreatedAt.setText(ParseUtils.formatSecondsTimestampToDate(fullClanInfo.getCreatedAt()));
         if (fullClanInfo.getOldName() != null) {
             clanOldName.setText(fullClanInfo.getOldName());
         } else {
@@ -76,7 +76,7 @@ public class ClanDetails extends LinearLayout {
             clanOldTag.setText(this.getContext().getString(R.string.empty));
         }
         if (fullClanInfo.getRenamedAt() != null) {
-            clanRenamedAt.setText(ParseUtils.timeSeconds(fullClanInfo.getRenamedAt()));
+            clanRenamedAt.setText(ParseUtils.formatSecondsTimestampToDate(fullClanInfo.getRenamedAt()));
         } else {
             clanRenamedAt.setText(this.getContext().getString(R.string.empty));
         }

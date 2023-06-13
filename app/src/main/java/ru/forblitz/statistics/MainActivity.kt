@@ -83,7 +83,7 @@ import ru.forblitz.statistics.utils.SessionUtils
 import ru.forblitz.statistics.widget.common.DifferenceViewFlipper
 import ru.forblitz.statistics.widget.common.ExtendedRadioGroup
 import ru.forblitz.statistics.widget.data.ClanScreen
-import ru.forblitz.statistics.widget.data.ClanSmall
+import ru.forblitz.statistics.widget.data.ClanBrief
 import ru.forblitz.statistics.widget.data.PlayerFastStat
 import ru.forblitz.statistics.widget.data.SessionButtonsLayout
 import ru.forblitz.statistics.widget.data.SessionButtonsLayout.ButtonsVisibility
@@ -766,7 +766,7 @@ class MainActivity : AppCompatActivity() {
         app.sessionService.createSessionFile(
             app.randomService.getJson(),
             app.userService.getUserID(),
-            ParseUtils.timestamp(app.randomService.getJson(), false),
+            ParseUtils.parseTimestamp(app.randomService.getJson(), false),
             app.preferences.getString("region", "notSpecified")!!
         )
         app.sessionService.getSessionsList(app.userService.getUserID(), app.preferences.getString("region", "notSpecified")!!)
@@ -775,9 +775,9 @@ class MainActivity : AppCompatActivity() {
         // then removes it from the list.
 
         if (
-            ParseUtils.timestamp(app.randomService.getJson(), false)
+            ParseUtils.parseTimestamp(app.randomService.getJson(), false)
             ==
-            ParseUtils.timestamp(app.sessionService.getSessionsList()[0], true)
+            ParseUtils.parseTimestamp(app.sessionService.getSessionsList()[0], true)
         ) {
             app.sessionService.getSessionsList().removeAt(0)
         }
@@ -862,7 +862,7 @@ class MainActivity : AppCompatActivity() {
                     else -> {
                         SessionUtils.calculateDifferences(
                             app.randomService.getStatisticsData(),
-                            ParseUtils.statisticsData(
+                            ParseUtils.parseStatisticsData(
                                 File(app.sessionService.getSessionsList()[index]).readText(),
                                 "all"
                             )
@@ -879,7 +879,7 @@ class MainActivity : AppCompatActivity() {
                     else -> {
                         SessionUtils.calculateDifferences(
                             app.ratingService.getStatisticsData(),
-                            ParseUtils.statisticsData(
+                            ParseUtils.parseStatisticsData(
                                 File(app.sessionService.getSessionsList()[index]).readText(),
                                 "rating"
                             )
@@ -908,14 +908,14 @@ class MainActivity : AppCompatActivity() {
 
                         randomFastStat.setData(SessionUtils.calculate(
                             app.randomService.getStatisticsData(),
-                            ParseUtils.statisticsData(
+                            ParseUtils.parseStatisticsData(
                                 File(app.sessionService.getSessionsList()[index]).readText(),
                                 "all"
                             )
                         ))
                         ratingFastStat.setData(SessionUtils.calculate(
                             app.ratingService.getStatisticsData(),
-                            ParseUtils.statisticsData(
+                            ParseUtils.parseStatisticsData(
                                 File(app.sessionService.getSessionsList()[index]).readText(),
                                 "rating"
                             )
@@ -1129,8 +1129,8 @@ class MainActivity : AppCompatActivity() {
 
             if (app.userClanService.getShortClanInfo(app.userService.getUserID()) != null) {
                 runOnUiThread {
-                    findViewById<ClanSmall>(R.id.random_clan).setData(app.userClanService.getShortClanInfo())
-                    findViewById<ClanSmall>(R.id.rating_clan).setData(app.userClanService.getShortClanInfo())
+                    findViewById<ClanBrief>(R.id.random_clan).setData(app.userClanService.getShortClanInfo())
+                    findViewById<ClanBrief>(R.id.rating_clan).setData(app.userClanService.getShortClanInfo())
                 }
                 app.clanService.getFullClanInfo(app.userClanService.getShortClanInfo())
                 runOnUiThread {
@@ -1139,8 +1139,8 @@ class MainActivity : AppCompatActivity() {
             } else {
                 runOnUiThread {
                     findViewById<ClanScreen>(R.id.fragment_clan).setData(null, app.clanService.getFullClanInfo())
-                    findViewById<ClanSmall>(R.id.random_clan).setData(null)
-                    findViewById<ClanSmall>(R.id.rating_clan).setData(null)
+                    findViewById<ClanBrief>(R.id.random_clan).setData(null)
+                    findViewById<ClanBrief>(R.id.rating_clan).setData(null)
                 }
             }
 

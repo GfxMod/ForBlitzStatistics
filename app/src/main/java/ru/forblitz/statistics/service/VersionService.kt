@@ -36,14 +36,14 @@ class VersionService(private var connectivityService: ConnectivityService) {
         if (json == null) {
             request()
         }
-        return ParseUtils.currentAppVersion(json)
+        return ParseUtils.parseCurrentAppVersion(json)
     }
 
     suspend fun getMinimalAppVersion(): Int {
         if (json == null) {
             request()
         }
-        return ParseUtils.minimalAppVersion(json)
+        return ParseUtils.parseMinimalAppVersion(json)
     }
 
 }

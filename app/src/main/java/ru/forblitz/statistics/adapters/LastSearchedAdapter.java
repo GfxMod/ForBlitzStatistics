@@ -50,7 +50,7 @@ public class LastSearchedAdapter extends ArrayAdapter<Record> {
         String nickname = record.nickname;
         String date =
                 getContext().getResources().getString(R.string.last_search) +
-                        ParseUtils.timeMillis(record.timestamp);
+                        ParseUtils.formatMillisTimestampToDate(record.timestamp);
 
         ((TextView) convertView.findViewWithTag("nickname")).setText(nickname);
         ((TextView) convertView.findViewWithTag("date")).setText(date);

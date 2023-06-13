@@ -860,7 +860,7 @@ class MainActivity : AppCompatActivity() {
                         StatisticsData()
                     }
                     else -> {
-                        SessionUtils.calculateDifferences(
+                        SessionUtils.calculateSessionDifferences(
                             app.randomService.getStatisticsData(),
                             ParseUtils.parseStatisticsData(
                                 File(app.sessionService.getSessionsList()[index]).readText(),
@@ -877,7 +877,7 @@ class MainActivity : AppCompatActivity() {
                         StatisticsData()
                     }
                     else -> {
-                        SessionUtils.calculateDifferences(
+                        SessionUtils.calculateSessionDifferences(
                             app.ratingService.getStatisticsData(),
                             ParseUtils.parseStatisticsData(
                                 File(app.sessionService.getSessionsList()[index]).readText(),
@@ -906,14 +906,14 @@ class MainActivity : AppCompatActivity() {
                     Handler(Looper.getMainLooper()).postDelayed({
                         randomSessionStatButton.text = getString(R.string.from_session_stat)
 
-                        randomFastStat.setData(SessionUtils.calculate(
+                        randomFastStat.setData(SessionUtils.calculateSession(
                             app.randomService.getStatisticsData(),
                             ParseUtils.parseStatisticsData(
                                 File(app.sessionService.getSessionsList()[index]).readText(),
                                 "all"
                             )
                         ))
-                        ratingFastStat.setData(SessionUtils.calculate(
+                        ratingFastStat.setData(SessionUtils.calculateSession(
                             app.ratingService.getStatisticsData(),
                             ParseUtils.parseStatisticsData(
                                 File(app.sessionService.getSessionsList()[index]).readText(),

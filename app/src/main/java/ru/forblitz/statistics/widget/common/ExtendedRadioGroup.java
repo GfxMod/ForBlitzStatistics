@@ -13,6 +13,21 @@ import androidx.annotation.Nullable;
 import ru.forblitz.statistics.R;
 import ru.forblitz.statistics.utils.InterfaceUtils;
 
+/**
+ * {@link ExtendedRadioGroup} is a custom widget that extends
+ * {@link LinearLayout}. Allows you to use any widget that has a background as
+ * a radio button and use custom animations to switch.
+ * <ul>
+ *     <li>{@link ru.forblitz.statistics.R.attr#background_checked} The
+ *     drawable resource for the button when it is activated.</li>
+ *     <li>{@link ru.forblitz.statistics.R.attr#background_unchecked} The
+ *     drawable resource for the button when it is not activated.</li>
+ *     <li>{@link ru.forblitz.statistics.R.attr#anim_duration} The duration of
+ *     the animation for changing the selected element.</li>
+ *     <li>{@link ru.forblitz.statistics.R.attr#child_height} The child height
+ *     (by default -1 (set any other value for health).</li>
+ * </ul>
+ */
 public class ExtendedRadioGroup extends LinearLayout {
 
     private int indexOfCheckedItem = -1;

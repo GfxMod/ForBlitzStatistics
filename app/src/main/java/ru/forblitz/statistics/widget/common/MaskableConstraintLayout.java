@@ -13,6 +13,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import ru.forblitz.statistics.R;
 
+/**
+ * {@link MaskableConstraintLayout} is a custom widget that extends
+ * {@link ConstraintLayout}. Allows you to apply a mask in two modes:
+ * <ul>
+ *     <li>Paddings and corner mode (rounded rectangle)</li>
+ *     <li>Custom path mode</li>
+ * </ul>
+ */
 public class MaskableConstraintLayout extends ConstraintLayout {
 
     private int corner;

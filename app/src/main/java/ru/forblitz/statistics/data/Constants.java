@@ -3,6 +3,8 @@ package ru.forblitz.statistics.data;
 import java.util.HashMap;
 import java.util.Map;
 
+import ru.forblitz.statistics.R;
+
 public class Constants {
     public static final String lestaAppId = "1957e1f71656310342971b3b1aa2efef";
     public static final String wgAppId = "ac75820d6c10195c86370ec1bc9f21de";
@@ -64,6 +66,18 @@ public class Constants {
         public static final double[] winRate = new double[] { 50, 60, 70 };
         public static final double[] averageDamage = new double[] { 1000, 1500, 2000 };
         public static final double[] efficiency = new double[] { 1, 1.25, 1.5 };
+    }
+
+    public static Map<String, Integer> localeCodes = new HashMap<>();
+    static {
+        localeCodes.put("ru", R.string.locale_ru);
+        localeCodes.put("en", R.string.locale_en);
+    }
+
+    public static Map<String, Integer> localeDescriptions = new HashMap<>();
+    static {
+        localeDescriptions.put("ru", R.string.locale_ru_desc);
+        localeDescriptions.put("en", R.string.locale_en_desc);
     }
 
 }

@@ -403,6 +403,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Restarts the activity with the locale set
+     * @param locale Locale code to be applied
+     */
     private fun changeLocale(locale: String) {
         app.preferences.edit().putString("locale", locale).apply()
 

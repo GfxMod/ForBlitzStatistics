@@ -365,6 +365,14 @@ public class InterfaceUtils {
 
     }
 
+    /**
+     * Creates an item for the selected locale, ready to be added to the list
+     * of locales
+     * @param context The Context
+     * @param locale The locale for which this item is needed
+     * @param action The action that will be performed when clicking on the item
+     * @return Returns an item ready to be added to the list of locales
+     */
     @SuppressLint("InflateParams")
     public static LinearLayout createLocaleItem(
             @NonNull Context context,

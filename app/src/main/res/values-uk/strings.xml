@@ -1,0 +1,165 @@
+<resources>
+    <string name="app_name">ForBlitz Statistics</string>
+    <string name="loading">Завантаження&#8230;</string>
+    <string name="input_nickname">Введіть нікнейм</string>
+
+    <string name="random_battles">ВИПАДКОВИХ БОЇВ</string>
+    <string name="rating_battles">РЕЙТИНГОВИХ БОЇВ</string>
+    <string name="win_rate">ПЕРЕМОГ, %</string>
+    <string name="average_damage">СЕРЕДНЯ ШКОДА</string>
+    <string name="efficiency">ЕФЕКТИВНІСТЬ</string>
+    <string name="survived">ВИЖИВ, %</string>
+    <string name="hits_from_shots">ПОПАДАНЬ, %</string>
+
+    <string name="I">I рівень</string>
+    <string name="II">II рівень</string>
+    <string name="III">III рівень</string>
+    <string name="IV">IV рівень</string>
+    <string name="V">V рівень</string>
+    <string name="VI">VI рівень</string>
+    <string name="VII">VII рівень</string>
+    <string name="VIII">VIII рівень</string>
+    <string name="IX">IX рівень</string>
+    <string name="X">X рівень</string>
+
+    <string name="cn">Китай</string>
+    <string name="eu">Сбірна Європи</string>
+    <string name="fr">Франція</string>
+    <string name="gb">Великобританія</string>
+    <string name="de">Німеччина</string>
+    <string name="jp">Японія</string>
+    <string name="other">Сбірна Нація</string>
+    <string name="us">США</string>
+    <string name="su">СРСР</string>
+
+    <string name="clan_false">Гравець не перебуває у клані</string>
+
+    <string name="creator_name">Створив:</string>
+    <string name="created_at">Створено:</string>
+    <string name="renamed_at">Перейменовано:</string>
+    <string name="old_name">Стара назва:</string>
+    <string name="old_tag">Старий тег:</string>
+
+    <string name="recruiting_options_info">Умови авторекрутингу:</string>
+    <string name="recruiting_options_vehicles_level">Рівень техніки:</string>
+    <string name="recruiting_options_wins_ratio">Перемог, %:</string>
+    <string name="recruiting_options_average_battles_per_day">Боїв у день:</string>
+    <string name="recruiting_options_battles">Боїв:</string>
+    <string name="recruiting_options_average_damage">Середня шкода:</string>
+
+    <string name="enter_nickname">Щоб подвитись статистику, введіть нікнейм у полі вище</string>
+    <string name="enter_nickname_or_select">Щоб подвитись статистику, введіть нікнейм у полі вище або виберіть запропонований нижче</string>
+
+    <string name="empty">--</string>
+    <string name="tier">Рівень техніки</string>
+    <string name="clear_tier">Очистити фільтр рівня</string>
+    <string name="classes">Клас техніки</string>
+    <string name="tank_sort">Сортування</string>
+
+    <string name="battles_sort">Сортування за кількістю боїв</string>
+    <string name="damage_sort">Сортування за середньою шкодою</string>
+    <string name="efficiency_sort">Сортування по ефективності</string>
+    <string name="xp_sort">Сортування по середньому досвіду</string>
+    <string name="win_rate_sort">Сортування по проценту перемог</string>
+
+    <string name="apply_filters">Застосувати фільтри</string>
+    <string name="nothing_found">Не вдалось нічого знайти по вибраним фільтрам</string>
+
+    <string name="rating_false">Гравець не був у рейтингу </string>
+    <string name="random_false">Гравець не був у випадкових боях</string>
+
+    <string name="detailed_statistics">Детальна статистика</string>
+
+    <string name="wins_small">Перемог</string>
+    <string name="losses_small">Поразок</string>
+    <string name="win_and_survive_small">Переміг і вижив</string>
+    <string name="survive_small">Вижив</string>
+    <string name="damage_dealt_small">Шкоди наніс</string>
+    <string name="damage_received_small">Шкоди прийняв</string>
+    <string name="xp_small">Усього досвіду</string>
+    <string name="frags_small">Вбивств</string>
+    <string name="shots_small">Вистрелів</string>
+    <string name="hits_small">Попадань</string>
+    <string name="spotted_small">Виявлено</string>
+    <string name="frags8p_small">Вбивств на VIII+</string>
+    <string name="max_xp_small">Макс. досвіду</string>
+    <string name="max_frags_small">Макс. вбивств</string>
+    <string name="captured_points_small">Очок захоплення</string>
+    <string name="dropped_small">Збито очок захоплення</string>
+    <string name="select_session">Вибрати дату порівняння</string>
+    <string name="to_session_stat">До статистики за сесію</string>
+    <string name="from_session_stat">До статистики за весь час</string>
+    <string name="clan_members">Учасники клану</string>
+    <string name="back">Назад</string>
+
+    <string name="clan_info">Інформація про клан</string>
+
+    <string name="delete">Видалити</string>
+    <string name="delete_alert">Ви впевнені, що хочете назавжди видалити цю сесію?</string>
+    <string name="delete_successfully">Сесія успішно видалена</string>
+    <string name="delete_failed">При видаленні сесії виникла помилка, спробуйте ще раз</string>
+    <string name="delete_select">Не можна видалити вибрану сесію</string>
+
+    <string name="clan_role_private">Рядовий</string>
+    <string name="clan_role_executive_officer">Заступник голови</string>
+    <string name="clan_role_commander">Голова клану</string>
+
+    <string name="joined_at">вступив до клану\u0020</string>
+
+    <string name="network_error">Не вдалося встановити з\'єднання</string>
+    <string name="network_error_desc">Перевірте з\'єднання з Інтернетом</string>
+    <string name="network_error_try_again">Виконати перепідключення</string>
+
+    <string name="last_search">Ви шукали цей обліковий запис\u0020</string>
+
+    <string name="select_region">Кластер для пошуку</string>
+    <string name="select_region_ru">RU-кластер</string>
+    <string name="select_region_eu">EU-кластер</string>
+    <string name="select_region_na">NA-кластер</string>
+    <string name="select_region_asia">ASIA-кластер</string>
+    <string name="select_region_lesta">Lesta Games</string>
+    <string name="select_region_wargaming">Wargaming</string>
+
+    <string name="update">Оновити</string>
+    <string name="update_available">Доступно оновлення</string>
+    <string name="update_available_desc">Будь ласка, оновіть ForBlitz Statistics до останньої версії</string>
+
+    <string name="terms_of_service">Умови використання</string>
+    <string name="terms_of_service_desc"><![CDATA[Користуючись додатком, ви приймаєте нашу політику конфіденційності (<a href="https://forblitz.ru/forblitzstats-privacy/">https://forblitz.ru/forblitzstats-privacy/</a>]]>)</string>
+    <string name="accept">Прийняти</string>
+    <string name="exit">Вихід</string>
+
+    <string name="filters">Фільтри</string>
+
+    <string name="error">Помилка</string>
+    <string name="nickname_not_found">Не вдалося знайти гравців з введеним вами ніком. Ви впевнені що обліковий запис знаходиться сами на ХХХ-кластере, який ви вибрали зараз?</string>
+
+    <string name="lt">Легкий танк</string>
+    <string name="mt">Середный танк</string>
+    <string name="ht">Тяжкий танк</string>
+    <string name="at">ПТ-САУ</string>
+
+    <string name="random">Випадкові бої</string>
+    <string name="rating">Рейтингові бої</string>
+    <string name="clan">Інформація про клан</string>
+    <string name="tanks">Статистика танків</string>
+
+    <string name="region_ru">RU</string>
+    <string name="region_eu">EU</string>
+    <string name="region_na">NA</string>
+    <string name="region_asia">ASIA</string>
+
+    <string name="region_select">Будь ласка, виберіть регіон, на якому знаходиться обліковий запис</string>
+
+    <string name="search">Пошук</string>
+    <string name="settings">Налаштування</string>
+
+    <string name="locale">Мова</string>
+    <string name="locale_ru">Русский</string>
+    <string name="locale_en">English</string>
+    <string name="locale_uk">Українська</string>
+    <string name="locale_ru_desc">ru-RU</string>
+    <string name="locale_en_desc">en-US</string>
+    <string name="locale_uk_desc">uk-UA</string>
+
+</resources>

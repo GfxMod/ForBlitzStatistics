@@ -157,7 +157,9 @@
     <string name="locale">Язык</string>
     <string name="locale_ru">Русский</string>
     <string name="locale_en">English</string>
+    <string name="locale_uk">Українська</string>
     <string name="locale_ru_desc">ru-RU</string>
     <string name="locale_en_desc">en-US</string>
+    <string name="locale_uk_desc">uk-UK</string>
 
 </resources>

@@ -72,12 +72,14 @@ public class Constants {
     static {
         localeCodes.put("ru", R.string.locale_ru);
         localeCodes.put("en", R.string.locale_en);
+        localeCodes.put("uk", R.string.locale_uk);
     }
 
     public static Map<String, Integer> localeDescriptions = new HashMap<>();
     static {
         localeDescriptions.put("ru", R.string.locale_ru_desc);
         localeDescriptions.put("en", R.string.locale_en_desc);
+        localeDescriptions.put("uk", R.string.locale_uk_desc);
     }
 
 }

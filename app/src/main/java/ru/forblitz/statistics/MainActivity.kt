@@ -653,6 +653,7 @@ class MainActivity : AppCompatActivity() {
         } else if (view.isActivated) {
 
             mainLayoutsFlipper.displayedChild = MainViewFlipperItems.ENTER_NICKNAME
+            updateLastSearch()
 
         }
 

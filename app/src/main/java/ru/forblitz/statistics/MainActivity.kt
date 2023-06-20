@@ -265,6 +265,7 @@ class MainActivity : AppCompatActivity() {
                 if (Constants.baseUrl.containsKey((view.tag.toString()))) {
                     app.preferences.edit().putString("region", view.tag.toString()).apply()
                     setRegion()
+                    updateLastSearch(false)
                 }
             }
         }
@@ -277,11 +278,17 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        for (i in 0 until settingsLocaleLayout.childCount) {
-            val view = settingsLocaleLayout.getChildAt(i)
-            view.setOnClickListener {
-                changeLocale(view.tag.toString())
-            }
+        for (i in 0 until Constants.localeCodes.size) {
+            val locale = Constants.localeCodes.keys.toTypedArray()[i]
+
+            settingsLocaleLayout.addView(
+                InterfaceUtils.createLocaleItem(
+                    this@MainActivity,
+                    locale
+                ) {
+                    changeLocale(locale)
+                }
+            )
         }
 
         // Configured settings dimensions
@@ -373,6 +380,7 @@ class MainActivity : AppCompatActivity() {
         // Set region
 
         setRegion()
+        updateLastSearch(true)
 
         // Displays the selected locale in the settings
 
@@ -397,23 +405,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @Suppress("deprecation")
+    /**
+     * Restarts the activity with the locale set
+     * @param locale Locale code to be applied
+     */
     private fun changeLocale(locale: String) {
         app.preferences.edit().putString("locale", locale).apply()
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
             val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags(locale)
             AppCompatDelegate.setApplicationLocales(appLocale)
-        } else{
-            val newLocale = Locale(locale)
-            resources.configuration.setLocale(newLocale)
-
-            val localeList = LocaleList(newLocale)
-            LocaleList.setDefault(localeList)
-            resources.configuration.setLocales(localeList)
-
-            resources.updateConfiguration(resources.configuration, resources.displayMetrics)
-
+        } else {
             val intent = intent
             finish()
             startActivity(intent)
@@ -427,11 +429,24 @@ class MainActivity : AppCompatActivity() {
 
     override fun applyOverrideConfiguration(overrideConfiguration: Configuration?) {
         val config = Configuration(overrideConfiguration)
+        val preferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
 
-        val prefLocale = getSharedPreferences("settings", Context.MODE_PRIVATE)
-            .getString("locale", "notSpecified")
+        val prefLocale = preferences.getString("locale", "notSpecified")
+
         if (prefLocale != "notSpecified" && prefLocale != null) {
             config.setLocale(Locale(prefLocale))
+        } else {
+            config.setLocale(Locale("en"))
+            preferences.edit().putString("locale", "en").apply()
+
+            val systemLocales = LocaleList.getDefault()
+            for (i in 0 until systemLocales.size()) {
+                if (Constants.localeCodes.contains(systemLocales[i].language)) {
+                    config.setLocale(Locale(systemLocales[i].language))
+                    preferences.edit().putString("locale", systemLocales[i].language).apply()
+                    break
+                }
+            }
         }
 
         super.applyOverrideConfiguration(config)
@@ -457,7 +472,7 @@ class MainActivity : AppCompatActivity() {
                     R.string.region_select
                 ))
             } else {
-                updateLastSearch()
+                updateLastSearch(true)
             }
         }
     }
@@ -640,6 +655,7 @@ class MainActivity : AppCompatActivity() {
         } else if (view.isActivated) {
 
             mainLayoutsFlipper.displayedChild = MainViewFlipperItems.ENTER_NICKNAME
+            updateLastSearch(true)
 
         }
 
@@ -1165,7 +1181,6 @@ class MainActivity : AppCompatActivity() {
         if (app.preferences.getString("region", "notSpecified") == "notSpecified") {
             app.preferences.edit().putString("region", "ru").apply()
             app.apiService.setRegion(app.preferences.getString("region", "notSpecified")!!)
-            Log.d("my link", this@MainActivity.getString(R.string.terms_of_service_desc))
 
             InterfaceUtils.createAlertDialog(
                 this@MainActivity,
@@ -1184,7 +1199,6 @@ class MainActivity : AppCompatActivity() {
             app.apiService.setRegion(app.preferences.getString("region", "notSpecified")!!)
             findViewById<ExtendedRadioGroup>(R.id.search_region_layout).setCheckedItem(app.preferences.getString("region", "notSpecified")!!)
             findViewById<ExtendedRadioGroup>(R.id.settings_region_layout).setCheckedItem(app.preferences.getString("region", "notSpecified")!!)
-            updateLastSearch()
         }
     }
 
@@ -1193,7 +1207,7 @@ class MainActivity : AppCompatActivity() {
      * appropriate text in ['enter nickname' switcher]
      * [R.id.enter_nickname_text]
      */
-    private fun updateLastSearch() {
+    private fun updateLastSearch(needToSetText: Boolean) {
         CoroutineScope(Dispatchers.IO).launch {
 
             val records =
@@ -1211,7 +1225,9 @@ class MainActivity : AppCompatActivity() {
                 val enterNicknameSwitcher = findViewById<TextSwitcher>(R.id.enter_nickname_text)
 
                 if (records.isNotEmpty()) {
-                    enterNicknameSwitcher.setText(getString(R.string.enter_nickname_or_select))
+                    if (needToSetText) {
+                        enterNicknameSwitcher.setText(getString(R.string.enter_nickname_or_select))
+                    }
                     lastSearchedList.visibility = View.VISIBLE
 
                     lastSearchedList.adapter = LastSearchedAdapter(
@@ -1221,7 +1237,9 @@ class MainActivity : AppCompatActivity() {
                     )
 
                 } else {
-                    enterNicknameSwitcher.setText(getString(R.string.enter_nickname))
+                    if (needToSetText) {
+                        enterNicknameSwitcher.setText(getString(R.string.enter_nickname))
+                    }
                     lastSearchedList.visibility = View.GONE
                 }
             }

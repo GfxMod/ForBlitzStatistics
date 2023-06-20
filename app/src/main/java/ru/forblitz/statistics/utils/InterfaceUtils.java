@@ -13,10 +13,12 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,6 +32,7 @@ import androidx.transition.TransitionSet;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import ru.forblitz.statistics.R;
+import ru.forblitz.statistics.data.Constants;
 import ru.forblitz.statistics.dto.StatisticsData;
 import ru.forblitz.statistics.widget.common.DifferenceViewFlipper;
 import ru.forblitz.statistics.widget.data.DetailsLayout;
@@ -360,6 +363,43 @@ public class InterfaceUtils {
 
         view.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
 
+    }
+
+    /**
+     * Creates an item for the selected locale, ready to be added to the list
+     * of locales
+     * @param context The Context
+     * @param locale The locale for which this item is needed
+     * @param action The action that will be performed when clicking on the item
+     * @return Returns an item ready to be added to the list of locales
+     */
+    @SuppressLint("InflateParams")
+    public static LinearLayout createLocaleItem(
+            @NonNull Context context,
+            @NonNull String locale,
+            @NonNull Runnable action
+    ) {
+
+        LinearLayout localeLayout = (LinearLayout) LayoutInflater
+                .from(context)
+                .inflate(R.layout.item_locale, null);
+        localeLayout.setTag(locale);
+
+        TextView localeCodeView = localeLayout.findViewById(R.id.locale_code);
+        TextView localeDescView = localeLayout.findViewById(R.id.locale_desc);
+
+        Integer localeCodeRes = Constants.localeCodes.get(locale);
+        if (localeCodeRes != null) {
+            localeCodeView.setText(context.getString(localeCodeRes));
+        }
+        Integer localeDescRes = Constants.localeDescriptions.get(locale);
+        if (localeDescRes != null) {
+            localeDescView.setText(context.getString(localeDescRes));
+        }
+
+        localeLayout.setOnClickListener(l -> action.run());
+
+        return localeLayout;
     }
 
 }

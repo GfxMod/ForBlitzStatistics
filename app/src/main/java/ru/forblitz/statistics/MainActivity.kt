@@ -265,6 +265,7 @@ class MainActivity : AppCompatActivity() {
                 if (Constants.baseUrl.containsKey((view.tag.toString()))) {
                     app.preferences.edit().putString("region", view.tag.toString()).apply()
                     setRegion()
+                    updateLastSearch(false)
                 }
             }
         }
@@ -379,6 +380,7 @@ class MainActivity : AppCompatActivity() {
         // Set region
 
         setRegion()
+        updateLastSearch(true)
 
         // Displays the selected locale in the settings
 
@@ -470,7 +472,7 @@ class MainActivity : AppCompatActivity() {
                     R.string.region_select
                 ))
             } else {
-                updateLastSearch()
+                updateLastSearch(true)
             }
         }
     }
@@ -653,7 +655,7 @@ class MainActivity : AppCompatActivity() {
         } else if (view.isActivated) {
 
             mainLayoutsFlipper.displayedChild = MainViewFlipperItems.ENTER_NICKNAME
-            updateLastSearch()
+            updateLastSearch(true)
 
         }
 
@@ -1197,7 +1199,6 @@ class MainActivity : AppCompatActivity() {
             app.apiService.setRegion(app.preferences.getString("region", "notSpecified")!!)
             findViewById<ExtendedRadioGroup>(R.id.search_region_layout).setCheckedItem(app.preferences.getString("region", "notSpecified")!!)
             findViewById<ExtendedRadioGroup>(R.id.settings_region_layout).setCheckedItem(app.preferences.getString("region", "notSpecified")!!)
-            updateLastSearch()
         }
     }
 
@@ -1206,7 +1207,7 @@ class MainActivity : AppCompatActivity() {
      * appropriate text in ['enter nickname' switcher]
      * [R.id.enter_nickname_text]
      */
-    private fun updateLastSearch() {
+    private fun updateLastSearch(needToSetText: Boolean) {
         CoroutineScope(Dispatchers.IO).launch {
 
             val records =
@@ -1224,7 +1225,9 @@ class MainActivity : AppCompatActivity() {
                 val enterNicknameSwitcher = findViewById<TextSwitcher>(R.id.enter_nickname_text)
 
                 if (records.isNotEmpty()) {
-                    enterNicknameSwitcher.setText(getString(R.string.enter_nickname_or_select))
+                    if (needToSetText) {
+                        enterNicknameSwitcher.setText(getString(R.string.enter_nickname_or_select))
+                    }
                     lastSearchedList.visibility = View.VISIBLE
 
                     lastSearchedList.adapter = LastSearchedAdapter(
@@ -1234,7 +1237,9 @@ class MainActivity : AppCompatActivity() {
                     )
 
                 } else {
-                    enterNicknameSwitcher.setText(getString(R.string.enter_nickname))
+                    if (needToSetText) {
+                        enterNicknameSwitcher.setText(getString(R.string.enter_nickname))
+                    }
                     lastSearchedList.visibility = View.GONE
                 }
             }

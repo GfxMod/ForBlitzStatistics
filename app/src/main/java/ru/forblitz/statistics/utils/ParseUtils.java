@@ -17,7 +17,7 @@ import ru.forblitz.statistics.dto.StatisticsData;
 
 public class  ParseUtils {
 
-    public static StatisticsData parseStatisticsData(String json, String key) {
+    public static StatisticsData parseStatisticsData(String json, String key, boolean detailedAverageDamage) {
 
         JsonObject dataObject = JsonParser
                 .parseString(json)
@@ -35,7 +35,7 @@ public class  ParseUtils {
                 StatisticsData.class
         );
         statisticsData.setNickname(innerDataObject.get("nickname").getAsString());
-        statisticsData.calculate();
+        statisticsData.calculate(detailedAverageDamage);
         return statisticsData;
     }
 

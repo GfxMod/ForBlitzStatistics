@@ -9,6 +9,7 @@ import ru.forblitz.statistics.service.*
 class ForBlitzStatisticsApplication : Application() {
 
     lateinit var preferences: SharedPreferences
+    val setSettings: HashMap<String, Boolean> = HashMap()
 
     lateinit var apiService: ApiService
     lateinit var userService: UserService

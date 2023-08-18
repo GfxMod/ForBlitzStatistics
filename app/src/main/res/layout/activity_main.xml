@@ -339,7 +339,10 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingVertical="@dimen/padding_big"
+            android:fadingEdgeLength="@dimen/padding_big"
+            android:requiresFadingEdge="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -571,6 +574,38 @@
                         whatever:background_unchecked="@drawable/background_layout_nested"
                         whatever:background_checked="@drawable/background_layout_nested_selected"
                         whatever:anim_duration="@android:integer/config_shortAnimTime"
+                        android:orientation="vertical"
+                        android:divider="@drawable/divider_big"
+                        android:showDividers="middle" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_big"
+                    android:background="@drawable/background_layout"
+                    android:orientation="vertical"
+                    android:divider="@drawable/divider_big"
+                    android:showDividers="middle">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/settings_format"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:text="@string/loading"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/inter"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:padding="@dimen/padding_small"
+                        android:autoSizeTextType="uniform" />
+
+                    <ru.forblitz.statistics.widget.data.SettingsSwitchesList
+                        android:id="@+id/settings_switches_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:divider="@drawable/divider_big"
                         android:showDividers="middle" />

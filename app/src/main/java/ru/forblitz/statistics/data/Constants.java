@@ -1,5 +1,6 @@
 package ru.forblitz.statistics.data;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ public class Constants {
 
     public static int TABS_COUNT = 4;
 
+    public static String stringResourcesDescriptionPostfix = "_description";
 
     public static class MainViewFlipperItems {
         public static final int ENTER_NICKNAME = 0;
@@ -32,6 +34,10 @@ public class Constants {
     public static class ClanInfoViewFlipperItems {
         public static final int INFO = 0;
         public static final int RECRUITING_OPTIONS = 1;
+    }
+
+    public static class PreferencesSwitchesTags {
+        public static String averageDamageRounding = "average_damage_rounding";
     }
 
     public static final Map<String, String> baseUrl = new HashMap<>();
@@ -80,6 +86,11 @@ public class Constants {
         localeDescriptions.put("ru", R.string.locale_ru_desc);
         localeDescriptions.put("en", R.string.locale_en_desc);
         localeDescriptions.put("uk", R.string.locale_uk_desc);
+    }
+
+    public static ArrayList<String> preferencesTags = new ArrayList<>();
+    static {
+        preferencesTags.add(PreferencesSwitchesTags.averageDamageRounding);
     }
 
 }

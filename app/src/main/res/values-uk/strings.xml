@@ -162,4 +162,7 @@
     <string name="locale_en_desc">en-US</string>
     <string name="locale_uk_desc">uk-UA</string>
 
+    <string name="average_damage_rounding">Округлення відображення середнього урону до сотих</string>
+    <string name="average_damage_rounding_description">Округлювати значення середнього урону не до цілих, а до сотих частин. Дозволяє докладніше відстежувати зміни в статистиці</string>
+
 </resources>

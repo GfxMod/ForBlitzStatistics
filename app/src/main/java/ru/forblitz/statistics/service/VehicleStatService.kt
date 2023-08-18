@@ -23,8 +23,11 @@ class VehicleStatService(private var apiService: ApiService) {
      * Load statistics for [vehiclesIds]
      * @return [HashMap], where the key is the vehicle ID, and the content is
      * the [statistics of the vehicle][VehicleStat]
+     * @param vehiclesIds list of list of equipment identifiers for which statistics should be get
+     * @param userID player ID
+     * @param detailedAverageDamage need to round the average damage value to hundredths instead of integers
      */
-    suspend fun getVehicleStat(userID: String, vehiclesIds: Array<String>): HashMap<String, VehicleStat> {
+    suspend fun getVehicleStat(userID: String, vehiclesIds: Array<String>, detailedAverageDamage: Boolean): HashMap<String, VehicleStat> {
 
         if (list.size == 0) {
             val separatedIds = splitIntoBatches(vehiclesIds)
@@ -44,7 +47,7 @@ class VehicleStatService(private var apiService: ApiService) {
                     )
 
                     for (vehicleStatDTO in vehicleStats) {
-                        list[vehicleStatDTO.tankId] = vehicleStatDTO.apply { vehicleStatDTO.all.calculate() }
+                        list[vehicleStatDTO.tankId] = vehicleStatDTO.apply { vehicleStatDTO.all.calculate(detailedAverageDamage) }
                     }
                 }
 

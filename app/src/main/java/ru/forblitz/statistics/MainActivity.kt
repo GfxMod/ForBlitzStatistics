@@ -39,6 +39,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.room.Room.databaseBuilder
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
@@ -80,6 +81,7 @@ import ru.forblitz.statistics.service.VersionService
 import ru.forblitz.statistics.utils.InterfaceUtils
 import ru.forblitz.statistics.utils.ParseUtils
 import ru.forblitz.statistics.utils.SessionUtils
+import ru.forblitz.statistics.utils.Utils
 import ru.forblitz.statistics.widget.common.DifferenceViewFlipper
 import ru.forblitz.statistics.widget.common.ExtendedRadioGroup
 import ru.forblitz.statistics.widget.data.ClanScreen
@@ -87,6 +89,7 @@ import ru.forblitz.statistics.widget.data.ClanBrief
 import ru.forblitz.statistics.widget.data.PlayerFastStat
 import ru.forblitz.statistics.widget.data.SessionButtonsLayout
 import ru.forblitz.statistics.widget.data.SessionButtonsLayout.ButtonsVisibility
+import ru.forblitz.statistics.widget.data.SettingsSwitchesList
 import java.io.File
 import java.util.Collections
 import java.util.Locale
@@ -253,6 +256,12 @@ class MainActivity : AppCompatActivity() {
 
         app.preferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
 
+        // Getting the set settings
+
+        Constants.preferencesTags.forEach {
+            app.setSettings[it] = app.preferences.getBoolean(it, false)
+        }
+
         // Sets app.preferences listeners
 
         val searchRegionLayout = findViewById<ExtendedRadioGroup>(R.id.search_region_layout)
@@ -302,6 +311,32 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.settings_locale).updateLayoutParams<LinearLayout.LayoutParams> {
             height = (InterfaceUtils.getY(this@MainActivity) * 0.905 * 0.05).toInt()
+        }
+
+        findViewById<View>(R.id.settings_format).updateLayoutParams<LinearLayout.LayoutParams> {
+            height = (InterfaceUtils.getY(this@MainActivity) * 0.905 * 0.05).toInt()
+        }
+
+        // Sets the size of the text for the settings
+
+        val settingsSwitchesList = findViewById<SettingsSwitchesList>(R.id.settings_switches_list)
+        settingsSwitchesList.textSize = (InterfaceUtils.getY(this@MainActivity) * 0.905 * 0.01).toInt()
+
+        // Creates settings elements
+
+        app.setSettings.toList().forEach {
+            settingsSwitchesList.addItem(
+                it.first,
+                Utils.getStringResourceByName(this@MainActivity, it.first),
+                Utils.getStringResourceByName(this@MainActivity, "${it.first}${Constants.stringResourcesDescriptionPostfix}"),
+                it.second
+            )
+                .findViewWithTag<MaterialSwitch>("switch")
+                .setOnCheckedChangeListener { _, isChecked ->
+                    app.preferences.edit().putBoolean(it.first, isChecked).apply()
+                    app.setSettings.replace(it.first, isChecked)
+                    Log.d("app.setSettings[it.first]", app.setSettings[it.first].toString())
+                }
         }
 
         // Sets onBackPressed
@@ -730,7 +765,10 @@ class MainActivity : AppCompatActivity() {
             try {
                 InterfaceUtils.setBaseStatistics(
                     this@MainActivity,
-                    app.randomService.getStatisticsData(app.userService.getUserID()),
+                    app.randomService.getStatisticsData(
+                        app.userService.getUserID(),
+                        app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
+                    ),
                     true)
                 setSessionStat(0)
             } catch (e: ObjectException) {
@@ -755,7 +793,10 @@ class MainActivity : AppCompatActivity() {
 
             app.ratingService.clear()
             InterfaceUtils.setRatingStatistics(this@MainActivity,
-                app.ratingService.getStatisticsData(app.userService.getUserID()),
+                app.ratingService.getStatisticsData(
+                    app.userService.getUserID(),
+                    app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
+                ),
                 true)
             setSessionStat(0)
 
@@ -880,7 +921,8 @@ class MainActivity : AppCompatActivity() {
                             app.randomService.getStatisticsData(),
                             ParseUtils.parseStatisticsData(
                                 File(app.sessionService.getSessionsList()[index]).readText(),
-                                "all"
+                                "all",
+                                app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
                             )
                         )
                     }
@@ -897,7 +939,8 @@ class MainActivity : AppCompatActivity() {
                             app.ratingService.getStatisticsData(),
                             ParseUtils.parseStatisticsData(
                                 File(app.sessionService.getSessionsList()[index]).readText(),
-                                "rating"
+                                "rating",
+                                app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
                             )
                         )
                     }
@@ -926,14 +969,16 @@ class MainActivity : AppCompatActivity() {
                             app.randomService.getStatisticsData(),
                             ParseUtils.parseStatisticsData(
                                 File(app.sessionService.getSessionsList()[index]).readText(),
-                                "all"
+                                "all",
+                                app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
                             )
                         ))
                         ratingFastStat.setData(SessionUtils.calculateSession(
                             app.ratingService.getStatisticsData(),
                             ParseUtils.parseStatisticsData(
                                 File(app.sessionService.getSessionsList()[index]).readText(),
-                                "rating"
+                                "rating",
+                                app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
                             )
                         ))
 
@@ -993,7 +1038,11 @@ class MainActivity : AppCompatActivity() {
 
                 val pairs = HashMap<String, Pair<VehicleSpecs, VehicleStat>>()
 
-                app.vehicleStatService.getVehicleStat(app.userService.getUserID(), app.vehicleSpecsService.getVehiclesSpecsList().keys.toTypedArray()).forEach {
+                app.vehicleStatService.getVehicleStat(
+                    app.userService.getUserID(),
+                    app.vehicleSpecsService.getVehiclesSpecsList().keys.toTypedArray(),
+                    app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
+                ).forEach {
                     pairs[it.key] = Pair(app.vehicleSpecsService.getVehiclesSpecsList()[it.key]!!, it.value)
                 }
 

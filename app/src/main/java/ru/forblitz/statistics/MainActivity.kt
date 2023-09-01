@@ -313,7 +313,7 @@ class MainActivity : AppCompatActivity() {
             height = (InterfaceUtils.getY(this@MainActivity) * 0.905 * 0.05).toInt()
         }
 
-        findViewById<View>(R.id.settings_format).updateLayoutParams<LinearLayout.LayoutParams> {
+        findViewById<View>(R.id.settings_switches_name).updateLayoutParams<LinearLayout.LayoutParams> {
             height = (InterfaceUtils.getY(this@MainActivity) * 0.905 * 0.05).toInt()
         }
 

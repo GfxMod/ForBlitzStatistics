@@ -165,4 +165,6 @@
     <string name="average_damage_rounding">Rounding the display of average damage to the hundredths</string>
     <string name="average_damage_rounding_description">Rounding the value of average damage not to whole numbers, but to hundredths. Allows for more detailed tracking of changes in statistics</string>
 
+    <string name="advanced_settings">Advanced settings</string>
+    
 </resources>

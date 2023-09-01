@@ -165,4 +165,6 @@
     <string name="average_damage_rounding">Округление среднего урона до сотых</string>
     <string name="average_damage_rounding_description">Округлять значение среднего урона не до целых, а до сотых долей. Позволяет более детально следить за изменениями в статистике</string>
 
+    <string name="advanced_settings">Расширенные настройки</string>
+
 </resources>

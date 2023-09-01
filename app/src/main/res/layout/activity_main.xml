@@ -590,10 +590,10 @@
                     android:showDividers="middle">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/settings_format"
+                        android:id="@+id/settings_switches_name"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:text="@string/loading"
+                        android:text="@string/advanced_settings"
                         android:textColor="@color/white"
                         android:fontFamily="@font/inter"
                         android:textStyle="bold"

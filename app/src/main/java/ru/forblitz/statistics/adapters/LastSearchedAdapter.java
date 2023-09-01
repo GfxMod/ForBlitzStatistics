@@ -1,7 +1,6 @@
 package ru.forblitz.statistics.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,10 +41,7 @@ public class LastSearchedAdapter extends ArrayAdapter<Record> {
                 itemHeight
         ));
 
-        convertView.setOnClickListener(l -> {
-            InterfaceUtils.search(context, record.nickname);
-            Log.d("click", "click");
-        });
+        convertView.setOnClickListener(l -> InterfaceUtils.search(context, record.nickname));
 
         String nickname = record.nickname;
         String date =

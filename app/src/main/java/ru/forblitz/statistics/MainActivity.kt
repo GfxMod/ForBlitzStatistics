@@ -51,6 +51,7 @@ import kotlinx.coroutines.Runnable
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.contentView
 import ru.forblitz.statistics.adapters.LastSearchedAdapter
+import ru.forblitz.statistics.adapters.RequestLogAdapter
 import ru.forblitz.statistics.adapters.SessionAdapter
 import ru.forblitz.statistics.adapters.VehicleAdapter
 import ru.forblitz.statistics.adapters.ViewPagerAdapter
@@ -62,6 +63,7 @@ import ru.forblitz.statistics.data.Constants.StatisticsViewFlipperItems
 import ru.forblitz.statistics.data.Constants.TABS_COUNT
 import ru.forblitz.statistics.data.RecordDatabase
 import ru.forblitz.statistics.dto.Record
+import ru.forblitz.statistics.dto.RequestLogItem
 import ru.forblitz.statistics.dto.Session
 import ru.forblitz.statistics.dto.StatisticsData
 import ru.forblitz.statistics.dto.VehicleSpecs
@@ -72,6 +74,7 @@ import ru.forblitz.statistics.service.ClanService
 import ru.forblitz.statistics.service.ConnectivityService
 import ru.forblitz.statistics.service.RandomService
 import ru.forblitz.statistics.service.RatingService
+import ru.forblitz.statistics.service.RequestLogService
 import ru.forblitz.statistics.service.SessionService
 import ru.forblitz.statistics.service.UserClanService
 import ru.forblitz.statistics.service.UserService
@@ -84,8 +87,8 @@ import ru.forblitz.statistics.utils.SessionUtils
 import ru.forblitz.statistics.utils.Utils
 import ru.forblitz.statistics.widget.common.DifferenceViewFlipper
 import ru.forblitz.statistics.widget.common.ExtendedRadioGroup
-import ru.forblitz.statistics.widget.data.ClanScreen
 import ru.forblitz.statistics.widget.data.ClanBrief
+import ru.forblitz.statistics.widget.data.ClanScreen
 import ru.forblitz.statistics.widget.data.PlayerFastStat
 import ru.forblitz.statistics.widget.data.SessionButtonsLayout
 import ru.forblitz.statistics.widget.data.SessionButtonsLayout.ButtonsVisibility
@@ -231,7 +234,8 @@ class MainActivity : AppCompatActivity() {
         // Initialization of services
 
         app.connectivityService = ConnectivityService()
-        app.apiService = ApiService(app.connectivityService)
+        app.requestLogService = RequestLogService()
+        app.apiService = ApiService(app.connectivityService, app.requestLogService)
         app.userService = UserService(this@MainActivity, app.apiService)
         app.randomService = RandomService(app.apiService)
         app.ratingService = RatingService(app.apiService)
@@ -246,7 +250,6 @@ class MainActivity : AppCompatActivity() {
             applicationContext,
             RecordDatabase::class.java, "history-database"
         ).build()
-
 
         // Creates a session directory
 
@@ -335,7 +338,6 @@ class MainActivity : AppCompatActivity() {
                 .setOnCheckedChangeListener { _, isChecked ->
                     app.preferences.edit().putBoolean(it.first, isChecked).apply()
                     app.setSettings.replace(it.first, isChecked)
-                    Log.d("app.setSettings[it.first]", app.setSettings[it.first].toString())
                 }
         }
 
@@ -613,6 +615,10 @@ class MainActivity : AppCompatActivity() {
             footer.layoutParams = AbsListView.LayoutParams(width, (width * 0.15).toInt())
             tanksList.addFooterView(footer)
         }
+
+        // Updates logging display
+
+        updateLoggingDisplay()
 
         // Does everything to show statistics, but first shows ads if necessary
 
@@ -1293,6 +1299,33 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+        }
+    }
+
+    /**
+     * Resets the logs display on the loading screen
+     */
+    private fun updateLoggingDisplay() {
+        val requestLogList = findViewById<ListView>(R.id.request_log_list)
+
+        if (app.setSettings[Constants.PreferencesSwitchesTags.logDisplay] == true) {
+
+            val requestLogAdapter = RequestLogAdapter(
+                this@MainActivity,
+                ArrayList<RequestLogItem>()
+            )
+
+            requestLogList.adapter = requestLogAdapter
+            requestLogList.deferNotifyDataSetChanged()
+
+            app.requestLogService.setOnRecordAddedListener { requestLogItem ->
+                runOnUiThread {
+                    requestLogAdapter.add(requestLogItem, requestLogList)
+                }
+            }
+
+        } else {
+            requestLogList.adapter = null
         }
     }
 

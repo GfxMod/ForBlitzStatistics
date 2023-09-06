@@ -164,7 +164,12 @@
 
     <string name="average_damage_rounding">Округлення відображення середнього урону до сотих</string>
     <string name="average_damage_rounding_description">Округлювати значення середнього урону не до цілих, а до сотих частин. Дозволяє докладніше відстежувати зміни в статистиці</string>
+    <string name="log_display">Увімкнути відображення журналів на екрані завантаження</string>
+    <string name="log_display_description">Allows detailed tracking of the status of requests during loading</string>
 
     <string name="advanced_settings">Розширені налаштування</string>
+
+    <string name="log_request_sent">запит відправлено</string>
+    <string name="log_response_received">відповідь отримано</string>
 
 </resources>

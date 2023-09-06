@@ -53,6 +53,12 @@ public class  ParseUtils {
         return time;
     }
 
+    public static String formatMillisTimestampToTime(String timestamp) {
+        String time = formatMillisTimestampToDate(timestamp);
+        time = time.substring(time.indexOf(" ") + 1);
+        return time;
+    }
+
     public static String formatClanRole(Context context, String role) {
         if (role.equals("private")) {
             return context.getResources().getString(R.string.clan_role_private);

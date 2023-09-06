@@ -23,6 +23,7 @@ class ForBlitzStatisticsApplication : Application() {
     lateinit var vehicleStatService: VehicleStatService
     lateinit var adService: AdService
     lateinit var connectivityService: ConnectivityService
+    lateinit var requestLogService: RequestLogService
     lateinit var recordDatabase: RecordDatabase
 
 }

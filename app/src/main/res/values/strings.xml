@@ -164,7 +164,12 @@
 
     <string name="average_damage_rounding">Rounding the display of average damage to the hundredths</string>
     <string name="average_damage_rounding_description">Rounding the value of average damage not to whole numbers, but to hundredths. Allows for more detailed tracking of changes in statistics</string>
+    <string name="log_display">Enable the display of logs on the loading screen</string>
+    <string name="log_display_description">Allows you to track the status of queries in detail during the loading of search results</string>
 
     <string name="advanced_settings">Advanced settings</string>
+
+    <string name="log_request_sent">request sent</string>
+    <string name="log_response_received">response received</string>
     
 </resources>

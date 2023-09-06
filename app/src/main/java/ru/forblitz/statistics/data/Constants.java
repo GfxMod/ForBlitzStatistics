@@ -38,6 +38,9 @@ public class Constants {
 
     public static class PreferencesSwitchesTags {
         public static String averageDamageRounding = "average_damage_rounding";
+
+        public static String logDisplay = "log_display";
+
     }
 
     public static final Map<String, String> baseUrl = new HashMap<>();
@@ -91,6 +94,7 @@ public class Constants {
     public static ArrayList<String> preferencesTags = new ArrayList<>();
     static {
         preferencesTags.add(PreferencesSwitchesTags.averageDamageRounding);
+        preferencesTags.add(PreferencesSwitchesTags.logDisplay);
     }
 
 }

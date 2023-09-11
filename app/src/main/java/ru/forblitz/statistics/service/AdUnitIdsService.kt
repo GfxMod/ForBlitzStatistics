@@ -10,8 +10,7 @@ import ru.forblitz.statistics.utils.ParseUtils
 import ru.forblitz.statistics.utils.Utils
 
 /**
- * The [VersionService] class handles operations related to obtaining the
- * minimum and recommended versions of the application
+ * The [AdUnitIdsService] is responsible for getting AdUnitIds
  */
 class AdUnitIdsService(
     private val connectivityService: ConnectivityService,

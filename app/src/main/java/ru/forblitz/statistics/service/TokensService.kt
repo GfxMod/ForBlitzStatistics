@@ -10,8 +10,7 @@ import ru.forblitz.statistics.utils.ParseUtils
 import ru.forblitz.statistics.utils.Utils
 
 /**
- * The [VersionService] class handles operations related to obtaining the
- * minimum and recommended versions of the application
+ * The [TokensService] is responsible for getting API tokens
  */
 class TokensService(
     private var connectivityService: ConnectivityService,

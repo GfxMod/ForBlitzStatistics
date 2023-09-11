@@ -71,6 +71,7 @@ import ru.forblitz.statistics.dto.VehicleSpecs
 import ru.forblitz.statistics.dto.VehicleStat
 import ru.forblitz.statistics.exception.ObjectException
 import ru.forblitz.statistics.service.AdService
+import ru.forblitz.statistics.service.AdUnitIdsService
 import ru.forblitz.statistics.service.ClanService
 import ru.forblitz.statistics.service.ConnectivityService
 import ru.forblitz.statistics.service.RandomService
@@ -259,7 +260,14 @@ class MainActivity : AppCompatActivity() {
         )
         app.vehicleSpecsService = VehicleSpecsService(app.apiService)
         app.vehicleStatService = VehicleStatService(app.apiService)
-        app.adService = AdService(this@MainActivity)
+        app.adUnitIdsService = AdUnitIdsService(
+            app.connectivityService,
+            app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        )
+        app.adService = AdService(
+            this@MainActivity,
+            app.adUnitIdsService.adUnitIds
+        )
         app.recordDatabase = databaseBuilder(
             applicationContext,
             RecordDatabase::class.java, "history-database"
@@ -451,6 +459,9 @@ class MainActivity : AppCompatActivity() {
             // Loads tokens
             app.tokensService.getLestaToken()
             app.tokensService.getWargamingToken()
+            // Loads adUnitIds
+            app.adUnitIdsService.getBannerAdUnitId()
+            app.adUnitIdsService.getInterstitialAdUnitId()
             runOnUiThread { searchButton.isClickable = true }
             // Get vehicle specifications
             app.vehicleSpecsService.getVehiclesSpecsList()

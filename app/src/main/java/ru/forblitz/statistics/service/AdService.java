@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.Objects;
 
 import ru.forblitz.statistics.utils.InterfaceUtils;
-import ru.forblitz.statistics.utils.Utils;
 
 /**
  * The {@link AdService} class provides methods to handle advertisements in an
@@ -47,8 +46,11 @@ public class AdService {
      */
     private long dateOfTheLastImpression = System.currentTimeMillis();
 
-    public AdService(Activity activity) {
+    private final HashMap<String, String> adUnitIds;
+
+    public AdService(Activity activity, HashMap<String, String> adUnitIds) {
         this.activity = activity;
+        this.adUnitIds = adUnitIds;
     }
 
     /**
@@ -66,7 +68,7 @@ public class AdService {
 
         if (!banners.containsKey(adView.getId())) {
             banners.put(adView.getId(), 0L);
-            adView.setAdUnitId(Objects.requireNonNull(Utils.getProperties("adUnitIds.properties", activity)).getProperty("bannerAdUnitId"));
+            adView.setAdUnitId(Objects.requireNonNull(adUnitIds.get("banner")));
             adView.setAdSize(BannerAdSize.stickySize(activity, InterfaceUtils.pxToDp(activity, width)));
         }
 
@@ -167,11 +169,7 @@ public class AdService {
             });
 
             loader.loadAd(
-                    new AdRequestConfiguration.Builder(
-                            Objects.requireNonNull(
-                                            Utils.getProperties("adUnitIds.properties", activity))
-                                    .getProperty("interstitialAdUnitId")
-                    ).build()
+                    new AdRequestConfiguration.Builder(Objects.requireNonNull(adUnitIds.get("interstitial"))).build()
             );
 
         } else {

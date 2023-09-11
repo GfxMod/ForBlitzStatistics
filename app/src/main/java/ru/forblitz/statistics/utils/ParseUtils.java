@@ -119,9 +119,7 @@ public class  ParseUtils {
                 .parseString(json)
                 .getAsJsonObject()
                 .getAsJsonObject("statisticsApiKeys");
-
         return dataObject.get("lesta").getAsString();
-
     }
 
     public static String parseWargamingAPIToken(String json) {
@@ -131,7 +129,22 @@ public class  ParseUtils {
                 .getAsJsonObject("statisticsApiKeys");
 
         return dataObject.get("wargaming").getAsString();
+    }
 
+    public static String parseBannerAdUnitId(String json) {
+        JsonObject dataObject = JsonParser
+                .parseString(json)
+                .getAsJsonObject()
+                .getAsJsonObject("statisticsAdUnitIds");
+        return dataObject.get("banner").getAsString();
+    }
+
+    public static String parseInterstitialAdUnitId(String json) {
+        JsonObject dataObject = JsonParser
+                .parseString(json)
+                .getAsJsonObject()
+                .getAsJsonObject("statisticsAdUnitIds");
+        return dataObject.get("interstitial").getAsString();
     }
 
     /**

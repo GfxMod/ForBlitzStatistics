@@ -13,12 +13,14 @@ import ru.forblitz.statistics.utils.Utils
  * The [VersionService] class handles operations related to obtaining the
  * minimum and recommended versions of the application
  */
-class VersionService(
+class TokensService(
     private var connectivityService: ConnectivityService,
-    private var connectivityManager: ConnectivityManager
+    private var connectivityManager: ConnectivityManager,
 ) {
 
     private var json: String? = null
+
+    val tokens: HashMap<String, String> = HashMap()
 
     private suspend fun request() {
 
@@ -40,18 +42,27 @@ class VersionService(
 
     }
 
-    suspend fun getCurrentAppVersion(): Int {
+    suspend fun getLestaToken(): String {
         if (json == null) {
             request()
         }
-        return ParseUtils.parseCurrentAppVersion(json)
+/*
+        val token = ParseUtils.parseLestaAPIToken(json)
+        tokens["ru"] = token
+        return token;
+*/
+        return ParseUtils.parseLestaAPIToken(json).apply { tokens["ru"] = this }
     }
 
-    suspend fun getMinimalAppVersion(): Int {
+    suspend fun getWargamingToken(): String {
         if (json == null) {
             request()
         }
-        return ParseUtils.parseMinimalAppVersion(json)
+        return ParseUtils.parseWargamingAPIToken(json).apply {
+            tokens["eu"] = this
+            tokens["na"] = this
+            tokens["asia"] = this
+        }
     }
 
 }

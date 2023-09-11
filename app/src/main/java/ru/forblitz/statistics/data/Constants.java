@@ -7,8 +7,8 @@ import java.util.Map;
 import ru.forblitz.statistics.R;
 
 public class Constants {
-    public static final String lestaAppId = "1957e1f71656310342971b3b1aa2efef";
-    public static final String wgAppId = "ac75820d6c10195c86370ec1bc9f21de";
+
+    public static final String forBlitzBaseUrl = "https://forblitz.ru/";
 
     public static int TABS_COUNT = 4;
 
@@ -60,14 +60,6 @@ public class Constants {
         url.put("getAchievements", "wotb/account/achievements/?application_id=APP_ID&fields=-max_series");
         url.put("getAllInformationAboutVehicles", "wotb/encyclopedia/vehicles/?application_id=APP_ID&fields=name,nation,tier,type");
         url.put("getTankStatistics", "wotb/tanks/stats/?application_id=APP_ID");
-    }
-
-    public static final Map<String, String> apiId = new HashMap<>();
-    static {
-        apiId.put("ru", lestaAppId);
-        apiId.put("eu", wgAppId);
-        apiId.put("na", wgAppId);
-        apiId.put("asia", wgAppId);
     }
 
     public static class Steps {

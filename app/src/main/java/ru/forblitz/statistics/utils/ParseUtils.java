@@ -114,6 +114,26 @@ public class  ParseUtils {
 
     }
 
+    public static String parseLestaAPIToken(String json) {
+        JsonObject dataObject = JsonParser
+                .parseString(json)
+                .getAsJsonObject()
+                .getAsJsonObject("statisticsApiKeys");
+
+        return dataObject.get("lesta").getAsString();
+
+    }
+
+    public static String parseWargamingAPIToken(String json) {
+        JsonObject dataObject = JsonParser
+                .parseString(json)
+                .getAsJsonObject()
+                .getAsJsonObject("statisticsApiKeys");
+
+        return dataObject.get("wargaming").getAsString();
+
+    }
+
     /**
      * Divides every third digit of the number with a space.
      * @param number number to split

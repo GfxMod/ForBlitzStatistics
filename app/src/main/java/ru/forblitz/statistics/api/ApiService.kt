@@ -13,7 +13,8 @@ import ru.forblitz.statistics.service.RequestLogService.RequestType
 class ApiService(
     private val connectivityService: ConnectivityService,
     private val connectivityManager: ConnectivityManager,
-    private val requestLogService: RequestLogService
+    private val requestLogService: RequestLogService,
+    private val tokens: HashMap<String, String>
 ) {
 
     private lateinit var region: String
@@ -33,7 +34,7 @@ class ApiService(
     suspend fun getAccountId(search: String): Response<ResponseBody> {
         val timestampOfSent = System.currentTimeMillis()
         requestLogService.addRecord(timestampOfSent, RequestType.ACCOUNT_ID, false)
-        val response = apiInterface.getAccountId(url["getAccountId"].toString().replace("APP_ID", apiId[region].toString()), search)
+        val response = apiInterface.getAccountId(url["getAccountId"].toString().replace("APP_ID", tokens[region].toString()), search)
         requestLogService.addRecord(timestampOfSent, RequestType.ACCOUNT_ID, true)
         return response
     }
@@ -41,7 +42,7 @@ class ApiService(
     suspend fun getUsers(search: String): Response<ResponseBody> {
         val timestampOfSent = System.currentTimeMillis()
         requestLogService.addRecord(timestampOfSent, RequestType.ACCOUNT_ID, false)
-        val response = apiInterface.getUsers(url["getUsers"].toString().replace("APP_ID", apiId[region].toString()), search)
+        val response = apiInterface.getUsers(url["getUsers"].toString().replace("APP_ID", tokens[region].toString()), search)
         requestLogService.addRecord(timestampOfSent, RequestType.USER_STATISTICS, true)
         return response
     }
@@ -49,7 +50,7 @@ class ApiService(
     suspend fun getClanInfo(search: String): Response<ResponseBody> {
         val timestampOfSent = System.currentTimeMillis()
         requestLogService.addRecord(timestampOfSent, RequestType.USER_CLAN_INFO, false)
-        val response = apiInterface.getClanInfo(url["getClanInfo"].toString().replace("APP_ID", apiId[region].toString()), search)
+        val response = apiInterface.getClanInfo(url["getClanInfo"].toString().replace("APP_ID", tokens[region].toString()), search)
         requestLogService.addRecord(timestampOfSent, RequestType.USER_CLAN_INFO, true)
         return response
     }
@@ -57,7 +58,7 @@ class ApiService(
     suspend fun getFullClanInfo(search: String): Response<ResponseBody> {
         val timestampOfSent = System.currentTimeMillis()
         requestLogService.addRecord(timestampOfSent, RequestType.FULL_CLAN_INFO, false)
-        val response = apiInterface.getFullClanInfo(url["getFullClanInfo"].toString().replace("APP_ID", apiId[region].toString()), search)
+        val response = apiInterface.getFullClanInfo(url["getFullClanInfo"].toString().replace("APP_ID", tokens[region].toString()), search)
         requestLogService.addRecord(timestampOfSent, RequestType.FULL_CLAN_INFO, true)
         return response
     }
@@ -65,7 +66,7 @@ class ApiService(
     suspend fun getAchievements(search: String): Response<ResponseBody> {
         val timestampOfSent = System.currentTimeMillis()
         requestLogService.addRecord(timestampOfSent, RequestType.ACHIEVEMENTS, false)
-        val response = apiInterface.getAchievements(url["getAchievements"].toString().replace("APP_ID", apiId[region].toString()), search)
+        val response = apiInterface.getAchievements(url["getAchievements"].toString().replace("APP_ID", tokens[region].toString()), search)
         requestLogService.addRecord(timestampOfSent, RequestType.ACHIEVEMENTS, true)
         return response
     }
@@ -73,7 +74,7 @@ class ApiService(
     suspend fun getAllInformationAboutVehicles(): Response<ResponseBody> {
         val timestampOfSent = System.currentTimeMillis()
         requestLogService.addRecord(timestampOfSent, RequestType.TANKOPEDIA, false)
-        val response = apiInterface.getAllInformationAboutVehicles(url["getAllInformationAboutVehicles"].toString().replace("APP_ID", apiId[region].toString()))
+        val response = apiInterface.getAllInformationAboutVehicles(url["getAllInformationAboutVehicles"].toString().replace("APP_ID", tokens[region].toString()))
         requestLogService.addRecord(timestampOfSent, RequestType.TANKOPEDIA, true)
         return response
     }
@@ -81,7 +82,7 @@ class ApiService(
     suspend fun getTankStatistics(account_id: String, search: String): Response<ResponseBody> {
         val timestampOfSent = System.currentTimeMillis()
         requestLogService.addRecord(timestampOfSent, RequestType.TANKS_STATISTICS, false)
-        val response = apiInterface.getTankStatistics(url["getTankStatistics"].toString().replace("APP_ID", apiId[region].toString()), account_id, search)
+        val response = apiInterface.getTankStatistics(url["getTankStatistics"].toString().replace("APP_ID", tokens[region].toString()), account_id, search)
         requestLogService.addRecord(timestampOfSent, RequestType.TANKS_STATISTICS, true)
         return response
     }

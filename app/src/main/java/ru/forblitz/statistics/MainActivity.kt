@@ -77,6 +77,7 @@ import ru.forblitz.statistics.service.RandomService
 import ru.forblitz.statistics.service.RatingService
 import ru.forblitz.statistics.service.RequestLogService
 import ru.forblitz.statistics.service.SessionService
+import ru.forblitz.statistics.service.TokensService
 import ru.forblitz.statistics.service.UserClanService
 import ru.forblitz.statistics.service.UserService
 import ru.forblitz.statistics.service.VehicleSpecsService
@@ -236,10 +237,15 @@ class MainActivity : AppCompatActivity() {
 
         app.connectivityService = ConnectivityService()
         app.requestLogService = RequestLogService()
+        app.tokensService = TokensService(
+            app.connectivityService,
+            app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        )
         app.apiService = ApiService(
             app.connectivityService,
             app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
-            app.requestLogService
+            app.requestLogService,
+            app.tokensService.tokens
         )
         app.userService = UserService(this@MainActivity, app.apiService)
         app.randomService = RandomService(app.apiService)
@@ -401,6 +407,8 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         app.connectivityService.subscribe(this)
 
+        val searchButton = findViewById<View>(R.id.search_button)
+
         // Set keyboard visibility listener
 
         contentView!!.viewTreeObserver.addOnGlobalLayoutListener {
@@ -437,8 +445,14 @@ class MainActivity : AppCompatActivity() {
         // Check version and fill vehicles specifications
 
         CoroutineScope(Dispatchers.IO).launch {
+            runOnUiThread { searchButton.isClickable = false }
+            // Checks if the app version is up-to-date
             versionCheck()
-            // get vehicle specifications
+            // Loads tokens
+            app.tokensService.getLestaToken()
+            app.tokensService.getWargamingToken()
+            runOnUiThread { searchButton.isClickable = true }
+            // Get vehicle specifications
             app.vehicleSpecsService.getVehiclesSpecsList()
 
             if (findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)

@@ -1,5 +1,6 @@
 package ru.forblitz.statistics.service
 
+import android.net.ConnectivityManager
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import ru.forblitz.statistics.api.ApiInterfaceVersion
@@ -11,7 +12,10 @@ import ru.forblitz.statistics.utils.Utils
  * The [VersionService] class handles operations related to obtaining the
  * minimum and recommended versions of the application
  */
-class VersionService(private var connectivityService: ConnectivityService) {
+class VersionService(
+    private var connectivityService: ConnectivityService,
+    private var connectivityManager: ConnectivityManager
+) {
 
     private var json: String? = null
 
@@ -22,7 +26,10 @@ class VersionService(private var connectivityService: ConnectivityService) {
                 .baseUrl("https://forblitz.ru/")
                 .client(
                     OkHttpClient.Builder()
-                        .addInterceptor(NetworkConnectionInterceptor(connectivityService))
+                        .addInterceptor(NetworkConnectionInterceptor(
+                            connectivityService,
+                            connectivityManager
+                        ))
                         .build()
                 )
                 .build()

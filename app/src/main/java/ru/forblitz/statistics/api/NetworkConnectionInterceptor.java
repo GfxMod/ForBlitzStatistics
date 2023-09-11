@@ -1,9 +1,9 @@
 package ru.forblitz.statistics.api;
 
 import android.app.Activity;
-import android.content.Context;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -22,9 +22,14 @@ import ru.forblitz.statistics.service.ConnectivityService;
 public class NetworkConnectionInterceptor implements Interceptor {
 
     private final ConnectivityService connectivityService;
+    private final ConnectivityManager connectivityManager;
 
-    public NetworkConnectionInterceptor(ConnectivityService connectivityService) {
+    public NetworkConnectionInterceptor(
+            ConnectivityService connectivityService,
+            ConnectivityManager connectivityManager
+    ) {
         this.connectivityService = connectivityService;
+        this.connectivityManager = connectivityManager;
     }
 
     /**
@@ -39,9 +44,9 @@ public class NetworkConnectionInterceptor implements Interceptor {
         Activity activity = connectivityService.getResponsibleActivity();
         if (activity != null) {
 
-            if (!isConnected()) {
+            if (isDisconnected()) {
                 connectivityService.showAlertDialog(activity);
-                while (!isConnected()) {
+                while (isDisconnected()) {
                     try {
                         synchronized (this) {
                             wait(timeout);
@@ -74,16 +79,14 @@ public class NetworkConnectionInterceptor implements Interceptor {
 
     }
 
-    public boolean isConnected() {
-        Activity activity = connectivityService.getResponsibleActivity();
-
-        if (activity != null) {
-            ConnectivityManager connectivityManager = (ConnectivityManager) connectivityService.getResponsibleActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
-            return (netInfo != null && netInfo.isConnected());
-        }
-
-        throw new IllegalStateException("isConnected(): ConnectivityService does not contain any activity");
+    private boolean isDisconnected() {
+        Network nw = connectivityManager.getActiveNetwork();
+        if (nw == null) return true;
+        NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(nw);
+        return networkCapabilities == null || (!networkCapabilities.hasTransport(
+                NetworkCapabilities.TRANSPORT_WIFI) &&
+                !networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) &&
+                !networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET));
     }
 
 }

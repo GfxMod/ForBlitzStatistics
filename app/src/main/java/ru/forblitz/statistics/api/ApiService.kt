@@ -1,5 +1,6 @@
 package ru.forblitz.statistics.api
 
+import android.net.ConnectivityManager
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -11,8 +12,9 @@ import ru.forblitz.statistics.service.RequestLogService.RequestType
 
 class ApiService(
     private val connectivityService: ConnectivityService,
+    private val connectivityManager: ConnectivityManager,
     private val requestLogService: RequestLogService
-    ) {
+) {
 
     private lateinit var region: String
     private lateinit var apiInterface: ApiInterface
@@ -21,7 +23,7 @@ class ApiService(
         this.region = region
         apiInterface = Retrofit.Builder()
             .client(OkHttpClient.Builder().addInterceptor(
-                NetworkConnectionInterceptor(connectivityService)
+                NetworkConnectionInterceptor(connectivityService, connectivityManager)
             ).build())
             .baseUrl(baseUrl[region].toString())
             .build().create(ApiInterface::class.java)

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -235,14 +236,21 @@ class MainActivity : AppCompatActivity() {
 
         app.connectivityService = ConnectivityService()
         app.requestLogService = RequestLogService()
-        app.apiService = ApiService(app.connectivityService, app.requestLogService)
+        app.apiService = ApiService(
+            app.connectivityService,
+            app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
+            app.requestLogService
+        )
         app.userService = UserService(this@MainActivity, app.apiService)
         app.randomService = RandomService(app.apiService)
         app.ratingService = RatingService(app.apiService)
         app.userClanService = UserClanService(app.apiService)
         app.clanService = ClanService(app.apiService)
         app.sessionService = SessionService(applicationContext)
-        app.versionService = VersionService(app.connectivityService)
+        app.versionService = VersionService(
+            app.connectivityService,
+            app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        )
         app.vehicleSpecsService = VehicleSpecsService(app.apiService)
         app.vehicleStatService = VehicleStatService(app.apiService)
         app.adService = AdService(this@MainActivity)

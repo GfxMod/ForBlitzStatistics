@@ -15,7 +15,9 @@ import ru.forblitz.statistics.service.ConnectivityService;
 /**
  * Before each and every API call {@link #intercept(Chain chain)} method will
  * be called and it will check for internet connectivity. If the network is not
- * detected, the stream will be suspended until it appears.
+ * detected, the stream will be suspended until it appears. In addition, if
+ * any error occurs during the execution of the request, the request will be
+ * repeated after a timeout.
  */
 public class NetworkConnectionInterceptor implements Interceptor {
 
@@ -24,6 +26,11 @@ public class NetworkConnectionInterceptor implements Interceptor {
     public NetworkConnectionInterceptor(ConnectivityService connectivityService) {
         this.connectivityService = connectivityService;
     }
+
+    /**
+     * The number of milliseconds that is skipped before repeating the request
+     */
+    public static final long timeout = 1000L;
 
     @NonNull
     @Override
@@ -34,7 +41,15 @@ public class NetworkConnectionInterceptor implements Interceptor {
 
             if (!isConnected()) {
                 connectivityService.showAlertDialog(activity);
-                while (!isConnected()) {  }
+                while (!isConnected()) {
+                    try {
+                        synchronized (this) {
+                            wait(timeout);
+                        }
+                    } catch (InterruptedException e) {
+                        Log.e("Interceptor error", e.getMessage(), e);
+                    }
+                }
                 connectivityService.killAlertDialog(activity);
             }
 
@@ -44,6 +59,13 @@ public class NetworkConnectionInterceptor implements Interceptor {
                 Log.e("Interceptor error", th.getMessage(), th);
                 // This means that the connection was lost while the response
                 // was being loaded. We need to intercept again
+                try {
+                    synchronized (this) {
+                        wait(timeout);
+                    }
+                } catch (InterruptedException e) {
+                    Log.e("Interceptor error", e.getMessage(), e);
+                }
                 return intercept(chain);
             }
         }

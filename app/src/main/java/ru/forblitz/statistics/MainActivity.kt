@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -39,6 +40,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.room.Room.databaseBuilder
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
@@ -50,6 +52,7 @@ import kotlinx.coroutines.Runnable
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.contentView
 import ru.forblitz.statistics.adapters.LastSearchedAdapter
+import ru.forblitz.statistics.adapters.RequestLogAdapter
 import ru.forblitz.statistics.adapters.SessionAdapter
 import ru.forblitz.statistics.adapters.VehicleAdapter
 import ru.forblitz.statistics.adapters.ViewPagerAdapter
@@ -61,17 +64,21 @@ import ru.forblitz.statistics.data.Constants.StatisticsViewFlipperItems
 import ru.forblitz.statistics.data.Constants.TABS_COUNT
 import ru.forblitz.statistics.data.RecordDatabase
 import ru.forblitz.statistics.dto.Record
+import ru.forblitz.statistics.dto.RequestLogItem
 import ru.forblitz.statistics.dto.Session
 import ru.forblitz.statistics.dto.StatisticsData
 import ru.forblitz.statistics.dto.VehicleSpecs
 import ru.forblitz.statistics.dto.VehicleStat
 import ru.forblitz.statistics.exception.ObjectException
 import ru.forblitz.statistics.service.AdService
+import ru.forblitz.statistics.service.AdUnitIdsService
 import ru.forblitz.statistics.service.ClanService
 import ru.forblitz.statistics.service.ConnectivityService
 import ru.forblitz.statistics.service.RandomService
 import ru.forblitz.statistics.service.RatingService
+import ru.forblitz.statistics.service.RequestLogService
 import ru.forblitz.statistics.service.SessionService
+import ru.forblitz.statistics.service.TokensService
 import ru.forblitz.statistics.service.UserClanService
 import ru.forblitz.statistics.service.UserService
 import ru.forblitz.statistics.service.VehicleSpecsService
@@ -80,13 +87,15 @@ import ru.forblitz.statistics.service.VersionService
 import ru.forblitz.statistics.utils.InterfaceUtils
 import ru.forblitz.statistics.utils.ParseUtils
 import ru.forblitz.statistics.utils.SessionUtils
+import ru.forblitz.statistics.utils.Utils
 import ru.forblitz.statistics.widget.common.DifferenceViewFlipper
 import ru.forblitz.statistics.widget.common.ExtendedRadioGroup
-import ru.forblitz.statistics.widget.data.ClanScreen
 import ru.forblitz.statistics.widget.data.ClanBrief
+import ru.forblitz.statistics.widget.data.ClanScreen
 import ru.forblitz.statistics.widget.data.PlayerFastStat
 import ru.forblitz.statistics.widget.data.SessionButtonsLayout
 import ru.forblitz.statistics.widget.data.SessionButtonsLayout.ButtonsVisibility
+import ru.forblitz.statistics.widget.data.SettingsSwitchesList
 import java.io.File
 import java.util.Collections
 import java.util.Locale
@@ -228,22 +237,41 @@ class MainActivity : AppCompatActivity() {
         // Initialization of services
 
         app.connectivityService = ConnectivityService()
-        app.apiService = ApiService(app.connectivityService)
+        app.requestLogService = RequestLogService()
+        app.tokensService = TokensService(
+            app.connectivityService,
+            app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        )
+        app.apiService = ApiService(
+            app.connectivityService,
+            app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
+            app.requestLogService,
+            app.tokensService.tokens
+        )
         app.userService = UserService(this@MainActivity, app.apiService)
         app.randomService = RandomService(app.apiService)
         app.ratingService = RatingService(app.apiService)
         app.userClanService = UserClanService(app.apiService)
         app.clanService = ClanService(app.apiService)
         app.sessionService = SessionService(applicationContext)
-        app.versionService = VersionService(app.connectivityService)
+        app.versionService = VersionService(
+            app.connectivityService,
+            app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        )
         app.vehicleSpecsService = VehicleSpecsService(app.apiService)
         app.vehicleStatService = VehicleStatService(app.apiService)
-        app.adService = AdService(this@MainActivity)
+        app.adUnitIdsService = AdUnitIdsService(
+            app.connectivityService,
+            app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        )
+        app.adService = AdService(
+            this@MainActivity,
+            app.adUnitIdsService.adUnitIds
+        )
         app.recordDatabase = databaseBuilder(
             applicationContext,
             RecordDatabase::class.java, "history-database"
         ).build()
-
 
         // Creates a session directory
 
@@ -252,6 +280,12 @@ class MainActivity : AppCompatActivity() {
         // Initialization of app.preferences
 
         app.preferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
+
+        // Getting the set settings
+
+        Constants.preferencesTags.forEach {
+            app.setSettings[it] = app.preferences.getBoolean(it, false)
+        }
 
         // Sets app.preferences listeners
 
@@ -302,6 +336,31 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.settings_locale).updateLayoutParams<LinearLayout.LayoutParams> {
             height = (InterfaceUtils.getY(this@MainActivity) * 0.905 * 0.05).toInt()
+        }
+
+        findViewById<View>(R.id.settings_switches_name).updateLayoutParams<LinearLayout.LayoutParams> {
+            height = (InterfaceUtils.getY(this@MainActivity) * 0.905 * 0.05).toInt()
+        }
+
+        // Sets the size of the text for the settings
+
+        val settingsSwitchesList = findViewById<SettingsSwitchesList>(R.id.settings_switches_list)
+        settingsSwitchesList.textSize = (InterfaceUtils.getY(this@MainActivity) * 0.905 * 0.01).toInt()
+
+        // Creates settings elements
+
+        app.setSettings.toList().forEach {
+            settingsSwitchesList.addItem(
+                it.first,
+                Utils.getStringResourceByName(this@MainActivity, it.first),
+                Utils.getStringResourceByName(this@MainActivity, "${it.first}${Constants.stringResourcesDescriptionPostfix}"),
+                it.second
+            )
+                .findViewWithTag<MaterialSwitch>("switch")
+                .setOnCheckedChangeListener { _, isChecked ->
+                    app.preferences.edit().putBoolean(it.first, isChecked).apply()
+                    app.setSettings.replace(it.first, isChecked)
+                }
         }
 
         // Sets onBackPressed
@@ -356,6 +415,8 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         app.connectivityService.subscribe(this)
 
+        val searchButton = findViewById<View>(R.id.search_button)
+
         // Set keyboard visibility listener
 
         contentView!!.viewTreeObserver.addOnGlobalLayoutListener {
@@ -392,8 +453,17 @@ class MainActivity : AppCompatActivity() {
         // Check version and fill vehicles specifications
 
         CoroutineScope(Dispatchers.IO).launch {
+            runOnUiThread { searchButton.isClickable = false }
+            // Checks if the app version is up-to-date
             versionCheck()
-            // get vehicle specifications
+            // Loads tokens
+            app.tokensService.getLestaToken()
+            app.tokensService.getWargamingToken()
+            // Loads adUnitIds
+            app.adUnitIdsService.getBannerAdUnitId()
+            app.adUnitIdsService.getInterstitialAdUnitId()
+            runOnUiThread { searchButton.isClickable = true }
+            // Get vehicle specifications
             app.vehicleSpecsService.getVehiclesSpecsList()
 
             if (findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
@@ -579,6 +649,10 @@ class MainActivity : AppCompatActivity() {
             tanksList.addFooterView(footer)
         }
 
+        // Updates logging display
+
+        updateLoggingDisplay()
+
         // Does everything to show statistics, but first shows ads if necessary
 
         app.adService.showInterstitial {
@@ -730,7 +804,10 @@ class MainActivity : AppCompatActivity() {
             try {
                 InterfaceUtils.setBaseStatistics(
                     this@MainActivity,
-                    app.randomService.getStatisticsData(app.userService.getUserID()),
+                    app.randomService.getStatisticsData(
+                        app.userService.getUserID(),
+                        app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
+                    ),
                     true)
                 setSessionStat(0)
             } catch (e: ObjectException) {
@@ -755,7 +832,10 @@ class MainActivity : AppCompatActivity() {
 
             app.ratingService.clear()
             InterfaceUtils.setRatingStatistics(this@MainActivity,
-                app.ratingService.getStatisticsData(app.userService.getUserID()),
+                app.ratingService.getStatisticsData(
+                    app.userService.getUserID(),
+                    app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
+                ),
                 true)
             setSessionStat(0)
 
@@ -880,7 +960,8 @@ class MainActivity : AppCompatActivity() {
                             app.randomService.getStatisticsData(),
                             ParseUtils.parseStatisticsData(
                                 File(app.sessionService.getSessionsList()[index]).readText(),
-                                "all"
+                                "all",
+                                app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
                             )
                         )
                     }
@@ -897,7 +978,8 @@ class MainActivity : AppCompatActivity() {
                             app.ratingService.getStatisticsData(),
                             ParseUtils.parseStatisticsData(
                                 File(app.sessionService.getSessionsList()[index]).readText(),
-                                "rating"
+                                "rating",
+                                app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
                             )
                         )
                     }
@@ -926,14 +1008,16 @@ class MainActivity : AppCompatActivity() {
                             app.randomService.getStatisticsData(),
                             ParseUtils.parseStatisticsData(
                                 File(app.sessionService.getSessionsList()[index]).readText(),
-                                "all"
+                                "all",
+                                app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
                             )
                         ))
                         ratingFastStat.setData(SessionUtils.calculateSession(
                             app.ratingService.getStatisticsData(),
                             ParseUtils.parseStatisticsData(
                                 File(app.sessionService.getSessionsList()[index]).readText(),
-                                "rating"
+                                "rating",
+                                app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
                             )
                         ))
 
@@ -993,7 +1077,11 @@ class MainActivity : AppCompatActivity() {
 
                 val pairs = HashMap<String, Pair<VehicleSpecs, VehicleStat>>()
 
-                app.vehicleStatService.getVehicleStat(app.userService.getUserID(), app.vehicleSpecsService.getVehiclesSpecsList().keys.toTypedArray()).forEach {
+                app.vehicleStatService.getVehicleStat(
+                    app.userService.getUserID(),
+                    app.vehicleSpecsService.getVehiclesSpecsList().keys.toTypedArray(),
+                    app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
+                ).forEach {
                     pairs[it.key] = Pair(app.vehicleSpecsService.getVehiclesSpecsList()[it.key]!!, it.value)
                 }
 
@@ -1244,6 +1332,33 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+        }
+    }
+
+    /**
+     * Resets the logs display on the loading screen
+     */
+    private fun updateLoggingDisplay() {
+        val requestLogList = findViewById<ListView>(R.id.request_log_list)
+
+        if (app.setSettings[Constants.PreferencesSwitchesTags.logDisplay] == true) {
+
+            val requestLogAdapter = RequestLogAdapter(
+                this@MainActivity,
+                ArrayList<RequestLogItem>()
+            )
+
+            requestLogList.adapter = requestLogAdapter
+            requestLogList.deferNotifyDataSetChanged()
+
+            app.requestLogService.setOnRecordAddedListener { requestLogItem ->
+                runOnUiThread {
+                    requestLogAdapter.add(requestLogItem, requestLogList)
+                }
+            }
+
+        } else {
+            requestLogList.adapter = null
         }
     }
 

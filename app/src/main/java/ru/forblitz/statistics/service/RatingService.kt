@@ -17,9 +17,10 @@ class RatingService(private var apiService: ApiService) {
     /**
      * Load StatisticsData for [userID]
      * @param userID player ID
+     * @param detailedAverageDamage need to round the average damage value to hundredths instead of integers
      * @return [StatisticsData] for [userID]
      */
-    suspend fun getStatisticsData(userID: String): StatisticsData {
+    suspend fun getStatisticsData(userID: String, detailedAverageDamage: Boolean): StatisticsData {
 
         return if (statisticsData != null) {
 
@@ -29,7 +30,7 @@ class RatingService(private var apiService: ApiService) {
 
             val json = request(userID)
 
-            statisticsData = ParseUtils.parseStatisticsData(json, "rating")
+            statisticsData = ParseUtils.parseStatisticsData(json, "rating", detailedAverageDamage)
 
             statisticsData as StatisticsData
 

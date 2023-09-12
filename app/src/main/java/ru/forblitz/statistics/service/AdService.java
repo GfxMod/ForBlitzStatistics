@@ -1,6 +1,6 @@
 package ru.forblitz.statistics.service;
 
-import android.content.Context;
+import android.app.Activity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -9,20 +9,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.yandex.mobile.ads.banner.AdSize;
 import com.yandex.mobile.ads.banner.BannerAdEventListener;
+import com.yandex.mobile.ads.banner.BannerAdSize;
 import com.yandex.mobile.ads.banner.BannerAdView;
+import com.yandex.mobile.ads.common.AdError;
 import com.yandex.mobile.ads.common.AdRequest;
+import com.yandex.mobile.ads.common.AdRequestConfiguration;
 import com.yandex.mobile.ads.common.AdRequestError;
 import com.yandex.mobile.ads.common.ImpressionData;
 import com.yandex.mobile.ads.interstitial.InterstitialAd;
 import com.yandex.mobile.ads.interstitial.InterstitialAdEventListener;
+import com.yandex.mobile.ads.interstitial.InterstitialAdLoadListener;
+import com.yandex.mobile.ads.interstitial.InterstitialAdLoader;
 
 import java.util.HashMap;
 import java.util.Objects;
 
 import ru.forblitz.statistics.utils.InterfaceUtils;
-import ru.forblitz.statistics.utils.Utils;
 
 /**
  * The {@link AdService} class provides methods to handle advertisements in an
@@ -30,7 +33,7 @@ import ru.forblitz.statistics.utils.Utils;
  */
 public class AdService {
 
-    private final Context context;
+    private final Activity activity;
 
     /**
      * This is a map, where the key is the banner ID, and the value is the
@@ -43,8 +46,11 @@ public class AdService {
      */
     private long dateOfTheLastImpression = System.currentTimeMillis();
 
-    public AdService(Context context) {
-        this.context = context;
+    private final HashMap<String, String> adUnitIds;
+
+    public AdService(Activity activity, HashMap<String, String> adUnitIds) {
+        this.activity = activity;
+        this.adUnitIds = adUnitIds;
     }
 
     /**
@@ -62,8 +68,8 @@ public class AdService {
 
         if (!banners.containsKey(adView.getId())) {
             banners.put(adView.getId(), 0L);
-            adView.setAdUnitId(Objects.requireNonNull(Utils.getProperties("adUnitIds.properties", context)).getProperty("bannerAdUnitId"));
-            adView.setAdSize(AdSize.stickySize(context, InterfaceUtils.pxToDp(context, width)));
+            adView.setAdUnitId(Objects.requireNonNull(adUnitIds.get("banner")));
+            adView.setAdSize(BannerAdSize.stickySize(activity, InterfaceUtils.pxToDp(activity, width)));
         }
 
         // Создание объекта таргетирования рекламы.
@@ -121,67 +127,50 @@ public class AdService {
 
         if (System.currentTimeMillis() - dateOfTheLastImpression >= 30000) {
 
-            // Создание экземпляра InterstitialAd.
-            InterstitialAd adView = new InterstitialAd(context);
-
-            adView.setAdUnitId(Objects.requireNonNull(Utils.getProperties("adUnitIds.properties", context)).getProperty("interstitialAdUnitId"));
-
-            // Создание объекта таргетирования рекламы.
-            final AdRequest adRequest = new AdRequest.Builder().build();
-
-            // Регистрация слушателя для отслеживания событий, происходящих в рекламе.
-            adView.setInterstitialAdEventListener(new InterstitialAdEventListener() {
-
+            InterstitialAdLoader loader = new InterstitialAdLoader(activity);
+            loader.setAdLoadListener(new InterstitialAdLoadListener() {
                 @Override
-                public void onAdLoaded() {
-                    adView.show();
+                public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+
+                    interstitialAd.setAdEventListener(new InterstitialAdEventListener() {
+                        @Override
+                        public void onAdShown() {
+                            runnable.run();
+                            dateOfTheLastImpression = System.currentTimeMillis();
+                        }
+
+                        @Override
+                        public void onAdFailedToShow(@NonNull AdError adError) {
+                            Log.e(adError.toString(), adError.getDescription());
+                            runnable.run();
+                        }
+
+                        @Override
+                        public void onAdDismissed() { }
+
+                        @Override
+                        public void onAdClicked() { }
+
+                        @Override
+                        public void onAdImpression(@Nullable ImpressionData impressionData) { }
+
+                    });
+
+                    interstitialAd.show(activity);
+
                 }
 
                 @Override
                 public void onAdFailedToLoad(@NonNull AdRequestError adRequestError) {
                     Log.e(adRequestError.toString(), adRequestError.getDescription());
-
                     runnable.run();
-
-                    dateOfTheLastImpression = System.currentTimeMillis();
-                }
-
-                @Override
-                public void onAdShown() {
-                    runnable.run();
-
-                    dateOfTheLastImpression = System.currentTimeMillis();
-                }
-
-                @Override
-                public void onAdDismissed() {
-
-                }
-
-                @Override
-                public void onAdClicked() {
-
-                }
-
-                @Override
-                public void onLeftApplication() {
-
-                }
-
-                @Override
-                public void onReturnedToApplication() {
-
-                }
-
-                @Override
-                public void onImpression(@Nullable ImpressionData impressionData) {
-
                 }
 
             });
 
-            // Загрузка объявления.
-            adView.loadAd(adRequest);
+            loader.loadAd(
+                    new AdRequestConfiguration.Builder(Objects.requireNonNull(adUnitIds.get("interstitial"))).build()
+            );
 
         } else {
             runnable.run();

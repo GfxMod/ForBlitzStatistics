@@ -159,19 +159,23 @@
                     android:layout_height="0dp"
                     android:layout_weight="0.025" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/clan_description"
+                <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="0.565"
-                    android:fontFamily="@font/inter"
-                    android:gravity="start"
-                    android:paddingHorizontal="15dp"
-                    android:text="@string/loading"
-                    android:textColor="@android:color/white"
-                    android:typeface="monospace"
-                    app:autoSizeMaxTextSize="20sp"
-                    app:autoSizeTextType="uniform" />
+                    android:layout_weight="0.565">
+
+                    <TextView
+                        android:id="@+id/clan_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter"
+                        android:gravity="start"
+                        android:paddingHorizontal="15dp"
+                        android:text="@string/loading"
+                        android:textColor="@android:color/white"
+                        android:typeface="monospace" />
+
+                </ScrollView>
 
             </ru.forblitz.statistics.widget.data.ClanInfo>
 

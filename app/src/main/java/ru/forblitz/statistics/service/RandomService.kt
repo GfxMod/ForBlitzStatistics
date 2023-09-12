@@ -26,9 +26,10 @@ class RandomService(private var apiService: ApiService) {
     /**
      * Load StatisticsData for [userID]
      * @param userID player ID
+     * @param detailedAverageDamage need to round the average damage value to hundredths instead of integers
      * @return [StatisticsData] for [userID]
      */
-    suspend fun getStatisticsData(userID: String): StatisticsData {
+    suspend fun getStatisticsData(userID: String, detailedAverageDamage: Boolean): StatisticsData {
 
         return if (statisticsData != null) {
 
@@ -36,7 +37,7 @@ class RandomService(private var apiService: ApiService) {
 
         } else {
 
-            statisticsData = ParseUtils.parseStatisticsData(request(userID), "all")
+            statisticsData = ParseUtils.parseStatisticsData(request(userID), "all", detailedAverageDamage)
 
             statisticsData as StatisticsData
 

@@ -1,16 +1,18 @@
 package ru.forblitz.statistics.data;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import ru.forblitz.statistics.R;
 
 public class Constants {
-    public static final String lestaAppId = "1957e1f71656310342971b3b1aa2efef";
-    public static final String wgAppId = "ac75820d6c10195c86370ec1bc9f21de";
+
+    public static final String forBlitzBaseUrl = "https://forblitz.ru/";
 
     public static int TABS_COUNT = 4;
 
+    public static String stringResourcesDescriptionPostfix = "_description";
 
     public static class MainViewFlipperItems {
         public static final int ENTER_NICKNAME = 0;
@@ -34,6 +36,13 @@ public class Constants {
         public static final int RECRUITING_OPTIONS = 1;
     }
 
+    public static class PreferencesSwitchesTags {
+        public static String averageDamageRounding = "average_damage_rounding";
+
+        public static String logDisplay = "log_display";
+
+    }
+
     public static final Map<String, String> baseUrl = new HashMap<>();
     static {
         baseUrl.put("ru", "https://api.wotblitz.ru/");
@@ -51,14 +60,6 @@ public class Constants {
         url.put("getAchievements", "wotb/account/achievements/?application_id=APP_ID&fields=-max_series");
         url.put("getAllInformationAboutVehicles", "wotb/encyclopedia/vehicles/?application_id=APP_ID&fields=name,nation,tier,type");
         url.put("getTankStatistics", "wotb/tanks/stats/?application_id=APP_ID");
-    }
-
-    public static final Map<String, String> apiId = new HashMap<>();
-    static {
-        apiId.put("ru", lestaAppId);
-        apiId.put("eu", wgAppId);
-        apiId.put("na", wgAppId);
-        apiId.put("asia", wgAppId);
     }
 
     public static class Steps {
@@ -80,6 +81,12 @@ public class Constants {
         localeDescriptions.put("ru", R.string.locale_ru_desc);
         localeDescriptions.put("en", R.string.locale_en_desc);
         localeDescriptions.put("uk", R.string.locale_uk_desc);
+    }
+
+    public static ArrayList<String> preferencesTags = new ArrayList<>();
+    static {
+        preferencesTags.add(PreferencesSwitchesTags.averageDamageRounding);
+        preferencesTags.add(PreferencesSwitchesTags.logDisplay);
     }
 
 }

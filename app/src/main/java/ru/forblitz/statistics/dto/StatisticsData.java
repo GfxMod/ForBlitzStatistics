@@ -278,9 +278,13 @@ public class StatisticsData {
         this.hitsFromShots = "0";
     }
 
-    public void calculate() {
+    public void calculate(boolean detailedAverageDamage) {
         this.winRate = String.format(Locale.US, "%.2f", Double.parseDouble(wins) / Double.parseDouble(battles) * 100);
-        this.averageDamage = Integer.toString((int) (Double.parseDouble(damageDealt) / Double.parseDouble(battles)));
+        if (detailedAverageDamage) {
+            this.averageDamage = String.format(Locale.US, "%.2f", Double.parseDouble(damageDealt) / Double.parseDouble(battles));
+        } else {
+            this.averageDamage = Integer.toString((int) (Double.parseDouble(damageDealt) / Double.parseDouble(battles)));
+        }
         this.efficiency = String.format(Locale.US, "%.2f", Double.parseDouble(damageDealt) / Double.parseDouble(damageReceived));
         this.survived = String.format(Locale.US, "%.2f", Double.parseDouble(survivedBattles) / Double.parseDouble(battles) * 100);
         this.hitsFromShots = String.format(Locale.US, "%.2f", Double.parseDouble(hits) / Double.parseDouble(shots) * 100);

@@ -4,9 +4,9 @@ import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.GET
 
-interface ApiInterfaceVersion {
+interface ApiInterfaceForBlitz {
 
     @GET("wp-json/wp/v2/appinfo")
-    suspend fun getCurrent() : Response<ResponseBody>
+    suspend fun getAll() : Response<ResponseBody>
 
 }

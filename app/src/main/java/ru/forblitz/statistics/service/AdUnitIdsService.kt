@@ -10,15 +10,16 @@ import ru.forblitz.statistics.utils.ParseUtils
 import ru.forblitz.statistics.utils.Utils
 
 /**
- * The [VersionService] class handles operations related to obtaining the
- * minimum and recommended versions of the application
+ * The [AdUnitIdsService] is responsible for getting AdUnitIds
  */
-class VersionService(
-    private var connectivityService: ConnectivityService,
-    private var connectivityManager: ConnectivityManager
+class AdUnitIdsService(
+    private val connectivityService: ConnectivityService,
+    private val connectivityManager: ConnectivityManager,
 ) {
 
     private var json: String? = null
+
+    val adUnitIds: HashMap<String, String> = HashMap()
 
     private suspend fun request() {
 
@@ -40,18 +41,18 @@ class VersionService(
 
     }
 
-    suspend fun getCurrentAppVersion(): Int {
+    suspend fun getBannerAdUnitId(): String {
         if (json == null) {
             request()
         }
-        return ParseUtils.parseCurrentAppVersion(json)
+        return ParseUtils.parseBannerAdUnitId(json).apply { adUnitIds["banner"] = this }
     }
 
-    suspend fun getMinimalAppVersion(): Int {
+    suspend fun getInterstitialAdUnitId(): String {
         if (json == null) {
             request()
         }
-        return ParseUtils.parseMinimalAppVersion(json)
+        return ParseUtils.parseInterstitialAdUnitId(json).apply { adUnitIds["interstitial"] = this }
     }
 
 }

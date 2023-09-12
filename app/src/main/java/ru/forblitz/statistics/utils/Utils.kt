@@ -36,4 +36,11 @@ object Utils {
         )
     }
 
+    @JvmStatic
+    fun getStringResourceByName(context: Context, stringName: String): String {
+        val packageName: String = context.packageName
+        val resId: Int = context.resources.getIdentifier(stringName, "string", packageName)
+        return context.getString(resId)
+    }
+
 }

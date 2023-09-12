@@ -17,7 +17,7 @@ import ru.forblitz.statistics.dto.StatisticsData;
 
 public class  ParseUtils {
 
-    public static StatisticsData parseStatisticsData(String json, String key) {
+    public static StatisticsData parseStatisticsData(String json, String key, boolean detailedAverageDamage) {
 
         JsonObject dataObject = JsonParser
                 .parseString(json)
@@ -35,7 +35,7 @@ public class  ParseUtils {
                 StatisticsData.class
         );
         statisticsData.setNickname(innerDataObject.get("nickname").getAsString());
-        statisticsData.calculate();
+        statisticsData.calculate(detailedAverageDamage);
         return statisticsData;
     }
 
@@ -50,6 +50,12 @@ public class  ParseUtils {
         long offset = Calendar.getInstance().getTimeZone().getRawOffset();
         String time = java.time.format.DateTimeFormatter.ISO_INSTANT.format(java.time.Instant.ofEpochMilli(Long.parseLong(timestamp) + offset));
         time = time.substring(0, 4) +  "." + time.substring(5, 7) + "." + time.substring(8, 10) + " " + time.substring(11, time.length() - 1);
+        return time;
+    }
+
+    public static String formatMillisTimestampToTime(String timestamp) {
+        String time = formatMillisTimestampToDate(timestamp);
+        time = time.substring(time.indexOf(" ") + 1);
         return time;
     }
 
@@ -106,6 +112,39 @@ public class  ParseUtils {
 
         return dataObject.get("currentAppVersion").getAsInt();
 
+    }
+
+    public static String parseLestaAPIToken(String json) {
+        JsonObject dataObject = JsonParser
+                .parseString(json)
+                .getAsJsonObject()
+                .getAsJsonObject("statisticsApiKeys");
+        return dataObject.get("lesta").getAsString();
+    }
+
+    public static String parseWargamingAPIToken(String json) {
+        JsonObject dataObject = JsonParser
+                .parseString(json)
+                .getAsJsonObject()
+                .getAsJsonObject("statisticsApiKeys");
+
+        return dataObject.get("wargaming").getAsString();
+    }
+
+    public static String parseBannerAdUnitId(String json) {
+        JsonObject dataObject = JsonParser
+                .parseString(json)
+                .getAsJsonObject()
+                .getAsJsonObject("statisticsAdUnitIds");
+        return dataObject.get("banner").getAsString();
+    }
+
+    public static String parseInterstitialAdUnitId(String json) {
+        JsonObject dataObject = JsonParser
+                .parseString(json)
+                .getAsJsonObject()
+                .getAsJsonObject("statisticsAdUnitIds");
+        return dataObject.get("interstitial").getAsString();
     }
 
     /**

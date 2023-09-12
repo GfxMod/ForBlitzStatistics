@@ -162,4 +162,14 @@
     <string name="locale_en_desc">en-US</string>
     <string name="locale_uk_desc">uk-UK</string>
 
+    <string name="average_damage_rounding">Округление среднего урона до сотых</string>
+    <string name="average_damage_rounding_description">Округлять значение среднего урона не до целых, а до сотых долей. Позволяет более детально следить за изменениями в статистике</string>
+    <string name="log_display">Включить отображение логов на экране загрузки</string>
+    <string name="log_display_description">Позволяет подробно отслеживать статус запросов во время загрузки результатов поиска</string>
+
+    <string name="advanced_settings">Расширенные настройки</string>
+
+    <string name="log_request_sent">запрос отправлен</string>
+    <string name="log_response_received">ответ получен</string>
+
 </resources>

@@ -71,7 +71,6 @@ import ru.forblitz.statistics.dto.VehicleSpecs
 import ru.forblitz.statistics.dto.VehicleStat
 import ru.forblitz.statistics.exception.ObjectException
 import ru.forblitz.statistics.service.AdService
-import ru.forblitz.statistics.service.AdUnitIdsService
 import ru.forblitz.statistics.service.ClanService
 import ru.forblitz.statistics.service.ConnectivityService
 import ru.forblitz.statistics.service.RandomService
@@ -217,7 +216,7 @@ class MainActivity : AppCompatActivity() {
         searchField.setOnEditorActionListener { _, actionId, _ ->
             return@setOnEditorActionListener when (actionId) {
                 EditorInfo.IME_ACTION_SEARCH -> {
-                    onClickSearchButton(findViewById(R.id.search_button))
+                    findViewById<View>(R.id.search_button).performClick()
                     true
                 }
                 else -> false
@@ -227,7 +226,7 @@ class MainActivity : AppCompatActivity() {
         searchField.setOnKeyListener(object : View.OnKeyListener {
             override fun onKey(v: View?, keyCode: Int, event: KeyEvent): Boolean {
                 if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                    onClickSearchButton(findViewById(R.id.search_button))
+                    findViewById<View>(R.id.search_button).performClick()
                     return true
                 }
                 return false
@@ -260,13 +259,9 @@ class MainActivity : AppCompatActivity() {
         )
         app.vehicleSpecsService = VehicleSpecsService(app.apiService)
         app.vehicleStatService = VehicleStatService(app.apiService)
-        app.adUnitIdsService = AdUnitIdsService(
-            app.connectivityService,
-            app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        )
         app.adService = AdService(
             this@MainActivity,
-            app.adUnitIdsService.adUnitIds
+            app.tokensService.tokens
         )
         app.recordDatabase = databaseBuilder(
             applicationContext,
@@ -373,7 +368,7 @@ class MainActivity : AppCompatActivity() {
                 val tanksLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.tanks_layouts_flipper)
 
                 if (mainLayoutsFlipper.displayedChild == MainViewFlipperItems.SETTINGS) {
-                    onClickSettingsButton(findViewById(R.id.settings_button))
+                    findViewById<View>(R.id.settings_button).performClick()
                 } else {
                     when (viewPager.currentItem) {
                         0 -> {
@@ -415,8 +410,6 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         app.connectivityService.subscribe(this)
 
-        val searchButton = findViewById<View>(R.id.search_button)
-
         // Set keyboard visibility listener
 
         contentView!!.viewTreeObserver.addOnGlobalLayoutListener {
@@ -453,23 +446,21 @@ class MainActivity : AppCompatActivity() {
         // Check version and fill vehicles specifications
 
         CoroutineScope(Dispatchers.IO).launch {
-            runOnUiThread { searchButton.isClickable = false }
             // Checks if the app version is up-to-date
             versionCheck()
             // Loads tokens
-            app.tokensService.getLestaToken()
-            app.tokensService.getWargamingToken()
-            // Loads adUnitIds
-            app.adUnitIdsService.getBannerAdUnitId()
-            app.adUnitIdsService.getInterstitialAdUnitId()
-            runOnUiThread { searchButton.isClickable = true }
-            // Get vehicle specifications
-            app.vehicleSpecsService.getVehiclesSpecsList()
+            app.tokensService.updateTokens()
+            app.tokensService.addTaskOnEndOfLoad {
+                CoroutineScope(Dispatchers.IO).launch {
+                    // Get vehicle specifications
+                    app.vehicleSpecsService.getVehiclesSpecsList()
 
-            if (findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
-                    .displayedChild == MainViewFlipperItems.STATISTICS
-            ) {
-                setVehiclesStat()
+                    if (findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
+                            .displayedChild == MainViewFlipperItems.STATISTICS
+                    ) {
+                        setVehiclesStat()
+                    }
+                }
             }
 
         }
@@ -653,50 +644,53 @@ class MainActivity : AppCompatActivity() {
 
         updateLoggingDisplay()
 
-        // Does everything to show statistics, but first shows ads if necessary
+        // Does everything to show statistics, but first waits for tokens and
+        // ads to be loaded, if necessary
 
-        app.adService.showInterstitial {
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
+        app.tokensService.addTaskOnEndOfLoad {
+            app.adService.showInterstitial {
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
 
-                    app.userService.clear()
-                    app.userService.getUserID(searchField.text.toString())
+                        app.userService.clear()
+                        app.userService.getUserID(searchField.text.toString())
 
-                    findViewById<EditText>(R.id.search_field).setText(
-                        app.userService.getNickname(),
-                        TextView.BufferType.EDITABLE
-                    )
-                    app.recordDatabase.recordDao().addRecord(
-                        Record(
-                            app.userService.getUserID(),
+                        findViewById<EditText>(R.id.search_field).setText(
                             app.userService.getNickname(),
-                            System.currentTimeMillis().toString(),
-                            app.preferences.getString("region", "notSpecified")!!
+                            TextView.BufferType.EDITABLE
                         )
-                    )
+                        app.recordDatabase.recordDao().addRecord(
+                            Record(
+                                app.userService.getUserID(),
+                                app.userService.getNickname(),
+                                System.currentTimeMillis().toString(),
+                                app.preferences.getString("region", "notSpecified")!!
+                            )
+                        )
 
-                    // set player statistics
+                        // set player statistics
 
-                    app.sessionService.clear()
-                    app.vehicleStatService.clear()
+                        app.sessionService.clear()
+                        app.vehicleStatService.clear()
 
-                    setRandomStat()
-                    setRatingStat()
-                    setClanStat()
-                    setVehiclesStat()
+                        setRandomStat()
+                        setRatingStat()
+                        setClanStat()
+                        setVehiclesStat()
 
-                } catch (e: ObjectException) {
-                    runOnUiThread {
-                        mainFlipper.displayedChild = MainViewFlipperItems.ENTER_NICKNAME
-                        searchButton.isClickable = true
-                        searchField.setText("", TextView.BufferType.EDITABLE)
-                        searchProgressIndicator.hide()
+                    } catch (e: ObjectException) {
+                        runOnUiThread {
+                            mainFlipper.displayedChild = MainViewFlipperItems.ENTER_NICKNAME
+                            searchButton.isClickable = true
+                            searchField.setText("", TextView.BufferType.EDITABLE)
+                            searchProgressIndicator.hide()
 
-                        InterfaceUtils.createAlertDialog(
-                            this@MainActivity,
-                            getString(R.string.error) + " " + e.error.code,
-                            e.message.toString().replace("XXX", app.preferences.getString("region", "notSpecified")!!.uppercase()),
-                        ).show()
+                            InterfaceUtils.createAlertDialog(
+                                this@MainActivity,
+                                getString(R.string.error) + " " + e.error.code,
+                                e.message.toString().replace("XXX", app.preferences.getString("region", "notSpecified")!!.uppercase()),
+                            ).show()
+                        }
                     }
                 }
             }

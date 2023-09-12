@@ -21,6 +21,10 @@ class TokensService(
 
     val tokens: HashMap<String, String> = HashMap()
 
+    private var isRequestLoaded: Boolean = false
+
+    private val taskQueue: ArrayList<Runnable> = ArrayList()
+
     private suspend fun request() {
 
         json = Utils.toJson(
@@ -41,27 +45,50 @@ class TokensService(
 
     }
 
-    suspend fun getLestaToken(): String {
-        if (json == null) {
-            request()
-        }
-/*
-        val token = ParseUtils.parseLestaAPIToken(json)
-        tokens["ru"] = token
-        return token;
-*/
-        return ParseUtils.parseLestaAPIToken(json).apply { tokens["ru"] = this }
+    private fun getLestaToken(): String {
+        return ParseUtils.parseLestaAPIToken(json)
     }
 
-    suspend fun getWargamingToken(): String {
-        if (json == null) {
-            request()
-        }
+    private fun getWargamingToken(): String {
         return ParseUtils.parseWargamingAPIToken(json).apply {
             tokens["eu"] = this
             tokens["na"] = this
             tokens["asia"] = this
         }
+    }
+
+    private fun getBannerAdUnitId(): String {
+        return ParseUtils.parseBannerAdUnitId(json).apply { tokens["banner"] = this }
+    }
+
+    private fun getInterstitialAdUnitId(): String {
+        return ParseUtils.parseInterstitialAdUnitId(json).apply { tokens["interstitial"] = this }
+    }
+
+    suspend fun updateTokens() {
+        request()
+        getLestaToken().apply { tokens["ru"] = this }
+        getWargamingToken().apply {
+            tokens["eu"] = this
+            tokens["na"] = this
+            tokens["asia"] = this
+        }
+        getBannerAdUnitId().apply { tokens["banner"] = this }
+        getInterstitialAdUnitId().apply { tokens["interstitial"] = this }
+        isRequestLoaded = true
+        onEndOfLoad()
+    }
+
+    fun addTaskOnEndOfLoad(runnable: Runnable) {
+        if (isRequestLoaded) {
+            runnable.run()
+        } else {
+            taskQueue.add(runnable)
+        }
+    }
+
+    private fun onEndOfLoad() {
+        taskQueue.forEach { it.run() }
     }
 
 }

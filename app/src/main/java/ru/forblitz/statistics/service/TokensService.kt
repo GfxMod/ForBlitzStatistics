@@ -75,7 +75,6 @@ class TokensService(
         }
         getBannerAdUnitId().apply { tokens["banner"] = this }
         getInterstitialAdUnitId().apply { tokens["interstitial"] = this }
-        isRequestLoaded = true
         onEndOfLoad()
     }
 
@@ -88,6 +87,7 @@ class TokensService(
     }
 
     private fun onEndOfLoad() {
+        isRequestLoaded = true
         taskQueue.forEach { it.run() }
     }
 

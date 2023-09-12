@@ -454,12 +454,6 @@ class MainActivity : AppCompatActivity() {
                 CoroutineScope(Dispatchers.IO).launch {
                     // Get vehicle specifications
                     app.vehicleSpecsService.getVehiclesSpecsList()
-
-                    if (findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
-                            .displayedChild == MainViewFlipperItems.STATISTICS
-                    ) {
-                        setVehiclesStat()
-                    }
                 }
             }
 
@@ -676,7 +670,11 @@ class MainActivity : AppCompatActivity() {
                         setRandomStat()
                         setRatingStat()
                         setClanStat()
-                        setVehiclesStat()
+                        app.vehicleSpecsService.addTaskOnEndOfLoad {
+                            CoroutineScope(Dispatchers.IO).launch {
+                                setVehiclesStat()
+                            }
+                        }
 
                     } catch (e: ObjectException) {
                         runOnUiThread {

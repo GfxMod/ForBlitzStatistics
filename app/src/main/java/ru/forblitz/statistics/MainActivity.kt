@@ -235,7 +235,7 @@ class MainActivity : AppCompatActivity() {
         // Initialization of services
 
         app.connectivityService = ConnectivityService()
-        app.requestLogService = RequestLogService()
+        app.requestLogService = RequestLogService(this@MainActivity)
         app.tokensService = TokensService(
             app.connectivityService,
             app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,

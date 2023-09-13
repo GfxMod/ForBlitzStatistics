@@ -1,5 +1,7 @@
 package ru.forblitz.statistics.service;
 
+import android.app.Activity;
+
 import java.util.ArrayList;
 
 import ru.forblitz.statistics.dto.RequestLogItem;
@@ -9,13 +11,19 @@ import ru.forblitz.statistics.dto.RequestLogItem;
  */
 public class RequestLogService {
 
+    private final Activity activity;
+
     private final ArrayList<RequestLogItem> records = new ArrayList<>();
 
     private OnRecordAddedListener onRecordAddedListener;
 
+    public RequestLogService(Activity activity) {
+        this.activity = activity;
+    }
+
     public void addRecord(RequestLogItem requestLogItem) {
         if (!requestLogItem.isCompleted()) {
-            records.add(requestLogItem);
+            activity.runOnUiThread(() -> records.add(requestLogItem));
         }
 
         if (onRecordAddedListener != null) { onRecordAddedListener.onRecordAdded(requestLogItem); }
@@ -34,7 +42,7 @@ public class RequestLogService {
      * ones
      */
     public void clearEndedRecords() {
-        records.removeIf(RequestLogItem::isCompleted);
+        activity.runOnUiThread(() -> records.removeIf(RequestLogItem::isCompleted));
     }
 
     public interface OnRecordAddedListener {

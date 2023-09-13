@@ -6,6 +6,7 @@ import retrofit2.Retrofit
 import ru.forblitz.statistics.api.ApiInterfaceForBlitz
 import ru.forblitz.statistics.api.NetworkConnectionInterceptor
 import ru.forblitz.statistics.data.Constants
+import ru.forblitz.statistics.dto.RequestLogItem
 import ru.forblitz.statistics.utils.ParseUtils
 import ru.forblitz.statistics.utils.Utils
 
@@ -13,8 +14,9 @@ import ru.forblitz.statistics.utils.Utils
  * The [TokensService] is responsible for getting API tokens
  */
 class TokensService(
-    private var connectivityService: ConnectivityService,
-    private var connectivityManager: ConnectivityManager,
+    private val connectivityService: ConnectivityService,
+    private val connectivityManager: ConnectivityManager,
+    private val requestLogService: RequestLogService
 ) {
 
     private var json: String? = null
@@ -26,6 +28,8 @@ class TokensService(
     private val taskQueue: ArrayList<Runnable> = ArrayList()
 
     private suspend fun request() {
+        val requestLogItem = RequestLogItem(System.currentTimeMillis(), RequestLogItem.RequestType.TOKENS, false)
+        requestLogService.addRecord(requestLogItem)
 
         json = Utils.toJson(
             Retrofit.Builder()
@@ -43,6 +47,7 @@ class TokensService(
                 .getAll()
         )
 
+        requestLogService.addRecord(requestLogItem.apply { isCompleted = true })
     }
 
     private fun getLestaToken(): String {

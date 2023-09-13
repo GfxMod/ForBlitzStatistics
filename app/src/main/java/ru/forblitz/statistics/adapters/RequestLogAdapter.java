@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
@@ -13,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import ru.forblitz.statistics.R;
 import ru.forblitz.statistics.dto.RequestLogItem;
@@ -24,9 +22,7 @@ public class RequestLogAdapter extends ArrayAdapter<RequestLogItem> {
     @LayoutRes
     private static final int resourceId = R.layout.item_request_log;
 
-    private final ArrayList<RequestLogItem> items = new ArrayList<>();
-
-    public RequestLogAdapter(@NonNull Context context, List<RequestLogItem> requestLogItems) {
+    public RequestLogAdapter(@NonNull Context context, ArrayList<RequestLogItem> requestLogItems) {
         super(context, resourceId, requestLogItems);
         setNotifyOnChange(true);
     }
@@ -50,25 +46,6 @@ public class RequestLogAdapter extends ArrayAdapter<RequestLogItem> {
         }
 
         return convertView;
-    }
-
-    public void add(@NonNull RequestLogItem requestLogItem, ListView parent) {
-        if (!requestLogItem.isCompleted()) {
-            super.add(requestLogItem);
-            items.add(requestLogItem);
-        } else {
-            for (int i = 0; i < parent.getChildCount(); i++) {
-                if (getItem(i).getTimestamp() == requestLogItem.getTimestamp()) {
-                    TextView view = ((TextView) parent.getChildAt(i));
-
-                    view.setText(createTextReceived(requestLogItem));
-                    view.setTextColor(getContext().getColor(R.color.session_green));
-
-                    getItem(i).setCompleted(true);
-                    items.get(i).setCompleted(true);
-                }
-            }
-        }
     }
 
     private String createTextSent(RequestLogItem requestLogItem) {

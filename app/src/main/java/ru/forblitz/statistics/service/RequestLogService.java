@@ -4,23 +4,21 @@ import java.util.ArrayList;
 
 import ru.forblitz.statistics.dto.RequestLogItem;
 
+/**
+ * The {@link RequestLogService} keeps a log of network requests
+ */
 public class RequestLogService {
 
     private final ArrayList<RequestLogItem> records = new ArrayList<>();
 
     private OnRecordAddedListener onRecordAddedListener;
 
-    public void addRecord(long timestampOfSent, RequestType requestType, boolean completed) {
-        records.add(new RequestLogItem(timestampOfSent, requestType, completed));
-        if (onRecordAddedListener != null) {
-            onRecordAddedListener.onRecordAdded(
-                    new RequestLogItem(
-                            timestampOfSent,
-                            requestType,
-                            completed
-                    )
-            );
+    public void addRecord(RequestLogItem requestLogItem) {
+        if (!requestLogItem.isCompleted()) {
+            records.add(requestLogItem);
         }
+
+        if (onRecordAddedListener != null) { onRecordAddedListener.onRecordAdded(requestLogItem); }
     }
 
     public void setOnRecordAddedListener(OnRecordAddedListener onRecordAddedListener) {
@@ -31,14 +29,12 @@ public class RequestLogService {
         return records;
     }
 
-    public enum RequestType {
-        ACCOUNT_ID,
-        USER_STATISTICS,
-        USER_CLAN_INFO,
-        FULL_CLAN_INFO,
-        ACHIEVEMENTS,
-        TANKOPEDIA,
-        TANKS_STATISTICS
+    /**
+     * Removes all completed queries from the list, leaving only incomplete
+     * ones
+     */
+    public void clearEndedRecords() {
+        records.removeIf(RequestLogItem::isCompleted);
     }
 
     public interface OnRecordAddedListener {

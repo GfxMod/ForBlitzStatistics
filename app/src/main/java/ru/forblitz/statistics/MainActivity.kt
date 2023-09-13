@@ -64,7 +64,6 @@ import ru.forblitz.statistics.data.Constants.StatisticsViewFlipperItems
 import ru.forblitz.statistics.data.Constants.TABS_COUNT
 import ru.forblitz.statistics.data.RecordDatabase
 import ru.forblitz.statistics.dto.Record
-import ru.forblitz.statistics.dto.RequestLogItem
 import ru.forblitz.statistics.dto.Session
 import ru.forblitz.statistics.dto.StatisticsData
 import ru.forblitz.statistics.dto.VehicleSpecs
@@ -239,7 +238,8 @@ class MainActivity : AppCompatActivity() {
         app.requestLogService = RequestLogService()
         app.tokensService = TokensService(
             app.connectivityService,
-            app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
+            app.requestLogService
         )
         app.apiService = ApiService(
             app.connectivityService,
@@ -255,7 +255,8 @@ class MainActivity : AppCompatActivity() {
         app.sessionService = SessionService(applicationContext)
         app.versionService = VersionService(
             app.connectivityService,
-            app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
+            app.requestLogService
         )
         app.vehicleSpecsService = VehicleSpecsService(app.apiService)
         app.vehicleStatService = VehicleStatService(app.apiService)
@@ -1334,17 +1335,18 @@ class MainActivity : AppCompatActivity() {
 
         if (app.setSettings[Constants.PreferencesSwitchesTags.logDisplay] == true) {
 
+            app.requestLogService.clearEndedRecords()
             val requestLogAdapter = RequestLogAdapter(
                 this@MainActivity,
-                ArrayList<RequestLogItem>()
+                app.requestLogService.records
             )
 
             requestLogList.adapter = requestLogAdapter
             requestLogList.deferNotifyDataSetChanged()
 
-            app.requestLogService.setOnRecordAddedListener { requestLogItem ->
+            app.requestLogService.setOnRecordAddedListener {
                 runOnUiThread {
-                    requestLogAdapter.add(requestLogItem, requestLogList)
+                    requestLogAdapter.notifyDataSetChanged()
                 }
             }
 

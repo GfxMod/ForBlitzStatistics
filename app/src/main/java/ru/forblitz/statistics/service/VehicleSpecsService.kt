@@ -56,6 +56,7 @@ class VehicleSpecsService(private var apiService: ApiService) {
     private fun onEndOfLoad() {
         isRequestLoaded = true
         taskQueue.forEach { it.run() }
+        taskQueue.clear()
     }
 
     override fun toString(): String {

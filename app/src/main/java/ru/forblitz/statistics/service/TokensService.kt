@@ -94,6 +94,7 @@ class TokensService(
     private fun onEndOfLoad() {
         isRequestLoaded = true
         taskQueue.forEach { it.run() }
+        taskQueue.clear()
     }
 
 }

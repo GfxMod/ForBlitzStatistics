@@ -47,7 +47,7 @@ class ApiService(
 
     suspend fun getUsers(search: String): Response<ResponseBody> {
         val timestampOfSent = System.currentTimeMillis()
-        requestLogService.addRecord(timestampOfSent, RequestType.ACCOUNT_ID, false)
+        requestLogService.addRecord(timestampOfSent, RequestType.USER_STATISTICS, false)
         val response = apiInterface.getUsers(url["getUsers"].toString().replace("APP_ID", tokens[region].toString()), search)
         requestLogService.addRecord(timestampOfSent, RequestType.USER_STATISTICS, true)
         return response

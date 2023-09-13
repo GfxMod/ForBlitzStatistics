@@ -634,6 +634,8 @@ class MainActivity : AppCompatActivity() {
             tanksList.addFooterView(footer)
         }
 
+        tanksLayoutsFlipper.displayedChild = 2
+
         // Updates logging display
 
         updateLoggingDisplay()
@@ -1051,9 +1053,6 @@ class MainActivity : AppCompatActivity() {
             val tanksLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.tanks_layouts_flipper)
             val tanksApplyFilters = findViewById<View>(R.id.tanks_apply_filters)
 
-            runOnUiThread {
-                tanksLayoutsFlipper.displayedChild = 2
-            }
             tanksApplyFilters.setOnClickListener {
                 setVehiclesStat()
                 InterfaceUtils.playCycledAnimation(

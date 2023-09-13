@@ -9,6 +9,7 @@ import ru.forblitz.statistics.data.Constants.*
 import ru.forblitz.statistics.service.ConnectivityService
 import ru.forblitz.statistics.service.RequestLogService
 import ru.forblitz.statistics.service.RequestLogService.RequestType
+import java.time.Duration
 
 class ApiService(
     private val connectivityService: ConnectivityService,
@@ -23,9 +24,14 @@ class ApiService(
     fun setRegion(region: String): ApiInterface {
         this.region = region
         apiInterface = Retrofit.Builder()
-            .client(OkHttpClient.Builder().addInterceptor(
-                NetworkConnectionInterceptor(connectivityService, connectivityManager)
-            ).build())
+            .client(
+                OkHttpClient
+                    .Builder()
+                    .addInterceptor(NetworkConnectionInterceptor(connectivityService, connectivityManager))
+                    .connectTimeout(Duration.ofSeconds(okHttpTimeout))
+                    .readTimeout(Duration.ofSeconds(okHttpTimeout))
+                    .build()
+            )
             .baseUrl(baseUrl[region].toString())
             .build().create(ApiInterface::class.java)
         return apiInterface

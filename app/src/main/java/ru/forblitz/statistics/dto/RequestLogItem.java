@@ -1,33 +1,33 @@
 package ru.forblitz.statistics.dto;
 
-import ru.forblitz.statistics.service.RequestLogService;
+import androidx.annotation.NonNull;
+
+import java.util.Random;
 
 public class RequestLogItem {
 
-    private long timestamp;
-    private RequestLogService.RequestType requestType;
+    private final long id;
+    private final long timestamp;
+    @NonNull
+    private final RequestType requestType;
     private boolean isCompleted;
 
-    public RequestLogItem(long timestampOfSent, RequestLogService.RequestType requestType, boolean isCompleted) {
+    public RequestLogItem(
+            long timestampOfSent,
+            @NonNull RequestType requestType,
+            boolean isCompleted) {
         this.timestamp = timestampOfSent;
         this.requestType = requestType;
         this.isCompleted = isCompleted;
+        this.id = timestampOfSent * (new Random()).nextInt(99);
     }
 
     public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public RequestLogService.RequestType getRequestType() {
+    public @NonNull RequestType getRequestType() {
         return requestType;
-    }
-
-    public void setRequestType(RequestLogService.RequestType requestType) {
-        this.requestType = requestType;
     }
 
     public boolean isCompleted() {
@@ -36,6 +36,22 @@ public class RequestLogItem {
 
     public void setCompleted(boolean completed) {
         isCompleted = completed;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public enum RequestType {
+        ACCOUNT_ID,
+        USER_STATISTICS,
+        USER_CLAN_INFO,
+        FULL_CLAN_INFO,
+        ACHIEVEMENTS,
+        TANKOPEDIA,
+        TANKS_STATISTICS,
+        VERSION,
+        TOKENS
     }
 
 }

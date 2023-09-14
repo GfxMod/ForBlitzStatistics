@@ -6,6 +6,7 @@ import retrofit2.Retrofit
 import ru.forblitz.statistics.api.ApiInterfaceForBlitz
 import ru.forblitz.statistics.api.NetworkConnectionInterceptor
 import ru.forblitz.statistics.data.Constants
+import ru.forblitz.statistics.dto.RequestLogItem
 import ru.forblitz.statistics.utils.ParseUtils
 import ru.forblitz.statistics.utils.Utils
 
@@ -13,15 +14,22 @@ import ru.forblitz.statistics.utils.Utils
  * The [TokensService] is responsible for getting API tokens
  */
 class TokensService(
-    private var connectivityService: ConnectivityService,
-    private var connectivityManager: ConnectivityManager,
+    private val connectivityService: ConnectivityService,
+    private val connectivityManager: ConnectivityManager,
+    private val requestLogService: RequestLogService
 ) {
 
     private var json: String? = null
 
     val tokens: HashMap<String, String> = HashMap()
 
+    private var isRequestLoaded: Boolean = false
+
+    private val taskQueue: ArrayList<Runnable> = ArrayList()
+
     private suspend fun request() {
+        val requestLogItem = RequestLogItem(System.currentTimeMillis(), RequestLogItem.RequestType.TOKENS, false)
+        requestLogService.addRecord(requestLogItem)
 
         json = Utils.toJson(
             Retrofit.Builder()
@@ -39,29 +47,54 @@ class TokensService(
                 .getAll()
         )
 
+        requestLogService.addRecord(requestLogItem.apply { isCompleted = true })
     }
 
-    suspend fun getLestaToken(): String {
-        if (json == null) {
-            request()
-        }
-/*
-        val token = ParseUtils.parseLestaAPIToken(json)
-        tokens["ru"] = token
-        return token;
-*/
-        return ParseUtils.parseLestaAPIToken(json).apply { tokens["ru"] = this }
+    private fun getLestaToken(): String {
+        return ParseUtils.parseLestaAPIToken(json)
     }
 
-    suspend fun getWargamingToken(): String {
-        if (json == null) {
-            request()
-        }
+    private fun getWargamingToken(): String {
         return ParseUtils.parseWargamingAPIToken(json).apply {
             tokens["eu"] = this
             tokens["na"] = this
             tokens["asia"] = this
         }
+    }
+
+    private fun getBannerAdUnitId(): String {
+        return ParseUtils.parseBannerAdUnitId(json).apply { tokens["banner"] = this }
+    }
+
+    private fun getInterstitialAdUnitId(): String {
+        return ParseUtils.parseInterstitialAdUnitId(json).apply { tokens["interstitial"] = this }
+    }
+
+    suspend fun updateTokens() {
+        request()
+        getLestaToken().apply { tokens["ru"] = this }
+        getWargamingToken().apply {
+            tokens["eu"] = this
+            tokens["na"] = this
+            tokens["asia"] = this
+        }
+        getBannerAdUnitId().apply { tokens["banner"] = this }
+        getInterstitialAdUnitId().apply { tokens["interstitial"] = this }
+        onEndOfLoad()
+    }
+
+    fun addTaskOnEndOfLoad(runnable: Runnable) {
+        if (isRequestLoaded) {
+            runnable.run()
+        } else {
+            taskQueue.add(runnable)
+        }
+    }
+
+    private fun onEndOfLoad() {
+        isRequestLoaded = true
+        taskQueue.forEach { it.run() }
+        taskQueue.clear()
     }
 
 }

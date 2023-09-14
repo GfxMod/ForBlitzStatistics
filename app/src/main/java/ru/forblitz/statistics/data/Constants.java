@@ -14,6 +14,8 @@ public class Constants {
 
     public static String stringResourcesDescriptionPostfix = "_description";
 
+    public static long okHttpTimeout = 90;
+
     public static class MainViewFlipperItems {
         public static final int ENTER_NICKNAME = 0;
         public static final int LOADING = 1;

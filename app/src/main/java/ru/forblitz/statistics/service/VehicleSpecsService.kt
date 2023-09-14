@@ -17,6 +17,10 @@ class VehicleSpecsService(private var apiService: ApiService) {
 
     private val list = HashMap<String, VehicleSpecs>()
 
+    private var isRequestLoaded: Boolean = false
+
+    private val taskQueue: ArrayList<Runnable> = ArrayList()
+
     fun getListSize(): Int {
         return list.size
     }
@@ -34,10 +38,25 @@ class VehicleSpecsService(private var apiService: ApiService) {
                 list[entry.key] = entry.value
             }
 
+            onEndOfLoad()
         }
 
         return list
 
+    }
+
+    fun addTaskOnEndOfLoad(runnable: Runnable) {
+        if (isRequestLoaded) {
+            runnable.run()
+        } else {
+            taskQueue.add(runnable)
+        }
+    }
+
+    private fun onEndOfLoad() {
+        isRequestLoaded = true
+        taskQueue.forEach { it.run() }
+        taskQueue.clear()
     }
 
     override fun toString(): String {

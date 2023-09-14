@@ -64,14 +64,12 @@ import ru.forblitz.statistics.data.Constants.StatisticsViewFlipperItems
 import ru.forblitz.statistics.data.Constants.TABS_COUNT
 import ru.forblitz.statistics.data.RecordDatabase
 import ru.forblitz.statistics.dto.Record
-import ru.forblitz.statistics.dto.RequestLogItem
 import ru.forblitz.statistics.dto.Session
 import ru.forblitz.statistics.dto.StatisticsData
 import ru.forblitz.statistics.dto.VehicleSpecs
 import ru.forblitz.statistics.dto.VehicleStat
 import ru.forblitz.statistics.exception.ObjectException
 import ru.forblitz.statistics.service.AdService
-import ru.forblitz.statistics.service.AdUnitIdsService
 import ru.forblitz.statistics.service.ClanService
 import ru.forblitz.statistics.service.ConnectivityService
 import ru.forblitz.statistics.service.RandomService
@@ -217,7 +215,7 @@ class MainActivity : AppCompatActivity() {
         searchField.setOnEditorActionListener { _, actionId, _ ->
             return@setOnEditorActionListener when (actionId) {
                 EditorInfo.IME_ACTION_SEARCH -> {
-                    onClickSearchButton(findViewById(R.id.search_button))
+                    findViewById<View>(R.id.search_button).performClick()
                     true
                 }
                 else -> false
@@ -227,7 +225,7 @@ class MainActivity : AppCompatActivity() {
         searchField.setOnKeyListener(object : View.OnKeyListener {
             override fun onKey(v: View?, keyCode: Int, event: KeyEvent): Boolean {
                 if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                    onClickSearchButton(findViewById(R.id.search_button))
+                    findViewById<View>(R.id.search_button).performClick()
                     return true
                 }
                 return false
@@ -237,10 +235,11 @@ class MainActivity : AppCompatActivity() {
         // Initialization of services
 
         app.connectivityService = ConnectivityService()
-        app.requestLogService = RequestLogService()
+        app.requestLogService = RequestLogService(this@MainActivity)
         app.tokensService = TokensService(
             app.connectivityService,
-            app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
+            app.requestLogService
         )
         app.apiService = ApiService(
             app.connectivityService,
@@ -256,17 +255,14 @@ class MainActivity : AppCompatActivity() {
         app.sessionService = SessionService(applicationContext)
         app.versionService = VersionService(
             app.connectivityService,
-            app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
+            app.requestLogService
         )
         app.vehicleSpecsService = VehicleSpecsService(app.apiService)
         app.vehicleStatService = VehicleStatService(app.apiService)
-        app.adUnitIdsService = AdUnitIdsService(
-            app.connectivityService,
-            app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        )
         app.adService = AdService(
             this@MainActivity,
-            app.adUnitIdsService.adUnitIds
+            app.tokensService.tokens
         )
         app.recordDatabase = databaseBuilder(
             applicationContext,
@@ -373,7 +369,7 @@ class MainActivity : AppCompatActivity() {
                 val tanksLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.tanks_layouts_flipper)
 
                 if (mainLayoutsFlipper.displayedChild == MainViewFlipperItems.SETTINGS) {
-                    onClickSettingsButton(findViewById(R.id.settings_button))
+                    findViewById<View>(R.id.settings_button).performClick()
                 } else {
                     when (viewPager.currentItem) {
                         0 -> {
@@ -415,8 +411,6 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         app.connectivityService.subscribe(this)
 
-        val searchButton = findViewById<View>(R.id.search_button)
-
         // Set keyboard visibility listener
 
         contentView!!.viewTreeObserver.addOnGlobalLayoutListener {
@@ -453,23 +447,15 @@ class MainActivity : AppCompatActivity() {
         // Check version and fill vehicles specifications
 
         CoroutineScope(Dispatchers.IO).launch {
-            runOnUiThread { searchButton.isClickable = false }
             // Checks if the app version is up-to-date
             versionCheck()
             // Loads tokens
-            app.tokensService.getLestaToken()
-            app.tokensService.getWargamingToken()
-            // Loads adUnitIds
-            app.adUnitIdsService.getBannerAdUnitId()
-            app.adUnitIdsService.getInterstitialAdUnitId()
-            runOnUiThread { searchButton.isClickable = true }
-            // Get vehicle specifications
-            app.vehicleSpecsService.getVehiclesSpecsList()
-
-            if (findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
-                    .displayedChild == MainViewFlipperItems.STATISTICS
-            ) {
-                setVehiclesStat()
+            app.tokensService.updateTokens()
+            app.tokensService.addTaskOnEndOfLoad {
+                CoroutineScope(Dispatchers.IO).launch {
+                    // Get vehicle specifications
+                    app.vehicleSpecsService.getVehiclesSpecsList()
+                }
             }
 
         }
@@ -649,54 +635,63 @@ class MainActivity : AppCompatActivity() {
             tanksList.addFooterView(footer)
         }
 
+        tanksLayoutsFlipper.displayedChild = 2
+
         // Updates logging display
 
         updateLoggingDisplay()
 
-        // Does everything to show statistics, but first shows ads if necessary
+        // Does everything to show statistics, but first waits for tokens and
+        // ads to be loaded, if necessary
 
-        app.adService.showInterstitial {
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
+        app.tokensService.addTaskOnEndOfLoad {
+            app.adService.showInterstitial {
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
 
-                    app.userService.clear()
-                    app.userService.getUserID(searchField.text.toString())
+                        app.userService.clear()
+                        app.userService.getUserID(searchField.text.toString())
 
-                    findViewById<EditText>(R.id.search_field).setText(
-                        app.userService.getNickname(),
-                        TextView.BufferType.EDITABLE
-                    )
-                    app.recordDatabase.recordDao().addRecord(
-                        Record(
-                            app.userService.getUserID(),
+                        findViewById<EditText>(R.id.search_field).setText(
                             app.userService.getNickname(),
-                            System.currentTimeMillis().toString(),
-                            app.preferences.getString("region", "notSpecified")!!
+                            TextView.BufferType.EDITABLE
                         )
-                    )
+                        app.recordDatabase.recordDao().addRecord(
+                            Record(
+                                app.userService.getUserID(),
+                                app.userService.getNickname(),
+                                System.currentTimeMillis().toString(),
+                                app.preferences.getString("region", "notSpecified")!!
+                            )
+                        )
 
-                    // set player statistics
+                        // set player statistics
 
-                    app.sessionService.clear()
-                    app.vehicleStatService.clear()
+                        app.sessionService.clear()
+                        app.vehicleStatService.clear()
 
-                    setRandomStat()
-                    setRatingStat()
-                    setClanStat()
-                    setVehiclesStat()
+                        setRandomStat()
+                        setRatingStat()
+                        setClanStat()
+                        app.vehicleSpecsService.addTaskOnEndOfLoad {
+                            CoroutineScope(Dispatchers.IO).launch {
+                                setVehiclesStat()
+                            }
+                        }
 
-                } catch (e: ObjectException) {
-                    runOnUiThread {
-                        mainFlipper.displayedChild = MainViewFlipperItems.ENTER_NICKNAME
-                        searchButton.isClickable = true
-                        searchField.setText("", TextView.BufferType.EDITABLE)
-                        searchProgressIndicator.hide()
+                    } catch (e: ObjectException) {
+                        runOnUiThread {
+                            mainFlipper.displayedChild = MainViewFlipperItems.ENTER_NICKNAME
+                            searchButton.isClickable = true
+                            searchField.setText("", TextView.BufferType.EDITABLE)
+                            searchProgressIndicator.hide()
 
-                        InterfaceUtils.createAlertDialog(
-                            this@MainActivity,
-                            getString(R.string.error) + " " + e.error.code,
-                            e.message.toString().replace("XXX", app.preferences.getString("region", "notSpecified")!!.uppercase()),
-                        ).show()
+                            InterfaceUtils.createAlertDialog(
+                                this@MainActivity,
+                                getString(R.string.error) + " " + e.error.code,
+                                e.message.toString().replace("XXX", app.preferences.getString("region", "notSpecified")!!.uppercase()),
+                            ).show()
+                        }
                     }
                 }
             }
@@ -1059,9 +1054,6 @@ class MainActivity : AppCompatActivity() {
             val tanksLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.tanks_layouts_flipper)
             val tanksApplyFilters = findViewById<View>(R.id.tanks_apply_filters)
 
-            runOnUiThread {
-                tanksLayoutsFlipper.displayedChild = 2
-            }
             tanksApplyFilters.setOnClickListener {
                 setVehiclesStat()
                 InterfaceUtils.playCycledAnimation(
@@ -1343,17 +1335,18 @@ class MainActivity : AppCompatActivity() {
 
         if (app.setSettings[Constants.PreferencesSwitchesTags.logDisplay] == true) {
 
+            app.requestLogService.clearEndedRecords()
             val requestLogAdapter = RequestLogAdapter(
                 this@MainActivity,
-                ArrayList<RequestLogItem>()
+                app.requestLogService.records
             )
 
             requestLogList.adapter = requestLogAdapter
             requestLogList.deferNotifyDataSetChanged()
 
-            app.requestLogService.setOnRecordAddedListener { requestLogItem ->
+            app.requestLogService.setOnRecordAddedListener {
                 runOnUiThread {
-                    requestLogAdapter.add(requestLogItem, requestLogList)
+                    requestLogAdapter.notifyDataSetChanged()
                 }
             }
 

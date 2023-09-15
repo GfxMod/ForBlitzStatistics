@@ -5,7 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
+import android.view.HapticFeedbackConstants;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,7 +19,6 @@ import ru.forblitz.statistics.utils.InterfaceUtils;
  * {@link ExtendedImageButton} is a custom widget that extends
  * {@link AppCompatImageButton} to create an image button with extended
  * functionality.
- * {@link android.R.attr#contentDescription} with a long press
  * <ul>
  *     <li>{@link ru.forblitz.statistics.R.attr#switchable} A boolean resource
  *     indicating the need to switch images and activate.</li>
@@ -45,8 +44,12 @@ public class ExtendedImageButton extends AppCompatImageButton {
     public ExtendedImageButton(@NonNull Context context) {
         super(context);
 
-        setOnClickListener(v -> { });
-        setOnLongClickListener(v -> false);
+        if (!hasOnClickListeners()) {
+            setOnClickListener(v -> { });
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !hasOnLongClickListeners()) {
+            setOnLongClickListener(v -> false);
+        }
     }
 
     public ExtendedImageButton(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -92,15 +95,19 @@ public class ExtendedImageButton extends AppCompatImageButton {
 
     @Override
     public void setOnClickListener(@Nullable OnClickListener l) {
-        if (switchable) {
+        if (switchable || isHapticFeedbackEnabled()) {
             super.setOnClickListener(v -> {
-                setActivated(!isActivated());
+                if (isHapticFeedbackEnabled()) {
+                    performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                }
+                if (switchable) {
+                    setActivated(!isActivated());
+                }
                 if (l != null) {
                     l.onClick(v);
                 }
             });
         } else {
-            Log.d("OnClickListener", String.valueOf(l == null));
             super.setOnClickListener(l);
         }
     }

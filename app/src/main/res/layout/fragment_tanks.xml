@@ -72,6 +72,7 @@
                 android:src="@drawable/ic_outline_rule_24"
                 android:visibility="gone"
                 app:backgroundTint="@color/blue"
+                android:hapticFeedbackEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/tanks_list_banner"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -1267,6 +1268,7 @@
                             android:layout_weight="1"
                             android:background="@android:color/transparent"
                             android:contentDescription="@string/battles_sort"
+                            android:hapticFeedbackEnabled="true"
                             android:buttonTintMode="multiply"
                             whatever:switchable="true"
                             whatever:button_checked="@drawable/ic_battles_on"
@@ -1279,6 +1281,7 @@
                             android:layout_weight="1"
                             android:background="@android:color/transparent"
                             android:contentDescription="@string/damage_sort"
+                            android:hapticFeedbackEnabled="true"
                             android:buttonTintMode="multiply"
                             whatever:switchable="true"
                             whatever:button_checked="@drawable/ic_damage_on"
@@ -1291,6 +1294,7 @@
                             android:layout_weight="1"
                             android:background="@android:color/transparent"
                             android:contentDescription="@string/efficiency_sort"
+                            android:hapticFeedbackEnabled="true"
                             android:buttonTintMode="multiply"
                             whatever:switchable="true"
                             whatever:button_checked="@drawable/ic_efficiency_on"
@@ -1305,6 +1309,7 @@
                             android:contentDescription="@string/xp_sort"
                             android:buttonTintMode="multiply"
                             whatever:switchable="true"
+                            android:hapticFeedbackEnabled="true"
                             whatever:button_checked="@drawable/ic_xp_on"
                             whatever:button_unchecked="@drawable/ic_xp_off" />
 
@@ -1315,6 +1320,7 @@
                             android:layout_weight="1"
                             android:background="@android:color/transparent"
                             android:contentDescription="@string/win_rate_sort"
+                            android:hapticFeedbackEnabled="true"
                             android:buttonTintMode="multiply"
                             whatever:switchable="true"
                             whatever:button_checked="@drawable/ic_win_rate_on"
@@ -1499,13 +1505,14 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.025" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <ru.forblitz.statistics.widget.common.ExtendedButton
                 android:id="@+id/tanks_apply_filters"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_weight="0.075"
                 android:background="@drawable/background_sessions_true"
+                android:hapticFeedbackEnabled="true"
                 android:fontFamily="@font/inter"
                 android:gravity="center"
                 android:paddingHorizontal="30dp"

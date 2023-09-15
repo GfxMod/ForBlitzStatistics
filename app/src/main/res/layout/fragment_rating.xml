@@ -416,13 +416,14 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.05625" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <ru.forblitz.statistics.widget.common.ExtendedButton
                 android:id="@+id/rating_details_button"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_weight="0.075"
                 android:background="@drawable/background_button"
+                android:hapticFeedbackEnabled="true"
                 android:fontFamily="@font/inter"
                 android:gravity="center"
                 android:paddingHorizontal="30dp"

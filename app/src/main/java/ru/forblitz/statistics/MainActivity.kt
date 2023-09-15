@@ -14,6 +14,7 @@ import android.os.LocaleList
 import android.os.Looper
 import android.text.method.LinkMovementMethod
 import android.util.Log
+import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
@@ -615,12 +616,14 @@ class MainActivity : AppCompatActivity() {
             clanLayoutsFlipper.displayedChild = ClanViewFlipperItems.NOT_IS_A_MEMBER
         }
         clanMembersListBackView.setOnClickListener {
+            tanksFilters.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             clanLayoutsFlipper.displayedChild = ClanViewFlipperItems.IS_A_MEMBER
         }
         tanksDetailsBack.setOnClickListener {
             tanksLayoutsFlipper.displayedChild = 0
         }
         tanksFilters.setOnClickListener {
+            tanksFilters.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             tanksLayoutsFlipper.displayedChild = 3
         }
 

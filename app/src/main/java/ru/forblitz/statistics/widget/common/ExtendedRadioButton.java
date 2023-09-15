@@ -7,6 +7,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.StateSet;
+import android.view.HapticFeedbackConstants;
 import android.view.animation.ScaleAnimation;
 import android.widget.Toast;
 
@@ -37,6 +38,13 @@ public class ExtendedRadioButton extends AppCompatRadioButton {
 
     public ExtendedRadioButton(Context context) {
         super(context);
+
+        if (!hasOnClickListeners()) {
+            setOnClickListener(v -> { });
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !hasOnLongClickListeners()) {
+            setOnLongClickListener(v -> false);
+        }
     }
 
     public ExtendedRadioButton(Context context, @Nullable AttributeSet attrs) {
@@ -57,6 +65,9 @@ public class ExtendedRadioButton extends AppCompatRadioButton {
 
         a.recycle();
 
+        if (!hasOnClickListeners()) {
+            setOnClickListener(v -> { });
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !hasOnLongClickListeners()) {
             setOnLongClickListener(v -> false);
         }
@@ -80,6 +91,9 @@ public class ExtendedRadioButton extends AppCompatRadioButton {
 
         a.recycle();
 
+        if (!hasOnClickListeners()) {
+            setOnClickListener(v -> { });
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !hasOnLongClickListeners()) {
             setOnLongClickListener(v -> false);
         }
@@ -124,6 +138,20 @@ public class ExtendedRadioButton extends AppCompatRadioButton {
                 );
                 this.setButtonDrawable(stateListDrawable);
             }
+        }
+    }
+
+    @Override
+    public void setOnClickListener(@Nullable OnClickListener l) {
+        if (isHapticFeedbackEnabled()) {
+            super.setOnClickListener(v -> {
+                performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                if (l != null) {
+                    l.onClick(v);
+                }
+            });
+        } else {
+            super.setOnClickListener(l);
         }
     }
 

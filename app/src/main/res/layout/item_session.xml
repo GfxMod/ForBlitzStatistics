@@ -20,7 +20,7 @@
         android:paddingHorizontal="@dimen/padding_very_big"
         app:autoSizeTextType="uniform" />
 
-    <ru.forblitz.statistics.widget.common.SquareImageButton
+    <ru.forblitz.statistics.widget.common.ExtendedImageButton
         android:id="@+id/session_remove"
         android:layout_width="0px"
         android:layout_height="match_parent"

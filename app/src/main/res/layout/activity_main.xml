@@ -20,7 +20,7 @@
         whatever:maskPadding="@dimen/padding_big"
         whatever:corner="@dimen/padding_very_big">
 
-        <ru.forblitz.statistics.widget.common.SquareImageButton
+        <ru.forblitz.statistics.widget.common.ExtendedImageButton
             android:id="@+id/search_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -65,7 +65,7 @@
             android:layout_marginStart="@dimen/padding_big"
             android:layout_marginEnd="@dimen/padding_big" />
 
-        <ru.forblitz.statistics.widget.common.SquareImageButton
+        <ru.forblitz.statistics.widget.common.ExtendedImageButton
             android:id="@+id/settings_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"

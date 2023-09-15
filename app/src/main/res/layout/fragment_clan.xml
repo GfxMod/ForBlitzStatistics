@@ -112,7 +112,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.025" />
 
-                    <ru.forblitz.statistics.widget.common.SquareImageButton
+                    <ru.forblitz.statistics.widget.common.ExtendedImageButton
                         android:id="@+id/clan_members_button"
                         android:layout_width="0px"
                         android:layout_height="match_parent"

@@ -466,7 +466,7 @@
                     android:textStyle="bold"
                     app:autoSizeTextType="uniform" />
 
-                <ru.forblitz.statistics.widget.common.SquareImageButton
+                <ru.forblitz.statistics.widget.common.ExtendedImageButton
                     android:id="@+id/rating_details_back"
                     android:layout_width="0px"
                     android:layout_height="match_parent"

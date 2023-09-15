@@ -13,17 +13,17 @@
         <!-- Defines a vertical widget. -->
         <enum name="vertical" value="1" />
     </attr>
+    <attr name="switchable" format="boolean" />
 
-    <declare-styleable name="AnimatedImageButton">
-        <attr name="button_checked" />
-        <attr name="button_unchecked" />
-    </declare-styleable>
-    <declare-styleable name="AnimatedRadioButton">
+    <declare-styleable name="ExtendedImageButton">
+        <attr name="switchable" />
         <attr name="button_checked" />
         <attr name="button_unchecked" />
         <attr name="main_dimension" />
     </declare-styleable>
-    <declare-styleable name="SquareImageButton">
+    <declare-styleable name="AnimatedRadioButton">
+        <attr name="button_checked" />
+        <attr name="button_unchecked" />
         <attr name="main_dimension" />
     </declare-styleable>
     <declare-styleable name="DifferenceIndicatorView">

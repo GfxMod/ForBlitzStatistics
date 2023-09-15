@@ -1260,7 +1260,7 @@
                         android:checkedButton="@id/radio_battles"
                         android:orientation="horizontal">
 
-                        <ru.forblitz.statistics.widget.common.AnimatedRadioButton
+                        <ru.forblitz.statistics.widget.common.ExtendedRadioButton
                             android:id="@+id/radio_battles"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -1268,10 +1268,11 @@
                             android:background="@android:color/transparent"
                             android:contentDescription="@string/battles_sort"
                             android:buttonTintMode="multiply"
+                            whatever:switchable="true"
                             whatever:button_checked="@drawable/ic_battles_on"
                             whatever:button_unchecked="@drawable/ic_battles_off" />
 
-                        <ru.forblitz.statistics.widget.common.AnimatedRadioButton
+                        <ru.forblitz.statistics.widget.common.ExtendedRadioButton
                             android:id="@+id/radio_damage"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -1279,10 +1280,11 @@
                             android:background="@android:color/transparent"
                             android:contentDescription="@string/damage_sort"
                             android:buttonTintMode="multiply"
+                            whatever:switchable="true"
                             whatever:button_checked="@drawable/ic_damage_on"
                             whatever:button_unchecked="@drawable/ic_damage_off" />
 
-                        <ru.forblitz.statistics.widget.common.AnimatedRadioButton
+                        <ru.forblitz.statistics.widget.common.ExtendedRadioButton
                             android:id="@+id/radio_efficiency"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -1290,10 +1292,11 @@
                             android:background="@android:color/transparent"
                             android:contentDescription="@string/efficiency_sort"
                             android:buttonTintMode="multiply"
+                            whatever:switchable="true"
                             whatever:button_checked="@drawable/ic_efficiency_on"
                             whatever:button_unchecked="@drawable/ic_efficiency_off" />
 
-                        <ru.forblitz.statistics.widget.common.AnimatedRadioButton
+                        <ru.forblitz.statistics.widget.common.ExtendedRadioButton
                             android:id="@+id/radio_xp"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -1301,10 +1304,11 @@
                             android:background="@android:color/transparent"
                             android:contentDescription="@string/xp_sort"
                             android:buttonTintMode="multiply"
+                            whatever:switchable="true"
                             whatever:button_checked="@drawable/ic_xp_on"
                             whatever:button_unchecked="@drawable/ic_xp_off" />
 
-                        <ru.forblitz.statistics.widget.common.AnimatedRadioButton
+                        <ru.forblitz.statistics.widget.common.ExtendedRadioButton
                             android:id="@+id/radio_win_rate"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -1312,6 +1316,7 @@
                             android:background="@android:color/transparent"
                             android:contentDescription="@string/win_rate_sort"
                             android:buttonTintMode="multiply"
+                            whatever:switchable="true"
                             whatever:button_checked="@drawable/ic_win_rate_on"
                             whatever:button_unchecked="@drawable/ic_win_rate_off" />
 

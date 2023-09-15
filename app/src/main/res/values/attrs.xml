@@ -21,7 +21,8 @@
         <attr name="button_unchecked" />
         <attr name="main_dimension" />
     </declare-styleable>
-    <declare-styleable name="AnimatedRadioButton">
+    <declare-styleable name="ExtendedRadioButton">
+        <attr name="switchable" />
         <attr name="button_checked" />
         <attr name="button_unchecked" />
         <attr name="main_dimension" />

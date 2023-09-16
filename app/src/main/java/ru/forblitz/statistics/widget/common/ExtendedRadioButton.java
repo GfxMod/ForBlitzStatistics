@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatRadioButton;
 
+import ru.forblitz.statistics.ForBlitzStatisticsApplication;
 import ru.forblitz.statistics.R;
 import ru.forblitz.statistics.utils.InterfaceUtils;
 
@@ -143,16 +144,14 @@ public class ExtendedRadioButton extends AppCompatRadioButton {
 
     @Override
     public void setOnClickListener(@Nullable OnClickListener l) {
-        if (isHapticFeedbackEnabled()) {
-            super.setOnClickListener(v -> {
-                performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-                if (l != null) {
-                    l.onClick(v);
-                }
-            });
-        } else {
-            super.setOnClickListener(l);
-        }
+        super.setOnClickListener(v -> {
+            if (((ForBlitzStatisticsApplication) getContext().getApplicationContext()).isHapticsEnabled()) {
+                performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK);
+            }
+            if (l != null) {
+                l.onClick(v);
+            }
+        });
     }
 
     @Override

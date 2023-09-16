@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 
+import ru.forblitz.statistics.ForBlitzStatisticsApplication;
+
 public class ExtendedButton extends AppCompatButton {
 
     public ExtendedButton(@NonNull Context context) {
@@ -24,16 +26,14 @@ public class ExtendedButton extends AppCompatButton {
 
     @Override
     public void setOnClickListener(@Nullable OnClickListener l) {
-        if (isHapticFeedbackEnabled()) {
-            super.setOnClickListener(v -> {
-                performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-                if (l != null) {
-                    l.onClick(v);
-                }
-            });
-        } else {
-            super.setOnClickListener(l);
-        }
+        super.setOnClickListener(v -> {
+            if (((ForBlitzStatisticsApplication) getContext().getApplicationContext()).isHapticsEnabled()) {
+                performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK);
+            }
+            if (l != null) {
+                l.onClick(v);
+            }
+        });
     }
 
 }

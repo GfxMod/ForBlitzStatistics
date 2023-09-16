@@ -43,6 +43,8 @@ public class Constants {
 
         public static String logDisplay = "log_display";
 
+        public static String haptics = "haptics";
+
     }
 
     public static final Map<String, String> baseUrl = new HashMap<>();
@@ -89,6 +91,7 @@ public class Constants {
     static {
         preferencesTags.add(PreferencesSwitchesTags.averageDamageRounding);
         preferencesTags.add(PreferencesSwitchesTags.logDisplay);
+        preferencesTags.add(PreferencesSwitchesTags.haptics);
     }
 
 }

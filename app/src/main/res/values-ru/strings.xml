@@ -166,6 +166,8 @@
     <string name="average_damage_rounding_description">Округлять значение среднего урона не до целых, а до сотых долей. Позволяет более детально следить за изменениями в статистике</string>
     <string name="log_display">Включить отображение логов на экране загрузки</string>
     <string name="log_display_description">Позволяет подробно отслеживать статус запросов во время загрузки результатов поиска</string>
+    <string name="haptics">Отключить тактильный отклик</string>
+    <string name="haptics_description">Отключить тактильный отклик на нажатия кнопок</string>
 
     <string name="advanced_settings">Расширенные настройки</string>
 

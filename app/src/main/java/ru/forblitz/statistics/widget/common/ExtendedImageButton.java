@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageButton;
 
+import ru.forblitz.statistics.ForBlitzStatisticsApplication;
 import ru.forblitz.statistics.R;
 import ru.forblitz.statistics.utils.InterfaceUtils;
 
@@ -95,21 +96,17 @@ public class ExtendedImageButton extends AppCompatImageButton {
 
     @Override
     public void setOnClickListener(@Nullable OnClickListener l) {
-        if (switchable || isHapticFeedbackEnabled()) {
-            super.setOnClickListener(v -> {
-                if (isHapticFeedbackEnabled()) {
-                    performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-                }
-                if (switchable) {
-                    setActivated(!isActivated());
-                }
-                if (l != null) {
-                    l.onClick(v);
-                }
-            });
-        } else {
-            super.setOnClickListener(l);
-        }
+        super.setOnClickListener(v -> {
+            if (((ForBlitzStatisticsApplication) getContext().getApplicationContext()).isHapticsEnabled()) {
+                performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK);
+            }
+            if (switchable) {
+                setActivated(!isActivated());
+            }
+            if (l != null) {
+                l.onClick(v);
+            }
+        });
     }
 
     @Override

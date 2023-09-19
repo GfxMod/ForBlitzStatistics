@@ -2,7 +2,7 @@ package ru.forblitz.statistics.service
 
 open class DeferredTasksService {
 
-    private var isRequestLoaded: Boolean = false
+    protected var isRequestLoaded: Boolean = false
 
     private val taskQueue: ArrayList<Runnable> = ArrayList()
 

@@ -73,13 +73,12 @@ import ru.forblitz.statistics.exception.ObjectException
 import ru.forblitz.statistics.service.AdService
 import ru.forblitz.statistics.service.ClanService
 import ru.forblitz.statistics.service.ConnectivityService
-import ru.forblitz.statistics.service.RandomService
-import ru.forblitz.statistics.service.RatingService
 import ru.forblitz.statistics.service.RequestLogService
 import ru.forblitz.statistics.service.SessionService
 import ru.forblitz.statistics.service.TokensService
 import ru.forblitz.statistics.service.UserClanService
 import ru.forblitz.statistics.service.UserService
+import ru.forblitz.statistics.service.UserStatisticsService
 import ru.forblitz.statistics.service.VehicleSpecsService
 import ru.forblitz.statistics.service.VehicleStatService
 import ru.forblitz.statistics.service.VersionService
@@ -249,8 +248,7 @@ class MainActivity : AppCompatActivity() {
             app.tokensService.tokens
         )
         app.userService = UserService(this@MainActivity, app.apiService)
-        app.randomService = RandomService(app.apiService)
-        app.ratingService = RatingService(app.apiService)
+        app.userStatisticsService = UserStatisticsService(app.apiService)
         app.userClanService = UserClanService(app.apiService)
         app.clanService = ClanService(app.apiService)
         app.sessionService = SessionService(applicationContext)
@@ -674,17 +672,8 @@ class MainActivity : AppCompatActivity() {
 
                         // set player statistics
 
-                        app.sessionService.clear()
-                        app.vehicleStatService.clear()
-
-                        setRandomStat()
-                        setRatingStat()
+                        setPlayerStat()
                         setClanStat()
-                        app.vehicleSpecsService.addTaskOnEndOfLoad {
-                            CoroutineScope(Dispatchers.IO).launch {
-                                setVehiclesStat()
-                            }
-                        }
 
                     } catch (e: ObjectException) {
                         runOnUiThread {
@@ -795,34 +784,56 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun setPlayerStat() {
+        CoroutineScope(Dispatchers.IO).launch {
+
+            app.userStatisticsService.clear()
+            app.sessionService.clear()
+            app.vehicleStatService.clear()
+
+            app.userStatisticsService.addTaskOnEndOfLoad {
+                setRandomStat()
+                setRatingStat()
+                setSessionStat(0)
+            }
+
+            app.vehicleSpecsService.addTaskOnEndOfLoad {
+                CoroutineScope(Dispatchers.IO).launch {
+                    setVehiclesStat()
+                }
+            }
+
+            try {
+                with (app.userStatisticsService) {
+                    loadStatistics(
+                        app.userService.getUserID(),
+                        app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
+                    )
+                }
+            } catch (e: ObjectException) {
+                runOnUiThread {
+                    InterfaceUtils.createAlertDialog(
+                        this@MainActivity,
+                        e.error.code,
+                        e.message
+                    )
+                    findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper).displayedChild = MainViewFlipperItems.ENTER_NICKNAME
+                    findViewById<View>(R.id.settings_button).isActivated = false
+                }
+            }
+
+        }
+    }
+
     /**
      * Gets 'random' statistics and sets it to the 'random' screen. At the end
      * of the work, it calls 'setSessionStat()'
      */
     private fun setRandomStat() {
-        CoroutineScope(Dispatchers.IO).launch {
-
-            app.randomService.clear()
-            try {
-                InterfaceUtils.setBaseStatistics(
-                    this@MainActivity,
-                    app.randomService.getStatisticsData(
-                        app.userService.getUserID(),
-                        app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
-                    ),
-                    true)
-                setSessionStat(0)
-            } catch (e: ObjectException) {
-                InterfaceUtils.createAlertDialog(
-                    this@MainActivity,
-                    e.error.code,
-                    e.message
-                )
-                findViewById<ViewFlipper>(R.id.main_layouts_flipper).displayedChild = MainViewFlipperItems.ENTER_NICKNAME
-                findViewById<View>(R.id.settings_button).isActivated = false
-            }
-
-        }
+        InterfaceUtils.setBaseStatistics(
+            this@MainActivity,
+            app.userStatisticsService.getRandomStatisticsData(),
+            true)
     }
 
     /**
@@ -830,18 +841,9 @@ class MainActivity : AppCompatActivity() {
      * of the work, it calls 'setSessionStat()'
      */
     private fun setRatingStat() {
-        CoroutineScope(Dispatchers.IO).launch {
-
-            app.ratingService.clear()
-            InterfaceUtils.setRatingStatistics(this@MainActivity,
-                app.ratingService.getStatisticsData(
-                    app.userService.getUserID(),
-                    app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
-                ),
-                true)
-            setSessionStat(0)
-
-        }
+        InterfaceUtils.setRatingStatistics(this@MainActivity,
+            app.userStatisticsService.getRatingStatisticsData(),
+            true)
     }
 
     /**
@@ -854,7 +856,7 @@ class MainActivity : AppCompatActivity() {
         // is terminated. If session statistics are already set, then the
         // function is also terminated.
 
-        if (app.randomService.getStatisticsData() == null || app.ratingService.getStatisticsData() == null || app.sessionService.alreadySet) {
+        if (app.sessionService.alreadySet) {
             return
         }
         app.sessionService.alreadySet = true
@@ -862,9 +864,9 @@ class MainActivity : AppCompatActivity() {
         // Saves the current session to a file
 
         app.sessionService.createSessionFile(
-            app.randomService.getJson(),
+            app.userStatisticsService.getJson(),
             app.userService.getUserID(),
-            ParseUtils.parseTimestamp(app.randomService.getJson(), false),
+            app.userStatisticsService.getTimestamp(),
             app.preferences.getString("region", "notSpecified")!!
         )
         app.sessionService.getSessionsList(app.userService.getUserID(), app.preferences.getString("region", "notSpecified")!!)
@@ -873,7 +875,7 @@ class MainActivity : AppCompatActivity() {
         // then removes it from the list.
 
         if (
-            ParseUtils.parseTimestamp(app.randomService.getJson(), false)
+            app.userStatisticsService.getTimestamp()
             ==
             ParseUtils.parseTimestamp(app.sessionService.getSessionsList()[0], true)
         ) {
@@ -959,7 +961,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     else -> {
                         SessionUtils.calculateSessionDifferences(
-                            app.randomService.getStatisticsData(),
+                            app.userStatisticsService.getRandomStatisticsData(),
                             ParseUtils.parseStatisticsData(
                                 File(app.sessionService.getSessionsList()[index]).readText(),
                                 "all",
@@ -977,7 +979,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     else -> {
                         SessionUtils.calculateSessionDifferences(
-                            app.ratingService.getStatisticsData(),
+                            app.userStatisticsService.getRatingStatisticsData(),
                             ParseUtils.parseStatisticsData(
                                 File(app.sessionService.getSessionsList()[index]).readText(),
                                 "rating",
@@ -994,8 +996,8 @@ class MainActivity : AppCompatActivity() {
 
             if (randomSessionStatButton.isActivated) {
                 randomSessionStatButton.setText(R.string.to_session_stat)
-                randomFastStat.setData(app.randomService.getStatisticsData())
-                ratingFastStat.setData(app.ratingService.getStatisticsData())
+                randomFastStat.setData(app.userStatisticsService.getRandomStatisticsData())
+                ratingFastStat.setData(app.userStatisticsService.getRatingStatisticsData())
                 randomSessionStatButton.isActivated = false
             }
             randomSessionStatButton.setOnClickListener {
@@ -1007,7 +1009,7 @@ class MainActivity : AppCompatActivity() {
                         randomSessionStatButton.text = getString(R.string.from_session_stat)
 
                         randomFastStat.setData(SessionUtils.calculateSession(
-                            app.randomService.getStatisticsData(),
+                            app.userStatisticsService.getRandomStatisticsData(),
                             ParseUtils.parseStatisticsData(
                                 File(app.sessionService.getSessionsList()[index]).readText(),
                                 "all",
@@ -1015,7 +1017,7 @@ class MainActivity : AppCompatActivity() {
                             )
                         ))
                         ratingFastStat.setData(SessionUtils.calculateSession(
-                            app.ratingService.getStatisticsData(),
+                            app.userStatisticsService.getRatingStatisticsData(),
                             ParseUtils.parseStatisticsData(
                                 File(app.sessionService.getSessionsList()[index]).readText(),
                                 "rating",
@@ -1031,8 +1033,8 @@ class MainActivity : AppCompatActivity() {
                     Handler(Looper.getMainLooper()).postDelayed({
                         randomSessionStatButton.text = getString(R.string.to_session_stat)
 
-                        randomFastStat.setData(app.randomService.getStatisticsData())
-                        ratingFastStat.setData(app.ratingService.getStatisticsData())
+                        randomFastStat.setData(app.userStatisticsService.getRandomStatisticsData())
+                        ratingFastStat.setData(app.userStatisticsService.getRatingStatisticsData())
 
                         fragmentRandom.startAnimation(fragmentRandom.inAnimation)
                         fragmentRating.startAnimation(fragmentRating.inAnimation)

@@ -8,13 +8,12 @@ import ru.forblitz.statistics.data.RecordDatabase
 import ru.forblitz.statistics.service.AdService
 import ru.forblitz.statistics.service.ClanService
 import ru.forblitz.statistics.service.ConnectivityService
-import ru.forblitz.statistics.service.RandomService
-import ru.forblitz.statistics.service.RatingService
 import ru.forblitz.statistics.service.RequestLogService
 import ru.forblitz.statistics.service.SessionService
 import ru.forblitz.statistics.service.TokensService
 import ru.forblitz.statistics.service.UserClanService
 import ru.forblitz.statistics.service.UserService
+import ru.forblitz.statistics.service.UserStatisticsService
 import ru.forblitz.statistics.service.VehicleSpecsService
 import ru.forblitz.statistics.service.VehicleStatService
 import ru.forblitz.statistics.service.VersionService
@@ -34,8 +33,7 @@ class ForBlitzStatisticsApplication : Application() {
 
     lateinit var apiService: ApiService
     lateinit var userService: UserService
-    lateinit var randomService: RandomService
-    lateinit var ratingService: RatingService
+    lateinit var userStatisticsService: UserStatisticsService
     lateinit var userClanService: UserClanService
     lateinit var clanService: ClanService
     lateinit var sessionService: SessionService

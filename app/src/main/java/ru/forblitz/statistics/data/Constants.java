@@ -73,6 +73,13 @@ public class Constants {
         public static final double[] efficiency = new double[] { 1, 1.25, 1.5 };
     }
 
+    public static class StatisticKeys {
+        public static final String random = "all";
+        public static final String rating = "rating";
+        public static final String clan = "clan";
+
+    }
+
     public static Map<String, Integer> localeCodes = new HashMap<>();
     static {
         localeCodes.put("ru", R.string.locale_ru);

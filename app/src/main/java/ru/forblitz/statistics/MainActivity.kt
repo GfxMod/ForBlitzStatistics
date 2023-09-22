@@ -14,7 +14,6 @@ import android.os.LocaleList
 import android.os.Looper
 import android.text.method.LinkMovementMethod
 import android.util.Log
-import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.View
 import android.view.View.GONE
@@ -62,10 +61,10 @@ import ru.forblitz.statistics.adapters.VehicleAdapter
 import ru.forblitz.statistics.adapters.ViewPagerAdapter
 import ru.forblitz.statistics.api.ApiService
 import ru.forblitz.statistics.data.Constants
-import ru.forblitz.statistics.data.Constants.MainViewFlipperItems
-import ru.forblitz.statistics.data.Constants.StatisticsViewFlipperItems
 import ru.forblitz.statistics.data.Constants.ClanViewFlipperItems
+import ru.forblitz.statistics.data.Constants.MainViewFlipperItems
 import ru.forblitz.statistics.data.Constants.PlayerStatisticsTypes
+import ru.forblitz.statistics.data.Constants.StatisticsViewFlipperItems
 import ru.forblitz.statistics.data.Constants.TABS_COUNT
 import ru.forblitz.statistics.data.RecordDatabase
 import ru.forblitz.statistics.dto.Record
@@ -86,6 +85,7 @@ import ru.forblitz.statistics.service.UserStatisticsService
 import ru.forblitz.statistics.service.VehicleSpecsService
 import ru.forblitz.statistics.service.VehicleStatService
 import ru.forblitz.statistics.service.VersionService
+import ru.forblitz.statistics.utils.HapticUtils
 import ru.forblitz.statistics.utils.InterfaceUtils
 import ru.forblitz.statistics.utils.ParseUtils
 import ru.forblitz.statistics.utils.StatisticsDataUtils
@@ -598,18 +598,14 @@ class MainActivity : AppCompatActivity() {
                 clanLayoutsFlipper.displayedChild = ClanViewFlipperItems.NOT_IS_A_MEMBER
             }
             clanMembersListBackView.setOnClickListener {
-                if (app.isHapticsEnabled()) {
-                    clanMembersListBackView.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
-                }
+                HapticUtils.performHapticFeedback(clanMembersListBackView)
                 clanLayoutsFlipper.displayedChild = ClanViewFlipperItems.IS_A_MEMBER
             }
             tanksDetailsBack.setOnClickListener {
                 tanksLayoutsFlipper.displayedChild = 0
             }
             tanksFilters.setOnClickListener {
-                if (app.isHapticsEnabled()) {
-                    tanksFilters.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
-                }
+                HapticUtils.performHapticFeedback(tanksFilters)
                 tanksLayoutsFlipper.displayedChild = 3
             }
 
@@ -798,7 +794,9 @@ class MainActivity : AppCompatActivity() {
                             isChecked = false
                             GONE
                         }
-                        addOnCheckedChangeListener { _, _ -> updatePlayerStatistics(); setSessionStat(app.sessionService.getSelectedSessionIndex()!!) }
+                        addOnCheckedChangeListener { _, _ ->
+                            updatePlayerStatistics()
+                            setSessionStat(app.sessionService.getSelectedSessionIndex()!!) }
                     }
                     with(findViewById<MaterialButton>(R.id.statistics_toggle_rating)) {
                         visibility = if (app.userStatisticsService.getRatingStatisticsData().battles != "0") {
@@ -808,7 +806,10 @@ class MainActivity : AppCompatActivity() {
                             isChecked = false
                             GONE
                         }
-                        addOnCheckedChangeListener { _, _ -> updatePlayerStatistics(); setSessionStat(app.sessionService.getSelectedSessionIndex()!!) }
+                        addOnCheckedChangeListener { _, _ ->
+                            updatePlayerStatistics()
+                            setSessionStat(app.sessionService.getSelectedSessionIndex()!!)
+                        }
                     }
                     with(findViewById<MaterialButton>(R.id.statistics_toggle_clan)) {
                         visibility = if (app.userStatisticsService.getClanStatisticsData().battles != "0") {
@@ -818,7 +819,10 @@ class MainActivity : AppCompatActivity() {
                             isChecked = false
                             GONE
                         }
-                        addOnCheckedChangeListener { _, _ -> updatePlayerStatistics(); setSessionStat(app.sessionService.getSelectedSessionIndex()!!) }
+                        addOnCheckedChangeListener { _, _ ->
+                            updatePlayerStatistics()
+                            setSessionStat(app.sessionService.getSelectedSessionIndex()!!)
+                        }
                     }
 
                     updatePlayerStatistics()

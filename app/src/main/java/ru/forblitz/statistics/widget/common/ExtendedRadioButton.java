@@ -7,15 +7,14 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.StateSet;
-import android.view.HapticFeedbackConstants;
 import android.view.animation.ScaleAnimation;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatRadioButton;
 
-import ru.forblitz.statistics.ForBlitzStatisticsApplication;
 import ru.forblitz.statistics.R;
+import ru.forblitz.statistics.utils.HapticUtils;
 import ru.forblitz.statistics.utils.InterfaceUtils;
 
 /**
@@ -145,9 +144,7 @@ public class ExtendedRadioButton extends AppCompatRadioButton {
     @Override
     public void setOnClickListener(@Nullable OnClickListener l) {
         super.setOnClickListener(v -> {
-            if (((ForBlitzStatisticsApplication) getContext().getApplicationContext()).isHapticsEnabled()) {
-                performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK);
-            }
+            HapticUtils.performHapticFeedback(this);
             if (l != null) {
                 l.onClick(v);
             }

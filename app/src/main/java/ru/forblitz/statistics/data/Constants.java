@@ -1,5 +1,7 @@
 package ru.forblitz.statistics.data;
 
+import android.view.HapticFeedbackConstants;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +17,8 @@ public class Constants {
     public static String stringResourcesDescriptionPostfix = "_description";
 
     public static long okHttpTimeout = 90;
+
+    public static int hapticFeedbackType = HapticFeedbackConstants.CLOCK_TICK;
 
     public static class MainViewFlipperItems {
         public static final int ENTER_NICKNAME = 0;

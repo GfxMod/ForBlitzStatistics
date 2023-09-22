@@ -5,15 +5,14 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.view.HapticFeedbackConstants;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageButton;
 
-import ru.forblitz.statistics.ForBlitzStatisticsApplication;
 import ru.forblitz.statistics.R;
+import ru.forblitz.statistics.utils.HapticUtils;
 import ru.forblitz.statistics.utils.InterfaceUtils;
 
 /**
@@ -97,9 +96,7 @@ public class ExtendedImageButton extends AppCompatImageButton {
     @Override
     public void setOnClickListener(@Nullable OnClickListener l) {
         super.setOnClickListener(v -> {
-            if (((ForBlitzStatisticsApplication) getContext().getApplicationContext()).isHapticsEnabled()) {
-                performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK);
-            }
+            HapticUtils.performHapticFeedback(this);
             if (switchable) {
                 setActivated(!isActivated());
             }

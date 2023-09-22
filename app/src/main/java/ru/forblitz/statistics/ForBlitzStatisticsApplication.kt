@@ -21,10 +21,10 @@ import ru.forblitz.statistics.service.VersionService
 class ForBlitzStatisticsApplication : Application() {
 
     fun isHapticsEnabled(): Boolean {
-        return if (setSettings[PreferencesSwitchesTags.haptics] != null) {
-            setSettings[PreferencesSwitchesTags.haptics]!!
+        return if (setSettings[PreferencesSwitchesTags.hapticsDisabled] != null) {
+            !setSettings[PreferencesSwitchesTags.hapticsDisabled]!!
         } else {
-            false
+            true
         }
     }
 

@@ -49,7 +49,7 @@ public class Constants {
 
         public static String logDisplay = "log_display";
 
-        public static String haptics = "haptics";
+        public static String hapticsDisabled = "haptics";
 
     }
 
@@ -103,7 +103,7 @@ public class Constants {
     static {
         preferencesTags.add(PreferencesSwitchesTags.averageDamageRounding);
         preferencesTags.add(PreferencesSwitchesTags.logDisplay);
-        preferencesTags.add(PreferencesSwitchesTags.haptics);
+        preferencesTags.add(PreferencesSwitchesTags.hapticsDisabled);
     }
 
 }

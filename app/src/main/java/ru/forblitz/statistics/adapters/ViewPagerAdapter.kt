@@ -4,8 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import ru.forblitz.statistics.ClanFragment
-import ru.forblitz.statistics.RandomFragment
-import ru.forblitz.statistics.RatingFragment
+import ru.forblitz.statistics.StatisticsFragment
 import ru.forblitz.statistics.TanksFragment
 
 class ViewPagerAdapter(fragmentManager: FragmentManager, private val tabCount: Int):
@@ -14,16 +13,13 @@ class ViewPagerAdapter(fragmentManager: FragmentManager, private val tabCount: I
     override fun getItem(position: Int): Fragment {
         return when (position) {
             1 -> {
-                RatingFragment()
-            }
-            2 -> {
                 ClanFragment()
             }
-            3 -> {
+            2 -> {
                 TanksFragment()
             }
             else -> {
-                RandomFragment()
+                StatisticsFragment()
             }
         }
     }

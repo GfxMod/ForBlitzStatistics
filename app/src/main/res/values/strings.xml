@@ -173,5 +173,9 @@
 
     <string name="log_request_sent">request sent</string>
     <string name="log_response_received">response received</string>
-    
+
+    <string name="regular_battles_short_name">regular</string>
+    <string name="rating_battles_short_name">rating</string>
+    <string name="tournament_battles_short_name">tournament</string>
+
 </resources>

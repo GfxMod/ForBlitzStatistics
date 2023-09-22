@@ -10,7 +10,7 @@ public class Constants {
 
     public static final String forBlitzBaseUrl = "https://forblitz.ru/";
 
-    public static int TABS_COUNT = 4;
+    public static int TABS_COUNT = 3;
 
     public static String stringResourcesDescriptionPostfix = "_description";
 
@@ -26,6 +26,8 @@ public class Constants {
     public static class StatisticsViewFlipperItems {
         public static final int STATISTICS = 0;
         public static final int FALSE = 1;
+
+        public static final int SESSIONS = 2;
     }
 
     public static class ClanViewFlipperItems {
@@ -45,6 +47,12 @@ public class Constants {
 
         public static String haptics = "haptics";
 
+    }
+
+    public static class PlayerStatisticsTypes {
+        public static final String RANDOM = "all";
+        public static final String RATING = "rating";
+        public static final String CLAN = "clan";
     }
 
     public static final Map<String, String> baseUrl = new HashMap<>();
@@ -71,13 +79,6 @@ public class Constants {
         public static final double[] winRate = new double[] { 50, 60, 70 };
         public static final double[] averageDamage = new double[] { 1000, 1500, 2000 };
         public static final double[] efficiency = new double[] { 1, 1.25, 1.5 };
-    }
-
-    public static class StatisticKeys {
-        public static final String random = "all";
-        public static final String rating = "rating";
-        public static final String clan = "clan";
-
     }
 
     public static Map<String, Integer> localeCodes = new HashMap<>();

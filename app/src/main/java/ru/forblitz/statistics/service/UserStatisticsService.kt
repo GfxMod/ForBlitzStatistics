@@ -1,13 +1,17 @@
 package ru.forblitz.statistics.service
 
 import ru.forblitz.statistics.api.ApiService
-import ru.forblitz.statistics.data.Constants
+import ru.forblitz.statistics.data.Constants.PlayerStatisticsTypes
 import ru.forblitz.statistics.dto.StatisticsData
 import ru.forblitz.statistics.utils.ParseUtils
+import ru.forblitz.statistics.utils.StatisticsDataUtils
 import ru.forblitz.statistics.utils.Utils
 
+/**
+ * Responsible for obtaining all types of player statistics
+ */
 class UserStatisticsService(
-    private var apiService: ApiService
+    private var apiService: ApiService,
 ) : DeferredTasksService() {
 
     private var json: String? = null
@@ -15,8 +19,10 @@ class UserStatisticsService(
     private var randomStatisticsData: StatisticsData? = null
     private var ratingStatisticsData: StatisticsData? = null
     private var clanStatisticsData: StatisticsData? = null
+    private var detailedAverageDamage: Boolean = false
 
     private suspend fun request(userID: String, detailedAverageDamage: Boolean) {
+        this.detailedAverageDamage = detailedAverageDamage
 
         Utils.toJson(apiService.getUsers(userID)).apply {
 
@@ -24,23 +30,26 @@ class UserStatisticsService(
 
             timestamp = ParseUtils.parseTimestamp(this, false)
 
-            randomStatisticsData = ParseUtils.parseStatisticsData(
-                this,
-                Constants.StatisticKeys.random,
-                detailedAverageDamage
-            )
+            randomStatisticsData =
+                StatisticsDataUtils.parse(
+                    this,
+                    PlayerStatisticsTypes.RANDOM,
+                    detailedAverageDamage
+                )
 
-            ratingStatisticsData = ParseUtils.parseStatisticsData(
-                this,
-                Constants.StatisticKeys.rating,
-                detailedAverageDamage
-            )
+            ratingStatisticsData =
+                StatisticsDataUtils.parse(
+                    this,
+                    PlayerStatisticsTypes.RATING,
+                    detailedAverageDamage
+                )
 
-            clanStatisticsData = ParseUtils.parseStatisticsData(
-                this,
-                Constants.StatisticKeys.clan,
-                detailedAverageDamage
-            )
+            clanStatisticsData =
+                StatisticsDataUtils.parse(
+                    this,
+                    PlayerStatisticsTypes.CLAN,
+                    detailedAverageDamage
+                )
 
         }
 
@@ -68,7 +77,11 @@ class UserStatisticsService(
     }
 
     fun getClanStatisticsData(): StatisticsData {
-        return randomStatisticsData!!
+        return clanStatisticsData!!
+    }
+
+    fun getStatisticsData(playerStatisticsTypes: Collection<String>): StatisticsData {
+        return StatisticsDataUtils.parse(json, playerStatisticsTypes, detailedAverageDamage)
     }
 
     fun clear() {
@@ -78,6 +91,7 @@ class UserStatisticsService(
         randomStatisticsData = null
         ratingStatisticsData = null
         clanStatisticsData = null
+        detailedAverageDamage = false
     }
 
 }

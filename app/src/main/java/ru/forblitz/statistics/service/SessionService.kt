@@ -12,12 +12,11 @@ import java.nio.file.Paths
  *
  * @property context The context for the session service.
  * @property list The list of sessions.
- * @property alreadySet Indicates if the session has already been set.
  */
 class SessionService(private var context: Context) {
 
     private lateinit var list: ArrayList<String>
-    var alreadySet: Boolean = false
+    private var selectedSessionIndex: Int? = null
 
     /**
      * Returns a list of all sessions for the [player ID][userID] in the
@@ -114,11 +113,12 @@ class SessionService(private var context: Context) {
         Files.createDirectories(Paths.get(getSessionDir().toString()))
     }
 
-    /**
-     * Clears [alreadySet]
-     */
-    fun clear() {
-        alreadySet = false
+    fun setSelectedSessionIndex(selectedSessionIndex: Int) {
+        this.selectedSessionIndex = selectedSessionIndex
+    }
+
+    fun getSelectedSessionIndex(): Int? {
+        return selectedSessionIndex
     }
 
 }

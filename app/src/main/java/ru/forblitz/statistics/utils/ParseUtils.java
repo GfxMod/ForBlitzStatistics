@@ -13,31 +13,8 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 import ru.forblitz.statistics.R;
-import ru.forblitz.statistics.dto.StatisticsData;
 
 public class  ParseUtils {
-
-    public static StatisticsData parseStatisticsData(String json, String key, boolean detailedAverageDamage) {
-
-        JsonObject dataObject = JsonParser
-                .parseString(json)
-                .getAsJsonObject()
-                .getAsJsonObject("data");
-        JsonObject innerDataObject = dataObject.
-                getAsJsonObject(dataObject.keySet().iterator().next());
-
-        //
-
-        JsonObject data = innerDataObject.getAsJsonObject("statistics");
-
-        StatisticsData statisticsData = new Gson().fromJson(
-                data.getAsJsonObject(key),
-                StatisticsData.class
-        );
-        statisticsData.setNickname(innerDataObject.get("nickname").getAsString());
-        statisticsData.calculate(detailedAverageDamage);
-        return statisticsData;
-    }
 
     public static String formatSecondsTimestampToDate(String timestamp) {
         long offset = Calendar.getInstance().getTimeZone().getRawOffset() / 1000;

@@ -17,6 +17,8 @@ import android.util.Log
 import android.view.HapticFeedbackConstants
 import android.view.KeyEvent
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
@@ -40,6 +42,7 @@ import androidx.core.text.HtmlCompat
 import androidx.core.view.updateLayoutParams
 import androidx.room.Room.databaseBuilder
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.progressindicator.LinearProgressIndicator
@@ -59,9 +62,10 @@ import ru.forblitz.statistics.adapters.VehicleAdapter
 import ru.forblitz.statistics.adapters.ViewPagerAdapter
 import ru.forblitz.statistics.api.ApiService
 import ru.forblitz.statistics.data.Constants
-import ru.forblitz.statistics.data.Constants.ClanViewFlipperItems
 import ru.forblitz.statistics.data.Constants.MainViewFlipperItems
 import ru.forblitz.statistics.data.Constants.StatisticsViewFlipperItems
+import ru.forblitz.statistics.data.Constants.ClanViewFlipperItems
+import ru.forblitz.statistics.data.Constants.PlayerStatisticsTypes
 import ru.forblitz.statistics.data.Constants.TABS_COUNT
 import ru.forblitz.statistics.data.RecordDatabase
 import ru.forblitz.statistics.dto.Record
@@ -84,7 +88,7 @@ import ru.forblitz.statistics.service.VehicleStatService
 import ru.forblitz.statistics.service.VersionService
 import ru.forblitz.statistics.utils.InterfaceUtils
 import ru.forblitz.statistics.utils.ParseUtils
-import ru.forblitz.statistics.utils.SessionUtils
+import ru.forblitz.statistics.utils.StatisticsDataUtils
 import ru.forblitz.statistics.utils.Utils
 import ru.forblitz.statistics.widget.common.DifferenceViewFlipper
 import ru.forblitz.statistics.widget.common.ExtendedRadioGroup
@@ -138,10 +142,6 @@ class MainActivity : AppCompatActivity() {
                     contentDescription = getString(R.string.random)
                 }
                 1 -> {
-                    icon = AppCompatResources.getDrawable(applicationContext, R.drawable.ic_outline_auto_graph_36)!!
-                    contentDescription = getString(R.string.rating)
-                }
-                2 -> {
                     icon = AppCompatResources.getDrawable(applicationContext, R.drawable.ic_outline_group_36)!!
                     contentDescription = getString(R.string.clan)
                 }
@@ -175,7 +175,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        viewPager.offscreenPageLimit = 3
+        viewPager.offscreenPageLimit = TABS_COUNT - 1
 
         // Sets animations and dimensions for 'enter nickname' TextSwitcher
 
@@ -362,8 +362,7 @@ class MainActivity : AppCompatActivity() {
 
         onBackPressedDispatcher.addCallback(this@MainActivity, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                val randomLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.random_layouts_flipper)
-                val ratingLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.rating_layouts_flipper)
+                val statisticsLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.statistics_layouts_flipper)
                 val clanLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.clan_layouts_flipper)
                 val tanksLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.tanks_layouts_flipper)
 
@@ -372,21 +371,16 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     when (viewPager.currentItem) {
                         0 -> {
-                            if (randomLayoutsFlipper.displayedChild != 0) {
-                                randomLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
+                            if (statisticsLayoutsFlipper.displayedChild != 0) {
+                                statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
                             }
                         }
                         1 -> {
-                            if (ratingLayoutsFlipper.displayedChild != 0) {
-                                ratingLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
-                            }
-                        }
-                        2 -> {
                             if (clanLayoutsFlipper.displayedChild != 0) {
                                 clanLayoutsFlipper.displayedChild = 0
                             }
                         }
-                        3 -> {
+                        2 -> {
                             if (tanksLayoutsFlipper.displayedChild == 1) {
                                 tanksLayoutsFlipper.displayedChild = 0
                             }
@@ -544,17 +538,13 @@ class MainActivity : AppCompatActivity() {
         val searchField = findViewById<EditText>(R.id.search_field)
         val imm: InputMethodManager = this.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
-        val viewPager = findViewById<ViewPager>(R.id.view_pager)
-        val randomLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.random_layouts_flipper)
-        val ratingLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.rating_layouts_flipper)
+        val statisticsLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.statistics_layouts_flipper)
         val clanLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.clan_layouts_flipper)
         val tanksLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.tanks_layouts_flipper)
 
-        val randomDetailsButtonView = findViewById<View>(R.id.random_details_button)
-        val randomDetailsBack = findViewById<View>(R.id.random_details_back)
-        val randomSessionListButton = findViewById<View>(R.id.random_sessions_list_button)
-        val ratingDetailsButtonView = findViewById<View>(R.id.rating_details_button)
-        val ratingDetailsBack = findViewById<View>(R.id.rating_details_back)
+        val statisticsDetailsButton = findViewById<View>(R.id.statistics_details_button)
+        val statisticsDetailsBack = findViewById<View>(R.id.statistics_details_back)
+        val statisticsSessionListButton = findViewById<View>(R.id.statistics_sessions_list_button)
         val clanMembersButton = findViewById<View>(R.id.clan_members_button)
         val clanMembersListBackView = findViewById<View>(R.id.clan_members_back)
         val tanksDetailsBack = findViewById<View>(R.id.tanks_details_back)
@@ -564,6 +554,7 @@ class MainActivity : AppCompatActivity() {
         val mainFlipper = findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
         val searchButton = findViewById<View>(R.id.search_button)
         val searchProgressIndicator = findViewById<LinearProgressIndicator>(R.id.search_progress_indicator)
+        val statisticsSessionStatButton = findViewById<TextView>(R.id.statistics_session_stat_button)
 
         // Shows the loading screen and the loading indicator, blocks all
         // interactive elements during loading
@@ -571,8 +562,12 @@ class MainActivity : AppCompatActivity() {
         mainFlipper.displayedChild = MainViewFlipperItems.LOADING
         searchButton.isClickable = false
         findViewById<View>(R.id.settings_button).isActivated = false
-        findViewById<SessionButtonsLayout>(R.id.random_session_buttons).setButtonsVisibility(ButtonsVisibility.NOTHING)
+        findViewById<SessionButtonsLayout>(R.id.statistics_session_buttons).setButtonsVisibility(ButtonsVisibility.NOTHING)
         searchProgressIndicator.show()
+        if (statisticsSessionStatButton.isActivated) {
+            statisticsSessionStatButton.setText(R.string.to_session_stat)
+            statisticsSessionStatButton.isActivated = false
+        }
 
         // Plays animation
 
@@ -586,29 +581,16 @@ class MainActivity : AppCompatActivity() {
         imm.hideSoftInputFromWindow(searchField.windowToken, 0)
         searchField.clearFocus()
 
-        // Scrolls to main statistics item for each ViewFlipper/ViewPager
-
-        viewPager.setCurrentItem(0, true)
-        randomLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
-        ratingLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
-        clanLayoutsFlipper.displayedChild = 0
-
         // Sets listeners for buttons
 
-        randomDetailsButtonView.setOnClickListener {
-            randomLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.FALSE
+        statisticsDetailsButton.setOnClickListener {
+            statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.FALSE
         }
-        randomDetailsBack.setOnClickListener {
-            randomLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
+        statisticsDetailsBack.setOnClickListener {
+            statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
         }
-        randomSessionListButton.setOnClickListener {
-            randomLayoutsFlipper.displayedChild = 2
-        }
-        ratingDetailsButtonView.setOnClickListener {
-            ratingLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.FALSE
-        }
-        ratingDetailsBack.setOnClickListener {
-            ratingLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
+        statisticsSessionListButton.setOnClickListener {
+            statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.SESSIONS
         }
         clanMembersButton.setOnClickListener {
             clanLayoutsFlipper.displayedChild = ClanViewFlipperItems.NOT_IS_A_MEMBER
@@ -674,6 +656,11 @@ class MainActivity : AppCompatActivity() {
 
                         setPlayerStat()
                         setClanStat()
+                        app.vehicleSpecsService.addTaskOnEndOfLoad {
+                            CoroutineScope(Dispatchers.IO).launch {
+                                setVehiclesStat()
+                            }
+                        }
 
                     } catch (e: ObjectException) {
                         runOnUiThread {
@@ -692,7 +679,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
     }
 
     /**
@@ -784,22 +770,55 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Does all the actions necessary to display player statistics for the
+     * entered nickname
+     */
     private fun setPlayerStat() {
+        val mainLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
+
         CoroutineScope(Dispatchers.IO).launch {
 
             app.userStatisticsService.clear()
-            app.sessionService.clear()
             app.vehicleStatService.clear()
 
             app.userStatisticsService.addTaskOnEndOfLoad {
-                setRandomStat()
-                setRatingStat()
-                setSessionStat(0)
-            }
+                runOnUiThread {
+                    mainLayoutsFlipper.displayedChild = MainViewFlipperItems.STATISTICS
 
-            app.vehicleSpecsService.addTaskOnEndOfLoad {
-                CoroutineScope(Dispatchers.IO).launch {
-                    setVehiclesStat()
+                    with(findViewById<MaterialButton>(R.id.statistics_toggle_random)) {
+                        visibility = if (app.userStatisticsService.getRandomStatisticsData().battles != "0") {
+                            isChecked = true
+                            VISIBLE
+                        } else {
+                            isChecked = false
+                            GONE
+                        }
+                        addOnCheckedChangeListener { _, _ -> updatePlayerStatistics(); setSessionStat(app.sessionService.getSelectedSessionIndex()!!) }
+                    }
+                    with(findViewById<MaterialButton>(R.id.statistics_toggle_rating)) {
+                        visibility = if (app.userStatisticsService.getRatingStatisticsData().battles != "0") {
+                            isChecked = true
+                            VISIBLE
+                        } else {
+                            isChecked = false
+                            GONE
+                        }
+                        addOnCheckedChangeListener { _, _ -> updatePlayerStatistics(); setSessionStat(app.sessionService.getSelectedSessionIndex()!!) }
+                    }
+                    with(findViewById<MaterialButton>(R.id.statistics_toggle_clan)) {
+                        visibility = if (app.userStatisticsService.getClanStatisticsData().battles != "0") {
+                            isChecked = true
+                            VISIBLE
+                        } else {
+                            isChecked = false
+                            GONE
+                        }
+                        addOnCheckedChangeListener { _, _ -> updatePlayerStatistics(); setSessionStat(app.sessionService.getSelectedSessionIndex()!!) }
+                    }
+
+                    updatePlayerStatistics()
+                    setSessionStat(0)
                 }
             }
 
@@ -817,7 +836,7 @@ class MainActivity : AppCompatActivity() {
                         e.error.code,
                         e.message
                     )
-                    findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper).displayedChild = MainViewFlipperItems.ENTER_NICKNAME
+                    mainLayoutsFlipper.displayedChild = MainViewFlipperItems.ENTER_NICKNAME
                     findViewById<View>(R.id.settings_button).isActivated = false
                 }
             }
@@ -826,40 +845,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Gets 'random' statistics and sets it to the 'random' screen. At the end
-     * of the work, it calls 'setSessionStat()'
+     * Sets values for selected types of player statistics
      */
-    private fun setRandomStat() {
-        InterfaceUtils.setBaseStatistics(
+    private fun updatePlayerStatistics() {
+        InterfaceUtils.setStatistics(
             this@MainActivity,
-            app.userStatisticsService.getRandomStatisticsData(),
-            true)
-    }
-
-    /**
-     * Gets 'rating' statistics and sets it to the 'rating' screen. At the end
-     * of the work, it calls 'setSessionStat()'
-     */
-    private fun setRatingStat() {
-        InterfaceUtils.setRatingStatistics(this@MainActivity,
-            app.userStatisticsService.getRatingStatisticsData(),
-            true)
+            app.userStatisticsService.getStatisticsData(getPlayerStatisticsTypes())
+        )
     }
 
     /**
      * Gets 'session' statistics and sets it for all 'session' elements
      */
     private fun setSessionStat(index: Int) {
-
-        // If the statistics data 'random' or statistics data 'rating' have not
-        // been loaded yet, then there is nothing to compare with, the function
-        // is terminated. If session statistics are already set, then the
-        // function is also terminated.
-
-        if (app.sessionService.alreadySet) {
-            return
-        }
-        app.sessionService.alreadySet = true
 
         // Saves the current session to a file
 
@@ -884,20 +882,19 @@ class MainActivity : AppCompatActivity() {
 
         // Fills in the list of sessions that will be displayed with actions
 
-        val randomLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.random_layouts_flipper)
+        val statisticsLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.statistics_layouts_flipper)
 
         val sessions = ArrayList<Session>(0)
         for (i in 0 until app.sessionService.getSessionsList().size) {
             val session = Session()
             session.path = app.sessionService.getSessionsList()[i]
             session.set = Runnable {
-                app.sessionService.clear()
                 setSessionStat(i)
-                randomLayoutsFlipper.displayedChild = 0
+                statisticsLayoutsFlipper.displayedChild = 0
             }
             session.delete = Runnable {
                 if (i == index) {
-                    Snackbar.make(randomLayoutsFlipper, getString(R.string.delete_select), Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(statisticsLayoutsFlipper, getString(R.string.delete_select), Snackbar.LENGTH_SHORT).show()
                 } else {
                     InterfaceUtils.createAlertDialog(
                         this@MainActivity,
@@ -906,17 +903,15 @@ class MainActivity : AppCompatActivity() {
                         this@MainActivity.getString(R.string.delete),
                         Runnable {
                             if (File(app.sessionService.getSessionsList()[i]).delete()) {
-                                Snackbar.make(randomLayoutsFlipper, getString(R.string.delete_successfully), Snackbar.LENGTH_SHORT).show()
+                                Snackbar.make(statisticsLayoutsFlipper, getString(R.string.delete_successfully), Snackbar.LENGTH_SHORT).show()
                                 if (index != sessions.size - 1) {
-                                    app.sessionService.clear()
                                     setSessionStat(index)
                                 } else {
-                                    app.sessionService.clear()
                                     setSessionStat(index - 1)
                                 }
-                                randomLayoutsFlipper.displayedChild = 0
+                                statisticsLayoutsFlipper.displayedChild = 0
                             } else {
-                                Snackbar.make(randomLayoutsFlipper, getString(R.string.delete_failed), Snackbar.LENGTH_SHORT).show()
+                                Snackbar.make(statisticsLayoutsFlipper, getString(R.string.delete_failed), Snackbar.LENGTH_SHORT).show()
                             }
                         },
                         this@MainActivity.getString(android.R.string.cancel),
@@ -930,17 +925,15 @@ class MainActivity : AppCompatActivity() {
 
         // Displays on the screen
 
-        val randomSessionButtons = findViewById<SessionButtonsLayout>(R.id.random_session_buttons)
-        val randomFastStat = findViewById<PlayerFastStat>(R.id.random_fast_stat)
-        val ratingFastStat = findViewById<PlayerFastStat>(R.id.rating_fast_stat)
-        val randomSessionsList = findViewById<ListView>(R.id.random_sessions_list)
-        val randomSessionStatButton = findViewById<TextView>(R.id.random_session_stat_button)
-        val fragmentRandom = findViewById<ViewFlipper>(R.id.fragment_random)
-        val fragmentRating = findViewById<ViewFlipper>(R.id.fragment_rating)
+        val statisticsSessionButtons = findViewById<SessionButtonsLayout>(R.id.statistics_session_buttons)
+        val statisticsFastStat = findViewById<PlayerFastStat>(R.id.statistics_fast_stat)
+        val statisticsSessionsList = findViewById<ListView>(R.id.statistics_sessions_list)
+        val statisticsSessionStatButton = findViewById<TextView>(R.id.statistics_session_stat_button)
+        val fragmentStatistics = findViewById<ViewFlipper>(R.id.fragment_statistics)
 
         runOnUiThread {
 
-            randomSessionButtons.setButtonsVisibility(
+            statisticsSessionButtons.setButtonsVisibility(
                 when(app.sessionService.getSessionsList().size) {
                     0 -> {
                         ButtonsVisibility.NOTHING
@@ -954,100 +947,95 @@ class MainActivity : AppCompatActivity() {
                 }
             )
 
-            randomFastStat.setSessionData(
+            statisticsFastStat.setSessionData(
                 when(app.sessionService.getSessionsList().size) {
                     0 -> {
                         StatisticsData()
                     }
                     else -> {
-                        SessionUtils.calculateSessionDifferences(
-                            app.userStatisticsService.getRandomStatisticsData(),
-                            ParseUtils.parseStatisticsData(
+                        StatisticsDataUtils.calculateSessionDifferences(
+                            app.userStatisticsService.getStatisticsData(getPlayerStatisticsTypes()),
+                            StatisticsDataUtils.parse(
                                 File(app.sessionService.getSessionsList()[index]).readText(),
-                                "all",
+                                getPlayerStatisticsTypes(),
                                 app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
                             )
                         )
                     }
                 }
             )
-
-            ratingFastStat.setSessionData(
-                when(app.sessionService.getSessionsList().size) {
-                    0 -> {
-                        StatisticsData()
-                    }
-                    else -> {
-                        SessionUtils.calculateSessionDifferences(
-                            app.userStatisticsService.getRatingStatisticsData(),
-                            ParseUtils.parseStatisticsData(
-                                File(app.sessionService.getSessionsList()[index]).readText(),
-                                "rating",
-                                app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
-                            )
+            if (statisticsSessionStatButton.isActivated) {
+                statisticsFastStat.setData(
+                    StatisticsDataUtils.calculateSession(
+                        app.userStatisticsService.getStatisticsData(getPlayerStatisticsTypes()),
+                        StatisticsDataUtils.parse(
+                            File(app.sessionService.getSessionsList()[index]).readText(),
+                            getPlayerStatisticsTypes(),
+                            app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
                         )
-                    }
-                }
-            )
+                    ))
+            }
+            app.sessionService.setSelectedSessionIndex(index)
 
-            randomSessionsList.adapter = SessionAdapter(
+            statisticsSessionsList.adapter = SessionAdapter(
                 this@MainActivity, sessions
             )
 
-            if (randomSessionStatButton.isActivated) {
-                randomSessionStatButton.setText(R.string.to_session_stat)
-                randomFastStat.setData(app.userStatisticsService.getRandomStatisticsData())
-                ratingFastStat.setData(app.userStatisticsService.getRatingStatisticsData())
-                randomSessionStatButton.isActivated = false
-            }
-            randomSessionStatButton.setOnClickListener {
-                fragmentRandom.startAnimation(fragmentRandom.outAnimation)
-                fragmentRating.startAnimation(fragmentRating.outAnimation)
+            statisticsSessionStatButton.setOnClickListener {
+                fragmentStatistics.startAnimation(fragmentStatistics.outAnimation)
 
-                if (!randomSessionStatButton.isActivated) {
+                if (!statisticsSessionStatButton.isActivated) {
                     Handler(Looper.getMainLooper()).postDelayed({
-                        randomSessionStatButton.text = getString(R.string.from_session_stat)
+                        statisticsSessionStatButton.text = getString(R.string.from_session_stat)
 
-                        randomFastStat.setData(SessionUtils.calculateSession(
-                            app.userStatisticsService.getRandomStatisticsData(),
-                            ParseUtils.parseStatisticsData(
-                                File(app.sessionService.getSessionsList()[index]).readText(),
-                                "all",
-                                app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
-                            )
-                        ))
-                        ratingFastStat.setData(SessionUtils.calculateSession(
-                            app.userStatisticsService.getRatingStatisticsData(),
-                            ParseUtils.parseStatisticsData(
-                                File(app.sessionService.getSessionsList()[index]).readText(),
-                                "rating",
-                                app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
-                            )
+                        statisticsFastStat.setData(
+                            StatisticsDataUtils.calculateSession(
+                            app.userStatisticsService.getStatisticsData(getPlayerStatisticsTypes()),
+                                StatisticsDataUtils.parse(
+                                    File(app.sessionService.getSessionsList()[index]).readText(),
+                                    getPlayerStatisticsTypes(),
+                                    app.setSettings[Constants.PreferencesSwitchesTags.averageDamageRounding]!!
+                                )
                         ))
 
-                        fragmentRandom.startAnimation(fragmentRandom.inAnimation)
-                        fragmentRating.startAnimation(fragmentRating.inAnimation)
-                        randomSessionStatButton.isActivated = true
+                        fragmentStatistics.startAnimation(fragmentStatistics.inAnimation)
+                        statisticsSessionStatButton.isActivated = true
                     }, 125)
                 } else {
                     Handler(Looper.getMainLooper()).postDelayed({
-                        randomSessionStatButton.text = getString(R.string.to_session_stat)
+                        statisticsSessionStatButton.text = getString(R.string.to_session_stat)
 
-                        randomFastStat.setData(app.userStatisticsService.getRandomStatisticsData())
-                        ratingFastStat.setData(app.userStatisticsService.getRatingStatisticsData())
+                        statisticsFastStat.setData(app.userStatisticsService.getStatisticsData(getPlayerStatisticsTypes()))
 
-                        fragmentRandom.startAnimation(fragmentRandom.inAnimation)
-                        fragmentRating.startAnimation(fragmentRating.inAnimation)
-                        randomSessionStatButton.isActivated = false
+                        fragmentStatistics.startAnimation(fragmentStatistics.inAnimation)
+                        statisticsSessionStatButton.isActivated = false
                     }, 125)
                 }
             }
 
+            // TODO: refactor
             // Displays the loading screen on tanks layout and waits for data loading to finish
 
             findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper).displayedChild = MainViewFlipperItems.STATISTICS
             findViewById<View>(R.id.search_button).isClickable = true
             findViewById<LinearProgressIndicator>(R.id.search_progress_indicator).hide()
+        }
+    }
+
+    /**
+     * Returns a list of selected player statistics types
+     */
+    private fun getPlayerStatisticsTypes(): Collection<String> {
+        return ArrayList<String>().apply {
+            if (findViewById<MaterialButton>(R.id.statistics_toggle_random).isChecked) {
+                add(PlayerStatisticsTypes.RANDOM)
+            }
+            if (findViewById<MaterialButton>(R.id.statistics_toggle_rating).isChecked) {
+                add(PlayerStatisticsTypes.RATING)
+            }
+            if (findViewById<MaterialButton>(R.id.statistics_toggle_clan).isChecked) {
+                add(PlayerStatisticsTypes.CLAN)
+            }
         }
     }
 
@@ -1234,8 +1222,7 @@ class MainActivity : AppCompatActivity() {
 
             if (app.userClanService.getShortClanInfo(app.userService.getUserID()) != null) {
                 runOnUiThread {
-                    findViewById<ClanBrief>(R.id.random_clan).setData(app.userClanService.getShortClanInfo())
-                    findViewById<ClanBrief>(R.id.rating_clan).setData(app.userClanService.getShortClanInfo())
+                    findViewById<ClanBrief>(R.id.statistics_clan).setData(app.userClanService.getShortClanInfo())
                 }
                 app.clanService.getFullClanInfo(app.userClanService.getShortClanInfo())
                 runOnUiThread {
@@ -1244,8 +1231,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 runOnUiThread {
                     findViewById<ClanScreen>(R.id.fragment_clan).setData(null, app.clanService.getFullClanInfo())
-                    findViewById<ClanBrief>(R.id.random_clan).setData(null)
-                    findViewById<ClanBrief>(R.id.rating_clan).setData(null)
+                    findViewById<ClanBrief>(R.id.statistics_clan).setData(null)
                 }
             }
 
@@ -1317,7 +1303,7 @@ class MainActivity : AppCompatActivity() {
                     if (needToSetText) {
                         enterNicknameSwitcher.setText(getString(R.string.enter_nickname_or_select))
                     }
-                    lastSearchedList.visibility = View.VISIBLE
+                    lastSearchedList.visibility = VISIBLE
 
                     lastSearchedList.adapter = LastSearchedAdapter(
                         this@MainActivity,
@@ -1329,7 +1315,7 @@ class MainActivity : AppCompatActivity() {
                     if (needToSetText) {
                         enterNicknameSwitcher.setText(getString(R.string.enter_nickname))
                     }
-                    lastSearchedList.visibility = View.GONE
+                    lastSearchedList.visibility = GONE
                 }
             }
 

@@ -174,4 +174,8 @@
     <string name="log_request_sent">запит відправлено</string>
     <string name="log_response_received">відповідь отримано</string>
 
+    <string name="regular_battles_short_name">звичайнi</string>
+    <string name="rating_battles_short_name">рейтинговi</string>
+    <string name="tournament_battles_short_name">турнірні</string>
+
 </resources>

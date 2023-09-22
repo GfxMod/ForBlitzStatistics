@@ -24,8 +24,8 @@ public class SessionButtonsLayout extends LinearLayout {
     }
 
     public void setButtonsVisibility(ButtonsVisibility variant) {
-        View randomSessionsStatButton = this.findViewById(R.id.random_session_stat_button);
-        View randomSessionsListButton = this.findViewById(R.id.random_sessions_list_button);
+        View randomSessionsStatButton = this.findViewById(R.id.statistics_session_stat_button);
+        View randomSessionsListButton = this.findViewById(R.id.statistics_sessions_list_button);
         if (variant == ButtonsVisibility.NOTHING) {
             randomSessionsStatButton.setVisibility(View.GONE);
             randomSessionsListButton.setVisibility(View.GONE);

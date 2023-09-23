@@ -177,5 +177,7 @@
     <string name="regular_battles_short_name">regular</string>
     <string name="rating_battles_short_name">rating</string>
     <string name="tournament_battles_short_name">tournament</string>
+    
+    <string name="please_wait">Please wait for the search results to load</string>
 
 </resources>

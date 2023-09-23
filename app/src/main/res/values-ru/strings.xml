@@ -178,4 +178,6 @@
     <string name="rating_battles_short_name">рейтинговые</string>
     <string name="tournament_battles_short_name">турнирные</string>
 
+    <string name="please_wait">Пожалуйста, дождитесь загрузки результатов поиска</string>
+
 </resources>

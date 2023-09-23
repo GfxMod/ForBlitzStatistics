@@ -678,6 +678,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+        } else {
+            Toast.makeText(this@MainActivity, getString(R.string.please_wait), Toast.LENGTH_SHORT).show()
         }
     }
 

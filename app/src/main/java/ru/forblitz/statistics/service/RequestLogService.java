@@ -3,6 +3,7 @@ package ru.forblitz.statistics.service;
 import android.app.Activity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import ru.forblitz.statistics.dto.RequestLogItem;
 
@@ -15,7 +16,7 @@ public class RequestLogService {
 
     private final ArrayList<RequestLogItem> records = new ArrayList<>();
 
-    private OnRecordAddedListener onRecordAddedListener;
+    private final HashMap<Object, OnRecordAddedListener> onRecordAddedListeners = new HashMap<>();
 
     public RequestLogService(Activity activity) {
         this.activity = activity;
@@ -26,11 +27,21 @@ public class RequestLogService {
             activity.runOnUiThread(() -> records.add(requestLogItem));
         }
 
-        if (onRecordAddedListener != null) { onRecordAddedListener.onRecordAdded(requestLogItem); }
+        onRecordAddedListeners.forEach((key, onRecordAddedListener) ->
+                onRecordAddedListener.onRecordAdded(requestLogItem, records)
+        );
     }
 
-    public void setOnRecordAddedListener(OnRecordAddedListener onRecordAddedListener) {
-        this.onRecordAddedListener = onRecordAddedListener;
+    public void addOnRecordAddedListener(Object key, OnRecordAddedListener onRecordAddedListener) {
+        if (!onRecordAddedListeners.containsKey(key)) {
+            onRecordAddedListeners.put(key, onRecordAddedListener);
+        } else {
+            onRecordAddedListeners.replace(key, onRecordAddedListener);
+        }
+    }
+
+    public OnRecordAddedListener removeOnRecordAddedListener(Object key) {
+        return onRecordAddedListeners.remove(key);
     }
 
     public ArrayList<RequestLogItem> getRecords() {
@@ -46,7 +57,7 @@ public class RequestLogService {
     }
 
     public interface OnRecordAddedListener {
-        void onRecordAdded(RequestLogItem requestLogItem);
+        void onRecordAdded(RequestLogItem requestLogItem, ArrayList<RequestLogItem> records);
     }
 
 }

@@ -1351,7 +1351,7 @@ class MainActivity : AppCompatActivity() {
             requestLogList.adapter = requestLogAdapter
             requestLogList.deferNotifyDataSetChanged()
 
-            app.requestLogService.setOnRecordAddedListener {
+            app.requestLogService.addOnRecordAddedListener("updateLoggingDisplay") { _, _ ->
                 runOnUiThread {
                     requestLogAdapter.notifyDataSetChanged()
                 }

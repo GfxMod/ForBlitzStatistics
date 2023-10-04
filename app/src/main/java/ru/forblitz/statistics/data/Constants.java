@@ -61,7 +61,7 @@ public class Constants {
 
     public static final Map<String, String> baseUrl = new HashMap<>();
     static {
-        baseUrl.put("ru", "https://api.wotblitz.ru/");
+        baseUrl.put("ru", "https://papi.tanksblitz.ru/");
         baseUrl.put("eu", "https://api.wotblitz.eu/");
         baseUrl.put("na", "https://api.wotblitz.com/");
         baseUrl.put("asia", "https://api.wotblitz.asia/");

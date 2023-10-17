@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import okhttp3.ResponseBody
 import retrofit2.Response
+import ru.forblitz.statistics.dto.RequestLogItem
+import kotlin.collections.ArrayList
 
 object Utils {
 
@@ -23,6 +25,17 @@ object Utils {
         val packageName: String = context.packageName
         val resId: Int = context.resources.getIdentifier(stringName, "string", packageName)
         return context.getString(resId)
+    }
+
+    @JvmStatic
+    fun getWithoutEndedRecords(records: ArrayList<RequestLogItem>): ArrayList<RequestLogItem> {
+        return ArrayList<RequestLogItem>().apply {
+            records.forEach {
+                if (!it.isCompleted) {
+                    this.add(it)
+                }
+            }
+        }
     }
 
 }

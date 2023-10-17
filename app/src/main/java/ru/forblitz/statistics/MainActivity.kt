@@ -432,6 +432,7 @@ class MainActivity : AppCompatActivity() {
 
         setRegion()
         updateLastSearch(true)
+        setLoadingIndicator()
 
         // Displays the selected locale in the settings
 
@@ -557,7 +558,6 @@ class MainActivity : AppCompatActivity() {
             val tanksFilters = findViewById<View>(R.id.tanks_filters)
 
             val mainFlipper = findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
-            val searchProgressIndicator = findViewById<LinearProgressIndicator>(R.id.search_progress_indicator)
             val statisticsSessionStatButton = findViewById<TextView>(R.id.statistics_session_stat_button)
 
             // Shows the loading screen and the loading indicator, blocks all
@@ -566,7 +566,6 @@ class MainActivity : AppCompatActivity() {
             mainFlipper.displayedChild = MainViewFlipperItems.LOADING
             findViewById<View>(R.id.settings_button).isActivated = false
             findViewById<SessionButtonsLayout>(R.id.statistics_session_buttons).setButtonsVisibility(ButtonsVisibility.NOTHING)
-            searchProgressIndicator.show()
             if (statisticsSessionStatButton.isActivated) {
                 statisticsSessionStatButton.setText(R.string.to_session_stat)
                 statisticsSessionStatButton.isActivated = false
@@ -666,7 +665,6 @@ class MainActivity : AppCompatActivity() {
                             runOnUiThread {
                                 mainFlipper.displayedChild = MainViewFlipperItems.ENTER_NICKNAME
                                 searchField.setText("", TextView.BufferType.EDITABLE)
-                                searchProgressIndicator.hide()
 
                                 InterfaceUtils.createAlertDialog(
                                     this@MainActivity,
@@ -1031,7 +1029,6 @@ class MainActivity : AppCompatActivity() {
             // Displays the loading screen on tanks layout and waits for data loading to finish
 
             findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper).displayedChild = MainViewFlipperItems.STATISTICS
-            findViewById<LinearProgressIndicator>(R.id.search_progress_indicator).hide()
         }
     }
 
@@ -1360,6 +1357,24 @@ class MainActivity : AppCompatActivity() {
 
         } else {
             requestLogList.adapter = null
+        }
+    }
+
+    private fun setLoadingIndicator() {
+        app.requestsService.addOnRequestListChangedListener("loadingIndicator") {
+            runOnUiThread {
+                findViewById<LinearProgressIndicator>(R.id.search_progress_indicator).apply {
+                    if (Utils.getWithoutEndedRecords(it).size == 0) {
+                        if (isShown) {
+                            hide()
+                        }
+                    } else {
+                        if (!isShown) {
+                            show()
+                        }
+                    }
+                }
+            }
         }
     }
 

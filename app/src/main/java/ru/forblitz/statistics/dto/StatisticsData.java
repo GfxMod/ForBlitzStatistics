@@ -55,6 +55,8 @@ public class StatisticsData {
     private String survived = "0";
     private String hitsFromShots = "0";
     private String averageXp = "0";
+    
+    private boolean detailedAverageDamage = false;
 
     public String getSpotted() {
         return this.spotted;
@@ -248,6 +250,10 @@ public class StatisticsData {
         this.averageXp = averageXp;
     }
 
+    public boolean isDetailedAverageDamage() {
+        return detailedAverageDamage;
+    }
+
     /**
      * Clear all values
      */
@@ -279,6 +285,7 @@ public class StatisticsData {
     }
 
     public void calculate(boolean detailedAverageDamage) {
+        this.detailedAverageDamage = detailedAverageDamage;
         this.winRate = String.format(Locale.US, "%.2f", Double.parseDouble(wins) / Double.parseDouble(battles) * 100);
         if (detailedAverageDamage) {
             this.averageDamage = String.format(Locale.US, "%.2f", Double.parseDouble(damageDealt) / Double.parseDouble(battles));

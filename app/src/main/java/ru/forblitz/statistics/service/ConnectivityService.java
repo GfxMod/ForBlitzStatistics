@@ -52,19 +52,21 @@ public class ConnectivityService {
      * @param activity activity when {@link AlertDialog} will be created
      */
     public void showAlertDialog(@NonNull Activity activity) {
-        activity.runOnUiThread(() -> {
+        if (!activity.isFinishing()) {
+            activity.runOnUiThread(() -> {
 
-            killAlertDialog(activity);
+                killAlertDialog(activity);
 
-            networkAlertDialog = InterfaceUtils.createAlertDialog(
-                    activity,
-                    activity.getString(R.string.network_error),
-                    activity.getString(R.string.network_error_desc),
-                    activity.getString(R.string.network_error_try_again),
-                    () -> showAlertDialog(activity))
-                    .show();
+                networkAlertDialog = InterfaceUtils.createAlertDialog(
+                                activity,
+                                activity.getString(R.string.network_error),
+                                activity.getString(R.string.network_error_desc),
+                                activity.getString(R.string.network_error_try_again),
+                                () -> showAlertDialog(activity))
+                        .show();
 
-        });
+            });
+        }
     }
 
     /**
@@ -72,14 +74,16 @@ public class ConnectivityService {
      * @param activity activity when {@link AlertDialog} will be removed
      */
     public void killAlertDialog(@NonNull Activity activity) {
-        activity.runOnUiThread (() -> {
+        if (!activity.isFinishing()) {
+            activity.runOnUiThread (() -> {
 
-            if (networkAlertDialog != null) {
-                networkAlertDialog.dismiss();
-                networkAlertDialog = null;
-            }
+                if (networkAlertDialog != null) {
+                    networkAlertDialog.dismiss();
+                    networkAlertDialog = null;
+                }
 
-        });
+            });
+        }
     }
 
 }

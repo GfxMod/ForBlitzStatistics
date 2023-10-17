@@ -72,6 +72,7 @@
                 android:src="@drawable/ic_outline_rule_24"
                 android:visibility="gone"
                 app:backgroundTint="@color/blue"
+                android:hapticFeedbackEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/tanks_list_banner"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -107,7 +108,7 @@
                     android:textStyle="bold"
                     app:autoSizeTextType="uniform" />
 
-                <ru.forblitz.statistics.widget.common.SquareImageButton
+                <ru.forblitz.statistics.widget.common.ExtendedImageButton
                     android:id="@+id/tanks_details_back"
                     android:layout_width="0px"
                     android:layout_height="match_parent"
@@ -991,7 +992,7 @@
                 android:orientation="horizontal"
                 android:rowCount="3">
 
-                <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                <ru.forblitz.statistics.widget.common.ExtendedImageButton
                     android:id="@+id/cn"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -1002,10 +1003,11 @@
                     android:padding="@dimen/padding_big"
                     android:scaleType="fitStart"
                     android:src="@drawable/ic_cn_off"
+                    whatever:switchable="true"
                     whatever:button_checked="@drawable/ic_cn_on"
                     whatever:button_unchecked="@drawable/ic_cn_off" />
 
-                <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                <ru.forblitz.statistics.widget.common.ExtendedImageButton
                     android:id="@+id/gb"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -1016,10 +1018,11 @@
                     android:padding="@dimen/padding_big"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_gb_off"
+                    whatever:switchable="true"
                     whatever:button_checked="@drawable/ic_gb_on"
                     whatever:button_unchecked="@drawable/ic_gb_off" />
 
-                <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                <ru.forblitz.statistics.widget.common.ExtendedImageButton
                     android:id="@+id/other"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -1030,10 +1033,11 @@
                     android:padding="@dimen/padding_big"
                     android:scaleType="fitEnd"
                     android:src="@drawable/ic_other_off"
+                    whatever:switchable="true"
                     whatever:button_checked="@drawable/ic_other_on"
                     whatever:button_unchecked="@drawable/ic_other_off" />
 
-                <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                <ru.forblitz.statistics.widget.common.ExtendedImageButton
                     android:id="@+id/eu"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -1044,10 +1048,11 @@
                     android:padding="@dimen/padding_big"
                     android:scaleType="fitStart"
                     android:src="@drawable/ic_eu_off"
+                    whatever:switchable="true"
                     whatever:button_checked="@drawable/ic_eu_on"
                     whatever:button_unchecked="@drawable/ic_eu_off" />
 
-                <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                <ru.forblitz.statistics.widget.common.ExtendedImageButton
                     android:id="@+id/de"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -1058,10 +1063,11 @@
                     android:padding="@dimen/padding_big"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_de_off"
+                    whatever:switchable="true"
                     whatever:button_checked="@drawable/ic_de_on"
                     whatever:button_unchecked="@drawable/ic_de_off" />
 
-                <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                <ru.forblitz.statistics.widget.common.ExtendedImageButton
                     android:id="@+id/us"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -1072,10 +1078,11 @@
                     android:padding="@dimen/padding_big"
                     android:scaleType="fitEnd"
                     android:src="@drawable/ic_us_off"
+                    whatever:switchable="true"
                     whatever:button_checked="@drawable/ic_us_on"
                     whatever:button_unchecked="@drawable/ic_us_off" />
 
-                <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                <ru.forblitz.statistics.widget.common.ExtendedImageButton
                     android:id="@+id/fr"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -1086,10 +1093,11 @@
                     android:padding="@dimen/padding_big"
                     android:scaleType="fitStart"
                     android:src="@drawable/ic_fr_off"
+                    whatever:switchable="true"
                     whatever:button_checked="@drawable/ic_fr_on"
                     whatever:button_unchecked="@drawable/ic_fr_off" />
 
-                <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                <ru.forblitz.statistics.widget.common.ExtendedImageButton
                     android:id="@+id/jp"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -1100,10 +1108,11 @@
                     android:padding="@dimen/padding_big"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_jp_off"
+                    whatever:switchable="true"
                     whatever:button_checked="@drawable/ic_jp_on"
                     whatever:button_unchecked="@drawable/ic_jp_off" />
 
-                <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                <ru.forblitz.statistics.widget.common.ExtendedImageButton
                     android:id="@+id/su"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -1114,6 +1123,7 @@
                     android:padding="@dimen/padding_big"
                     android:scaleType="fitEnd"
                     android:src="@drawable/ic_su_off"
+                    whatever:switchable="true"
                     whatever:button_checked="@drawable/ic_su_on"
                     whatever:button_unchecked="@drawable/ic_su_off" />
 
@@ -1159,7 +1169,7 @@
                         android:layout_weight="0.66"
                         android:orientation="horizontal">
 
-                        <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                        <ru.forblitz.statistics.widget.common.ExtendedImageButton
                             android:id="@+id/tanks_type_lt"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -1168,10 +1178,11 @@
                             android:contentDescription="@string/lt"
                             android:scaleType="fitCenter"
                             android:src="@drawable/ic_lt_outlined_off"
+                            whatever:switchable="true"
                             whatever:button_checked="@drawable/ic_lt_outlined_on"
                             whatever:button_unchecked="@drawable/ic_lt_outlined_off" />
 
-                        <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                        <ru.forblitz.statistics.widget.common.ExtendedImageButton
                             android:id="@+id/tanks_type_mt"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -1180,10 +1191,11 @@
                             android:contentDescription="@string/mt"
                             android:scaleType="fitCenter"
                             android:src="@drawable/ic_mt_outlined_off"
+                            whatever:switchable="true"
                             whatever:button_checked="@drawable/ic_mt_outlined_on"
                             whatever:button_unchecked="@drawable/ic_mt_outlined_off" />
 
-                        <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                        <ru.forblitz.statistics.widget.common.ExtendedImageButton
                             android:id="@+id/tanks_type_ht"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -1192,10 +1204,11 @@
                             android:contentDescription="@string/ht"
                             android:scaleType="fitCenter"
                             android:src="@drawable/ic_ht_outlined_off"
+                            whatever:switchable="true"
                             whatever:button_checked="@drawable/ic_ht_outlined_on"
                             whatever:button_unchecked="@drawable/ic_ht_outlined_off" />
 
-                        <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                        <ru.forblitz.statistics.widget.common.ExtendedImageButton
                             android:id="@+id/tanks_type_at"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -1204,6 +1217,7 @@
                             android:contentDescription="@string/at"
                             android:scaleType="fitCenter"
                             android:src="@drawable/ic_at_outlined_off"
+                            whatever:switchable="true"
                             whatever:button_checked="@drawable/ic_at_outlined_on"
                             whatever:button_unchecked="@drawable/ic_at_outlined_off" />
 
@@ -1247,40 +1261,46 @@
                         android:checkedButton="@id/radio_battles"
                         android:orientation="horizontal">
 
-                        <ru.forblitz.statistics.widget.common.AnimatedRadioButton
+                        <ru.forblitz.statistics.widget.common.ExtendedRadioButton
                             android:id="@+id/radio_battles"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@android:color/transparent"
                             android:contentDescription="@string/battles_sort"
+                            android:hapticFeedbackEnabled="true"
                             android:buttonTintMode="multiply"
+                            whatever:switchable="true"
                             whatever:button_checked="@drawable/ic_battles_on"
                             whatever:button_unchecked="@drawable/ic_battles_off" />
 
-                        <ru.forblitz.statistics.widget.common.AnimatedRadioButton
+                        <ru.forblitz.statistics.widget.common.ExtendedRadioButton
                             android:id="@+id/radio_damage"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@android:color/transparent"
                             android:contentDescription="@string/damage_sort"
+                            android:hapticFeedbackEnabled="true"
                             android:buttonTintMode="multiply"
+                            whatever:switchable="true"
                             whatever:button_checked="@drawable/ic_damage_on"
                             whatever:button_unchecked="@drawable/ic_damage_off" />
 
-                        <ru.forblitz.statistics.widget.common.AnimatedRadioButton
+                        <ru.forblitz.statistics.widget.common.ExtendedRadioButton
                             android:id="@+id/radio_efficiency"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@android:color/transparent"
                             android:contentDescription="@string/efficiency_sort"
+                            android:hapticFeedbackEnabled="true"
                             android:buttonTintMode="multiply"
+                            whatever:switchable="true"
                             whatever:button_checked="@drawable/ic_efficiency_on"
                             whatever:button_unchecked="@drawable/ic_efficiency_off" />
 
-                        <ru.forblitz.statistics.widget.common.AnimatedRadioButton
+                        <ru.forblitz.statistics.widget.common.ExtendedRadioButton
                             android:id="@+id/radio_xp"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -1288,17 +1308,21 @@
                             android:background="@android:color/transparent"
                             android:contentDescription="@string/xp_sort"
                             android:buttonTintMode="multiply"
+                            whatever:switchable="true"
+                            android:hapticFeedbackEnabled="true"
                             whatever:button_checked="@drawable/ic_xp_on"
                             whatever:button_unchecked="@drawable/ic_xp_off" />
 
-                        <ru.forblitz.statistics.widget.common.AnimatedRadioButton
+                        <ru.forblitz.statistics.widget.common.ExtendedRadioButton
                             android:id="@+id/radio_win_rate"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@android:color/transparent"
                             android:contentDescription="@string/win_rate_sort"
+                            android:hapticFeedbackEnabled="true"
                             android:buttonTintMode="multiply"
+                            whatever:switchable="true"
                             whatever:button_checked="@drawable/ic_win_rate_on"
                             whatever:button_unchecked="@drawable/ic_win_rate_off" />
 
@@ -1342,7 +1366,7 @@
                     android:layout_weight="0.66"
                     android:orientation="horizontal">
 
-                    <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                    <ru.forblitz.statistics.widget.common.ExtendedImageButton
                         android:id="@+id/tanks_tier_i"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -1351,10 +1375,11 @@
                         android:contentDescription="@string/I"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_i_off"
+                        whatever:switchable="true"
                         whatever:button_checked="@drawable/ic_i_on"
                         whatever:button_unchecked="@drawable/ic_i_off" />
 
-                    <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                    <ru.forblitz.statistics.widget.common.ExtendedImageButton
                         android:id="@+id/tanks_tier_ii"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -1363,10 +1388,11 @@
                         android:contentDescription="@string/II"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_ii_off"
+                        whatever:switchable="true"
                         whatever:button_checked="@drawable/ic_ii_on"
                         whatever:button_unchecked="@drawable/ic_ii_off" />
 
-                    <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                    <ru.forblitz.statistics.widget.common.ExtendedImageButton
                         android:id="@+id/tanks_tier_iii"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -1375,10 +1401,11 @@
                         android:contentDescription="@string/III"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_iii_off"
+                        whatever:switchable="true"
                         whatever:button_checked="@drawable/ic_iii_on"
                         whatever:button_unchecked="@drawable/ic_iii_off" />
 
-                    <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                    <ru.forblitz.statistics.widget.common.ExtendedImageButton
                         android:id="@+id/tanks_tier_iv"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -1387,10 +1414,11 @@
                         android:contentDescription="@string/IV"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_iv_off"
+                        whatever:switchable="true"
                         whatever:button_checked="@drawable/ic_iv_on"
                         whatever:button_unchecked="@drawable/ic_iv_off" />
 
-                    <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                    <ru.forblitz.statistics.widget.common.ExtendedImageButton
                         android:id="@+id/tanks_tier_v"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -1399,10 +1427,11 @@
                         android:contentDescription="@string/V"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_v_off"
+                        whatever:switchable="true"
                         whatever:button_checked="@drawable/ic_v_on"
                         whatever:button_unchecked="@drawable/ic_v_off" />
 
-                    <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                    <ru.forblitz.statistics.widget.common.ExtendedImageButton
                         android:id="@+id/tanks_tier_vi"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -1411,10 +1440,11 @@
                         android:contentDescription="@string/VI"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_vi_off"
+                        whatever:switchable="true"
                         whatever:button_checked="@drawable/ic_vi_on"
                         whatever:button_unchecked="@drawable/ic_vi_off" />
 
-                    <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                    <ru.forblitz.statistics.widget.common.ExtendedImageButton
                         android:id="@+id/tanks_tier_vii"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -1423,10 +1453,11 @@
                         android:contentDescription="@string/VII"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_vii_off"
+                        whatever:switchable="true"
                         whatever:button_checked="@drawable/ic_vii_on"
                         whatever:button_unchecked="@drawable/ic_vii_off" />
 
-                    <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                    <ru.forblitz.statistics.widget.common.ExtendedImageButton
                         android:id="@+id/tanks_tier_viii"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -1435,10 +1466,11 @@
                         android:contentDescription="@string/VIII"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_viii_off"
+                        whatever:switchable="true"
                         whatever:button_checked="@drawable/ic_viii_on"
                         whatever:button_unchecked="@drawable/ic_viii_off" />
 
-                    <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                    <ru.forblitz.statistics.widget.common.ExtendedImageButton
                         android:id="@+id/tanks_tier_ix"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -1447,10 +1479,11 @@
                         android:contentDescription="@string/IX"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_ix_off"
+                        whatever:switchable="true"
                         whatever:button_checked="@drawable/ic_ix_on"
                         whatever:button_unchecked="@drawable/ic_ix_off" />
 
-                    <ru.forblitz.statistics.widget.common.AnimatedImageButton
+                    <ru.forblitz.statistics.widget.common.ExtendedImageButton
                         android:id="@+id/tanks_tier_x"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -1459,6 +1492,7 @@
                         android:contentDescription="@string/X"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_x_off"
+                        whatever:switchable="true"
                         whatever:button_checked="@drawable/ic_x_on"
                         whatever:button_unchecked="@drawable/ic_x_off" />
 
@@ -1471,13 +1505,14 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.025" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <ru.forblitz.statistics.widget.common.ExtendedButton
                 android:id="@+id/tanks_apply_filters"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_weight="0.075"
                 android:background="@drawable/background_sessions_true"
+                android:hapticFeedbackEnabled="true"
                 android:fontFamily="@font/inter"
                 android:gravity="center"
                 android:paddingHorizontal="30dp"

@@ -1,5 +1,7 @@
 package ru.forblitz.statistics.data;
 
+import android.view.HapticFeedbackConstants;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,11 +12,13 @@ public class Constants {
 
     public static final String forBlitzBaseUrl = "https://forblitz.ru/";
 
-    public static int TABS_COUNT = 4;
+    public static int TABS_COUNT = 3;
 
     public static String stringResourcesDescriptionPostfix = "_description";
 
     public static long okHttpTimeout = 90;
+
+    public static int hapticFeedbackType = HapticFeedbackConstants.CLOCK_TICK;
 
     public static class MainViewFlipperItems {
         public static final int ENTER_NICKNAME = 0;
@@ -26,6 +30,8 @@ public class Constants {
     public static class StatisticsViewFlipperItems {
         public static final int STATISTICS = 0;
         public static final int FALSE = 1;
+
+        public static final int SESSIONS = 2;
     }
 
     public static class ClanViewFlipperItems {
@@ -43,11 +49,19 @@ public class Constants {
 
         public static String logDisplay = "log_display";
 
+        public static String hapticsDisabled = "haptics";
+
+    }
+
+    public static class PlayerStatisticsTypes {
+        public static final String RANDOM = "all";
+        public static final String RATING = "rating";
+        public static final String CLAN = "clan";
     }
 
     public static final Map<String, String> baseUrl = new HashMap<>();
     static {
-        baseUrl.put("ru", "https://api.wotblitz.ru/");
+        baseUrl.put("ru", "https://papi.tanksblitz.ru/");
         baseUrl.put("eu", "https://api.wotblitz.eu/");
         baseUrl.put("na", "https://api.wotblitz.com/");
         baseUrl.put("asia", "https://api.wotblitz.asia/");
@@ -89,6 +103,7 @@ public class Constants {
     static {
         preferencesTags.add(PreferencesSwitchesTags.averageDamageRounding);
         preferencesTags.add(PreferencesSwitchesTags.logDisplay);
+        preferencesTags.add(PreferencesSwitchesTags.hapticsDisabled);
     }
 
 }

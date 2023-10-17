@@ -2,12 +2,18 @@ package ru.forblitz.statistics.utils;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.Locale;
 
+import ru.forblitz.statistics.data.Constants;
 import ru.forblitz.statistics.dto.StatisticsData;
 
-public class SessionUtils {
+public class StatisticsDataUtils {
 
     /**
      * Calculates differences between the current data and then selected session data
@@ -84,6 +90,87 @@ public class SessionUtils {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+
+        return result;
+    }
+
+    public static StatisticsData add(StatisticsData firstStatisticsData, StatisticsData secondStatisticsData) {
+        StatisticsData result = new StatisticsData();
+
+        String nickname;
+        if (!firstStatisticsData.getNickname().equals("")) {
+            nickname = firstStatisticsData.getNickname();
+        } else {
+            nickname = secondStatisticsData.getNickname();
+        }
+        result.setNickname(nickname);
+
+        Field[] fields = result.getClass().getDeclaredFields();
+
+        String[] fieldNames = new String[fields.length];
+        for (int i = 0; i < fields.length; i++) {
+            fieldNames[i] = fields[i].getName();
+        }
+
+        for (String fieldName : fieldNames) {
+            try {
+                Field field = StatisticsData.class.getDeclaredField(fieldName);
+                field.setAccessible(true);
+
+                String firstValue = (String) field.get(firstStatisticsData);
+                String secondValue = (String) field.get(secondStatisticsData);
+
+                if (firstValue != null && secondValue != null) {
+                    field.set(
+                            result,
+                            Integer.toString(
+                                    Integer.parseInt(firstValue) + Integer.parseInt(secondValue)
+                            )
+                    );
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        result.calculate(firstStatisticsData.isDetailedAverageDamage());
+        return result;
+    }
+
+    public static StatisticsData parse(String json, String key, boolean detailedAverageDamage) {
+
+        JsonObject dataObject = JsonParser
+                .parseString(json)
+                .getAsJsonObject()
+                .getAsJsonObject("data");
+        JsonObject innerDataObject = dataObject.
+                getAsJsonObject(dataObject.keySet().iterator().next());
+
+        //
+
+        JsonObject data = innerDataObject.getAsJsonObject("statistics");
+
+        StatisticsData statisticsData = new Gson().fromJson(
+                data.getAsJsonObject(key),
+                StatisticsData.class
+        );
+        statisticsData.setNickname(innerDataObject.get("nickname").getAsString());
+        statisticsData.calculate(detailedAverageDamage);
+        return statisticsData;
+    }
+
+    public static StatisticsData parse(String json, Collection<String> statisticsTypes, boolean detailedAverageDamage) {
+        StatisticsData result = new StatisticsData();
+
+        if (statisticsTypes.contains(Constants.PlayerStatisticsTypes.RANDOM)) {
+            result = StatisticsDataUtils.add(result, parse(json, Constants.PlayerStatisticsTypes.RANDOM, detailedAverageDamage));
+        }
+        if (statisticsTypes.contains(Constants.PlayerStatisticsTypes.RATING)) {
+            result = StatisticsDataUtils.add(result, parse(json, Constants.PlayerStatisticsTypes.RATING, detailedAverageDamage));
+        }
+        if (statisticsTypes.contains(Constants.PlayerStatisticsTypes.CLAN)) {
+            result = StatisticsDataUtils.add(result, parse(json, Constants.PlayerStatisticsTypes.CLAN, detailedAverageDamage));
         }
 
         return result;

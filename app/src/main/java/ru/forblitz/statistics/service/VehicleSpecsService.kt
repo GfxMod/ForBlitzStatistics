@@ -13,13 +13,9 @@ import ru.forblitz.statistics.utils.Utils
  * @property list [HashMap], where the key is the vehicle ID, and the content
  * is the [characteristics of the vehicle][VehicleSpecs]
  */
-class VehicleSpecsService(private var apiService: ApiService) {
+class VehicleSpecsService(private var apiService: ApiService) : DeferredTasksService() {
 
     private val list = HashMap<String, VehicleSpecs>()
-
-    private var isRequestLoaded: Boolean = false
-
-    private val taskQueue: ArrayList<Runnable> = ArrayList()
 
     fun getListSize(): Int {
         return list.size
@@ -43,20 +39,6 @@ class VehicleSpecsService(private var apiService: ApiService) {
 
         return list
 
-    }
-
-    fun addTaskOnEndOfLoad(runnable: Runnable) {
-        if (isRequestLoaded) {
-            runnable.run()
-        } else {
-            taskQueue.add(runnable)
-        }
-    }
-
-    private fun onEndOfLoad() {
-        isRequestLoaded = true
-        taskQueue.forEach { it.run() }
-        taskQueue.clear()
     }
 
     override fun toString(): String {

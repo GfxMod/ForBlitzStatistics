@@ -5,4 +5,24 @@
 
         <item name="colorOutline">@color/transparent_black</item>
     </style>
+    <style
+        name="materialSegmentedButtonOutlined"
+        parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingHorizontal">@dimen/padding_big</item>
+        <item name="materialThemeOverlay">@style/materialSegmentedButtonOutlinedOverlay</item>
+        <item name="android:strokeColor">@color/transparent_black</item>
+        <item name="android:strokeWidth">@dimen/padding_small</item>
+        <item name="android:textColor">@color/toggle_text_color</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:typeface">monospace</item>
+        <item name="icon">@drawable/toggle_icon</item>
+        <item name="iconTint">@color/toggle_text_color</item>
+    </style>
+    <style name="materialSegmentedButtonOutlinedOverlay">
+        <item name="colorSecondaryContainer">@color/transparent_grey</item>
+        <item name="colorContainer">@color/transparent_black</item>
+    </style>
 </resources>

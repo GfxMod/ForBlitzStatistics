@@ -242,45 +242,23 @@ public class InterfaceUtils {
     }
 
     /**
-     * Sets {@link R.layout#fragment_random base statisticsData} values
+     * Sets values to {@link R.layout#fragment_statistics statistics layout}
      * @param activity required to get resources
      * @param statisticsData statisticsData to be set
      */
-    public static void setBaseStatistics(Activity activity, StatisticsData statisticsData, boolean needToHide) {
+    public static void setStatistics(Activity activity, StatisticsData statisticsData) {
 
-        if (needToHide && !statisticsData.getBattles().equals("0")) {
+        if (!statisticsData.getBattles().equals("0")) {
             activity.runOnUiThread(() ->
-                    ((DifferenceViewFlipper) activity.findViewById(R.id.fragment_random)).setDisplayedChild(STATISTICS));
-        } else if (needToHide && statisticsData.getBattles().equals("0")) {
+                    ((DifferenceViewFlipper) activity.findViewById(R.id.fragment_statistics)).setDisplayedChild(STATISTICS));
+        } else {
             activity.runOnUiThread(() ->
-                    ((DifferenceViewFlipper) activity.findViewById(R.id.fragment_random)).setDisplayedChild(FALSE));
+                    ((DifferenceViewFlipper) activity.findViewById(R.id.fragment_statistics)).setDisplayedChild(FALSE));
         }
         activity.runOnUiThread(() -> {
-            ((PlayerFastStat) activity.findViewById(R.id.random_fast_stat)).setData(statisticsData);
-            ((DetailsLayout) activity.findViewById(R.id.random_details_layout)).setData(statisticsData);
+            ((PlayerFastStat) activity.findViewById(R.id.statistics_fast_stat)).setData(statisticsData);
+            ((DetailsLayout) activity.findViewById(R.id.statistics_details_layout)).setData(statisticsData);
         });
-    }
-
-    /**
-     * Sets {@link R.layout#fragment_rating rating statistics} values
-     * @param activity required to get resources
-     * @param statisticsData statistics to be set
-     */
-    public static void setRatingStatistics(Activity activity, StatisticsData statisticsData, boolean needToHide) {
-
-        if (needToHide && !statisticsData.getBattles().equals("0")) {
-            activity.runOnUiThread(() ->
-                    ((DifferenceViewFlipper) activity.findViewById(R.id.fragment_rating)).setDisplayedChild(STATISTICS));
-        } else if (needToHide && statisticsData.getBattles().equals("0")) {
-            activity.runOnUiThread(() ->
-                    ((DifferenceViewFlipper) activity.findViewById(R.id.fragment_rating)).setDisplayedChild(FALSE));
-        }
-
-        activity.runOnUiThread(() -> {
-            ((PlayerFastStat) activity.findViewById(R.id.rating_fast_stat)).setData(statisticsData);
-            ((DetailsLayout) activity.findViewById(R.id.rating_details_layout)).setData(statisticsData);
-        });
-
     }
 
     public static void setRegionAlertVisibility(

@@ -17,15 +17,11 @@ class TokensService(
     private val connectivityService: ConnectivityService,
     private val connectivityManager: ConnectivityManager,
     private val requestLogService: RequestLogService
-) {
+) : DeferredTasksService() {
 
     private var json: String? = null
 
     val tokens: HashMap<String, String> = HashMap()
-
-    private var isRequestLoaded: Boolean = false
-
-    private val taskQueue: ArrayList<Runnable> = ArrayList()
 
     private suspend fun request() {
         val requestLogItem = RequestLogItem(System.currentTimeMillis(), RequestLogItem.RequestType.TOKENS, false)
@@ -81,20 +77,6 @@ class TokensService(
         getBannerAdUnitId().apply { tokens["banner"] = this }
         getInterstitialAdUnitId().apply { tokens["interstitial"] = this }
         onEndOfLoad()
-    }
-
-    fun addTaskOnEndOfLoad(runnable: Runnable) {
-        if (isRequestLoaded) {
-            runnable.run()
-        } else {
-            taskQueue.add(runnable)
-        }
-    }
-
-    private fun onEndOfLoad() {
-        isRequestLoaded = true
-        taskQueue.forEach { it.run() }
-        taskQueue.clear()
     }
 
 }

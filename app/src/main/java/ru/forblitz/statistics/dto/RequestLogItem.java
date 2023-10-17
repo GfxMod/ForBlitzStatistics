@@ -54,4 +54,15 @@ public class RequestLogItem {
         TOKENS
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return "RequestLogItem{" +
+                "id=" + id +
+                ", timestamp=" + timestamp +
+                ", requestType=" + requestType +
+                ", isCompleted=" + isCompleted +
+                '}';
+    }
+
 }

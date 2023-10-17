@@ -8,7 +8,7 @@ import ru.forblitz.statistics.data.RecordDatabase
 import ru.forblitz.statistics.service.AdService
 import ru.forblitz.statistics.service.ClanService
 import ru.forblitz.statistics.service.ConnectivityService
-import ru.forblitz.statistics.service.RequestLogService
+import ru.forblitz.statistics.service.RequestsService
 import ru.forblitz.statistics.service.SessionService
 import ru.forblitz.statistics.service.TokensService
 import ru.forblitz.statistics.service.UserClanService
@@ -43,7 +43,7 @@ class ForBlitzStatisticsApplication : Application() {
     lateinit var vehicleStatService: VehicleStatService
     lateinit var adService: AdService
     lateinit var connectivityService: ConnectivityService
-    lateinit var requestLogService: RequestLogService
+    lateinit var requestsService: RequestsService
     lateinit var recordDatabase: RecordDatabase
 
 }

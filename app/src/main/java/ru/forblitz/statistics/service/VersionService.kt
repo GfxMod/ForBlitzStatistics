@@ -17,14 +17,14 @@ import ru.forblitz.statistics.utils.Utils
 class VersionService(
     private val connectivityService: ConnectivityService,
     private val connectivityManager: ConnectivityManager,
-    private val requestLogService: RequestLogService
+    private val requestsService: RequestsService
 ) {
 
     private var json: String? = null
 
     private suspend fun request() {
         val requestLogItem = RequestLogItem(System.currentTimeMillis(), RequestLogItem.RequestType.VERSION, false)
-        requestLogService.addRecord(requestLogItem)
+        requestsService.addRecord(requestLogItem)
 
         json = Utils.toJson(
             Retrofit.Builder()
@@ -42,7 +42,7 @@ class VersionService(
                 .getAll()
         )
 
-        requestLogService.addRecord(requestLogItem.apply { isCompleted = true })
+        requestsService.completeRecord(requestLogItem)
     }
 
     suspend fun getCurrentAppVersion(): Int {

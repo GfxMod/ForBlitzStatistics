@@ -76,7 +76,7 @@ import ru.forblitz.statistics.exception.ObjectException
 import ru.forblitz.statistics.service.AdService
 import ru.forblitz.statistics.service.ClanService
 import ru.forblitz.statistics.service.ConnectivityService
-import ru.forblitz.statistics.service.RequestLogService
+import ru.forblitz.statistics.service.RequestsService
 import ru.forblitz.statistics.service.SessionService
 import ru.forblitz.statistics.service.TokensService
 import ru.forblitz.statistics.service.UserClanService
@@ -237,16 +237,17 @@ class MainActivity : AppCompatActivity() {
         // Initialization of services
 
         app.connectivityService = ConnectivityService()
-        app.requestLogService = RequestLogService(this@MainActivity)
+        app.requestsService =
+            RequestsService(this@MainActivity)
         app.tokensService = TokensService(
             app.connectivityService,
             app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
-            app.requestLogService
+            app.requestsService
         )
         app.apiService = ApiService(
             app.connectivityService,
             app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
-            app.requestLogService,
+            app.requestsService,
             app.tokensService.tokens
         )
         app.userService = UserService(this@MainActivity, app.apiService)
@@ -257,7 +258,7 @@ class MainActivity : AppCompatActivity() {
         app.versionService = VersionService(
             app.connectivityService,
             app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
-            app.requestLogService
+            app.requestsService
         )
         app.vehicleSpecsService = VehicleSpecsService(app.apiService)
         app.vehicleStatService = VehicleStatService(app.apiService)
@@ -1342,16 +1343,16 @@ class MainActivity : AppCompatActivity() {
 
         if (app.setSettings[Constants.PreferencesSwitchesTags.logDisplay] == true) {
 
-            app.requestLogService.clearEndedRecords()
+            app.requestsService.clearEndedRecords()
             val requestLogAdapter = RequestLogAdapter(
                 this@MainActivity,
-                app.requestLogService.records
+                app.requestsService.records
             )
 
             requestLogList.adapter = requestLogAdapter
             requestLogList.deferNotifyDataSetChanged()
 
-            app.requestLogService.addOnRecordAddedListener("updateLoggingDisplay") { _, _ ->
+            app.requestsService.addOnRequestListChangedListener("updateLoggingDisplay") {
                 runOnUiThread {
                     requestLogAdapter.notifyDataSetChanged()
                 }

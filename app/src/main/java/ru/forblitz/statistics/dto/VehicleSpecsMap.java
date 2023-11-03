@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Map;
 
 @Keep
-public class ApiResponse {
+public class VehicleSpecsMap {
 
     @Keep
     @SerializedName("data")

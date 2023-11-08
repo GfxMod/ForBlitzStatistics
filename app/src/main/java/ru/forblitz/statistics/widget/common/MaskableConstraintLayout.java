@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
 import ru.forblitz.statistics.R;
 
 /**
@@ -87,7 +89,12 @@ public class MaskableConstraintLayout extends ConstraintLayout {
             currentPath.addRoundRect(new RectF(start, top, end, bottom), corner, corner, Path.Direction.CW);
         }
         canvas.clipPath(currentPath);
-        super.draw(canvas);
+        try {
+            super.draw(canvas);
+        } catch(IndexOutOfBoundsException e){
+            e.printStackTrace();
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
     }
 
     public void setCustomPath(Path customPath) {

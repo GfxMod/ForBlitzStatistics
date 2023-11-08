@@ -48,6 +48,7 @@ public class RequestLogItem {
         USER_CLAN_INFO,
         FULL_CLAN_INFO,
         ACHIEVEMENTS,
+        ACHIEVEMENTS_DESCRIPTION,
         TANKOPEDIA,
         TANKS_STATISTICS,
         VERSION,

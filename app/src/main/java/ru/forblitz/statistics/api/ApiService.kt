@@ -80,6 +80,14 @@ class ApiService(
         return response
     }
 
+    suspend fun getAchievementsInfo(): Response<ResponseBody> {
+        val requestLogItem = RequestLogItem(System.currentTimeMillis(), RequestType.ACHIEVEMENTS_DESCRIPTION, false)
+        requestsService.addRecord(requestLogItem)
+        val response = apiInterface.getAchievementsInfo(url["getAchievementsDescription"].toString().replace("APP_ID", tokens[region].toString()))
+        requestsService.completeRecord(requestLogItem)
+        return response
+    }
+
     suspend fun getAllInformationAboutVehicles(): Response<ResponseBody> {
         val requestLogItem = RequestLogItem(System.currentTimeMillis(), RequestType.TANKOPEDIA, false)
         requestsService.addRecord(requestLogItem)

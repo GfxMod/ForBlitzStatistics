@@ -54,6 +54,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Runnable
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.contentView
+import ru.forblitz.statistics.adapters.AchievementsAdapter
 import ru.forblitz.statistics.adapters.LastSearchedAdapter
 import ru.forblitz.statistics.adapters.RequestLogAdapter
 import ru.forblitz.statistics.adapters.SessionAdapter
@@ -61,24 +62,29 @@ import ru.forblitz.statistics.adapters.VehicleAdapter
 import ru.forblitz.statistics.adapters.ViewPagerAdapter
 import ru.forblitz.statistics.api.ApiService
 import ru.forblitz.statistics.data.Constants
+import ru.forblitz.statistics.data.Constants.AchievementsViewFlipperItems
 import ru.forblitz.statistics.data.Constants.ClanViewFlipperItems
 import ru.forblitz.statistics.data.Constants.MainViewFlipperItems
 import ru.forblitz.statistics.data.Constants.PlayerStatisticsTypes
 import ru.forblitz.statistics.data.Constants.StatisticsViewFlipperItems
 import ru.forblitz.statistics.data.Constants.TABS_COUNT
+import ru.forblitz.statistics.data.Constants.achievementsInRow
 import ru.forblitz.statistics.data.RecordDatabase
+import ru.forblitz.statistics.dto.AchievementInfo
 import ru.forblitz.statistics.dto.Record
 import ru.forblitz.statistics.dto.Session
 import ru.forblitz.statistics.dto.StatisticsData
 import ru.forblitz.statistics.dto.VehicleSpecs
 import ru.forblitz.statistics.dto.VehicleStat
 import ru.forblitz.statistics.exception.ObjectException
+import ru.forblitz.statistics.service.AchievementsInfoService
 import ru.forblitz.statistics.service.AdService
 import ru.forblitz.statistics.service.ClanService
 import ru.forblitz.statistics.service.ConnectivityService
 import ru.forblitz.statistics.service.RequestsService
 import ru.forblitz.statistics.service.SessionService
 import ru.forblitz.statistics.service.TokensService
+import ru.forblitz.statistics.service.UserAchievementsService
 import ru.forblitz.statistics.service.UserClanService
 import ru.forblitz.statistics.service.UserService
 import ru.forblitz.statistics.service.UserStatisticsService
@@ -144,6 +150,10 @@ class MainActivity : AppCompatActivity() {
                     contentDescription = getString(R.string.random)
                 }
                 1 -> {
+                    icon = AppCompatResources.getDrawable(applicationContext, R.drawable.outline_military_tech_24)!!
+                    contentDescription = getString(R.string.achievements)
+                }
+                2 -> {
                     icon = AppCompatResources.getDrawable(applicationContext, R.drawable.ic_outline_group_36)!!
                     contentDescription = getString(R.string.clan)
                 }
@@ -262,6 +272,8 @@ class MainActivity : AppCompatActivity() {
         )
         app.vehicleSpecsService = VehicleSpecsService(app.apiService)
         app.vehicleStatService = VehicleStatService(app.apiService)
+        app.userAchievementsService = UserAchievementsService(app.apiService)
+        app.achievementsInfoService = AchievementsInfoService(app.apiService)
         app.adService = AdService(
             this@MainActivity,
             app.tokensService.tokens
@@ -452,6 +464,7 @@ class MainActivity : AppCompatActivity() {
                 CoroutineScope(Dispatchers.IO).launch {
                     // Get vehicle specifications
                     app.vehicleSpecsService.getVehiclesSpecsList()
+                    app.achievementsInfoService.getAchievementsInfo()
                 }
             }
 
@@ -558,12 +571,14 @@ class MainActivity : AppCompatActivity() {
             val tanksFilters = findViewById<View>(R.id.tanks_filters)
 
             val mainFlipper = findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
+            val achievementsFlipper = findViewById<DifferenceViewFlipper>(R.id.achievements_layouts_flipper)
             val statisticsSessionStatButton = findViewById<TextView>(R.id.statistics_session_stat_button)
 
             // Shows the loading screen and the loading indicator, blocks all
             // interactive elements during loading
 
             mainFlipper.displayedChild = MainViewFlipperItems.LOADING
+            achievementsFlipper.displayedChild = AchievementsViewFlipperItems.LOADING
             findViewById<View>(R.id.settings_button).isActivated = false
             findViewById<SessionButtonsLayout>(R.id.statistics_session_buttons).setButtonsVisibility(ButtonsVisibility.NOTHING)
             if (statisticsSessionStatButton.isActivated) {
@@ -654,6 +669,7 @@ class MainActivity : AppCompatActivity() {
 
                             setPlayerStat()
                             setClanStat()
+                            setAchievements()
                             app.vehicleSpecsService.addTaskOnEndOfLoad {
                                 CoroutineScope(Dispatchers.IO).launch {
                                     setVehiclesStat()
@@ -782,6 +798,7 @@ class MainActivity : AppCompatActivity() {
 
             app.userStatisticsService.clear()
             app.vehicleStatService.clear()
+            app.userAchievementsService.clear()
 
             app.userStatisticsService.addTaskOnEndOfLoad {
                 runOnUiThread {
@@ -1244,6 +1261,61 @@ class MainActivity : AppCompatActivity() {
                     findViewById<ClanBrief>(R.id.statistics_clan).setData(null)
                 }
             }
+
+        }
+    }
+
+    private fun setAchievements() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val achievementsFlipper = findViewById<DifferenceViewFlipper>(R.id.achievements_layouts_flipper)
+            val achievementsList = findViewById<ListView>(R.id.achievements_list)
+
+            ArrayList<Pair<AchievementInfo, Int>>().apply {
+                app.userAchievementsService
+                    .getUserAchievements(app.userService.getUserID())
+                    .toList()
+                    .forEach { currentPair ->
+                        app.achievementsInfoService
+                            .getAchievementsInfo()
+                            .toList()
+                            .find { currentPair.first == it.first }
+                            ?.second
+                            ?.let {
+                                this@apply.add(Pair(it, currentPair.second))
+
+                                val resourceName = "${Constants.achievementIconNamePrefix}${it.achievementId.lowercase()}"
+                                if (
+                                    !Utils.isResourceExists(
+                                        applicationContext,
+                                        resourceName,
+                                        Utils.ResourceType.drawable
+                                    )
+                                ) {
+                                    Log.d("resNotFound3", it.achievementId)
+                                }
+
+                            }
+                    }
+
+                runOnUiThread {
+                    achievementsList.adapter = AchievementsAdapter(
+                        this@MainActivity,
+                        this@apply.apply { sortBy { it.second }; reverse() }.chunked(achievementsInRow),
+                        (InterfaceUtils.getX() - resources.getDimensionPixelSize(R.dimen.padding_big) * 6) / 5
+                    )
+                    achievementsFlipper.displayedChild = AchievementsViewFlipperItems.ACHIEVEMENTS
+                }
+
+            }
+
+
+
+
+/*
+                .apply {
+
+                }
+*/
 
         }
     }

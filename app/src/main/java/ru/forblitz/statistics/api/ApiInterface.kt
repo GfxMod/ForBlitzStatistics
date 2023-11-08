@@ -24,6 +24,9 @@ interface ApiInterface {
     suspend fun getAchievements(@Url url: String, @Query("account_id") search: String) : Response<ResponseBody>
 
     @GET
+    suspend fun getAchievementsInfo(@Url url: String) : Response<ResponseBody>
+
+    @GET
     suspend fun getAllInformationAboutVehicles(@Url url: String) : Response<ResponseBody>
 
     @GET

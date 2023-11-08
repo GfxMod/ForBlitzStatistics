@@ -12,13 +12,17 @@ public class Constants {
 
     public static final String forBlitzBaseUrl = "https://forblitz.ru/";
 
-    public static int TABS_COUNT = 3;
+    public static int TABS_COUNT = 4;
 
     public static String stringResourcesDescriptionPostfix = "_description";
 
     public static long okHttpTimeout = 90;
 
     public static int hapticFeedbackType = HapticFeedbackConstants.CLOCK_TICK;
+
+    public static int achievementsInRow = 5;
+
+    public static String achievementIconNamePrefix = "ic_medal_";
 
     public static class MainViewFlipperItems {
         public static final int ENTER_NICKNAME = 0;
@@ -32,6 +36,11 @@ public class Constants {
         public static final int FALSE = 1;
 
         public static final int SESSIONS = 2;
+    }
+
+    public static class AchievementsViewFlipperItems {
+        public static final int LOADING = 0;
+        public static final int ACHIEVEMENTS = 1;
     }
 
     public static class ClanViewFlipperItems {
@@ -76,6 +85,7 @@ public class Constants {
         url.put("getAchievements", "wotb/account/achievements/?application_id=APP_ID&fields=-max_series");
         url.put("getAllInformationAboutVehicles", "wotb/encyclopedia/vehicles/?application_id=APP_ID&fields=name,nation,tier,type");
         url.put("getTankStatistics", "wotb/tanks/stats/?application_id=APP_ID");
+        url.put("getAchievementsDescription", "wotb/encyclopedia/achievements/?application_id=APP_ID&fields=name,achievement_id,description,section,options,-options.image,-options.image_big");
     }
 
     public static class Steps {
@@ -104,6 +114,24 @@ public class Constants {
         preferencesTags.add(PreferencesSwitchesTags.averageDamageRounding);
         preferencesTags.add(PreferencesSwitchesTags.logDisplay);
         preferencesTags.add(PreferencesSwitchesTags.hapticsDisabled);
+    }
+
+    public static HashMap<String, String> achievementsIcons = new HashMap<>();
+    static {
+        achievementsIcons.put("medalAbrams", "ic_medal_medalabrams1");
+        achievementsIcons.put("medalTournamentSummerSeason", "ic_medal_2020_tournament_summer_season");
+        achievementsIcons.put("medalKay", "ic_medal_medalkay1");
+        achievementsIcons.put("medalEkins", "ic_medal_medalekins1");
+        achievementsIcons.put("medalSupremacy", "ic_medal_medalsupremacy1");
+        achievementsIcons.put("medalKnispel", "ic_medal_medalknispel1");
+        achievementsIcons.put("platinumClanRibbonRU", "ic_medal_platinumclanribbon");
+        achievementsIcons.put("medalPoppel", "ic_medal_medalpoppel1");
+        achievementsIcons.put("medalCarius", "ic_medal_medalcarius1");
+        achievementsIcons.put("medalLavrinenko", "ic_medal_medallavrinenko1");
+        achievementsIcons.put("punisher", "ic_medal_punisher1");
+        achievementsIcons.put("medalLeClerc", "ic_medal_medalleclerc1");
+        achievementsIcons.put("jointVictory", "ic_medal_jointvictory1");
+        achievementsIcons.put("medalAtgm", "ic_medal_atgm");
     }
 
 }

@@ -3,6 +3,7 @@ package ru.forblitz.statistics.adapters
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import ru.forblitz.statistics.AchievementsFragment
 import ru.forblitz.statistics.ClanFragment
 import ru.forblitz.statistics.StatisticsFragment
 import ru.forblitz.statistics.TanksFragment
@@ -12,14 +13,17 @@ class ViewPagerAdapter(fragmentManager: FragmentManager, private val tabCount: I
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
+            0 -> {
+                StatisticsFragment()
+            }
             1 -> {
-                ClanFragment()
+                AchievementsFragment()
             }
             2 -> {
-                TanksFragment()
+                ClanFragment()
             }
             else -> {
-                StatisticsFragment()
+                TanksFragment()
             }
         }
     }

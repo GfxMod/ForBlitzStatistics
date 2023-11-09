@@ -27,9 +27,10 @@ class AchievementsAdapter(
 {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return LayoutInflater
-            .from(context)
-            .inflate(R.layout.item_achievements_row, null)
+        return (convertView
+            ?: LayoutInflater
+                .from(context)
+                .inflate(R.layout.item_achievements_row, parent, false))
             .apply {
                 (this as RecyclerView)
                     .apply {
@@ -39,20 +40,26 @@ class AchievementsAdapter(
                             rowHeight
                         )
 
-                        addItemDecoration(
-                            DividerItemDecoration(
-                                context,
-                                RecyclerView.HORIZONTAL
-                            ).apply {
-                                ContextCompat.getDrawable(context, R.drawable.achievements_row_divider)
-                                    ?.let {
-                                        setDrawable(it)
-                                    }
-                            }
-                        )
+                        if (convertView == null) {
+                            addItemDecoration(
+                                DividerItemDecoration(
+                                    context,
+                                    RecyclerView.HORIZONTAL
+                                ).apply {
+                                    ContextCompat.getDrawable(context, R.drawable.achievements_row_divider)
+                                        ?.let {
+                                            setDrawable(it)
+                                        }
+                                }
+                            )
+                        }
 
                         setHasFixedSize(true)
-                        layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                        layoutManager = LinearLayoutManager(
+                            context,
+                            LinearLayoutManager.HORIZONTAL,
+                            false
+                        )
                         adapter = AchievementsRowAdapter(
                             achievementsRows[position],
                             rowHeight
@@ -60,6 +67,7 @@ class AchievementsAdapter(
 
                     }
             }
+
     }
 
 }

@@ -55,11 +55,13 @@ class AchievementsAdapter(
                         }
 
                         setHasFixedSize(true)
-                        layoutManager = LinearLayoutManager(
+                        layoutManager = object : LinearLayoutManager(
                             context,
-                            LinearLayoutManager.HORIZONTAL,
+                            HORIZONTAL,
                             false
-                        )
+                        ) {
+                            override fun canScrollHorizontally() = false
+                        }
                         adapter = AchievementsRowAdapter(
                             achievementsRows[position],
                             rowHeight

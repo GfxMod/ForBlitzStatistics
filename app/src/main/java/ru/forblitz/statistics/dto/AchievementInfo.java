@@ -12,14 +12,17 @@ public class AchievementInfo {
     @SerializedName("achievement_id")
     public String achievementId = "";
 
+    @NonNull
     @SerializedName("section")
-    public String section;
+    public String section = "null";
 
+    @NonNull
     @SerializedName("description")
-    public String description;
+    public String description = "null";
 
+    @NonNull
     @SerializedName("name")
-    public String name;
+    public String name = "Untitled";
 
     @SerializedName("options")
     public AchievementInfo[] options;

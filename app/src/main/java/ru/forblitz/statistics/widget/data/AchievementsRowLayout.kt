@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Space
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.children
@@ -25,6 +24,8 @@ class AchievementsRowLayout : LinearLayout {
         }
 
     private var achievements: List<Pair<AchievementInfo, Int>>? = null
+
+    var onAchievementClick: ((Pair<AchievementInfo, Int>) -> Unit)? = null
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -70,7 +71,7 @@ class AchievementsRowLayout : LinearLayout {
                             }
 
                             setOnClickListener {
-                                Toast.makeText(context, achievementPair.first.name, Toast.LENGTH_SHORT).show()
+                                onAchievementClick?.invoke(achievementPair)
                             }
 
                         }

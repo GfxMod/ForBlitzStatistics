@@ -15,6 +15,7 @@ class AchievementsAdapter(
     context: Context,
     private val achievementsRows: List<List<Pair<AchievementInfo, Int>>>,
     private val rowHeight: Int,
+    private var onAchievementClick: ((Pair<AchievementInfo, Int>) -> Unit)?
 ) :
     ArrayAdapter<List<Pair<AchievementInfo, Int>>>(
         context,
@@ -31,7 +32,8 @@ class AchievementsAdapter(
                 .inflate(R.layout.item_achievements_row, parent, false)
                 .apply {
                     (this as AchievementsRowLayout)
-                        .apply {
+                        .apply layout@ {
+                            this@layout.onAchievementClick = this@AchievementsAdapter.onAchievementClick
                             layoutParams = LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT,
                                 rowHeight

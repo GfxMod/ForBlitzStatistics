@@ -54,8 +54,15 @@ class AchievementsRowLayout : LinearLayout {
                         )
 
                         val achievementPair = achievements?.get(indexOfChild(it) / 2)!!
-                        it.findViewWithTag<AppCompatTextView>("count")?.text = achievementPair.second.toString()
 
+                        with(it.findViewWithTag<AppCompatTextView>("count")) {
+                            if (achievementPair.first.section != "step") {
+                                visibility = VISIBLE
+                                text = achievementPair.second.toString()
+                            } else {
+                                visibility = GONE
+                            }
+                        }
                         it.findViewWithTag<AppCompatImageButton>("icon")?.apply {
 
                             val resourceName = "${Constants.achievementIconNamePrefix}${achievementPair.first.achievementId.lowercase()}"

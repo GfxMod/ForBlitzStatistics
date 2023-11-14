@@ -1314,15 +1314,6 @@ class MainActivity : AppCompatActivity() {
 
             }
 
-
-
-
-/*
-                .apply {
-
-                }
-*/
-
         }
     }
 

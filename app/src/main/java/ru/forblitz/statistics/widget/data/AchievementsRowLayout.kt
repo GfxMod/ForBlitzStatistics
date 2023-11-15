@@ -3,6 +3,7 @@ package ru.forblitz.statistics.widget.data
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.drawable.TransitionDrawable
+import android.text.Html
 import android.util.AttributeSet
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -119,7 +120,10 @@ class AchievementsRowLayout : LinearLayout {
 
     fun expand(viewGroup: ViewGroup, achievementInfo: AchievementInfo) {
         findViewWithTag<AppCompatTextView>("description").also {
-            it.text = achievementInfo.description
+            it.text = Html.fromHtml(
+                "<h3>${achievementInfo.name.substringBefore("(")}</h3><br>${achievementInfo.description}",
+                Html.FROM_HTML_MODE_COMPACT
+            )
 
             with(ValueAnimator.ofInt(it.layoutParams.height, expandedHeight - paddingSize - itemSize)) {
                 addUpdateListener { valueAnimator ->

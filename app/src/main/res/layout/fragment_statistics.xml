@@ -21,7 +21,6 @@
         android:outAnimation="@anim/disappearance_scale" >
 
         <android.widget.LinearLayout
-            android:id="@+id/statistics_stat_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -1381,7 +1380,6 @@
         </ru.forblitz.statistics.widget.data.DetailsLayout>
 
         <android.widget.LinearLayout
-            android:id="@+id/statistics_sessions_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/background_layout"

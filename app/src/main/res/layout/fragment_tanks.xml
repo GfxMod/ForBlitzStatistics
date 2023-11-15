@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:whatever="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/fragment_tanks"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:inAnimation="@anim/appearance"
@@ -978,7 +977,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/tanks_filters_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -1275,7 +1273,6 @@
                             whatever:button_unchecked="@drawable/ic_battles_off" />
 
                         <ru.forblitz.statistics.widget.common.ExtendedRadioButton
-                            android:id="@+id/radio_damage"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -1288,7 +1285,6 @@
                             whatever:button_unchecked="@drawable/ic_damage_off" />
 
                         <ru.forblitz.statistics.widget.common.ExtendedRadioButton
-                            android:id="@+id/radio_efficiency"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -1301,7 +1297,6 @@
                             whatever:button_unchecked="@drawable/ic_efficiency_off" />
 
                         <ru.forblitz.statistics.widget.common.ExtendedRadioButton
-                            android:id="@+id/radio_xp"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -1314,7 +1309,6 @@
                             whatever:button_unchecked="@drawable/ic_xp_off" />
 
                         <ru.forblitz.statistics.widget.common.ExtendedRadioButton
-                            android:id="@+id/radio_win_rate"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"

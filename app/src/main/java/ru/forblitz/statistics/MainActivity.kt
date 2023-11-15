@@ -653,10 +653,12 @@ class MainActivity : AppCompatActivity() {
                                 app.userService.clear()
                                 app.userService.getUserID(searchField.text.toString())
 
-                                findViewById<EditText>(R.id.search_field).setText(
-                                    app.userService.getNickname(),
-                                    TextView.BufferType.EDITABLE
-                                )
+                                runOnUiThread {
+                                    findViewById<EditText>(R.id.search_field).setText(
+                                        app.userService.getNickname(),
+                                        TextView.BufferType.EDITABLE
+                                    )
+                                }
                                 app.recordDatabase.recordDao().addRecord(
                                     Record(
                                         app.userService.getUserID(),
@@ -1080,12 +1082,14 @@ class MainActivity : AppCompatActivity() {
             val tanksLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.tanks_layouts_flipper)
             val tanksApplyFilters = findViewById<View>(R.id.tanks_apply_filters)
 
-            tanksApplyFilters.setOnClickListener {
-                setVehiclesStat()
-                InterfaceUtils.playCycledAnimation(
-                    tanksApplyFilters,
-                    true
-                )
+            runOnUiThread {
+                tanksApplyFilters.setOnClickListener {
+                    setVehiclesStat()
+                    InterfaceUtils.playCycledAnimation(
+                        tanksApplyFilters,
+                        true
+                    )
+                }
             }
 
             CoroutineScope(Dispatchers.IO).launch {

@@ -15,7 +15,8 @@ class AchievementsAdapter(
     context: Context,
     private val achievementsRows: List<List<Pair<AchievementInfo, Int>>>,
     private val rowHeight: Int,
-    private var onAchievementClick: ((Pair<AchievementInfo, Int>) -> Unit)?
+    private val paddingSize: Int,
+    private var onAchievementClick: ((AchievementsRowLayout, ViewGroup, Pair<AchievementInfo, Int>) -> Unit)?
 ) :
     ArrayAdapter<List<Pair<AchievementInfo, Int>>>(
         context,
@@ -25,22 +26,24 @@ class AchievementsAdapter(
 {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return convertView
+        return (convertView
             ?:
             LayoutInflater
                 .from(context)
-                .inflate(R.layout.item_achievements_row, parent, false)
+                .inflate(R.layout.item_achievements_row, parent, false))
                 .apply {
-                    (this as AchievementsRowLayout)
+                    (this.findViewById<AchievementsRowLayout>(R.id.achievements_row_layout))
                         .apply layout@ {
                             this@layout.onAchievementClick = this@AchievementsAdapter.onAchievementClick
-                            layoutParams = LinearLayout.LayoutParams(
+                            this@layout.layoutParams = ViewGroup.LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT,
                                 rowHeight
                             )
-                            itemSize = rowHeight
-                            setAchievements(achievementsRows[position])
-                            refreshAchievements()
+                            this@layout.itemSize = rowHeight
+                            this@layout.paddingSize = this@AchievementsAdapter.paddingSize
+                            this@layout.setAchievements(achievementsRows[position])
+                            this@layout.refreshAchievements()
+                            this@layout.resetAnimations()
                         }
             }
     }

@@ -7,5 +7,7 @@
     <dimen name="padding_giant">15dp</dimen>
     <dimen name="padding_great">19dp</dimen>
 
+    <dimen name="text_small">9sp</dimen>
     <dimen name="text">11sp</dimen>
+    <dimen name="text_big">15sp</dimen>
 </resources>

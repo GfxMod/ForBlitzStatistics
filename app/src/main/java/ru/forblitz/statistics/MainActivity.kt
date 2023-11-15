@@ -1282,18 +1282,6 @@ class MainActivity : AppCompatActivity() {
                             ?.second
                             ?.let {
                                 this@apply.add(Pair(it, currentPair.second))
-
-                                val resourceName = "${Constants.achievementIconNamePrefix}${it.achievementId.lowercase()}"
-                                if (
-                                    !Utils.isResourceExists(
-                                        applicationContext,
-                                        resourceName,
-                                        Utils.ResourceType.drawable
-                                    )
-                                ) {
-                                    Log.d("resNotFound3", it.achievementId)
-                                }
-
                             }
                     }
 
@@ -1301,13 +1289,18 @@ class MainActivity : AppCompatActivity() {
                     achievementsList.adapter = AchievementsAdapter(
                         this@MainActivity,
                         this@apply.apply { sortBy { it.second }; reverse() }.chunked(achievementsInRow),
-                        (InterfaceUtils.getX() - resources.getDimensionPixelSize(R.dimen.padding_big) * (achievementsInRow + 1)) / achievementsInRow
-                    ) { achievementPair ->
-                        Toast.makeText(
-                            this@MainActivity,
-                            achievementPair.second.toString(),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        (InterfaceUtils.getX() - resources.getDimensionPixelSize(R.dimen.padding_big) * (achievementsInRow + 1)) / achievementsInRow,
+                        resources.getDimensionPixelSize(R.dimen.padding_big)
+                    ) { achievementRowLayout, viewGroup, achievementPair ->
+                        if (achievementRowLayout.expandedChild == -1) {
+                            achievementRowLayout.expand(viewGroup, achievementPair.first)
+                        } else {
+                            achievementRowLayout.collapse(
+                                achievementRowLayout
+                                    .findViewWithTag<LinearLayout>("row")
+                                    .getChildAt(achievementRowLayout.expandedChild) as ViewGroup
+                            )
+                        }
                     }
                     achievementsFlipper.displayedChild = AchievementsViewFlipperItems.ACHIEVEMENTS
                 }

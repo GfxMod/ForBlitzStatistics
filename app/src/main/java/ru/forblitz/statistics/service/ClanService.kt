@@ -61,16 +61,19 @@ class ClanService(private var apiService: ApiService) {
      * @return Serialized [FullClanInfo] object
      */
     private fun parse(json: String, clanID: String): FullClanInfo? {
-
-        return Gson().fromJson(
-            JsonParser
-                .parseString(json)
-                .asJsonObject
-                .getAsJsonObject("data")
-                .getAsJsonObject(clanID),
-            FullClanInfo::class.java
-        )
-
+        // TODO remove, only for Crashlytics debugging
+        try {
+            return Gson().fromJson(
+                JsonParser
+                    .parseString(json)
+                    .asJsonObject
+                    .getAsJsonObject("data")
+                    .getAsJsonObject(clanID),
+                FullClanInfo::class.java
+            )
+        } catch (e: Exception) {
+            throw Exception("clanID = $clanID, json = $json, message = ${e.message}")
+        }
     }
 
     /**

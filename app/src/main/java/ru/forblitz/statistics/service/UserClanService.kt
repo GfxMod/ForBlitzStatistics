@@ -49,22 +49,25 @@ class UserClanService(private var apiService: ApiService) {
     }
 
     private fun parse(json: String, userID: String): ShortClanInfo? {
+        // TODO remove, only for Crashlytics debugging
+        try {
+            val smallJsonObject = JsonParser
+                .parseString(json)
+                .asJsonObject
+                .getAsJsonObject("data")
+                .getAsJsonObject(userID)
 
-        val smallJsonObject = JsonParser
-            .parseString(json)
-            .asJsonObject
-            .getAsJsonObject("data")
-            .getAsJsonObject(userID)
+            if (smallJsonObject != null) {
+                shortClanInfo = Gson().fromJson(
+                    smallJsonObject,
+                    ShortClanInfo::class.java
+                )
+            }
 
-        if (smallJsonObject != null) {
-            shortClanInfo = Gson().fromJson(
-                smallJsonObject,
-                ShortClanInfo::class.java
-            )
+            return shortClanInfo
+        } catch (e: Exception) {
+            throw Exception("userID = $userID, json = $json, message = ${e.message}")
         }
-
-        return shortClanInfo
-
     }
 
     /**

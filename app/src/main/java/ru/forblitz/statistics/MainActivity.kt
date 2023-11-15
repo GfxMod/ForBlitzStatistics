@@ -53,7 +53,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Runnable
 import kotlinx.coroutines.launch
-import org.jetbrains.anko.contentView
 import ru.forblitz.statistics.adapters.AchievementsAdapter
 import ru.forblitz.statistics.adapters.LastSearchedAdapter
 import ru.forblitz.statistics.adapters.RequestLogAdapter
@@ -421,24 +420,26 @@ class MainActivity : AppCompatActivity() {
 
         // Set keyboard visibility listener
 
-        contentView!!.viewTreeObserver.addOnGlobalLayoutListener {
-            val displayFrameRect = Rect()
-            contentView?.getWindowVisibleDisplayFrame(displayFrameRect)
-            val screenHeight = contentView!!.rootView.height
+        val contentView = findViewById<ViewGroup>(android.R.id.content)?.getChildAt(0)!!
+        findViewById<ViewGroup>(android.R.id.content)?.getChildAt(0)!!
+            .viewTreeObserver.addOnGlobalLayoutListener {
+                val displayFrameRect = Rect()
+                contentView.getWindowVisibleDisplayFrame(displayFrameRect)
+                val screenHeight = contentView.rootView.height
 
-            val keypadHeight = screenHeight - displayFrameRect.bottom
-            if (keypadHeight > screenHeight * 0.15) {
-                if (!isKeyboardShowing) {
-                    isKeyboardShowing = true
-                    onKeyboardVisibilityChanged()
-                }
-            } else {
-                if (isKeyboardShowing) {
-                    isKeyboardShowing = false
-                    onKeyboardVisibilityChanged()
+                val keypadHeight = screenHeight - displayFrameRect.bottom
+                if (keypadHeight > screenHeight * 0.15) {
+                    if (!isKeyboardShowing) {
+                        isKeyboardShowing = true
+                        onKeyboardVisibilityChanged()
+                    }
+                } else {
+                    if (isKeyboardShowing) {
+                        isKeyboardShowing = false
+                        onKeyboardVisibilityChanged()
+                    }
                 }
             }
-        }
 
         // Set region
 

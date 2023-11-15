@@ -1301,7 +1301,7 @@ class MainActivity : AppCompatActivity() {
                     achievementsList.adapter = AchievementsAdapter(
                         this@MainActivity,
                         this@apply.apply { sortBy { it.second }; reverse() }.chunked(achievementsInRow),
-                        (InterfaceUtils.getX() - resources.getDimensionPixelSize(R.dimen.padding_big) * 6) / 5
+                        (InterfaceUtils.getX() - resources.getDimensionPixelSize(R.dimen.padding_big) * (achievementsInRow + 1)) / achievementsInRow
                     ) { achievementPair ->
                         Toast.makeText(
                             this@MainActivity,

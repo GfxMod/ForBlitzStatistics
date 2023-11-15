@@ -551,150 +551,152 @@ class MainActivity : AppCompatActivity() {
      * to perform a search.
      */
     fun onClickSearchButton(view: View) {
-        if (!searchProcessing) {
-            searchProcessing = true
+        runOnUiThread {
+            if (!searchProcessing) {
+                searchProcessing = true
 
-            val searchField = findViewById<EditText>(R.id.search_field)
-            val imm: InputMethodManager = this.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                val searchField = findViewById<EditText>(R.id.search_field)
+                val imm: InputMethodManager = this.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
-            val statisticsLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.statistics_layouts_flipper)
-            val clanLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.clan_layouts_flipper)
-            val tanksLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.tanks_layouts_flipper)
+                val statisticsLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.statistics_layouts_flipper)
+                val clanLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.clan_layouts_flipper)
+                val tanksLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.tanks_layouts_flipper)
 
-            val statisticsDetailsButton = findViewById<View>(R.id.statistics_details_button)
-            val statisticsDetailsBack = findViewById<View>(R.id.statistics_details_back)
-            val statisticsSessionListButton = findViewById<View>(R.id.statistics_sessions_list_button)
-            val clanMembersButton = findViewById<View>(R.id.clan_members_button)
-            val clanMembersListBackView = findViewById<View>(R.id.clan_members_back)
-            val tanksDetailsBack = findViewById<View>(R.id.tanks_details_back)
-            val tanksList = findViewById<ListView>(R.id.tanks_list)
-            val tanksFilters = findViewById<View>(R.id.tanks_filters)
+                val statisticsDetailsButton = findViewById<View>(R.id.statistics_details_button)
+                val statisticsDetailsBack = findViewById<View>(R.id.statistics_details_back)
+                val statisticsSessionListButton = findViewById<View>(R.id.statistics_sessions_list_button)
+                val clanMembersButton = findViewById<View>(R.id.clan_members_button)
+                val clanMembersListBackView = findViewById<View>(R.id.clan_members_back)
+                val tanksDetailsBack = findViewById<View>(R.id.tanks_details_back)
+                val tanksList = findViewById<ListView>(R.id.tanks_list)
+                val tanksFilters = findViewById<View>(R.id.tanks_filters)
 
-            val mainFlipper = findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
-            val achievementsFlipper = findViewById<DifferenceViewFlipper>(R.id.achievements_layouts_flipper)
-            val statisticsSessionStatButton = findViewById<TextView>(R.id.statistics_session_stat_button)
+                val mainFlipper = findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
+                val achievementsFlipper = findViewById<DifferenceViewFlipper>(R.id.achievements_layouts_flipper)
+                val statisticsSessionStatButton = findViewById<TextView>(R.id.statistics_session_stat_button)
 
-            // Shows the loading screen and the loading indicator, blocks all
-            // interactive elements during loading
+                // Shows the loading screen and the loading indicator, blocks all
+                // interactive elements during loading
 
-            mainFlipper.displayedChild = MainViewFlipperItems.LOADING
-            achievementsFlipper.displayedChild = AchievementsViewFlipperItems.LOADING
-            findViewById<View>(R.id.settings_button).isActivated = false
-            findViewById<SessionButtonsLayout>(R.id.statistics_session_buttons).setButtonsVisibility(ButtonsVisibility.NOTHING)
-            if (statisticsSessionStatButton.isActivated) {
-                statisticsSessionStatButton.setText(R.string.to_session_stat)
-                statisticsSessionStatButton.isActivated = false
-            }
+                mainFlipper.displayedChild = MainViewFlipperItems.LOADING
+                achievementsFlipper.displayedChild = AchievementsViewFlipperItems.LOADING
+                findViewById<View>(R.id.settings_button).isActivated = false
+                findViewById<SessionButtonsLayout>(R.id.statistics_session_buttons).setButtonsVisibility(ButtonsVisibility.NOTHING)
+                if (statisticsSessionStatButton.isActivated) {
+                    statisticsSessionStatButton.setText(R.string.to_session_stat)
+                    statisticsSessionStatButton.isActivated = false
+                }
 
-            // Plays animation
+                // Plays animation
 
-            InterfaceUtils.playCycledAnimation(
-                view,
-                false
-            )
+                InterfaceUtils.playCycledAnimation(
+                    view,
+                    false
+                )
 
-            // Hides keyboard
+                // Hides keyboard
 
-            imm.hideSoftInputFromWindow(searchField.windowToken, 0)
-            searchField.clearFocus()
+                imm.hideSoftInputFromWindow(searchField.windowToken, 0)
+                searchField.clearFocus()
 
-            // Sets listeners for buttons
+                // Sets listeners for buttons
 
-            statisticsDetailsButton.setOnClickListener {
-                statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.FALSE
-            }
-            statisticsDetailsBack.setOnClickListener {
-                statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
-            }
-            statisticsSessionListButton.setOnClickListener {
-                statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.SESSIONS
-            }
-            clanMembersButton.setOnClickListener {
-                clanLayoutsFlipper.displayedChild = ClanViewFlipperItems.NOT_IS_A_MEMBER
-            }
-            clanMembersListBackView.setOnClickListener {
-                HapticUtils.performHapticFeedback(clanMembersListBackView)
-                clanLayoutsFlipper.displayedChild = ClanViewFlipperItems.IS_A_MEMBER
-            }
-            tanksDetailsBack.setOnClickListener {
-                tanksLayoutsFlipper.displayedChild = 0
-            }
-            tanksFilters.setOnClickListener {
-                HapticUtils.performHapticFeedback(tanksFilters)
-                tanksLayoutsFlipper.displayedChild = 3
-            }
+                statisticsDetailsButton.setOnClickListener {
+                    statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.FALSE
+                }
+                statisticsDetailsBack.setOnClickListener {
+                    statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
+                }
+                statisticsSessionListButton.setOnClickListener {
+                    statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.SESSIONS
+                }
+                clanMembersButton.setOnClickListener {
+                    clanLayoutsFlipper.displayedChild = ClanViewFlipperItems.NOT_IS_A_MEMBER
+                }
+                clanMembersListBackView.setOnClickListener {
+                    HapticUtils.performHapticFeedback(clanMembersListBackView)
+                    clanLayoutsFlipper.displayedChild = ClanViewFlipperItems.IS_A_MEMBER
+                }
+                tanksDetailsBack.setOnClickListener {
+                    tanksLayoutsFlipper.displayedChild = 0
+                }
+                tanksFilters.setOnClickListener {
+                    HapticUtils.performHapticFeedback(tanksFilters)
+                    tanksLayoutsFlipper.displayedChild = 3
+                }
 
-            // Set params of tanksList
+                // Set params of tanksList
 
-            tanksList.emptyView = findViewById(R.id.item_nothing_found)
+                tanksList.emptyView = findViewById(R.id.item_nothing_found)
 
-            if (tanksList.footerViewsCount == 0) {
-                val footer = View(this@MainActivity)
-                val width = InterfaceUtils.getX() - resources.getDimensionPixelSize(R.dimen.padding_very_big) * 2
-                footer.layoutParams = AbsListView.LayoutParams(width, (width * 0.15).toInt())
-                tanksList.addFooterView(footer)
-            }
+                if (tanksList.footerViewsCount == 0) {
+                    val footer = View(this@MainActivity)
+                    val width = InterfaceUtils.getX() - resources.getDimensionPixelSize(R.dimen.padding_very_big) * 2
+                    footer.layoutParams = AbsListView.LayoutParams(width, (width * 0.15).toInt())
+                    tanksList.addFooterView(footer)
+                }
 
-            tanksLayoutsFlipper.displayedChild = 2
+                tanksLayoutsFlipper.displayedChild = 2
 
-            // Updates logging display
+                // Updates logging display
 
-            updateLoggingDisplay()
+                updateLoggingDisplay()
 
-            // Does everything to show statistics, but first waits for tokens and
-            // ads to be loaded, if necessary
+                // Does everything to show statistics, but first waits for tokens and
+                // ads to be loaded, if necessary
 
-            app.tokensService.addTaskOnEndOfLoad {
-                app.adService.showInterstitial {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        try {
+                app.tokensService.addTaskOnEndOfLoad {
+                    app.adService.showInterstitial {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            try {
 
-                            app.userService.clear()
-                            app.userService.getUserID(searchField.text.toString())
+                                app.userService.clear()
+                                app.userService.getUserID(searchField.text.toString())
 
-                            findViewById<EditText>(R.id.search_field).setText(
-                                app.userService.getNickname(),
-                                TextView.BufferType.EDITABLE
-                            )
-                            app.recordDatabase.recordDao().addRecord(
-                                Record(
-                                    app.userService.getUserID(),
+                                findViewById<EditText>(R.id.search_field).setText(
                                     app.userService.getNickname(),
-                                    System.currentTimeMillis().toString(),
-                                    app.preferences.getString("region", "notSpecified")!!
+                                    TextView.BufferType.EDITABLE
                                 )
-                            )
+                                app.recordDatabase.recordDao().addRecord(
+                                    Record(
+                                        app.userService.getUserID(),
+                                        app.userService.getNickname(),
+                                        System.currentTimeMillis().toString(),
+                                        app.preferences.getString("region", "notSpecified")!!
+                                    )
+                                )
 
-                            // set player statistics
+                                // set player statistics
 
-                            setPlayerStat()
-                            setClanStat()
-                            setAchievements()
-                            app.vehicleSpecsService.addTaskOnEndOfLoad {
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    setVehiclesStat()
+                                setPlayerStat()
+                                setClanStat()
+                                setAchievements()
+                                app.vehicleSpecsService.addTaskOnEndOfLoad {
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        setVehiclesStat()
+                                    }
                                 }
-                            }
 
-                        } catch (e: ObjectException) {
-                            searchProcessing = false
-                            runOnUiThread {
-                                mainFlipper.displayedChild = MainViewFlipperItems.ENTER_NICKNAME
-                                searchField.setText("", TextView.BufferType.EDITABLE)
+                            } catch (e: ObjectException) {
+                                searchProcessing = false
+                                runOnUiThread {
+                                    mainFlipper.displayedChild = MainViewFlipperItems.ENTER_NICKNAME
+                                    searchField.setText("", TextView.BufferType.EDITABLE)
 
-                                InterfaceUtils.createAlertDialog(
-                                    this@MainActivity,
-                                    getString(R.string.error) + " " + e.error.code,
-                                    e.message.toString().replace("XXX", app.preferences.getString("region", "notSpecified")!!.uppercase()),
-                                ).show()
+                                    InterfaceUtils.createAlertDialog(
+                                        this@MainActivity,
+                                        getString(R.string.error) + " " + e.error.code,
+                                        e.message.toString().replace("XXX", app.preferences.getString("region", "notSpecified")!!.uppercase()),
+                                    ).show()
+                                }
                             }
                         }
                     }
                 }
-            }
 
-        } else {
-            Toast.makeText(this@MainActivity, getString(R.string.please_wait), Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this@MainActivity, getString(R.string.please_wait), Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

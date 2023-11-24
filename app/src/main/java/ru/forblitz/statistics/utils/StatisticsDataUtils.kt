@@ -4,36 +4,36 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import ru.forblitz.statistics.data.Constants
-import ru.forblitz.statistics.dto.StatisticsDataModern
+import ru.forblitz.statistics.dto.StatisticsData
 import ru.forblitz.statistics.dto.UserStatisticsResponse
 
-class StatisticsDataModernUtils {
+class StatisticsDataUtils {
     companion object {
 
         fun calculateFieldDifferences(
-            current: StatisticsDataModern,
-            session: StatisticsDataModern,
-        ): StatisticsDataModern {
-            val result = StatisticsDataModern()
+            current: StatisticsData,
+            session: StatisticsData,
+        ): StatisticsData {
+            val result = StatisticsData()
             val fieldNames = result.javaClass.declaredFields.map { it.name }.toTypedArray()
             for (fieldName in fieldNames) {
                 try {
-                    val field = StatisticsDataModern::class.java.getDeclaredField(fieldName)
+                    val field = StatisticsData::class.java.getDeclaredField(fieldName)
                     field.isAccessible = true
                     val currentValue = field[current] as Int
                     val sessionValue = field[session] as Int
                     field[result] = currentValue - sessionValue
                 } catch (e: Exception) {
-                    Log.e(StatisticsDataModernUtils::javaClass.name, "fieldName = $fieldName; $e")
+                    Log.e(StatisticsDataUtils::javaClass.name, "fieldName = $fieldName; $e")
                 }
             }
             return result
         }
 
         fun calculateSessionDifferences(
-            current: StatisticsDataModern,
-            session: StatisticsDataModern,
-        ): StatisticsDataModern {
+            current: StatisticsData,
+            session: StatisticsData,
+        ): StatisticsData {
             val sessionDifferences = calculateFieldDifferences(current, session)
             sessionDifferences.winningPercentage = current.winningPercentage!! - session.winningPercentage!!
 /*
@@ -78,7 +78,7 @@ class StatisticsDataModernUtils {
             return sessionDifferences
         }
 
-        fun parse(json: String, accountID: String, key: String): StatisticsDataModern {
+        fun parse(json: String, accountID: String, key: String): StatisticsData {
             return Gson().fromJson(
                 JsonParser
                     .parseString(json)
@@ -88,8 +88,8 @@ class StatisticsDataModernUtils {
                 .statistics[key]!!
         }
 
-        fun parse(json: String, accountID: String, statisticsTypes: Collection<String>): StatisticsDataModern {
-            var result: StatisticsDataModern? = null
+        fun parse(json: String, accountID: String, statisticsTypes: Collection<String>): StatisticsData {
+            var result: StatisticsData? = null
 
             if (statisticsTypes.contains(Constants.PlayerStatisticsTypes.RANDOM)) {
                 result = parse(json, accountID, Constants.PlayerStatisticsTypes.RANDOM)
@@ -111,7 +111,7 @@ class StatisticsDataModernUtils {
 
             }
 
-            return result ?: StatisticsDataModern()
+            return result ?: StatisticsData()
         }
 
     }

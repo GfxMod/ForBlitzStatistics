@@ -2,7 +2,7 @@ package ru.forblitz.statistics.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class StatisticsDataModern(
+data class StatisticsData(
     @SerializedName("spotted")
     val spotted: Int,
     @SerializedName("max_frags_tank_id")
@@ -119,8 +119,8 @@ data class StatisticsDataModern(
             }
         }
 
-    operator fun plus(other: StatisticsDataModern): StatisticsDataModern {
-        return StatisticsDataModern(
+    operator fun plus(other: StatisticsData): StatisticsData {
+        return StatisticsData(
         this.spotted + other.spotted,
         this.maxFragsTankId + other.maxFragsTankId,
         this.hits + other.hits,
@@ -143,8 +143,8 @@ data class StatisticsDataModern(
         )
     }
     
-    operator fun minus(other: StatisticsDataModern): StatisticsDataModern {
-        return StatisticsDataModern(
+    operator fun minus(other: StatisticsData): StatisticsData {
+        return StatisticsData(
             this.spotted - other.spotted,
             this.maxFragsTankId - other.maxFragsTankId,
             this.hits - other.hits,

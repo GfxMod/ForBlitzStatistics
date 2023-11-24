@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import ru.forblitz.statistics.dto.StatisticsDataModern;
+import ru.forblitz.statistics.dto.StatisticsData;
 import ru.forblitz.statistics.utils.ParseUtils;
 
 public class DetailsLayout extends LinearLayout {
@@ -29,13 +29,13 @@ public class DetailsLayout extends LinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setData(StatisticsDataModern statisticsDataModern) {
+    public void setData(StatisticsData statisticsData) {
         for (View view : getAllChildren(this)) {
             if (view instanceof TextView && view.getTag() != null) {
                 try {
-                    Field field = StatisticsDataModern.class.getDeclaredField(String.valueOf(view.getTag()));
+                    Field field = StatisticsData.class.getDeclaredField(String.valueOf(view.getTag()));
                     field.setAccessible(true);
-                    ((TextView) view).setText(ParseUtils.splitByThousands(Integer.toString((Integer) field.get(statisticsDataModern))));
+                    ((TextView) view).setText(ParseUtils.splitByThousands(Integer.toString((Integer) field.get(statisticsData))));
                 } catch (NoSuchFieldException|IllegalAccessException e) {
                     Log.e("DetailsLayout", e.toString());
                 }

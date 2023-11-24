@@ -2,14 +2,18 @@ package ru.forblitz.statistics.widget.data
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import ru.forblitz.statistics.ForBlitzStatisticsApplication
 import ru.forblitz.statistics.R
 import ru.forblitz.statistics.data.Constants
-import ru.forblitz.statistics.dto.StatisticsDataModern
+import ru.forblitz.statistics.data.Constants.PreferencesSwitchesTags
+import ru.forblitz.statistics.dto.StatisticsData
 import ru.forblitz.statistics.utils.InterfaceUtils
 import ru.forblitz.statistics.utils.ParseUtils
+import ru.forblitz.statistics.utils.RoundingUtils.Companion.round
 
 class PlayerFastStat : LinearLayout {
     constructor(context: Context?) : super(context)
@@ -20,97 +24,122 @@ class PlayerFastStat : LinearLayout {
         defStyleAttr
     )
 
-    fun setData(nickname: String, statisticsDataModern: StatisticsDataModern) {
+    private val averageDamageRounding: Boolean
+        get() = (context.applicationContext as ForBlitzStatisticsApplication).preferencesService.get(PreferencesSwitchesTags.averageDamageRounding)
+
+    fun setData(nickname: String, statisticsData: StatisticsData) {
         val battles = findViewWithTag<TextView>("battles")
         val winRate = findViewWithTag<TextView>("winRate")
         val averageDamage = findViewWithTag<TextView>("averageDamage")
         val efficiency = findViewWithTag<TextView>("efficiency")
         val survived = findViewWithTag<TextView>("survived")
         val hitsFromShots = findViewWithTag<TextView>("hitsFromShots")
-        val battlesValue = statisticsDataModern.battles.toString()
-        var winRateValue = statisticsDataModern.winningPercentage.toString()
-        var averageDamageValue = statisticsDataModern.averageDamage.toString()
-        var efficiencyValue = statisticsDataModern.efficiency.toString()
-        var survivedValue = statisticsDataModern.survivedPercentage.toString()
-        var hitsFromShotsValue = statisticsDataModern.hitsOutOfShots.toString()
-        var winRateColor = InterfaceUtils.getValueColor(
+
+        val battlesValue = ParseUtils.splitByThousands(statisticsData.battles.toString())
+        var winningPercentageValue = "${statisticsData.winningPercentage!!.round()}%"
+        var averageDamageValue = ParseUtils.splitByThousands(
+            if (!averageDamageRounding) {
+                statisticsData.averageDamage!!.toInt().toString()
+            } else {
+                statisticsData.averageDamage!!.round().toString()
+            }
+        )
+        var efficiencyValue = statisticsData.efficiency!!.round().toString()
+        var survivedPercentageValue = statisticsData.survivedPercentage!!.round().toString()
+        var hitsOutOfShotsValue = statisticsData.hitsOutOfShots!!.round().toString()
+
+        var winningPercentageColor = InterfaceUtils.getValueColor(
             this.context,
-            statisticsDataModern.winningPercentage!!.toDouble(),
+            statisticsData.winningPercentage!!.toDouble(),
             Constants.Steps.winRate
         )
         var averageDamageColor = InterfaceUtils.getValueColor(
             this.context,
-            statisticsDataModern.averageDamage!!.toDouble(),
+            statisticsData.averageDamage!!.toDouble(),
             Constants.Steps.averageDamage
         )
         var efficiencyColor = InterfaceUtils.getValueColor(
             this.context,
-            statisticsDataModern.efficiency!!.toDouble(),
+            statisticsData.efficiency!!.toDouble(),
             Constants.Steps.efficiency
         )
-        if (winRateValue == "NaN") {
-            winRateValue = context.getString(R.string.empty)
-            winRateColor = this.context.getColor(R.color.white)
+
+        if (statisticsData.winningPercentage!!.isNaN()) {
+            winningPercentageValue = context.getString(R.string.empty)
+            winningPercentageColor = this.context.getColor(R.color.white)
         }
-        if (averageDamageValue == "NaN") {
+        if (statisticsData.averageDamage!!.isNaN()) {
             averageDamageValue = context.getString(R.string.empty)
             averageDamageColor = this.context.getColor(R.color.white)
         }
-        if (efficiencyValue == "NaN") {
+        if (statisticsData.efficiency!!.isNaN()) {
             efficiencyValue = context.getString(R.string.empty)
             efficiencyColor = this.context.getColor(R.color.white)
         }
-        if (survivedValue == "NaN") {
-            survivedValue = context.getString(R.string.empty)
+        if (statisticsData.survivedPercentage!!.isNaN()) {
+            survivedPercentageValue = context.getString(R.string.empty)
         }
-        if (hitsFromShotsValue == "NaN") {
-            hitsFromShotsValue = context.getString(R.string.empty)
+        if (statisticsData.hitsOutOfShots!!.isNaN()) {
+            hitsOutOfShotsValue = context.getString(R.string.empty)
         }
-        battles.text = ParseUtils.splitByThousands(battlesValue)
-        winRate.text = winRateValue
-        averageDamage.text = ParseUtils.splitByThousands(averageDamageValue)
+
+        battles.text = battlesValue
+        winRate.text = winningPercentageValue
+        averageDamage.text = averageDamageValue
         efficiency.text = efficiencyValue
-        survived.text = survivedValue
-        hitsFromShots.text = hitsFromShotsValue
+        survived.text = survivedPercentageValue
+        hitsFromShots.text = hitsOutOfShotsValue
         battles.setTextColor(
             InterfaceUtils.getValueColor(
                 this.context,
-                statisticsDataModern.battles.toDouble(),
+                statisticsData.battles.toDouble(),
                 Constants.Steps.battles
             )
         )
-        winRate.setTextColor(winRateColor)
+        winRate.setTextColor(winningPercentageColor)
         averageDamage.setTextColor(averageDamageColor)
         efficiency.setTextColor(efficiencyColor)
         findViewWithTag<TextView>("nickname").text = nickname
     }
 
-    fun setSessionData(statisticsDataModern: StatisticsDataModern) {
-        var battlesDiff: String = statisticsDataModern.battles.toString()
-        var winRateDiff: String = statisticsDataModern.winningPercentage.toString()
-        var averageDamageDiff: String = statisticsDataModern.averageDamage.toString()
-        var efficiencyDiff: String = statisticsDataModern.efficiency.toString()
-        var survivedDiff: String = statisticsDataModern.survivedPercentage.toString()
-        var hitsFromShotsDiff: String = statisticsDataModern.hitsOutOfShots.toString()
+    fun setSessionData(statisticsData: StatisticsData) {
+        var battlesDiff: String = statisticsData.battles.toString()
+        var winRateDiff: String = statisticsData.winningPercentage!!.round().toString()
+        var averageDamageDiff: String = if (!averageDamageRounding) {
+            statisticsData.averageDamage!!.toInt().toString()
+        } else {
+            statisticsData.averageDamage!!.round().toString()
+        }
+        var efficiencyDiff: String = statisticsData.efficiency!!.round().toString()
+        var survivedDiff: String = statisticsData.survivedPercentage!!.round().toString()
+        var hitsFromShotsDiff: String = statisticsData.hitsOutOfShots!!.round().toString()
+
         battlesDiff = "+$battlesDiff"
-        if (winRateDiff.toDouble() > 0) {
+
+        if (statisticsData.winningPercentage!! > 0) {
             winRateDiff = "+$winRateDiff"
         }
         winRateDiff = "$winRateDiff%"
-        if (averageDamageDiff.toDouble() > 0) {
+
+        if (statisticsData.averageDamage!! > 0) {
             averageDamageDiff = "+$averageDamageDiff"
         }
-        if (efficiencyDiff.toDouble() > 0) {
+
+        if (statisticsData.efficiency!! > 0) {
             efficiencyDiff = "+$efficiencyDiff"
         }
-        if (survivedDiff.toDouble() > 0) {
+
+        if (statisticsData.survivedPercentage!! > 0) {
             survivedDiff = "+$survivedDiff"
         }
+
         survivedDiff = "$survivedDiff%"
-        if (hitsFromShotsDiff.toDouble() > 0) {
+        if (statisticsData.hitsOutOfShots!! > 0) {
             hitsFromShotsDiff = "+$hitsFromShotsDiff"
         }
+
         hitsFromShotsDiff = "$hitsFromShotsDiff%"
+
         (findViewWithTag<View>("battlesDiff") as DifferenceIndicatorView).setValue(
             battlesDiff,
             false

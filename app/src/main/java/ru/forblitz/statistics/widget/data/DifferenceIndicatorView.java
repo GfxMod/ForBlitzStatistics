@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,6 +12,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import ru.forblitz.statistics.R;
+import ru.forblitz.statistics.utils.ParseUtils;
 
 public class DifferenceIndicatorView extends AppCompatTextView {
 
@@ -65,7 +67,8 @@ public class DifferenceIndicatorView extends AppCompatTextView {
 
     public void setValue(String text, boolean lastSymbolNotANumber) {
 
-        setText(text);
+        setText(ParseUtils.splitByThousands(text));
+        Log.d("setValue", text + " " + ParseUtils.splitByThousands(text));
 
         double value;
         if (!lastSymbolNotANumber) {

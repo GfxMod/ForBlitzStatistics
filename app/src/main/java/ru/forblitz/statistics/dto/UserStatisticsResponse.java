@@ -12,7 +12,7 @@ public class UserStatisticsResponse extends APIResponse {
     public static class UserStatisticsElement {
 
         @SerializedName("statistics")
-        public HashMap<String, StatisticsDataModern> statistics;
+        public HashMap<String, StatisticsData> statistics;
 
         @SerializedName("account_id")
         public String accountId;

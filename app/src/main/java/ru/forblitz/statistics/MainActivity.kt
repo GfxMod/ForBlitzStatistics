@@ -82,7 +82,7 @@ import ru.forblitz.statistics.data.RecordDatabase
 import ru.forblitz.statistics.dto.AchievementInfo
 import ru.forblitz.statistics.dto.Record
 import ru.forblitz.statistics.dto.Session
-import ru.forblitz.statistics.dto.StatisticsDataModern
+import ru.forblitz.statistics.dto.StatisticsData
 import ru.forblitz.statistics.dto.VehicleSpecs
 import ru.forblitz.statistics.dto.VehiclesStatisticsResponse
 import ru.forblitz.statistics.exception.ObjectException
@@ -95,7 +95,7 @@ import ru.forblitz.statistics.service.UserVehiclesStatisticsService
 import ru.forblitz.statistics.utils.HapticUtils
 import ru.forblitz.statistics.utils.InterfaceUtils
 import ru.forblitz.statistics.utils.ParseUtils
-import ru.forblitz.statistics.utils.StatisticsDataModernUtils
+import ru.forblitz.statistics.utils.StatisticsDataUtils
 import ru.forblitz.statistics.utils.Utils
 import ru.forblitz.statistics.widget.common.DifferenceViewFlipper
 import ru.forblitz.statistics.widget.common.ExtendedRadioGroup
@@ -987,12 +987,12 @@ class MainActivity : AppCompatActivity() {
             statisticsFastStat.setSessionData(
                 when(app.sessionService.getSessionsList().size) {
                     0 -> {
-                        StatisticsDataModern()
+                        StatisticsData()
                     }
                     else -> {
-                        StatisticsDataModernUtils.calculateSessionDifferences(
+                        StatisticsDataUtils.calculateSessionDifferences(
                             app.userStatisticsService.getStatisticsByEnum(getPlayerStatisticsTypes()),
-                            StatisticsDataModernUtils.parse(
+                            StatisticsDataUtils.parse(
                                 File(app.sessionService.getSessionsList()[index]).readText(),
                                 app.userService.accountId!!,
                                 getPlayerStatisticsTypes()
@@ -1004,9 +1004,9 @@ class MainActivity : AppCompatActivity() {
             if (statisticsSessionStatButton.isActivated) {
                 statisticsFastStat.setData(
                     app.userService.accountId!!,
-                    StatisticsDataModernUtils.calculateFieldDifferences(
+                    StatisticsDataUtils.calculateFieldDifferences(
                         app.userStatisticsService.getStatisticsByEnum(getPlayerStatisticsTypes()),
-                        StatisticsDataModernUtils.parse(
+                        StatisticsDataUtils.parse(
                             File(app.sessionService.getSessionsList()[index]).readText(),
                             app.userService.accountId!!,
                             getPlayerStatisticsTypes()
@@ -1029,9 +1029,9 @@ class MainActivity : AppCompatActivity() {
 
                         statisticsFastStat.setData(
                             app.userService.accountId!!,
-                            StatisticsDataModernUtils.calculateFieldDifferences(
+                            StatisticsDataUtils.calculateFieldDifferences(
                                 app.userStatisticsService.getStatisticsByEnum(getPlayerStatisticsTypes()),
-                                StatisticsDataModernUtils.parse(
+                                StatisticsDataUtils.parse(
                                     File(app.sessionService.getSessionsList()[index]).readText(),
                                     app.userService.accountId!!,
                                     getPlayerStatisticsTypes()

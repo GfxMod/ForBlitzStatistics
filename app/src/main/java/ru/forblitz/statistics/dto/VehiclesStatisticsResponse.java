@@ -12,7 +12,7 @@ public class VehiclesStatisticsResponse extends APIResponse {
     public static class VehicleStatistics {
 
         @SerializedName("all")
-        public StatisticsDataModern statistics;
+        public StatisticsData statistics;
 
         @SerializedName("last_battle_time")
         public String lastBattleTime;

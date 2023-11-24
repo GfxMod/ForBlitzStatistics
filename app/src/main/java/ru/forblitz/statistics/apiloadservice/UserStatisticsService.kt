@@ -6,7 +6,7 @@ import okhttp3.ResponseBody
 import retrofit2.Response
 import ru.forblitz.statistics.api.ApiService
 import ru.forblitz.statistics.data.Constants
-import ru.forblitz.statistics.dto.StatisticsDataModern
+import ru.forblitz.statistics.dto.StatisticsData
 import ru.forblitz.statistics.dto.UserStatisticsResponse
 
 class UserStatisticsService(private val apiService: ApiService) : APILoadService<UserStatisticsService.Arguments, UserStatisticsResponse>() {
@@ -15,20 +15,20 @@ class UserStatisticsService(private val apiService: ApiService) : APILoadService
 
     data class Arguments(val userID: String)
 
-    val randomStatistics: StatisticsDataModern
+    val randomStatistics: StatisticsData
         get() = data!!.data!![arguments!!.userID]!!.statistics?.get("all")!!
 
-    val ratingStatistics: StatisticsDataModern
+    val ratingStatistics: StatisticsData
         get() = data!!.data!![arguments!!.userID]!!.statistics?.get("rating")!!
 
-    val clanStatistics: StatisticsDataModern
+    val clanStatistics: StatisticsData
         get() = data!!.data!![arguments!!.userID]!!.statistics?.get("clan")!!
 
     val timestamp: String
         get() = data!!.data!![arguments!!.userID]!!.lastBattleTime
 
-    fun getStatisticsByEnum(statisticsTypes: Collection<String>): StatisticsDataModern {
-        var result: StatisticsDataModern? = null
+    fun getStatisticsByEnum(statisticsTypes: Collection<String>): StatisticsData {
+        var result: StatisticsData? = null
 
         if (statisticsTypes.contains(Constants.PlayerStatisticsTypes.RANDOM)) {
             result = randomStatistics
@@ -50,7 +50,7 @@ class UserStatisticsService(private val apiService: ApiService) : APILoadService
 
         }
 
-        return result ?: StatisticsDataModern()
+        return result ?: StatisticsData()
     }
 
     override suspend fun request(): Response<ResponseBody> {

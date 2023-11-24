@@ -33,7 +33,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import ru.forblitz.statistics.R;
 import ru.forblitz.statistics.data.Constants;
-import ru.forblitz.statistics.dto.StatisticsData;
+import ru.forblitz.statistics.dto.StatisticsDataModern;
 import ru.forblitz.statistics.widget.common.DifferenceViewFlipper;
 import ru.forblitz.statistics.widget.data.DetailsLayout;
 import ru.forblitz.statistics.widget.data.PlayerFastStat;
@@ -244,11 +244,11 @@ public class InterfaceUtils {
     /**
      * Sets values to {@link R.layout#fragment_statistics statistics layout}
      * @param activity required to get resources
-     * @param statisticsData statisticsData to be set
+     * @param statisticsDataModern StatisticsDataModern to be set
      */
-    public static void setStatistics(Activity activity, StatisticsData statisticsData) {
+    public static void setStatistics(Activity activity, String nickname, StatisticsDataModern statisticsDataModern) {
 
-        if (!statisticsData.getBattles().equals("0")) {
+        if (statisticsDataModern.getBattles() != 0) {
             activity.runOnUiThread(() ->
                     ((DifferenceViewFlipper) activity.findViewById(R.id.fragment_statistics)).setDisplayedChild(STATISTICS));
         } else {
@@ -256,8 +256,8 @@ public class InterfaceUtils {
                     ((DifferenceViewFlipper) activity.findViewById(R.id.fragment_statistics)).setDisplayedChild(FALSE));
         }
         activity.runOnUiThread(() -> {
-            ((PlayerFastStat) activity.findViewById(R.id.statistics_fast_stat)).setData(statisticsData);
-            ((DetailsLayout) activity.findViewById(R.id.statistics_details_layout)).setData(statisticsData);
+            ((PlayerFastStat) activity.findViewById(R.id.statistics_fast_stat)).setData(nickname, statisticsDataModern);
+            ((DetailsLayout) activity.findViewById(R.id.statistics_details_layout)).setData(statisticsDataModern);
         });
     }
 

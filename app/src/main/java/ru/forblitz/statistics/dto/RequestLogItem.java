@@ -51,8 +51,7 @@ public class RequestLogItem {
         ACHIEVEMENTS_DESCRIPTION,
         TANKOPEDIA,
         TANKS_STATISTICS,
-        VERSION,
-        TOKENS
+        METADATA
     }
 
     @NonNull

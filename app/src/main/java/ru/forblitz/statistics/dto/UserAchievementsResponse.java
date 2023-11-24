@@ -1,17 +1,15 @@
 package ru.forblitz.statistics.dto;
 
-
 import androidx.annotation.Keep;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Map;
+import java.util.HashMap;
 
 @Keep
-public class AchievementsInfoMap {
+public class UserAchievementsResponse extends APIResponse {
 
-    @Keep
     @SerializedName("data")
-    public Map<String, AchievementInfo> achievements;
+    public HashMap<String, UserAchievementsMap> data;
 
 }

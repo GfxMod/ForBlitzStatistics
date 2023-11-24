@@ -7,10 +7,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 
 @Keep
-public class UserAchievementsMap {
+public class AchievementsInformationResponse extends APIResponse {
 
-    @Keep
-    @SerializedName("achievements")
-    public HashMap<String, Integer> achievements;
+    @SerializedName("data")
+    public HashMap<String, AchievementInfo> data;
 
 }

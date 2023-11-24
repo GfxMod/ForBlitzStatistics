@@ -2,6 +2,7 @@ package ru.forblitz.statistics.widget.data;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -11,7 +12,7 @@ import androidx.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import ru.forblitz.statistics.dto.StatisticsData;
+import ru.forblitz.statistics.dto.StatisticsDataModern;
 import ru.forblitz.statistics.utils.ParseUtils;
 
 public class DetailsLayout extends LinearLayout {
@@ -28,15 +29,15 @@ public class DetailsLayout extends LinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setData(StatisticsData statisticsData) {
+    public void setData(StatisticsDataModern statisticsDataModern) {
         for (View view : getAllChildren(this)) {
             if (view instanceof TextView && view.getTag() != null) {
                 try {
-                    Field field = StatisticsData.class.getDeclaredField(String.valueOf(view.getTag()));
+                    Field field = StatisticsDataModern.class.getDeclaredField(String.valueOf(view.getTag()));
                     field.setAccessible(true);
-                    ((TextView) view).setText(ParseUtils.splitByThousands((String) field.get(statisticsData)));
+                    ((TextView) view).setText(ParseUtils.splitByThousands(Integer.toString((Integer) field.get(statisticsDataModern))));
                 } catch (NoSuchFieldException|IllegalAccessException e) {
-                    e.printStackTrace();
+                    Log.e("DetailsLayout", e.toString());
                 }
             }
         }

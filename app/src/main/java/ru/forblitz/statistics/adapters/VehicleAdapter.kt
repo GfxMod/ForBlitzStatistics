@@ -1,84 +1,78 @@
-package ru.forblitz.statistics.adapters;
+package ru.forblitz.statistics.adapters
 
-import android.app.Activity;
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.app.Activity
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AbsListView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.TextView
+import android.widget.ViewFlipper
+import ru.forblitz.statistics.R
+import ru.forblitz.statistics.dto.VehicleSpecs
+import ru.forblitz.statistics.dto.VehiclesStatisticsResponse.VehicleStatistics
+import ru.forblitz.statistics.utils.ParseUtils
+import ru.forblitz.statistics.utils.VehicleUtils.getAverageDamageColor
+import ru.forblitz.statistics.utils.VehicleUtils.getBattlesColor
+import ru.forblitz.statistics.utils.VehicleUtils.getEfficiencyColor
+import ru.forblitz.statistics.utils.VehicleUtils.getWinRateColor
+import ru.forblitz.statistics.widget.data.DetailsLayout
 
-import ru.forblitz.statistics.dto.VehicleSpecs;
-import ru.forblitz.statistics.dto.VehicleStat;
-import ru.forblitz.statistics.utils.ParseUtils;
-import ru.forblitz.statistics.utils.VehicleUtils;
-import ru.forblitz.statistics.widget.data.DetailsLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.ViewFlipper;
+class VehicleAdapter(
+    private val activityContext: Context,
+    vehicles: ArrayList<Pair<VehicleSpecs, VehicleStatistics>>
+) : ArrayAdapter<Pair<VehicleSpecs, VehicleStatistics>>(
+    activityContext, R.layout.item_vehicle, vehicles
+) {
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        val vehicleSpecs = getItem(position)!!.first
+        val vehicleStat = getItem(position)!!.second
+        val item = LayoutInflater.from(context).inflate(R.layout.item_vehicle, null)!!
+        item.layoutParams = AbsListView.LayoutParams(
+            AbsListView.LayoutParams.MATCH_PARENT, (parent.width * 0.85).toInt()
+        )
+        val name = item.findViewById<TextView>(R.id.name)
+        val battles = item.findViewById<TextView>(R.id.battles)
+        val winRate = item.findViewById<TextView>(R.id.win_rate)
+        val averageDamage = item.findViewById<TextView>(R.id.average_damage)
+        val efficiency = item.findViewById<TextView>(R.id.efficiency)
+        val survived = item.findViewById<TextView>(R.id.survived)
+        val hitsFromShots = item.findViewById<TextView>(R.id.hits_from_shots)
+        val details = item.findViewById<Button>(R.id.details)
+        battles.setTextColor(getBattlesColor(context, vehicleStat.statistics.battles))
+        winRate.setTextColor(
+            getWinRateColor(
+                context,
+                vehicleStat.statistics.winningPercentage!!.toDouble()
+            )
+        )
+        averageDamage.setTextColor(
+            getAverageDamageColor(
+                context,
+                vehicleStat.statistics.averageDamage!!.toDouble(),
+                vehicleSpecs.tier
+            )
+        )
+        efficiency.setTextColor(
+            getEfficiencyColor(
+                context,
+                vehicleStat.statistics.efficiency!!.toDouble()
+            )
+        )
+        name.text = vehicleSpecs.name
+        battles.text = ParseUtils.splitByThousands(vehicleStat.statistics.battles.toString())
+        winRate.text = vehicleStat.statistics.winningPercentage.toString()
+        averageDamage.text = ParseUtils.splitByThousands(vehicleStat.statistics.averageDamage.toString())
+        efficiency.text = vehicleStat.statistics.efficiency.toString()
+        survived.text = vehicleStat.statistics.survivedPercentage.toString()
+        hitsFromShots.text = vehicleStat.statistics.hitsOutOfShots.toString()
+        details.setOnClickListener {
+            ((activityContext as Activity).findViewById<DetailsLayout>(R.id.tanks_details_layout)).setData(vehicleStat.statistics)
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import kotlin.Pair;
-
-import java.util.ArrayList;
-
-import ru.forblitz.statistics.R;
-
-public class VehicleAdapter extends ArrayAdapter<Pair<VehicleSpecs, VehicleStat>> {
-
-    final Context context;
-
-    public VehicleAdapter(@NonNull Context context, ArrayList<Pair<VehicleSpecs, VehicleStat>> vehicles) {
-        super(context, R.layout.item_vehicle, vehicles);
-        this.context = context;
+            activityContext.findViewById<ViewFlipper>(R.id.tanks_layouts_flipper).displayedChild = 1
+        }
+        return item
     }
-
-    @NonNull
-    @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
-        VehicleSpecs vehicleSpecs = getItem(position).getFirst();
-        VehicleStat vehicleStat = getItem(position).getSecond();
-
-        convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_vehicle, null);
-
-        convertView.setLayoutParams(new ListView.LayoutParams(
-                ListView.LayoutParams.MATCH_PARENT,
-                (int) (parent.getWidth() * 0.85)
-        ));
-
-        TextView name = convertView.findViewById(R.id.name);
-        TextView battles = convertView.findViewById(R.id.battles);
-        TextView winRate = convertView.findViewById(R.id.win_rate);
-        TextView averageDamage = convertView.findViewById(R.id.average_damage);
-        TextView efficiency = convertView.findViewById(R.id.efficiency);
-        TextView survived = convertView.findViewById(R.id.survived);
-        TextView hitsFromShots = convertView.findViewById(R.id.hits_from_shots);
-        Button details = convertView.findViewById(R.id.details);
-
-        battles.setTextColor(VehicleUtils.getBattlesColor(getContext(), Integer.parseInt(vehicleStat.all.getBattles())));
-        winRate.setTextColor(VehicleUtils.getWinRateColor(getContext(), Double.parseDouble(vehicleStat.all.getWinRate())));
-        averageDamage.setTextColor(VehicleUtils.getAverageDamageColor(getContext(), Double.parseDouble(vehicleStat.all.getAverageDamage()), vehicleSpecs.tier));
-        efficiency.setTextColor(VehicleUtils.getEfficiencyColor(getContext(), Double.parseDouble(vehicleStat.all.getEfficiency())));
-
-        name.setText(vehicleSpecs.name);
-        battles.setText(ParseUtils.splitByThousands(vehicleStat.all.getBattles()));
-        winRate.setText(vehicleStat.all.getWinRate());
-        averageDamage.setText(ParseUtils.splitByThousands(vehicleStat.all.getAverageDamage()));
-        efficiency.setText(vehicleStat.all.getEfficiency());
-        survived.setText(vehicleStat.all.getSurvived());
-        hitsFromShots.setText(vehicleStat.all.getHitsFromShots());
-
-        details.setOnClickListener(l -> {
-            ViewFlipper tanksLayoutsFlipper = ((Activity) context).findViewById(R.id.tanks_layouts_flipper);
-
-            ((DetailsLayout) ((Activity) context).findViewById(R.id.tanks_details_layout)).setData(vehicleStat.all);
-
-            tanksLayoutsFlipper.setDisplayedChild(1);
-        });
-        return convertView;
-
-    }
-
 }

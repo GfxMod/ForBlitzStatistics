@@ -4,13 +4,12 @@ import androidx.annotation.Keep;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Map;
+import java.util.HashMap;
 
 @Keep
-public class VehicleSpecsMap {
+public class ClanInformationResponse extends APIResponse {
 
-    @Keep
     @SerializedName("data")
-    public Map<String, VehicleSpecs> data;
+    public HashMap<String, FullClanInfo> data;
 
 }

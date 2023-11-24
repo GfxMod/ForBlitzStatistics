@@ -70,7 +70,7 @@ public class MaskableConstraintLayout extends ConstraintLayout {
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public void draw(@NonNull Canvas canvas) {
         Path currentPath;
         if (customPath != null) {
             currentPath = customPath;

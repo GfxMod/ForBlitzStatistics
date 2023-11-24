@@ -88,6 +88,7 @@ import ru.forblitz.statistics.dto.VehiclesStatisticsResponse
 import ru.forblitz.statistics.exception.ObjectException
 import ru.forblitz.statistics.service.AdService
 import ru.forblitz.statistics.service.ConnectivityService
+import ru.forblitz.statistics.service.PreferencesService
 import ru.forblitz.statistics.service.RequestsService
 import ru.forblitz.statistics.service.SessionService
 import ru.forblitz.statistics.service.UserVehiclesStatisticsService
@@ -285,12 +286,12 @@ class MainActivity : AppCompatActivity() {
 
         // Initialization of app.preferences
 
-        app.preferences = getSharedPreferences("settings", Context.MODE_PRIVATE)
+        app.preferencesService = PreferencesService(getSharedPreferences("settings", MODE_PRIVATE))
 
         // Getting the set settings
 
         Constants.preferencesTags.forEach {
-            app.setSettings[it] = app.preferences.getBoolean(it, false)
+            app.setSettings[it] = app.preferencesService.get(it)
         }
 
         // Sets app.preferences listeners
@@ -303,7 +304,7 @@ class MainActivity : AppCompatActivity() {
             val view = searchRegionLayout.getChildAt(i)
             view.setOnClickListener {
                 if (Constants.baseUrl.containsKey((view.tag.toString()))) {
-                    app.preferences.edit().putString("region", view.tag.toString()).apply()
+                    app.preferencesService.region = view.tag.toString()
                     setRegion()
                     updateLastSearch(false)
                 }
@@ -313,7 +314,7 @@ class MainActivity : AppCompatActivity() {
             val view = settingsRegionLayout.getChildAt(i)
             view.setOnClickListener {
                 if (Constants.baseUrl.containsKey((view.tag.toString()))) {
-                    app.preferences.edit().putString("region", view.tag.toString()).apply()
+                    app.preferencesService.region = view.tag.toString()
                     setRegion()
                 }
             }
@@ -364,7 +365,7 @@ class MainActivity : AppCompatActivity() {
             )
                 .findViewWithTag<MaterialSwitch>("switch")
                 .setOnCheckedChangeListener { _, isChecked ->
-                    app.preferences.edit().putBoolean(it.first, isChecked).apply()
+                    app.preferencesService.set(it.first, isChecked)
                     app.setSettings.replace(it.first, isChecked)
                 }
         }
@@ -446,7 +447,7 @@ class MainActivity : AppCompatActivity() {
 
         // Displays the selected locale in the settings
 
-        val prefLocale = app.preferences.getString("locale", "notSpecified")
+        val prefLocale = app.preferencesService.locale
         if (prefLocale != "notSpecified" && prefLocale != null) {
             findViewById<ExtendedRadioGroup>(R.id.settings_locale_layout).setCheckedItem(prefLocale)
         }
@@ -474,7 +475,7 @@ class MainActivity : AppCompatActivity() {
      * @param locale Locale code to be applied
      */
     private fun changeLocale(locale: String) {
-        app.preferences.edit().putString("locale", locale).apply()
+        app.preferencesService.locale = locale
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
             val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags(locale)
@@ -664,7 +665,7 @@ class MainActivity : AppCompatActivity() {
                                         getString(R.string.nickname_not_found)
                                             .replace(
                                                 "XXX",
-                                                app.preferences.getString("region", "notSpecified")!!
+                                                app.preferencesService.region!!
                                                     .uppercase()
                                             )
                                     )
@@ -683,7 +684,7 @@ class MainActivity : AppCompatActivity() {
                                         app.userService.accountId!!,
                                         app.userService.nickname!!,
                                         System.currentTimeMillis().toString(),
-                                        app.preferences.getString("region", "notSpecified")!!
+                                        app.preferencesService.region!!
                                     )
                                 )
 
@@ -901,9 +902,9 @@ class MainActivity : AppCompatActivity() {
             app.userStatisticsService.json!!,
             app.userService.accountId!!,
             app.userStatisticsService.timestamp,
-            app.preferences.getString("region", "notSpecified")!!
+            app.preferencesService.region!!
         )
-        app.sessionService.getSessionsList(app.userService.accountId!!, app.preferences.getString("region", "notSpecified")!!)
+        app.sessionService.getSessionsList(app.userService.accountId!!, app.preferencesService.region!!)
 
         // Checks whether the current session matches the last one. If yes,
         // then removes it from the list.
@@ -1351,9 +1352,9 @@ class MainActivity : AppCompatActivity() {
         // case, the specified region is set and updateLastSearch() is called
         // (because the region has changed, the search history has changed)
 
-        if (app.preferences.getString("region", "notSpecified") == "notSpecified") {
-            app.preferences.edit().putString("region", "ru").apply()
-            app.apiService.setRegion(app.preferences.getString("region", "notSpecified")!!)
+        if (app.preferencesService.region == "notSpecified") {
+            app.preferencesService.region = "ru"
+            app.apiService.setRegion(app.preferencesService.region!!)
 
             InterfaceUtils.createAlertDialog(
                 this@MainActivity,
@@ -1369,9 +1370,9 @@ class MainActivity : AppCompatActivity() {
 
             setRegion()
         } else {
-            app.apiService.setRegion(app.preferences.getString("region", "notSpecified")!!)
-            findViewById<ExtendedRadioGroup>(R.id.search_region_layout).setCheckedItem(app.preferences.getString("region", "notSpecified")!!)
-            findViewById<ExtendedRadioGroup>(R.id.settings_region_layout).setCheckedItem(app.preferences.getString("region", "notSpecified")!!)
+            app.apiService.setRegion(app.preferencesService.region!!)
+            findViewById<ExtendedRadioGroup>(R.id.search_region_layout).setCheckedItem(app.preferencesService.region!!)
+            findViewById<ExtendedRadioGroup>(R.id.settings_region_layout).setCheckedItem(app.preferencesService.region!!)
         }
     }
 
@@ -1388,7 +1389,7 @@ class MainActivity : AppCompatActivity() {
                     .recordDatabase
                     .recordDao()
                     .getDistinctRecordsByRegion(
-                        app.preferences.getString("region", "notSpecified"),
+                        app.preferencesService.region,
                         3
                     )
                     .toTypedArray()

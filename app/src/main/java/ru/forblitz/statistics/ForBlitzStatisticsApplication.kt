@@ -1,7 +1,6 @@
 package ru.forblitz.statistics
 
 import android.app.Application
-import android.content.SharedPreferences
 import ru.forblitz.statistics.api.ApiService
 import ru.forblitz.statistics.apiloadservice.AchievementsInformationService
 import ru.forblitz.statistics.apiloadservice.ClanInformationService
@@ -15,6 +14,7 @@ import ru.forblitz.statistics.data.Constants.PreferencesSwitchesTags
 import ru.forblitz.statistics.data.RecordDatabase
 import ru.forblitz.statistics.service.AdService
 import ru.forblitz.statistics.service.ConnectivityService
+import ru.forblitz.statistics.service.PreferencesService
 import ru.forblitz.statistics.service.RequestsService
 import ru.forblitz.statistics.service.SessionService
 import ru.forblitz.statistics.service.UserVehiclesStatisticsService
@@ -29,7 +29,7 @@ class ForBlitzStatisticsApplication : Application() {
         }
     }
 
-    lateinit var preferences: SharedPreferences
+    lateinit var preferencesService: PreferencesService
     val setSettings: HashMap<String, Boolean> = HashMap()
 
     lateinit var apiService: ApiService

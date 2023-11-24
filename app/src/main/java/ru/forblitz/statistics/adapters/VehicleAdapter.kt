@@ -10,10 +10,13 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TextView
 import android.widget.ViewFlipper
+import ru.forblitz.statistics.ForBlitzStatisticsApplication
 import ru.forblitz.statistics.R
+import ru.forblitz.statistics.data.Constants
 import ru.forblitz.statistics.dto.VehicleSpecs
 import ru.forblitz.statistics.dto.VehiclesStatisticsResponse.VehicleStatistics
 import ru.forblitz.statistics.utils.ParseUtils
+import ru.forblitz.statistics.utils.RoundingUtils.Companion.round
 import ru.forblitz.statistics.utils.VehicleUtils.getAverageDamageColor
 import ru.forblitz.statistics.utils.VehicleUtils.getBattlesColor
 import ru.forblitz.statistics.utils.VehicleUtils.getEfficiencyColor
@@ -26,6 +29,11 @@ class VehicleAdapter(
 ) : ArrayAdapter<Pair<VehicleSpecs, VehicleStatistics>>(
     activityContext, R.layout.item_vehicle, vehicles
 ) {
+
+    private val averageDamageRounding: Boolean
+        get() = (context.applicationContext as ForBlitzStatisticsApplication).preferencesService.get(
+            Constants.PreferencesSwitchesTags.averageDamageRounding)
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val vehicleSpecs = getItem(position)!!.first
         val vehicleStat = getItem(position)!!.second
@@ -63,14 +71,17 @@ class VehicleAdapter(
         )
         name.text = vehicleSpecs.name
         battles.text = ParseUtils.splitByThousands(vehicleStat.statistics.battles.toString())
-        winRate.text = vehicleStat.statistics.winningPercentage.toString()
-        averageDamage.text = ParseUtils.splitByThousands(vehicleStat.statistics.averageDamage.toString())
-        efficiency.text = vehicleStat.statistics.efficiency.toString()
-        survived.text = vehicleStat.statistics.survivedPercentage.toString()
-        hitsFromShots.text = vehicleStat.statistics.hitsOutOfShots.toString()
+        winRate.text = vehicleStat.statistics.winningPercentage!!.round().toString()
+        averageDamage.text = ParseUtils.splitByThousands(if (!averageDamageRounding) {
+            vehicleStat.statistics.averageDamage!!.toInt().toString()
+        } else {
+            vehicleStat.statistics.averageDamage!!.round().toString()
+        }.toString())
+        efficiency.text = vehicleStat.statistics.efficiency!!.round().toString()
+        survived.text = vehicleStat.statistics.survivedPercentage!!.round().toString()
+        hitsFromShots.text = vehicleStat.statistics.hitsOutOfShots!!.round().toString()
         details.setOnClickListener {
             ((activityContext as Activity).findViewById<DetailsLayout>(R.id.tanks_details_layout)).setData(vehicleStat.statistics)
-
             activityContext.findViewById<ViewFlipper>(R.id.tanks_layouts_flipper).displayedChild = 1
         }
         return item

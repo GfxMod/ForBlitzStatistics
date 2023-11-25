@@ -2,7 +2,6 @@ package ru.forblitz.statistics.widget.data
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -103,65 +102,32 @@ class PlayerFastStat : LinearLayout {
     }
 
     fun setSessionData(statisticsData: StatisticsData) {
-        var battlesDiff: String = statisticsData.battles.toString()
-        var winRateDiff: String = statisticsData.winningPercentage!!.round().toString()
-        var averageDamageDiff: String = if (!averageDamageRounding) {
-            statisticsData.averageDamage!!.toInt().toString()
-        } else {
-            statisticsData.averageDamage!!.round().toString()
-        }
-        var efficiencyDiff: String = statisticsData.efficiency!!.round().toString()
-        var survivedDiff: String = statisticsData.survivedPercentage!!.round().toString()
-        var hitsFromShotsDiff: String = statisticsData.hitsOutOfShots!!.round().toString()
-
-        battlesDiff = "+$battlesDiff"
-
-        if (statisticsData.winningPercentage!! > 0) {
-            winRateDiff = "+$winRateDiff"
-        }
-        winRateDiff = "$winRateDiff%"
-
-        if (statisticsData.averageDamage!! > 0) {
-            averageDamageDiff = "+$averageDamageDiff"
-        }
-
-        if (statisticsData.efficiency!! > 0) {
-            efficiencyDiff = "+$efficiencyDiff"
-        }
-
-        if (statisticsData.survivedPercentage!! > 0) {
-            survivedDiff = "+$survivedDiff"
-        }
-
-        survivedDiff = "$survivedDiff%"
-        if (statisticsData.hitsOutOfShots!! > 0) {
-            hitsFromShotsDiff = "+$hitsFromShotsDiff"
-        }
-
-        hitsFromShotsDiff = "$hitsFromShotsDiff%"
-
         (findViewWithTag<View>("battlesDiff") as DifferenceIndicatorView).setValue(
-            battlesDiff,
+            statisticsData.battles,
             false
         )
         (findViewWithTag<View>("winRateDiff") as DifferenceIndicatorView).setValue(
-            winRateDiff,
+            statisticsData.winningPercentage!!,
             true
         )
         (findViewWithTag<View>("averageDamageDiff") as DifferenceIndicatorView).setValue(
-            averageDamageDiff,
+            if (!averageDamageRounding) {
+                statisticsData.averageDamage!!.toInt().toFloat()
+            } else {
+                statisticsData.averageDamage!!
+            },
             false
         )
         (findViewWithTag<View>("efficiencyDiff") as DifferenceIndicatorView).setValue(
-            efficiencyDiff,
+            statisticsData.efficiency!!,
             false
         )
         (findViewWithTag<View>("survivedDiff") as DifferenceIndicatorView).setValue(
-            survivedDiff,
+            statisticsData.survivedPercentage!!,
             true
         )
         (findViewWithTag<View>("hitsFromShotsDiff") as DifferenceIndicatorView).setValue(
-            hitsFromShotsDiff,
+            statisticsData.hitsOutOfShots!!,
             true
         )
     }

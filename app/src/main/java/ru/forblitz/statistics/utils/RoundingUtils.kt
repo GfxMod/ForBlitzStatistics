@@ -5,10 +5,8 @@ import java.math.RoundingMode
 class RoundingUtils {
     companion object {
 
-        const val NEW_SCALE = 2
-
-        fun Float.round(newScale: Int = NEW_SCALE): Float {
-            return this.toBigDecimal().setScale(newScale, RoundingMode.HALF_EVEN).toFloat()
+        fun Number.round(newScale: Int = 2): Double {
+            return this.toDouble().toBigDecimal().setScale(newScale, RoundingMode.HALF_EVEN).toDouble()
         }
 
     }

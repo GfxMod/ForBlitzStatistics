@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import ru.forblitz.statistics.api.ApiService
 import ru.forblitz.statistics.apiloadservice.VehiclesStatisticsService
 import ru.forblitz.statistics.dto.VehiclesStatisticsResponse.VehicleStatistics
+import java.lang.NullPointerException
 import java.util.concurrent.CopyOnWriteArrayList
 
 class UserVehiclesStatisticsService(private val apiService: ApiService) {
@@ -26,14 +27,19 @@ class UserVehiclesStatisticsService(private val apiService: ApiService) {
                 .forEach { chunkedVehiclesIDs ->
                     jobs.add(CoroutineScope(Dispatchers.IO).launch {
                         this@with.addAll(
-                            VehiclesStatisticsService(apiService)
-                            .get(
-                                VehiclesStatisticsService.Arguments(
-                                    userID,
-                                    chunkedVehiclesIDs
-                                )
-                            )
-                            .data!![userID]!!)
+                            try {
+                                VehiclesStatisticsService(apiService)
+                                    .get(
+                                        VehiclesStatisticsService.Arguments(
+                                            userID,
+                                            chunkedVehiclesIDs
+                                        )
+                                    )
+                                    .data!![userID]!!
+                            } catch (e: NullPointerException) {
+                                arrayOf()
+                            }
+                        )
                     })
                 }
             jobs.joinAll()

@@ -46,7 +46,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.firebase:firebase-crashlytics:18.5.1'
+    implementation 'com.google.firebase:firebase-crashlytics:18.6.0'
     implementation 'com.google.firebase:firebase-analytics:21.3.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
@@ -57,7 +57,7 @@ dependencies {
     implementation('org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3')
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
-    implementation 'com.yandex.android:mobileads:6.1.0'
+    implementation 'com.yandex.android:mobileads:6.2.0'
     implementation 'androidx.room:room-runtime:2.6.0'
     annotationProcessor 'androidx.room:room-compiler:2.6.0'
     implementation 'com.google.j2objc:j2objc-annotations:2.8'

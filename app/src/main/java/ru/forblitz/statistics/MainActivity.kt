@@ -1003,7 +1003,7 @@ class MainActivity : AppCompatActivity() {
             )
             if (statisticsSessionStatButton.isActivated) {
                 statisticsFastStat.setData(
-                    app.userService.accountId!!,
+                    app.userService.nickname!!,
                     StatisticsDataUtils.calculateFieldDifferences(
                         app.userStatisticsService.getStatisticsByEnum(getPlayerStatisticsTypes()),
                         StatisticsDataUtils.parse(
@@ -1028,7 +1028,7 @@ class MainActivity : AppCompatActivity() {
                         statisticsSessionStatButton.text = getString(R.string.from_session_stat)
 
                         statisticsFastStat.setData(
-                            app.userService.accountId!!,
+                            app.userService.nickname!!,
                             StatisticsDataUtils.calculateFieldDifferences(
                                 app.userStatisticsService.getStatisticsByEnum(getPlayerStatisticsTypes()),
                                 StatisticsDataUtils.parse(
@@ -1046,7 +1046,7 @@ class MainActivity : AppCompatActivity() {
                         statisticsSessionStatButton.text = getString(R.string.to_session_stat)
 
                         statisticsFastStat.setData(
-                            app.userService.accountId!!,
+                            app.userService.nickname!!,
                             app.userStatisticsService.getStatisticsByEnum(getPlayerStatisticsTypes())
                         )
 

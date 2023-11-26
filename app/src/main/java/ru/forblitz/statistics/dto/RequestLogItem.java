@@ -48,10 +48,21 @@ public class RequestLogItem {
         USER_CLAN_INFO,
         FULL_CLAN_INFO,
         ACHIEVEMENTS,
+        ACHIEVEMENTS_DESCRIPTION,
         TANKOPEDIA,
         TANKS_STATISTICS,
-        VERSION,
-        TOKENS
+        METADATA
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "RequestLogItem{" +
+                "id=" + id +
+                ", timestamp=" + timestamp +
+                ", requestType=" + requestType +
+                ", isCompleted=" + isCompleted +
+                '}';
     }
 
 }

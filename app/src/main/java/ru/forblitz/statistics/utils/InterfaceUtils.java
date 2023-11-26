@@ -244,11 +244,11 @@ public class InterfaceUtils {
     /**
      * Sets values to {@link R.layout#fragment_statistics statistics layout}
      * @param activity required to get resources
-     * @param statisticsData statisticsData to be set
+     * @param statisticsData StatisticsDataModern to be set
      */
-    public static void setStatistics(Activity activity, StatisticsData statisticsData) {
+    public static void setStatistics(Activity activity, String nickname, StatisticsData statisticsData) {
 
-        if (!statisticsData.getBattles().equals("0")) {
+        if (statisticsData.getBattles() != 0) {
             activity.runOnUiThread(() ->
                     ((DifferenceViewFlipper) activity.findViewById(R.id.fragment_statistics)).setDisplayedChild(STATISTICS));
         } else {
@@ -256,7 +256,7 @@ public class InterfaceUtils {
                     ((DifferenceViewFlipper) activity.findViewById(R.id.fragment_statistics)).setDisplayedChild(FALSE));
         }
         activity.runOnUiThread(() -> {
-            ((PlayerFastStat) activity.findViewById(R.id.statistics_fast_stat)).setData(statisticsData);
+            ((PlayerFastStat) activity.findViewById(R.id.statistics_fast_stat)).setData(nickname, statisticsData);
             ((DetailsLayout) activity.findViewById(R.id.statistics_details_layout)).setData(statisticsData);
         });
     }

@@ -1,18 +1,16 @@
 package ru.forblitz.statistics.exception;
 
-import ru.forblitz.statistics.dto.ErrorDTO;
 
 public class ObjectException extends Exception {
 
-    private final ErrorDTO error;
+    public String title;
 
-    public ObjectException(ErrorDTO error) {
-        super(error.getMessage());
-        this.error = error;
-    }
+    public String message;
 
-    public ErrorDTO getError() {
-        return error;
+    public ObjectException(String title, String message) {
+        super();
+        this.title = title;
+        this.message = message;
     }
 
 }

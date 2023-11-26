@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ru.forblitz.statistics.widget.data.AchievementsScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/achievements_screen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="@drawable/background_screen"
+    android:inAnimation="@anim/appearance"
+    android:outAnimation="@anim/disappearance"
+    android:paddingHorizontal="@dimen/padding_big"
+    tools:context="ru.forblitz.statistics.AchievementsFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/padding_giant">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.45" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:background="@drawable/background_layout"
+            android:fontFamily="@font/inter"
+            android:gravity="center"
+            android:padding="@dimen/padding_very_big"
+            android:text="@string/loading"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:typeface="monospace"
+            app:autoSizeTextType="uniform" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.45" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/achievements_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="@dimen/padding_very_big"
+        android:fadingEdgeLength="@dimen/padding_big"
+        android:requiresFadingEdge="vertical" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.425" />
+
+        <LinearLayout
+            android:id="@+id/achievements_server_exception"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.0885"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_big"
+            android:background="@drawable/background_layout">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/achievements_server_exception_title"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.55"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/padding_very_big"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:typeface="monospace"
+                app:autoSizeTextType="uniform" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/achievements_server_exception_message"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.45"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/padding_very_big"
+                android:textColor="@color/grey"
+                android:typeface="normal"
+                app:autoSizeTextType="uniform" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.4865" />
+
+    </LinearLayout>
+
+</ru.forblitz.statistics.widget.data.AchievementsScreen>

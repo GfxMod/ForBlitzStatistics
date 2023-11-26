@@ -21,7 +21,6 @@
         android:outAnimation="@anim/disappearance_scale" >
 
         <android.widget.LinearLayout
-            android:id="@+id/statistics_stat_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -319,7 +318,7 @@
                             app:autoSizeTextType="uniform" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:tag="winRate"
+                            android:tag="winningPercentage"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.2"
@@ -331,7 +330,7 @@
                             app:autoSizeTextType="uniform" />
 
                         <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
-                            android:tag="winRateDiff"
+                            android:tag="winningPercentageDiff"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_gravity="center"
@@ -1213,7 +1212,7 @@
                         app:autoSizeTextType="uniform" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:tag="capturedPoints"
+                        android:tag="capturePoints"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0.5"
@@ -1381,7 +1380,6 @@
         </ru.forblitz.statistics.widget.data.DetailsLayout>
 
         <android.widget.LinearLayout
-            android:id="@+id/statistics_sessions_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/background_layout"

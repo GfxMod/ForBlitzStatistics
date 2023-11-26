@@ -141,6 +141,7 @@
 
     <string name="random">Random battles</string>
     <string name="rating">Rating battles</string>
+    <string name="achievements">Achievements</string>
     <string name="clan">Clan information</string>
     <string name="tanks">Tanks statistics</string>
 
@@ -179,5 +180,10 @@
     <string name="tournament_battles_short_name">tournament</string>
     
     <string name="please_wait">Please wait for the search results to load</string>
+
+    <string name="lesta_exception">An error occurred on the Lesta Studio API side</string>
+    <string name="wargaming_exception">An error occurred on the Wargaming API side</string>
+
+    <string name="error_message">Error %1$s: %2$s</string>
 
 </resources>

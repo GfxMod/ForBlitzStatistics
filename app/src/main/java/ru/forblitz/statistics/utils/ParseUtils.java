@@ -131,6 +131,11 @@ public class  ParseUtils {
      */
     public static String splitByThousands(String number) {
 
+        String prefix = "";
+        if (number.charAt(0) == '+') {
+            prefix = "+";
+        }
+
         DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
         DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
 
@@ -138,7 +143,7 @@ public class  ParseUtils {
         formatter.setDecimalFormatSymbols(symbols);
 
         try {
-            return formatter.format(Double.parseDouble(number));
+            return prefix + formatter.format(Double.parseDouble(number));
         } catch (java.lang.IllegalArgumentException e) {
             return number;
         }

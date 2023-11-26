@@ -59,17 +59,17 @@ object VehicleUtils {
     }
 
     @JvmStatic
-    fun getWinRateColor(context: Context?, winRate: Double): Int {
-        val winRateColor: Int = if (winRate < 50) {
+    fun getWinningPercentageColor(context: Context?, winningPercentage: Double): Int {
+        val winningPercentageColor: Int = if (winningPercentage < 50) {
             ContextCompat.getColor(context!!, R.color.white)
-        } else if (winRate < 60) {
+        } else if (winningPercentage < 60) {
             ContextCompat.getColor(context!!, R.color.green)
-        } else if (winRate < 70) {
+        } else if (winningPercentage < 70) {
             ContextCompat.getColor(context!!, R.color.blue)
         } else {
             ContextCompat.getColor(context!!, R.color.violet)
         }
-        return winRateColor
+        return winningPercentageColor
     }
 
     @JvmStatic

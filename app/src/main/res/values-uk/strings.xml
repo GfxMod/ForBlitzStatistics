@@ -141,6 +141,7 @@
 
     <string name="random">Випадкові бої</string>
     <string name="rating">Рейтингові бої</string>
+    <string name="achievements">Досягнення</string>
     <string name="clan">Інформація про клан</string>
     <string name="tanks">Статистика танків</string>
 
@@ -179,5 +180,10 @@
     <string name="tournament_battles_short_name">турнірні</string>
 
     <string name="please_wait">Будь ласка, дочекайтеся завантаження результатів пошуку</string>
+
+    <string name="lesta_exception">Відбулася помилка з боку API Lesta Studio</string>
+    <string name="wargaming_exception">Відбулася помилка з боку API Wargaming</string>
+
+    <string name="error_message">Помилка %1$s: %2$s</string>
 
 </resources>

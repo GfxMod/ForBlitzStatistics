@@ -141,6 +141,7 @@
 
     <string name="random">Случайные бои</string>
     <string name="rating">Рейтинговые бои</string>
+    <string name="achievements">Достижения</string>
     <string name="clan">Информация о клане</string>
     <string name="tanks">Статистика танков</string>
 
@@ -179,5 +180,10 @@
     <string name="tournament_battles_short_name">турнирные</string>
 
     <string name="please_wait">Пожалуйста, дождитесь загрузки результатов поиска</string>
+
+    <string name="lesta_exception">Возникла ошибка на стороне API Lesta Studio</string>
+    <string name="wargaming_exception">Возникла ошибка на стороне API Wargaming</string>
+
+    <string name="error_message">Ошибка %1$s: %2$s</string>
 
 </resources>

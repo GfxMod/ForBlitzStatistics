@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ru.forblitz.statistics.widget.data.AchievementsRowLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/achievements_row_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:tag="row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:tag="achievements_row_achievement0"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_layout_nested">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:tag="icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:background="@android:color/transparent"
+                android:padding="@dimen/padding"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:tag="count"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/padding_great"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="@dimen/padding_small"
+                android:layout_marginEnd="@dimen/padding_small"
+                android:padding="@dimen/padding_small"
+                android:background="@drawable/background_layout_nested"
+                android:textColor="@color/transparent_white"
+                android:textStyle="bold"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                app:autoSizeTextType="uniform"
+                android:maxLines="1" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Space
+            android:layout_width="@dimen/padding_big"
+            android:layout_height="match_parent"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:tag="achievements_row_achievement1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_layout_nested">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:tag="icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:background="@android:color/transparent"
+                android:padding="@dimen/padding"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:tag="count"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/padding_great"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="@dimen/padding_small"
+                android:layout_marginEnd="@dimen/padding_small"
+                android:padding="@dimen/padding_small"
+                android:background="@drawable/background_layout_nested"
+                android:textColor="@color/transparent_white"
+                android:textStyle="bold"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                app:autoSizeTextType="uniform"
+                android:maxLines="1" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Space
+            android:layout_width="@dimen/padding_big"
+            android:layout_height="match_parent"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:tag="achievements_row_achievement2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_layout_nested">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:tag="icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:background="@android:color/transparent"
+                android:padding="@dimen/padding"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:tag="count"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/padding_great"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="@dimen/padding_small"
+                android:layout_marginEnd="@dimen/padding_small"
+                android:padding="@dimen/padding_small"
+                android:background="@drawable/background_layout_nested"
+                android:textColor="@color/transparent_white"
+                android:textStyle="bold"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                app:autoSizeTextType="uniform"
+                android:maxLines="1" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Space
+            android:layout_width="@dimen/padding_big"
+            android:layout_height="match_parent"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:tag="achievements_row_achievement3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_layout_nested">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:tag="icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:background="@android:color/transparent"
+                android:padding="@dimen/padding"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:tag="count"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/padding_great"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="@dimen/padding_small"
+                android:layout_marginEnd="@dimen/padding_small"
+                android:padding="@dimen/padding_small"
+                android:background="@drawable/background_layout_nested"
+                android:textColor="@color/transparent_white"
+                android:textStyle="bold"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                app:autoSizeTextType="uniform"
+                android:maxLines="1" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Space
+            android:layout_width="@dimen/padding_big"
+            android:layout_height="match_parent"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:tag="achievements_row_achievement4"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_layout_nested">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:tag="icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:background="@android:color/transparent"
+                android:padding="@dimen/padding"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:tag="count"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/padding_great"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="@dimen/padding_small"
+                android:layout_marginEnd="@dimen/padding_small"
+                android:padding="@dimen/padding_small"
+                android:background="@drawable/background_layout_nested"
+                android:textColor="@color/transparent_white"
+                android:textStyle="bold"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                app:autoSizeTextType="uniform"
+                android:maxLines="1" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/padding_big" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:tag="description"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="@dimen/padding_big"
+        android:background="@drawable/background_layout_nested_selected"
+        android:textColor="@color/white"
+        android:fontFamily="@font/inter"
+        app:autoSizeMaxTextSize="@dimen/text_big"
+        app:autoSizeMinTextSize="@dimen/text_small"
+        app:autoSizeTextType="uniform" />
+
+</ru.forblitz.statistics.widget.data.AchievementsRowLayout>

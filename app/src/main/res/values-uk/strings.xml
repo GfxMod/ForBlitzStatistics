@@ -181,4 +181,9 @@
 
     <string name="please_wait">Будь ласка, дочекайтеся завантаження результатів пошуку</string>
 
+    <string name="lesta_exception">Відбулася помилка з боку API Lesta Studio</string>
+    <string name="wargaming_exception">Відбулася помилка з боку API Wargaming</string>
+
+    <string name="error_message">Помилка %1$s: %2$s</string>
+
 </resources>

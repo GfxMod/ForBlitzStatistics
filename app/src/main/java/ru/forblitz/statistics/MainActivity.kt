@@ -1254,34 +1254,38 @@ class MainActivity : AppCompatActivity() {
      * Gets 'clan' statistics and sets it for all 'clan' elements
      */
     private fun setClanStat() {
+        val clanScreen = findViewById<ClanScreen>(R.id.fragment_clan)
+        val clanBrief = findViewById<ClanBrief>(R.id.statistics_clan)
+
         CoroutineScope(Dispatchers.IO).launch {
+            try {
+                app.userClanService.clear()
+                app.clanInformationService.clear()
 
-            app.userClanService.clear()
-            app.clanInformationService.clear()
-
-            val clanScreen = findViewById<ClanScreen>(R.id.fragment_clan)
-            val clanBrief = findViewById<ClanBrief>(R.id.statistics_clan)
-
-            UserClanService(app.apiService)
-                .get(UserClanService.Arguments(app.userService.accountId!!))
-                .data[app.userService.accountId]
-                .also { shortClanInfo ->
-                    if (shortClanInfo != null) {
-                        app.clanInformationService.get(ClanInformationService.Arguments(shortClanInfo.clanId)).data[shortClanInfo.clanId]!!
-                            .also { fullClanInfo ->
-                                runOnUiThread {
-                                    clanBrief.setData(shortClanInfo)
-                                    clanScreen.setData(shortClanInfo, fullClanInfo)
+                UserClanService(app.apiService)
+                    .get(UserClanService.Arguments(app.userService.accountId!!))
+                    .data[app.userService.accountId]
+                    .also { shortClanInfo ->
+                        if (shortClanInfo != null) {
+                            app.clanInformationService.get(ClanInformationService.Arguments(shortClanInfo.clanId)).data[shortClanInfo.clanId]!!
+                                .also { fullClanInfo ->
+                                    runOnUiThread {
+                                        clanBrief.setData(shortClanInfo)
+                                        clanScreen.setData(shortClanInfo, fullClanInfo)
+                                    }
                                 }
+                        } else {
+                            runOnUiThread {
+                                clanScreen.setData(null, null)
+                                clanBrief.setData(null)
                             }
-                    } else {
-                        runOnUiThread {
-                            clanScreen.setData(null, null)
-                            clanBrief.setData(null)
                         }
                     }
+            } catch (e: APILoadService.ServerException) {
+                runOnUiThread {
+                    clanScreen.setServerException(e)
                 }
-
+            }
         }
     }
 

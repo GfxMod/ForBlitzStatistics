@@ -1,58 +1,61 @@
-package ru.forblitz.statistics.widget.data;
+package ru.forblitz.statistics.widget.data
 
-import static ru.forblitz.statistics.data.Constants.ClanViewFlipperItems.IS_A_MEMBER;
-import static ru.forblitz.statistics.data.Constants.ClanViewFlipperItems.NOT_IS_A_MEMBER;
+import android.content.Context
+import android.util.AttributeSet
+import android.widget.ListView
+import android.widget.TextView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import ru.forblitz.statistics.ForBlitzStatisticsApplication
+import ru.forblitz.statistics.R
+import ru.forblitz.statistics.adapters.MemberAdapter
+import ru.forblitz.statistics.apiloadservice.APILoadService
+import ru.forblitz.statistics.data.Constants.ClanViewFlipperItems
+import ru.forblitz.statistics.dto.FullClanInfo
+import ru.forblitz.statistics.dto.ShortClanInfo
+import ru.forblitz.statistics.widget.common.DifferenceViewFlipper
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.widget.ListView;
+class ClanScreen : DifferenceViewFlipper {
+    constructor(context: Context?) : super(context)
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import ru.forblitz.statistics.R;
-import ru.forblitz.statistics.adapters.MemberAdapter;
-import ru.forblitz.statistics.dto.FullClanInfo;
-import ru.forblitz.statistics.dto.Member;
-import ru.forblitz.statistics.dto.ShortClanInfo;
-import ru.forblitz.statistics.widget.common.DifferenceViewFlipper;
-
-public class ClanScreen extends DifferenceViewFlipper {
-
-    public ClanScreen(Context context) {
-        super(context);
-    }
-
-    public ClanScreen(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public void setData(ShortClanInfo shortClanInfo, FullClanInfo fullClanInfo) {
-
+    fun setData(shortClanInfo: ShortClanInfo?, fullClanInfo: FullClanInfo?) {
         if (fullClanInfo != null) {
-
-            this.setDisplayedChild(IS_A_MEMBER);
-
-            ((ClanInfo) this.findViewById(R.id.clan_info)).setData(shortClanInfo, fullClanInfo);
-
-            ((ClanDetails) this.findViewById(R.id.clan_details)).setData(fullClanInfo);
-
-            ((ListView) this.findViewById(R.id.clan_members_list)).setAdapter(
-                    new MemberAdapter(
-                            getContext(),
-                            fullClanInfo
-                                    .getMembers()
-                                    .values()
-                                    .toArray(new Member[0])
-                    )
-            );
-            ((FloatingActionButton) this.findViewById(R.id.clan_members_back)).show();
-
+            displayedChild = ClanViewFlipperItems.IS_A_MEMBER
+            findViewById<ClanInfo>(R.id.clan_info).setData(shortClanInfo, fullClanInfo)
+            findViewById<ClanDetails>(R.id.clan_details).setData(fullClanInfo)
+            findViewById<ListView>(R.id.clan_members_list).adapter =
+                MemberAdapter(
+                    context,
+                    fullClanInfo
+                        .members
+                        .values
+                        .toTypedArray()
+                )
+            findViewById<FloatingActionButton>(R.id.clan_members_back).show()
         } else {
-
-            this.setDisplayedChild(NOT_IS_A_MEMBER);
-
+            displayedChild = ClanViewFlipperItems.NOT_IS_A_MEMBER
         }
-
     }
 
+    fun setServerException(exception: APILoadService.ServerException) {
+        displayedChild = ClanViewFlipperItems.SERVER_EXCEPTION
+
+        findViewById<TextView>(R.id.clan_server_exception_title).setText(
+            if (
+                (context.applicationContext as ForBlitzStatisticsApplication)
+                    .preferencesService
+                    .region == "ru") {
+                R.string.lesta_exception
+            } else {
+                R.string.wargaming_exception
+            }
+        )
+        findViewById<TextView>(R.id.clan_server_exception_message)
+            .text = resources
+                .getString(
+                    R.string.error_message,
+                    exception.responseError.code.toString(),
+                    exception.responseError.message
+                )
+    }
 }

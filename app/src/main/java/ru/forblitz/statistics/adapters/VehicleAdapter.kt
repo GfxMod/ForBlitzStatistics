@@ -20,7 +20,7 @@ import ru.forblitz.statistics.utils.RoundingUtils.Companion.round
 import ru.forblitz.statistics.utils.VehicleUtils.getAverageDamageColor
 import ru.forblitz.statistics.utils.VehicleUtils.getBattlesColor
 import ru.forblitz.statistics.utils.VehicleUtils.getEfficiencyColor
-import ru.forblitz.statistics.utils.VehicleUtils.getWinRateColor
+import ru.forblitz.statistics.utils.VehicleUtils.getWinningPercentageColor
 import ru.forblitz.statistics.widget.data.DetailsLayout
 
 class VehicleAdapter(
@@ -51,7 +51,7 @@ class VehicleAdapter(
         val details = item.findViewById<Button>(R.id.details)
         battles.setTextColor(getBattlesColor(context, vehicleStat.statistics.battles))
         winRate.setTextColor(
-            getWinRateColor(
+            getWinningPercentageColor(
                 context,
                 vehicleStat.statistics.winningPercentage!!.toDouble()
             )

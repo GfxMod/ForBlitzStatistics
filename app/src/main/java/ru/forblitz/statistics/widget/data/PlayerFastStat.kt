@@ -39,7 +39,7 @@ class PlayerFastStat : LinearLayout {
                 )
             )
         }
-        with(findViewWithTag<TextView>("winRate")) {
+        with(findViewWithTag<TextView>("winningPercentage")) {
             if (statisticsData.winningPercentage!!.isNaN()) {
                 text = context.getString(R.string.empty)
                 setTextColor(context.getColor(R.color.white))
@@ -48,7 +48,7 @@ class PlayerFastStat : LinearLayout {
                 setTextColor(InterfaceUtils.getValueColor(
                     context,
                     statisticsData.winningPercentage!!.toDouble(),
-                    Constants.Steps.winRate
+                    Constants.Steps.winningPercentage
                 ))
             }
         }
@@ -106,7 +106,7 @@ class PlayerFastStat : LinearLayout {
             statisticsData.battles,
             false
         )
-        (findViewWithTag<View>("winRateDiff") as DifferenceIndicatorView).setValue(
+        (findViewWithTag<View>("winningPercentageDiff") as DifferenceIndicatorView).setValue(
             statisticsData.winningPercentage!!,
             true
         )

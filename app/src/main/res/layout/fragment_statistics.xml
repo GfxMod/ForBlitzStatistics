@@ -318,7 +318,7 @@
                             app:autoSizeTextType="uniform" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:tag="winRate"
+                            android:tag="winningPercentage"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.2"
@@ -330,7 +330,7 @@
                             app:autoSizeTextType="uniform" />
 
                         <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
-                            android:tag="winRateDiff"
+                            android:tag="winningPercentageDiff"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_gravity="center"

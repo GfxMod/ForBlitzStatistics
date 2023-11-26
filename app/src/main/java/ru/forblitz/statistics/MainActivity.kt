@@ -1160,7 +1160,7 @@ class MainActivity : AppCompatActivity() {
             val comparatorByAverageDamage: Comparator<Pair<VehicleSpecs, VehiclesStatisticsResponse.VehicleStatistics>> = Comparator {
                     v1, v2 -> v1.second.statistics.averageDamage!!.compareTo(v2.second.statistics.averageDamage!!)
             }
-            val comparatorByWinRate: Comparator<Pair<VehicleSpecs, VehiclesStatisticsResponse.VehicleStatistics>> = Comparator {
+            val comparatorByWinningPercentage: Comparator<Pair<VehicleSpecs, VehiclesStatisticsResponse.VehicleStatistics>> = Comparator {
                     v1, v2 -> v1.second.statistics.winningPercentage!!.compareTo(v2.second.statistics.winningPercentage!!)
             }
             val comparatorByAverageXp: Comparator<Pair<VehicleSpecs, VehiclesStatisticsResponse.VehicleStatistics>> = Comparator {
@@ -1185,7 +1185,7 @@ class MainActivity : AppCompatActivity() {
                     Collections.sort(sortedVehicles, comparatorByAverageXp)
                 }
                 4 -> {
-                    Collections.sort(sortedVehicles, comparatorByWinRate)
+                    Collections.sort(sortedVehicles, comparatorByWinningPercentage)
                 }
             }
 

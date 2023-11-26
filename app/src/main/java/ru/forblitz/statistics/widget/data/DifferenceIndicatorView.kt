@@ -72,7 +72,7 @@ class DifferenceIndicatorView : AppCompatTextView {
     }
 
     fun setValue(value: Number, isPercentageValue: Boolean = false) {
-        if (value.toDouble().isNaN() || value.toDouble() == 0.0) {
+        if (value.toDouble().isNaN() || value.round() == 0.0) {
             visibility = INVISIBLE
         } else {
             visibility = VISIBLE

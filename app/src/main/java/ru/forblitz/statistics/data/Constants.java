@@ -41,6 +41,8 @@ public class Constants {
     public static class AchievementsViewFlipperItems {
         public static final int LOADING = 0;
         public static final int ACHIEVEMENTS = 1;
+
+        public static final int SERVER_EXCEPTION = 2;
     }
 
     public static class ClanViewFlipperItems {

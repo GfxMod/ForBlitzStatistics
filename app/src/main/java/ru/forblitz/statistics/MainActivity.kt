@@ -99,6 +99,7 @@ import ru.forblitz.statistics.utils.StatisticsDataUtils
 import ru.forblitz.statistics.utils.Utils
 import ru.forblitz.statistics.widget.common.DifferenceViewFlipper
 import ru.forblitz.statistics.widget.common.ExtendedRadioGroup
+import ru.forblitz.statistics.widget.data.AchievementsScreen
 import ru.forblitz.statistics.widget.data.ClanBrief
 import ru.forblitz.statistics.widget.data.ClanScreen
 import ru.forblitz.statistics.widget.data.PlayerFastStat
@@ -571,7 +572,7 @@ class MainActivity : AppCompatActivity() {
                 val tanksFilters = findViewById<View>(R.id.tanks_filters)
 
                 val mainFlipper = findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
-                val achievementsFlipper = findViewById<DifferenceViewFlipper>(R.id.achievements_layouts_flipper)
+                val achievementsFlipper = findViewById<DifferenceViewFlipper>(R.id.achievements_screen)
                 val statisticsSessionStatButton = findViewById<TextView>(R.id.statistics_session_stat_button)
 
                 // Shows the loading screen and the loading indicator, blocks all
@@ -1290,53 +1291,57 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setAchievements() {
+        val achievementsScreen = findViewById<AchievementsScreen>(R.id.achievements_screen)
+
         CoroutineScope(Dispatchers.IO).launch {
-            app.userAchievementsService.clear()
+            try {
+                app.userAchievementsService.clear()
 
-            val achievementsFlipper = findViewById<DifferenceViewFlipper>(R.id.achievements_layouts_flipper)
-            val achievementsList = findViewById<ListView>(R.id.achievements_list)
+                ArrayList<Pair<AchievementInfo, Int>>().apply {
 
-            ArrayList<Pair<AchievementInfo, Int>>().apply {
-
-                app.userAchievementsService
-                    .get(UserAchievementsService.Arguments(app.userService.accountId!!))
-                    .data[app.userService.accountId!!]!!
-                    .achievements
-                    .toList()
-                    .forEach { currentPair ->
-                        app.achievementsInformationService.addTaskOnEndOfLoad { achievementsInformationResponse ->
-                            achievementsInformationResponse.data
-                                .toList()
-                                .find { currentPair.first == it.first }
-                                ?.second
-                                ?.let {
-                                    this@apply.add(Pair(it, currentPair.second))
-                                }
-                        }
-                    }
-
-                app.achievementsInformationService.addTaskOnEndOfLoad {
-                    runOnUiThread {
-                        achievementsList.adapter = AchievementsAdapter(
-                            this@MainActivity,
-                            this@apply.apply { sortBy { it.second }; reverse() }.chunked(achievementsInRow),
-                            (InterfaceUtils.getX() - resources.getDimensionPixelSize(R.dimen.padding_big) * (achievementsInRow + 1)) / achievementsInRow,
-                            resources.getDimensionPixelSize(R.dimen.padding_big)
-                        ) { achievementRowLayout, viewGroup, achievementPair ->
-                            if (achievementRowLayout.expandedChild == -1) {
-                                achievementRowLayout.expand(viewGroup, achievementPair.first)
-                            } else {
-                                achievementRowLayout.collapse(
-                                    achievementRowLayout
-                                        .findViewWithTag<LinearLayout>("row")
-                                        .getChildAt(achievementRowLayout.expandedChild) as ViewGroup
-                                )
+                    app.userAchievementsService
+                        .get(UserAchievementsService.Arguments(app.userService.accountId!!))
+                        .data[app.userService.accountId!!]!!
+                        .achievements
+                        .toList()
+                        .forEach { currentPair ->
+                            app.achievementsInformationService.addTaskOnEndOfLoad { achievementsInformationResponse ->
+                                achievementsInformationResponse.data
+                                    .toList()
+                                    .find { currentPair.first == it.first }
+                                    ?.second
+                                    ?.let {
+                                        this@apply.add(Pair(it, currentPair.second))
+                                    }
                             }
                         }
-                        achievementsFlipper.displayedChild = AchievementsViewFlipperItems.ACHIEVEMENTS
-                    }
-                }
 
+                    app.achievementsInformationService.addTaskOnEndOfLoad {
+                        runOnUiThread {
+                            achievementsScreen.adapter = AchievementsAdapter(
+                                this@MainActivity,
+                                this@apply.apply { sortBy { it.second }; reverse() }.chunked(achievementsInRow),
+                                (InterfaceUtils.getX() - resources.getDimensionPixelSize(R.dimen.padding_big) * (achievementsInRow + 1)) / achievementsInRow,
+                                resources.getDimensionPixelSize(R.dimen.padding_big)
+                            ) { achievementRowLayout, viewGroup, achievementPair ->
+                                if (achievementRowLayout.expandedChild == -1) {
+                                    achievementRowLayout.expand(viewGroup, achievementPair.first)
+                                } else {
+                                    achievementRowLayout.collapse(
+                                        achievementRowLayout
+                                            .findViewWithTag<LinearLayout>("row")
+                                            .getChildAt(achievementRowLayout.expandedChild) as ViewGroup
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                }
+            } catch (e: APILoadService.ServerException) {
+                runOnUiThread {
+                    achievementsScreen.setServerException(e)
+                }
             }
         }
     }

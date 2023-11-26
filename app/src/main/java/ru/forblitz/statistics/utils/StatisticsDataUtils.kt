@@ -34,48 +34,15 @@ class StatisticsDataUtils {
             current: StatisticsData,
             session: StatisticsData,
         ): StatisticsData {
-            val sessionDifferences = calculateFieldDifferences(current, session)
-            sessionDifferences.winningPercentage = current.winningPercentage!! - session.winningPercentage!!
-/*
-            sessionDifferences.winRate =
-                String.format(
-                    Locale.US,
-                    "%.2f",
-                    current.winRate.toDouble() - session.winRate.toDouble()
-                )
-            sessionDifferences.averageDamage =
-                String.format(
-                    Locale.US,
-                    "%.2f",
-                    current.averageDamage.toDouble() - session.averageDamage.toDouble()
-                )
-            sessionDifferences.efficiency =
-                String.format(
-                    Locale.US,
-                    "%.2f",
-                    current.efficiency.toDouble() - session.efficiency.toDouble()
-                )
-            sessionDifferences.survived =
-                String.format(
-                    Locale.US,
-                    "%.2f",
-                    current.survived.toDouble() - session.survived.toDouble()
-                )
-            sessionDifferences.hitsFromShots =
-                String.format(
-                    Locale.US,
-                    "%.2f",
-                    current.hitsFromShots.toDouble() - session.hitsFromShots.toDouble()
-                )
-            sessionDifferences.averageXp =
-                String.format(
-                    Locale.US,
-                    "%.2f",
-                    current.averageXp.toDouble() - session.averageXp.toDouble()
-                )
-*/
-            Log.d("sessionDifferences", "declared: ${sessionDifferences.averageDamage}, maybe: ${current.averageDamage!! - session.averageDamage!!}")
-            return sessionDifferences
+            return calculateFieldDifferences(current, session).apply {
+                winningPercentage = current.winningPercentage!! - session.winningPercentage!!
+                winningPercentage = current.winningPercentage!! - session.winningPercentage!!
+                averageDamage = current.averageDamage!! - session.averageDamage!!
+                efficiency = current.efficiency!! - session.efficiency!!
+                survivedPercentage = current.survivedPercentage!! - session.survivedPercentage!!
+                hitsOutOfShots = current.hitsOutOfShots!! - session.hitsOutOfShots!!
+                averageXp = current.averageXp!! - session.averageXp!!
+            }
         }
 
         fun parse(json: String, accountID: String, key: String): StatisticsData {

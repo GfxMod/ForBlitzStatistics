@@ -47,6 +47,8 @@ import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import com.yandex.mobile.ads.banner.BannerAdView
 import com.yandex.mobile.ads.common.MobileAds
 import kotlinx.coroutines.CoroutineScope
@@ -1286,6 +1288,7 @@ class MainActivity : AppCompatActivity() {
                 runOnUiThread {
                     clanScreen.setServerException(e)
                     clanBrief.setServerException(e)
+                    Firebase.crashlytics.recordException(e)
                 }
             }
         }
@@ -1342,6 +1345,7 @@ class MainActivity : AppCompatActivity() {
             } catch (e: APILoadService.ServerException) {
                 runOnUiThread {
                     achievementsScreen.setServerException(e)
+                    Firebase.crashlytics.recordException(e)
                 }
             }
         }

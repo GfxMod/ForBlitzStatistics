@@ -1,60 +1,51 @@
-package ru.forblitz.statistics.widget.data;
+package ru.forblitz.statistics.widget.data
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.content.Context
+import android.util.AttributeSet
+import android.util.Log
+import android.view.View
+import android.widget.LinearLayout
+import android.widget.TextView
+import ru.forblitz.statistics.dto.StatisticsData
+import ru.forblitz.statistics.utils.ParseUtils
 
-import androidx.annotation.Nullable;
+class DetailsLayout : LinearLayout {
+    constructor(context: Context?) : super(context)
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    )
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-
-import ru.forblitz.statistics.dto.StatisticsData;
-import ru.forblitz.statistics.utils.ParseUtils;
-
-public class DetailsLayout extends LinearLayout {
-
-    public DetailsLayout(Context context) {
-        super(context);
-    }
-
-    public DetailsLayout(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public DetailsLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
-    public void setData(StatisticsData statisticsData) {
-        for (View view : getAllChildren(this)) {
-            if (view instanceof TextView && view.getTag() != null) {
+    fun setData(statisticsData: StatisticsData?) {
+        for (view in getAllChildren(this)) {
+            if (view is TextView && view.tag != null) {
                 try {
-                    Field field = StatisticsData.class.getDeclaredField(String.valueOf(view.getTag()));
-                    field.setAccessible(true);
-                    ((TextView) view).setText(ParseUtils.splitByThousands(Integer.toString((Integer) field.get(statisticsData))));
-                } catch (NoSuchFieldException|IllegalAccessException e) {
-                    Log.e("DetailsLayout", e.toString());
+                    val field =
+                        StatisticsData::class.java.getDeclaredField(view.getTag().toString())
+                    field.isAccessible = true
+                    view.text = ParseUtils.splitByThousands(
+                        (field[statisticsData] as Int).toString()
+                    )
+                } catch (e: NoSuchFieldException) {
+                    Log.e("DetailsLayout", e.toString())
+                } catch (e: IllegalAccessException) {
+                    Log.e("DetailsLayout", e.toString())
                 }
             }
         }
     }
 
-    private ArrayList<View> getAllChildren(LinearLayout linearLayout) {
-        ArrayList<View> children = new ArrayList<>();
-
-        for (int i = 0; i < linearLayout.getChildCount(); i++) {
-            View child = linearLayout.getChildAt(i);
-            children.add(child);
-            if (child instanceof LinearLayout) {
-                children.addAll(getAllChildren((LinearLayout) child));
+    private fun getAllChildren(linearLayout: LinearLayout): ArrayList<View> {
+        val children = ArrayList<View>()
+        for (i in 0 until linearLayout.childCount) {
+            val child = linearLayout.getChildAt(i)
+            children.add(child)
+            if (child is LinearLayout) {
+                children.addAll(getAllChildren(child))
             }
         }
-
-        return children;
+        return children
     }
-
 }

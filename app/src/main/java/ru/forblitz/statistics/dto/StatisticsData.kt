@@ -40,7 +40,7 @@ data class StatisticsData(
     @SerializedName("survived_battles")
     val survivedBattles: Int,
     @SerializedName("dropped_capture_points")
-    val droppedCapturePoint: Int
+    val droppedCapturePoints: Int
 ) {
 
     constructor() : this(
@@ -139,7 +139,7 @@ data class StatisticsData(
         this.xp + other.xp,
         this.winAndSurvived + other.winAndSurvived,
         this.survivedBattles + other.survivedBattles,
-        this.droppedCapturePoint + other.droppedCapturePoint
+        this.droppedCapturePoints + other.droppedCapturePoints
         )
     }
     
@@ -163,7 +163,7 @@ data class StatisticsData(
             this.xp - other.xp,
             this.winAndSurvived - other.winAndSurvived,
             this.survivedBattles - other.survivedBattles,
-            this.droppedCapturePoint - other.droppedCapturePoint
+            this.droppedCapturePoints - other.droppedCapturePoints
         )
     }
     

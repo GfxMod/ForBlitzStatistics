@@ -1285,6 +1285,7 @@ class MainActivity : AppCompatActivity() {
             } catch (e: APILoadService.ServerException) {
                 runOnUiThread {
                     clanScreen.setServerException(e)
+                    clanBrief.setServerException(e)
                 }
             }
         }

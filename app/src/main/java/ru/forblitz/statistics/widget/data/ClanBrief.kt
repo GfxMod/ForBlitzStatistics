@@ -1,44 +1,52 @@
-package ru.forblitz.statistics.widget.data;
+package ru.forblitz.statistics.widget.data
 
-import static ru.forblitz.statistics.data.Constants.ClanViewFlipperItems.IS_A_MEMBER;
-import static ru.forblitz.statistics.data.Constants.ClanViewFlipperItems.NOT_IS_A_MEMBER;
+import android.content.Context
+import android.util.AttributeSet
+import android.widget.TextView
+import ru.forblitz.statistics.ForBlitzStatisticsApplication
+import ru.forblitz.statistics.R
+import ru.forblitz.statistics.apiloadservice.APILoadService
+import ru.forblitz.statistics.data.Constants.ClanViewFlipperItems
+import ru.forblitz.statistics.dto.ShortClanInfo
+import ru.forblitz.statistics.utils.ParseUtils
+import ru.forblitz.statistics.widget.common.DifferenceViewFlipper
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.widget.TextView;
+class ClanBrief : DifferenceViewFlipper {
+    constructor(context: Context?) : super(context)
+    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
 
-import ru.forblitz.statistics.dto.ShortClanInfo;
-import ru.forblitz.statistics.utils.ParseUtils;
-import ru.forblitz.statistics.widget.common.DifferenceViewFlipper;
-
-public class ClanBrief extends DifferenceViewFlipper {
-
-    public ClanBrief(Context context) {
-        super(context);
-    }
-
-    public ClanBrief(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public void setData(ShortClanInfo shortClanInfo) {
-
-        if (shortClanInfo != null && shortClanInfo.clanData != null) {
-
-            this.setDisplayedChild(IS_A_MEMBER);
-
-            String name = "[" + shortClanInfo.clanData.tag + "] " + shortClanInfo.clanData.name;
-            String role = ParseUtils.formatClanRole(this.getContext(), shortClanInfo.role);
-
-            ((TextView) this.findViewWithTag("clan_name")).setText(name);
-            ((TextView) this.findViewWithTag("clan_role")).setText(role);
-
+    fun setData(shortClanInfo: ShortClanInfo?) {
+        if (shortClanInfo?.clanData != null) {
+            this.displayedChild = ClanViewFlipperItems.IS_A_MEMBER
+            val name = "[" + shortClanInfo.clanData.tag + "] " + shortClanInfo.clanData.name
+            val role = ParseUtils.formatClanRole(this.context, shortClanInfo.role)
+            findViewWithTag<TextView>("clan_name").text = name
+            findViewWithTag<TextView>("clan_role").text = role
         } else {
-
-            this.setDisplayedChild(NOT_IS_A_MEMBER);
-
+            this.displayedChild = ClanViewFlipperItems.NOT_IS_A_MEMBER
         }
+    }
 
+    fun setServerException(exception: APILoadService.ServerException) {
+        displayedChild = ClanViewFlipperItems.SERVER_EXCEPTION
+
+        findViewWithTag<TextView>("clan_name").setText(
+            if (
+                (context.applicationContext as ForBlitzStatisticsApplication)
+                    .preferencesService
+                    .region == "ru") {
+                R.string.lesta_exception
+            } else {
+                R.string.wargaming_exception
+            }
+        )
+        findViewWithTag<TextView>("clan_role")
+            .text = resources
+            .getString(
+                R.string.error_message,
+                exception.responseError.code.toString(),
+                exception.responseError.message
+            )
     }
 
 }

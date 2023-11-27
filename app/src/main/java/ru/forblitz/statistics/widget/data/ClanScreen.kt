@@ -29,6 +29,7 @@ class ClanScreen : DifferenceViewFlipper {
                     fullClanInfo
                         .members
                         .values
+                        .sorted()
                         .toTypedArray()
                 )
             findViewById<FloatingActionButton>(R.id.clan_members_back).show()

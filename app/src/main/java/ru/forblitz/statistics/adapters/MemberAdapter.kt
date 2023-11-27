@@ -1,58 +1,44 @@
-package ru.forblitz.statistics.adapters;
+package ru.forblitz.statistics.adapters
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AbsListView
+import android.widget.ArrayAdapter
+import android.widget.TextView
+import ru.forblitz.statistics.R
+import ru.forblitz.statistics.dto.Member
+import ru.forblitz.statistics.utils.InterfaceUtils
+import ru.forblitz.statistics.utils.ParseUtils
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import ru.forblitz.statistics.R;
-import ru.forblitz.statistics.dto.Member;
-import ru.forblitz.statistics.utils.InterfaceUtils;
-import ru.forblitz.statistics.utils.ParseUtils;
-
-public class MemberAdapter extends ArrayAdapter<Member> {
-
-    final Context context;
-
-    public MemberAdapter(@NonNull Context context, Member[] members) {
-        super(context, R.layout.item_member, members);
-        this.context = context;
-    }
-
-    @NonNull
-    @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
-        Member member = getItem(position);
-
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_member, null);
+class MemberAdapter(private val activityContext: Context, members: Array<Member?>?) : ArrayAdapter<Member?>(
+    activityContext, R.layout.item_member, members!!
+) {
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        var itemView = convertView
+        val member = getItem(position)
+        if (itemView == null) {
+            itemView = LayoutInflater.from(context).inflate(R.layout.item_member, null)
         }
-
-        convertView.setLayoutParams(new ListView.LayoutParams(
-                ListView.LayoutParams.MATCH_PARENT,
-                (int) (InterfaceUtils.getX() * 0.15)
-        ));
-
-        convertView.setOnClickListener(l -> InterfaceUtils.search(context, member.getAccountName()));
-
-        String name = member.getAccountName();
-        String details = ParseUtils.formatClanRole(getContext(), member.getRole()) + "; " + getContext().getResources().getString(R.string.joined_at) + ParseUtils.formatSecondsTimestampToDate(member.getJoinedAt());
-
-        TextView memberName = convertView.findViewById(R.id.member_name);
-        TextView memberDetails = convertView.findViewById(R.id.member_details);
-
-        memberName.setText(name);
-        memberDetails.setText(details);
-
-        return convertView;
-
+        itemView!!.layoutParams = AbsListView.LayoutParams(
+            AbsListView.LayoutParams.MATCH_PARENT, (InterfaceUtils.getX() * 0.15).toInt()
+        )
+        itemView.setOnClickListener {
+            InterfaceUtils.search(
+                activityContext, member!!.accountName
+            )
+        }
+        val name = member!!.accountName
+        val details = ParseUtils.formatClanRole(
+            context, member.role
+        ) + "; " + context.resources.getString(R.string.joined_at) + ParseUtils.formatSecondsTimestampToDate(
+            member.joinedAt
+        )
+        val memberName = itemView.findViewById<TextView>(R.id.member_name)
+        val memberDetails = itemView.findViewById<TextView>(R.id.member_details)
+        memberName.text = name
+        memberDetails.text = details
+        return itemView
     }
-
 }

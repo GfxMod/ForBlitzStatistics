@@ -1,35 +1,41 @@
-package ru.forblitz.statistics.dto;
+package ru.forblitz.statistics.dto
 
-import androidx.annotation.Keep;
-
-import com.google.gson.annotations.SerializedName;
+import androidx.annotation.Keep
+import com.google.gson.annotations.SerializedName
 
 @Keep
-public class Member {
+class Member : Comparable<Member>  {
 
     @SerializedName("role")
-    String role;
+    var role: String? = null
+
+    @JvmField
     @SerializedName("joined_at")
-    String joinedAt;
+    var joinedAt: String? = null
+
     @SerializedName("account_id")
-    String accountId;
+    var accountId: String? = null
+
+    @JvmField
     @SerializedName("account_name")
-    String accountName;
+    var accountName: String? = null
 
-    public String getRole() {
-        return role;
-    }
-
-    public String getJoinedAt() {
-        return joinedAt;
-    }
-
-    public String getAccountId() {
-        return accountId;
-    }
-
-    public String getAccountName() {
-        return accountName;
+    override fun compareTo(other: Member): Int {
+        return if (this.role == other.role) {
+            if (this.joinedAt != null && other.joinedAt != null) {
+                this.joinedAt!!.toInt() - other.joinedAt!!.toInt()
+            } else {
+                0
+            }
+        } else if (this.role == "private" && other.role == "executive_officer") {
+            1
+        } else if (this.role == "private" && other.role == "commander") {
+            1
+        } else if (this.role == "executive_officer" && other.role == "commander") {
+            1
+        } else {
+            -1
+        }
     }
 
 }

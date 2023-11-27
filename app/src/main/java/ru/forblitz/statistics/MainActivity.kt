@@ -378,7 +378,7 @@ class MainActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this@MainActivity, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 val statisticsLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.statistics_layouts_flipper)
-                val clanLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.clan_layouts_flipper)
+                val clanScreen = findViewById<DifferenceViewFlipper>(R.id.fragment_clan)
                 val tanksLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.tanks_layouts_flipper)
 
                 if (mainLayoutsFlipper.displayedChild == MainViewFlipperItems.SETTINGS) {
@@ -391,8 +391,8 @@ class MainActivity : AppCompatActivity() {
                             }
                         }
                         1 -> {
-                            if (clanLayoutsFlipper.displayedChild != 0) {
-                                clanLayoutsFlipper.displayedChild = 0
+                            if (clanScreen.displayedChild == ClanViewFlipperItems.MEMBERS_LIST) {
+                                clanScreen.displayedChild = ClanViewFlipperItems.CLAN_INFORMATION
                             }
                         }
                         2 -> {
@@ -561,7 +561,7 @@ class MainActivity : AppCompatActivity() {
                 val imm: InputMethodManager = this.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
                 val statisticsLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.statistics_layouts_flipper)
-                val clanLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.clan_layouts_flipper)
+                val clanScreen = findViewById<DifferenceViewFlipper>(R.id.fragment_clan)
                 val tanksLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.tanks_layouts_flipper)
 
                 val statisticsDetailsButton = findViewById<View>(R.id.statistics_details_button)
@@ -613,11 +613,11 @@ class MainActivity : AppCompatActivity() {
                     statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.SESSIONS
                 }
                 clanMembersButton.setOnClickListener {
-                    clanLayoutsFlipper.displayedChild = ClanViewFlipperItems.NOT_IS_A_MEMBER
+                    clanScreen.displayedChild = ClanViewFlipperItems.MEMBERS_LIST
                 }
                 clanMembersListBackView.setOnClickListener {
                     HapticUtils.performHapticFeedback(clanMembersListBackView)
-                    clanLayoutsFlipper.displayedChild = ClanViewFlipperItems.IS_A_MEMBER
+                    clanScreen.displayedChild = ClanViewFlipperItems.CLAN_INFORMATION
                 }
                 tanksDetailsBack.setOnClickListener {
                     tanksLayoutsFlipper.displayedChild = 0

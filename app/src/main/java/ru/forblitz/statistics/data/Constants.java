@@ -46,8 +46,19 @@ public class Constants {
     }
 
     public static class ClanViewFlipperItems {
-        public static final int IS_A_MEMBER = 0;
-        public static final int NOT_IS_A_MEMBER = 1;
+        public static final int CLAN_INFORMATION = 0;
+
+        public static final int MEMBERS_LIST = 1;
+
+        public static final int IS_NOT_A_MEMBER = 2;
+
+        public static final int SERVER_EXCEPTION = 3;
+    }
+
+    public static class ClanBriefFlipperItems {
+        public static final int CLAN_INFORMATION = 0;
+
+        public static final int IS_NOT_A_MEMBER = 1;
 
         public static final int SERVER_EXCEPTION = 2;
     }

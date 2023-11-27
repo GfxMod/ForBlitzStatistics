@@ -13,756 +13,747 @@
     android:paddingHorizontal="@dimen/padding_big"
     tools:context="ru.forblitz.statistics.ClanFragment" >
 
-    <ru.forblitz.statistics.widget.common.DifferenceViewFlipper
-        android:id="@+id/clan_layouts_flipper"
+    <android.widget.LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:inAnimation="@anim/appearance_scale"
-        android:outAnimation="@anim/disappearance_scale">
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <android.widget.LinearLayout
+        <ru.forblitz.statistics.widget.data.ClanInfo
+            android:id="@+id/clan_info"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
             android:orientation="vertical"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:background="@drawable/background_layout"
+            android:padding="@dimen/padding_big">
 
-            <ru.forblitz.statistics.widget.data.ClanInfo
-                android:id="@+id/clan_info"
+            <android.widget.LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.3"
-                android:orientation="vertical"
-                android:background="@drawable/background_layout"
-                android:padding="@dimen/padding_big">
+                android:orientation="horizontal"
+                android:layout_weight="0.2">
 
-                <android.widget.LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:orientation="horizontal"
-                    android:layout_weight="0.2">
+                <ru.forblitz.statistics.widget.data.ClanBrief
+                    android:id="@+id/clan_clan"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.8"
+                    android:background="@drawable/background_layout_nested">
 
-                    <ru.forblitz.statistics.widget.data.ClanBrief
-                        android:id="@+id/clan_clan"
-                        android:layout_width="0dp"
+                    <android.widget.LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.8"
-                        android:background="@drawable/background_layout_nested">
-
-                        <android.widget.LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:padding="@dimen/padding"
-                            android:visibility="visible"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:tag="clan_name"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.5"
-                                android:fontFamily="@font/inter"
-                                android:gravity="start|center_vertical"
-                                android:paddingHorizontal="@dimen/padding_very_big"
-                                android:text="@string/loading"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold"
-                                android:typeface="monospace"
-                                app:autoSizeTextType="uniform" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:tag="clan_role"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.4"
-                                android:fontFamily="@font/inter"
-                                android:gravity="start|center_vertical"
-                                android:paddingHorizontal="@dimen/padding_very_big"
-                                android:text="@string/loading"
-                                android:textColor="@color/grey"
-                                android:typeface="normal"
-                                app:autoSizeTextType="uniform" />
-
-                        </android.widget.LinearLayout>
+                        android:orientation="vertical"
+                        android:padding="@dimen/padding"
+                        android:visibility="visible"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:tag="clan_name"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.5"
                             android:fontFamily="@font/inter"
-                            android:gravity="center"
-                            android:padding="@dimen/padding_very_big"
-                            android:text="@string/clan_false"
-                            android:textAllCaps="false"
+                            android:gravity="start|center_vertical"
+                            android:paddingHorizontal="@dimen/padding_very_big"
+                            android:text="@string/loading"
                             android:textColor="@android:color/white"
-                            android:typeface="monospace"
                             android:textStyle="bold"
-                            android:visibility="gone"
-                            app:autoSizeTextType="uniform"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            android:typeface="monospace"
+                            app:autoSizeTextType="uniform" />
 
-                    </ru.forblitz.statistics.widget.data.ClanBrief>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:tag="clan_role"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.4"
+                            android:fontFamily="@font/inter"
+                            android:gravity="start|center_vertical"
+                            android:paddingHorizontal="@dimen/padding_very_big"
+                            android:text="@string/loading"
+                            android:textColor="@color/grey"
+                            android:typeface="normal"
+                            app:autoSizeTextType="uniform" />
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.025" />
+                    </android.widget.LinearLayout>
 
-                    <ru.forblitz.statistics.widget.common.ExtendedImageButton
-                        android:id="@+id/clan_members_button"
-                        android:layout_width="0px"
-                        android:layout_height="match_parent"
-                        whatever:main_dimension="vertical"
-                        android:background="@drawable/background_button"
-                        android:contentDescription="@string/clan_members"
-                        android:paddingHorizontal="@dimen/padding_big"
-                        android:src="@drawable/ic_outline_group_36"
-                        app:tint="@color/black" />
-
-                </android.widget.LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.05" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/clan_motto"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.1"
-                    android:fontFamily="@font/inter"
-                    android:gravity="start|center_vertical"
-                    android:paddingHorizontal="@dimen/padding_giant"
-                    android:text="@string/loading"
-                    android:textColor="@android:color/white"
-                    android:typeface="monospace"
-                    app:autoSizeTextType="uniform" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.025" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.01"
-                    android:background="@drawable/background_layout_nested" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.025" />
-
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.565">
-
-                    <TextView
-                        android:id="@+id/clan_description"
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:fontFamily="@font/inter"
-                        android:gravity="start"
-                        android:paddingHorizontal="@dimen/padding_giant"
-                        android:text="@string/loading"
+                        android:gravity="center"
+                        android:padding="@dimen/padding_very_big"
+                        android:text="@string/clan_false"
+                        android:textAllCaps="false"
                         android:textColor="@android:color/white"
-                        android:typeface="monospace" />
+                        android:typeface="monospace"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        app:autoSizeTextType="uniform"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                </ScrollView>
+                </ru.forblitz.statistics.widget.data.ClanBrief>
 
-            </ru.forblitz.statistics.widget.data.ClanInfo>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.025" />
+
+                <ru.forblitz.statistics.widget.common.ExtendedImageButton
+                    android:id="@+id/clan_members_button"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    whatever:main_dimension="vertical"
+                    android:background="@drawable/background_button"
+                    android:contentDescription="@string/clan_members"
+                    android:paddingHorizontal="@dimen/padding_big"
+                    android:src="@drawable/ic_outline_group_36"
+                    app:tint="@color/black" />
+
+            </android.widget.LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.05" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/clan_motto"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.1"
+                android:fontFamily="@font/inter"
+                android:gravity="start|center_vertical"
+                android:paddingHorizontal="@dimen/padding_giant"
+                android:text="@string/loading"
+                android:textColor="@android:color/white"
+                android:typeface="monospace"
+                app:autoSizeTextType="uniform" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.025" />
 
-            <ru.forblitz.statistics.widget.data.ClanDetails
-                android:id="@+id/clan_details"
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="vertical"
-                android:layout_weight="0.3"
-                android:background="@drawable/background_layout"
-                android:padding="@dimen/padding_big">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.15"
-                    android:orientation="horizontal"
-                    android:background="@drawable/background_layout_nested_selected">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/clan_info_button"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:text="@string/clan_info"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        android:paddingHorizontal="@dimen/padding_big"
-                        android:paddingVertical="@dimen/padding"
-                        app:autoSizeTextType="uniform"
-                        android:background="@drawable/background_button_insets" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/clan_info_recruiting_button"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:text="@string/recruiting_options_info"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        android:paddingHorizontal="@dimen/padding_big"
-                        android:paddingVertical="@dimen/padding"
-                        app:autoSizeTextType="uniform" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.025" />
-
-                <ru.forblitz.statistics.widget.common.DifferenceViewFlipper
-                    android:id="@+id/clan_info_flipper"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.775"
-                    android:inAnimation="@anim/appearance"
-                    android:outAnimation="@anim/disappearance">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                android:autoSizeTextType="uniform"
-                                android:background="@drawable/background_layout_nested"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center_vertical|start"
-                                android:lines="1"
-                                android:paddingHorizontal="@dimen/padding_big"
-                                android:paddingVertical="@dimen/padding"
-                                android:text="@string/creator_name"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.25" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                android:autoSizeTextType="uniform"
-                                android:background="@drawable/background_layout_nested"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center_vertical|start"
-                                android:lines="1"
-                                android:paddingHorizontal="@dimen/padding_big"
-                                android:paddingVertical="@dimen/padding"
-                                android:text="@string/created_at"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.25" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                android:autoSizeTextType="uniform"
-                                android:background="@drawable/background_layout_nested"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center_vertical|start"
-                                android:lines="1"
-                                android:paddingHorizontal="@dimen/padding_big"
-                                android:paddingVertical="@dimen/padding"
-                                android:text="@string/old_name"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.25" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                android:autoSizeTextType="uniform"
-                                android:background="@drawable/background_layout_nested"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center_vertical|start"
-                                android:lines="1"
-                                android:paddingHorizontal="@dimen/padding_big"
-                                android:paddingVertical="@dimen/padding"
-                                android:text="@string/old_tag"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.25" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                android:autoSizeTextType="uniform"
-                                android:background="@drawable/background_layout_nested"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center_vertical|start"
-                                android:lines="1"
-                                android:paddingHorizontal="@dimen/padding_big"
-                                android:paddingVertical="@dimen/padding"
-                                android:text="@string/renamed_at"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent">
-
-                            <View
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.5" />
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical"
-                                android:layout_weight="0.5" >
-
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:id="@+id/clan_creator"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="1"
-                                    android:autoSizeTextType="uniform"
-                                    android:background="@drawable/background_button"
-                                    android:fontFamily="@font/inter"
-                                    android:gravity="center|fill_vertical"
-                                    android:lines="1"
-                                    android:paddingHorizontal="@dimen/padding_big"
-                                    android:paddingVertical="@dimen/padding"
-                                    android:text="@string/empty"
-                                    android:textColor="@android:color/white"
-                                    android:textStyle="bold" />
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="0.25" />
-
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:id="@+id/clan_created_at"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="1"
-                                    android:autoSizeTextType="uniform"
-                                    android:background="@drawable/background_button"
-                                    android:fontFamily="@font/inter"
-                                    android:gravity="center|fill_vertical"
-                                    android:lines="1"
-                                    android:paddingHorizontal="@dimen/padding_big"
-                                    android:paddingVertical="@dimen/padding"
-                                    android:text="@string/empty"
-                                    android:textColor="@android:color/white"
-                                    android:textStyle="bold" />
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="0.25" />
-
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:id="@+id/clan_old_name"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="1"
-                                    android:autoSizeTextType="uniform"
-                                    android:background="@drawable/background_button"
-                                    android:fontFamily="@font/inter"
-                                    android:gravity="center|fill_vertical"
-                                    android:lines="1"
-                                    android:paddingHorizontal="@dimen/padding_big"
-                                    android:paddingVertical="@dimen/padding"
-                                    android:text="@string/empty"
-                                    android:textColor="@android:color/white"
-                                    android:textStyle="bold" />
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="0.25" />
-
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:id="@+id/clan_old_tag"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="1"
-                                    android:autoSizeTextType="uniform"
-                                    android:background="@drawable/background_button"
-                                    android:fontFamily="@font/inter"
-                                    android:gravity="center|fill_vertical"
-                                    android:lines="1"
-                                    android:paddingHorizontal="@dimen/padding_big"
-                                    android:paddingVertical="@dimen/padding"
-                                    android:text="@string/empty"
-                                    android:textColor="@android:color/white"
-                                    android:textStyle="bold" />
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="0.25" />
-
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:id="@+id/clan_renamed_at"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="1"
-                                    android:autoSizeTextType="uniform"
-                                    android:background="@drawable/background_button"
-                                    android:fontFamily="@font/inter"
-                                    android:gravity="center|fill_vertical"
-                                    android:lines="1"
-                                    android:paddingHorizontal="@dimen/padding_big"
-                                    android:paddingVertical="@dimen/padding"
-                                    android:text="@string/empty"
-                                    android:textColor="@android:color/white"
-                                    android:textStyle="bold" />
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                android:autoSizeTextType="uniform"
-                                android:background="@drawable/background_layout_nested"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center_vertical|start"
-                                android:lines="1"
-                                android:paddingHorizontal="@dimen/padding_big"
-                                android:paddingVertical="@dimen/padding"
-                                android:text="@string/recruiting_options_battles"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.25" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                android:autoSizeTextType="uniform"
-                                android:background="@drawable/background_layout_nested"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center_vertical|start"
-                                android:lines="1"
-                                android:paddingHorizontal="@dimen/padding_big"
-                                android:paddingVertical="@dimen/padding"
-                                android:text="@string/recruiting_options_wins_ratio"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.25" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                android:autoSizeTextType="uniform"
-                                android:background="@drawable/background_layout_nested"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center_vertical|start"
-                                android:lines="1"
-                                android:paddingHorizontal="@dimen/padding_big"
-                                android:paddingVertical="@dimen/padding"
-                                android:text="@string/recruiting_options_average_damage"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.25" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                android:autoSizeTextType="uniform"
-                                android:background="@drawable/background_layout_nested"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center_vertical|start"
-                                android:lines="1"
-                                android:paddingHorizontal="@dimen/padding_big"
-                                android:paddingVertical="@dimen/padding"
-                                android:text="@string/recruiting_options_average_battles_per_day"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="0.25" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                android:autoSizeTextType="uniform"
-                                android:background="@drawable/background_layout_nested"
-                                android:fontFamily="@font/inter"
-                                android:gravity="center_vertical|start"
-                                android:lines="1"
-                                android:paddingHorizontal="@dimen/padding_big"
-                                android:paddingVertical="@dimen/padding"
-                                android:text="@string/recruiting_options_vehicles_level"
-                                android:textColor="@android:color/white"
-                                android:textStyle="bold" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent">
-
-                            <View
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.5" />
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical"
-                                android:layout_weight="0.5" >
-
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:id="@+id/clan_recruiting_options_battles"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="1"
-                                    android:autoSizeTextType="uniform"
-                                    android:background="@drawable/background_button"
-                                    android:fontFamily="@font/inter"
-                                    android:gravity="center|fill_vertical"
-                                    android:lines="1"
-                                    android:paddingHorizontal="@dimen/padding_big"
-                                    android:paddingVertical="@dimen/padding"
-                                    android:text="@string/empty"
-                                    android:textColor="@android:color/white"
-                                    android:textStyle="bold" />
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="0.25" />
-
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:id="@+id/clan_recruiting_options_wins_ratio"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="1"
-                                    android:autoSizeTextType="uniform"
-                                    android:background="@drawable/background_button"
-                                    android:fontFamily="@font/inter"
-                                    android:gravity="center|fill_vertical"
-                                    android:lines="1"
-                                    android:paddingHorizontal="@dimen/padding_big"
-                                    android:paddingVertical="@dimen/padding"
-                                    android:text="@string/empty"
-                                    android:textColor="@android:color/white"
-                                    android:textStyle="bold" />
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="0.25" />
-
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:id="@+id/clan_recruiting_options_average_damage"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="1"
-                                    android:autoSizeTextType="uniform"
-                                    android:background="@drawable/background_button"
-                                    android:fontFamily="@font/inter"
-                                    android:gravity="center|fill_vertical"
-                                    android:lines="1"
-                                    android:paddingHorizontal="@dimen/padding_big"
-                                    android:paddingVertical="@dimen/padding"
-                                    android:text="@string/empty"
-                                    android:textColor="@android:color/white"
-                                    android:textStyle="bold" />
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="0.25" />
-
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:id="@+id/clan_recruiting_options_average_battles_per_day"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="1"
-                                    android:autoSizeTextType="uniform"
-                                    android:background="@drawable/background_button"
-                                    android:fontFamily="@font/inter"
-                                    android:gravity="center|fill_vertical"
-                                    android:lines="1"
-                                    android:paddingHorizontal="@dimen/padding_big"
-                                    android:paddingVertical="@dimen/padding"
-                                    android:text="@string/empty"
-                                    android:textColor="@android:color/white"
-                                    android:textStyle="bold" />
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="0.25" />
-
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:id="@+id/clan_recruiting_options_vehicles_level"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_weight="1"
-                                    android:autoSizeTextType="uniform"
-                                    android:background="@drawable/background_button"
-                                    android:fontFamily="@font/inter"
-                                    android:gravity="center|fill_vertical"
-                                    android:lines="1"
-                                    android:paddingHorizontal="@dimen/padding_big"
-                                    android:paddingVertical="@dimen/padding"
-                                    android:text="@string/empty"
-                                    android:textColor="@android:color/white"
-                                    android:textStyle="bold" />
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </ru.forblitz.statistics.widget.common.DifferenceViewFlipper>
-
-            </ru.forblitz.statistics.widget.data.ClanDetails>
+                android:layout_weight="0.01"
+                android:background="@drawable/background_layout_nested" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.175" />
+                android:layout_weight="0.025" />
 
-        </android.widget.LinearLayout>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.565">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+                <TextView
+                    android:id="@+id/clan_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter"
+                    android:gravity="start"
+                    android:paddingHorizontal="@dimen/padding_giant"
+                    android:text="@string/loading"
+                    android:textColor="@android:color/white"
+                    android:typeface="monospace" />
+
+            </ScrollView>
+
+        </ru.forblitz.statistics.widget.data.ClanInfo>
+
+        <View
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.025" />
+
+        <ru.forblitz.statistics.widget.data.ClanDetails
+            android:id="@+id/clan_details"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="0.3"
             android:background="@drawable/background_layout"
             android:padding="@dimen/padding_big">
 
-            <ListView
-                android:id="@+id/clan_members_list"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="@dimen/padding_very_big"
-                android:requiresFadingEdge="vertical"
-                android:fadingEdgeLength="@dimen/padding_big" />
+                android:layout_height="0dp"
+                android:layout_weight="0.15"
+                android:orientation="horizontal"
+                android:background="@drawable/background_layout_nested_selected">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/clan_members_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/padding_giant"
-                android:contentDescription="@string/back"
-                android:src="@drawable/ic_baseline_arrow_back_24"
-                android:visibility="gone"
-                app:backgroundTint="@color/blue"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/clan_info_button"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:text="@string/clan_info"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    android:paddingHorizontal="@dimen/padding_big"
+                    android:paddingVertical="@dimen/padding"
+                    app:autoSizeTextType="uniform"
+                    android:background="@drawable/background_button_insets" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/clan_info_recruiting_button"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:text="@string/recruiting_options_info"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    android:paddingHorizontal="@dimen/padding_big"
+                    android:paddingVertical="@dimen/padding"
+                    app:autoSizeTextType="uniform" />
 
-    </ru.forblitz.statistics.widget.common.DifferenceViewFlipper>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.025" />
+
+            <ru.forblitz.statistics.widget.common.DifferenceViewFlipper
+                android:id="@+id/clan_info_flipper"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.775"
+                android:inAnimation="@anim/appearance"
+                android:outAnimation="@anim/disappearance">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:autoSizeTextType="uniform"
+                            android:background="@drawable/background_layout_nested"
+                            android:fontFamily="@font/inter"
+                            android:gravity="center_vertical|start"
+                            android:lines="1"
+                            android:paddingHorizontal="@dimen/padding_big"
+                            android:paddingVertical="@dimen/padding"
+                            android:text="@string/creator_name"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.25" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:autoSizeTextType="uniform"
+                            android:background="@drawable/background_layout_nested"
+                            android:fontFamily="@font/inter"
+                            android:gravity="center_vertical|start"
+                            android:lines="1"
+                            android:paddingHorizontal="@dimen/padding_big"
+                            android:paddingVertical="@dimen/padding"
+                            android:text="@string/created_at"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.25" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:autoSizeTextType="uniform"
+                            android:background="@drawable/background_layout_nested"
+                            android:fontFamily="@font/inter"
+                            android:gravity="center_vertical|start"
+                            android:lines="1"
+                            android:paddingHorizontal="@dimen/padding_big"
+                            android:paddingVertical="@dimen/padding"
+                            android:text="@string/old_name"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.25" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:autoSizeTextType="uniform"
+                            android:background="@drawable/background_layout_nested"
+                            android:fontFamily="@font/inter"
+                            android:gravity="center_vertical|start"
+                            android:lines="1"
+                            android:paddingHorizontal="@dimen/padding_big"
+                            android:paddingVertical="@dimen/padding"
+                            android:text="@string/old_tag"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.25" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:autoSizeTextType="uniform"
+                            android:background="@drawable/background_layout_nested"
+                            android:fontFamily="@font/inter"
+                            android:gravity="center_vertical|start"
+                            android:lines="1"
+                            android:paddingHorizontal="@dimen/padding_big"
+                            android:paddingVertical="@dimen/padding"
+                            android:text="@string/renamed_at"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:layout_weight="0.5" >
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/clan_creator"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:autoSizeTextType="uniform"
+                                android:background="@drawable/background_button"
+                                android:fontFamily="@font/inter"
+                                android:gravity="center|fill_vertical"
+                                android:lines="1"
+                                android:paddingHorizontal="@dimen/padding_big"
+                                android:paddingVertical="@dimen/padding"
+                                android:text="@string/empty"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="0.25" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/clan_created_at"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:autoSizeTextType="uniform"
+                                android:background="@drawable/background_button"
+                                android:fontFamily="@font/inter"
+                                android:gravity="center|fill_vertical"
+                                android:lines="1"
+                                android:paddingHorizontal="@dimen/padding_big"
+                                android:paddingVertical="@dimen/padding"
+                                android:text="@string/empty"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="0.25" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/clan_old_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:autoSizeTextType="uniform"
+                                android:background="@drawable/background_button"
+                                android:fontFamily="@font/inter"
+                                android:gravity="center|fill_vertical"
+                                android:lines="1"
+                                android:paddingHorizontal="@dimen/padding_big"
+                                android:paddingVertical="@dimen/padding"
+                                android:text="@string/empty"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="0.25" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/clan_old_tag"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:autoSizeTextType="uniform"
+                                android:background="@drawable/background_button"
+                                android:fontFamily="@font/inter"
+                                android:gravity="center|fill_vertical"
+                                android:lines="1"
+                                android:paddingHorizontal="@dimen/padding_big"
+                                android:paddingVertical="@dimen/padding"
+                                android:text="@string/empty"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="0.25" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/clan_renamed_at"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:autoSizeTextType="uniform"
+                                android:background="@drawable/background_button"
+                                android:fontFamily="@font/inter"
+                                android:gravity="center|fill_vertical"
+                                android:lines="1"
+                                android:paddingHorizontal="@dimen/padding_big"
+                                android:paddingVertical="@dimen/padding"
+                                android:text="@string/empty"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:autoSizeTextType="uniform"
+                            android:background="@drawable/background_layout_nested"
+                            android:fontFamily="@font/inter"
+                            android:gravity="center_vertical|start"
+                            android:lines="1"
+                            android:paddingHorizontal="@dimen/padding_big"
+                            android:paddingVertical="@dimen/padding"
+                            android:text="@string/recruiting_options_battles"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.25" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:autoSizeTextType="uniform"
+                            android:background="@drawable/background_layout_nested"
+                            android:fontFamily="@font/inter"
+                            android:gravity="center_vertical|start"
+                            android:lines="1"
+                            android:paddingHorizontal="@dimen/padding_big"
+                            android:paddingVertical="@dimen/padding"
+                            android:text="@string/recruiting_options_wins_ratio"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.25" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:autoSizeTextType="uniform"
+                            android:background="@drawable/background_layout_nested"
+                            android:fontFamily="@font/inter"
+                            android:gravity="center_vertical|start"
+                            android:lines="1"
+                            android:paddingHorizontal="@dimen/padding_big"
+                            android:paddingVertical="@dimen/padding"
+                            android:text="@string/recruiting_options_average_damage"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.25" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:autoSizeTextType="uniform"
+                            android:background="@drawable/background_layout_nested"
+                            android:fontFamily="@font/inter"
+                            android:gravity="center_vertical|start"
+                            android:lines="1"
+                            android:paddingHorizontal="@dimen/padding_big"
+                            android:paddingVertical="@dimen/padding"
+                            android:text="@string/recruiting_options_average_battles_per_day"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.25" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:autoSizeTextType="uniform"
+                            android:background="@drawable/background_layout_nested"
+                            android:fontFamily="@font/inter"
+                            android:gravity="center_vertical|start"
+                            android:lines="1"
+                            android:paddingHorizontal="@dimen/padding_big"
+                            android:paddingVertical="@dimen/padding"
+                            android:text="@string/recruiting_options_vehicles_level"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:layout_weight="0.5" >
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/clan_recruiting_options_battles"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:autoSizeTextType="uniform"
+                                android:background="@drawable/background_button"
+                                android:fontFamily="@font/inter"
+                                android:gravity="center|fill_vertical"
+                                android:lines="1"
+                                android:paddingHorizontal="@dimen/padding_big"
+                                android:paddingVertical="@dimen/padding"
+                                android:text="@string/empty"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="0.25" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/clan_recruiting_options_wins_ratio"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:autoSizeTextType="uniform"
+                                android:background="@drawable/background_button"
+                                android:fontFamily="@font/inter"
+                                android:gravity="center|fill_vertical"
+                                android:lines="1"
+                                android:paddingHorizontal="@dimen/padding_big"
+                                android:paddingVertical="@dimen/padding"
+                                android:text="@string/empty"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="0.25" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/clan_recruiting_options_average_damage"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:autoSizeTextType="uniform"
+                                android:background="@drawable/background_button"
+                                android:fontFamily="@font/inter"
+                                android:gravity="center|fill_vertical"
+                                android:lines="1"
+                                android:paddingHorizontal="@dimen/padding_big"
+                                android:paddingVertical="@dimen/padding"
+                                android:text="@string/empty"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="0.25" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/clan_recruiting_options_average_battles_per_day"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:autoSizeTextType="uniform"
+                                android:background="@drawable/background_button"
+                                android:fontFamily="@font/inter"
+                                android:gravity="center|fill_vertical"
+                                android:lines="1"
+                                android:paddingHorizontal="@dimen/padding_big"
+                                android:paddingVertical="@dimen/padding"
+                                android:text="@string/empty"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="0.25" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/clan_recruiting_options_vehicles_level"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:autoSizeTextType="uniform"
+                                android:background="@drawable/background_button"
+                                android:fontFamily="@font/inter"
+                                android:gravity="center|fill_vertical"
+                                android:lines="1"
+                                android:paddingHorizontal="@dimen/padding_big"
+                                android:paddingVertical="@dimen/padding"
+                                android:text="@string/empty"
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </ru.forblitz.statistics.widget.common.DifferenceViewFlipper>
+
+        </ru.forblitz.statistics.widget.data.ClanDetails>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.175" />
+
+    </android.widget.LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/background_layout"
+        android:padding="@dimen/padding_big">
+
+        <ListView
+            android:id="@+id/clan_members_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="@dimen/padding_very_big"
+            android:requiresFadingEdge="vertical"
+            android:fadingEdgeLength="@dimen/padding_big" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/clan_members_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_giant"
+            android:contentDescription="@string/back"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            android:visibility="gone"
+            app:backgroundTint="@color/blue"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

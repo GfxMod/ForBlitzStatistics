@@ -6,7 +6,7 @@ import android.widget.TextView
 import ru.forblitz.statistics.ForBlitzStatisticsApplication
 import ru.forblitz.statistics.R
 import ru.forblitz.statistics.apiloadservice.APILoadService
-import ru.forblitz.statistics.data.Constants.ClanViewFlipperItems
+import ru.forblitz.statistics.data.Constants.ClanBriefFlipperItems
 import ru.forblitz.statistics.dto.ShortClanInfo
 import ru.forblitz.statistics.utils.ParseUtils
 import ru.forblitz.statistics.widget.common.DifferenceViewFlipper
@@ -17,18 +17,18 @@ class ClanBrief : DifferenceViewFlipper {
 
     fun setData(shortClanInfo: ShortClanInfo?) {
         if (shortClanInfo?.clanData != null) {
-            this.displayedChild = ClanViewFlipperItems.IS_A_MEMBER
+            this.displayedChild = ClanBriefFlipperItems.CLAN_INFORMATION
             val name = "[" + shortClanInfo.clanData.tag + "] " + shortClanInfo.clanData.name
             val role = ParseUtils.formatClanRole(this.context, shortClanInfo.role)
             findViewWithTag<TextView>("clan_name").text = name
             findViewWithTag<TextView>("clan_role").text = role
         } else {
-            this.displayedChild = ClanViewFlipperItems.NOT_IS_A_MEMBER
+            this.displayedChild = ClanBriefFlipperItems.IS_NOT_A_MEMBER
         }
     }
 
     fun setServerException(exception: APILoadService.ServerException) {
-        displayedChild = ClanViewFlipperItems.SERVER_EXCEPTION
+        displayedChild = ClanBriefFlipperItems.SERVER_EXCEPTION
 
         findViewWithTag<TextView>("clan_name").setText(
             if (

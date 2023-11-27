@@ -1174,20 +1174,20 @@ class MainActivity : AppCompatActivity() {
             }
 
             val tanksSort = findViewById<RadioGroup>(R.id.tanks_sort)
-            when (tanksSort.indexOfChild(findViewById(tanksSort.checkedRadioButtonId))) {
-                0 -> {
+            when (tanksSort.checkedRadioButtonId) {
+                R.id.radio_battles -> {
                     Collections.sort(sortedVehicles, comparatorByBattles)
                 }
-                1 -> {
+                R.id.radio_average_damage -> {
                     Collections.sort(sortedVehicles, comparatorByAverageDamage)
                 }
-                2 -> {
+                R.id.radio_efficiency -> {
                     Collections.sort(sortedVehicles, comparatorByEfficiency)
                 }
-                3 -> {
+                R.id.radio_average_xp -> {
                     Collections.sort(sortedVehicles, comparatorByAverageXp)
                 }
-                4 -> {
+                R.id.radio_winning_percentage -> {
                     Collections.sort(sortedVehicles, comparatorByWinningPercentage)
                 }
             }

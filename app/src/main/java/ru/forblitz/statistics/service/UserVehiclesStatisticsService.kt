@@ -21,31 +21,33 @@ class UserVehiclesStatisticsService(private val apiService: ApiService) {
         private set
 
     suspend fun get(userID: String, vehiclesIDs: Collection<String>): Map<String, VehicleStatistics> {
-        with(CopyOnWriteArrayList<VehicleStatistics>()) {
-            val jobs: ArrayList<Job> = ArrayList()
-            vehiclesIDs.chunked(MAX_VEHICLES)
-                .forEach { chunkedVehiclesIDs ->
-                    jobs.add(CoroutineScope(Dispatchers.IO).launch {
-                        this@with.addAll(
-                            try {
-                                VehiclesStatisticsService(apiService)
-                                    .get(
-                                        VehiclesStatisticsService.Arguments(
-                                            userID,
-                                            chunkedVehiclesIDs
+        if (data == null) {
+            with(CopyOnWriteArrayList<VehicleStatistics>()) {
+                val jobs: ArrayList<Job> = ArrayList()
+                vehiclesIDs.chunked(MAX_VEHICLES)
+                    .forEach { chunkedVehiclesIDs ->
+                        jobs.add(CoroutineScope(Dispatchers.IO).launch {
+                            this@with.addAll(
+                                try {
+                                    VehiclesStatisticsService(apiService)
+                                        .get(
+                                            VehiclesStatisticsService.Arguments(
+                                                userID,
+                                                chunkedVehiclesIDs
+                                            )
                                         )
-                                    )
-                                    .data!![userID]!!
-                            } catch (e: NullPointerException) {
-                                arrayOf()
-                            }
-                        )
-                    })
-                }
-            jobs.joinAll()
-            data = this@with.associateBy( { it.tankId }, { it } )
-            return data!!
+                                        .data!![userID]!!
+                                } catch (e: NullPointerException) {
+                                    arrayOf()
+                                }
+                            )
+                        })
+                    }
+                jobs.joinAll()
+                data = this@with.associateBy( { it.tankId }, { it } )
+            }
         }
+        return data!!
     }
 
     fun clear() {

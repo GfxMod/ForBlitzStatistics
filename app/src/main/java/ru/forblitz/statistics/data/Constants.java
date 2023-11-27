@@ -53,6 +53,8 @@ public class Constants {
         public static final int IS_NOT_A_MEMBER = 2;
 
         public static final int SERVER_EXCEPTION = 3;
+
+        public static final int LOADING = 4;
     }
 
     public static class ClanBriefFlipperItems {
@@ -60,7 +62,7 @@ public class Constants {
 
         public static final int IS_NOT_A_MEMBER = 1;
 
-        public static final int SERVER_EXCEPTION = 2;
+        public static final int LOADING = 2;
     }
 
     public static class ClanInfoViewFlipperItems {

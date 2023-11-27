@@ -28,7 +28,7 @@ class ClanBrief : DifferenceViewFlipper {
     }
 
     fun setServerException(exception: APILoadService.ServerException) {
-        displayedChild = ClanBriefFlipperItems.SERVER_EXCEPTION
+        displayedChild = ClanBriefFlipperItems.CLAN_INFORMATION
 
         findViewWithTag<TextView>("clan_name").setText(
             if (

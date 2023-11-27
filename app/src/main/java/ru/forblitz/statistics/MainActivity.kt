@@ -74,6 +74,7 @@ import ru.forblitz.statistics.apiloadservice.UserStatisticsService
 import ru.forblitz.statistics.apiloadservice.VehicleSpecsService
 import ru.forblitz.statistics.data.Constants
 import ru.forblitz.statistics.data.Constants.AchievementsViewFlipperItems
+import ru.forblitz.statistics.data.Constants.ClanBriefFlipperItems
 import ru.forblitz.statistics.data.Constants.ClanViewFlipperItems
 import ru.forblitz.statistics.data.Constants.MainViewFlipperItems
 import ru.forblitz.statistics.data.Constants.PlayerStatisticsTypes
@@ -1262,6 +1263,10 @@ class MainActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
+                runOnUiThread {
+                    clanScreen.displayedChild = ClanViewFlipperItems.LOADING
+                    clanBrief.displayedChild = ClanBriefFlipperItems.LOADING
+                }
                 app.userClanService.clear()
                 app.clanInformationService.clear()
 

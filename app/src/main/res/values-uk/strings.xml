@@ -189,5 +189,6 @@
     <string name="sessions_io">Сесії</string>
     <string name="sessions_io_import">Імпортувати сесії</string>
     <string name="sessions_io_export">Експортувати сесії</string>
+    <string name="sessions_io_import_error">Помилка імпорту (%1$s)</string>
 
 </resources>

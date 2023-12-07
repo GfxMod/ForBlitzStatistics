@@ -189,5 +189,6 @@
     <string name="sessions_io">Sessions</string>
     <string name="sessions_io_import">Import sessions</string>
     <string name="sessions_io_export">Export sessions</string>
+    <string name="sessions_io_import_error">Import error (%1$s)</string>
 
 </resources>

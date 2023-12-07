@@ -189,5 +189,6 @@
     <string name="sessions_io">Сессии</string>
     <string name="sessions_io_import">Импортировать сессии</string>
     <string name="sessions_io_export">Экспортировать сессии</string>
+    <string name="sessions_io_import_error">Ошибка импорта (%1$s)</string>
 
 </resources>

@@ -186,4 +186,8 @@
 
     <string name="error_message">Error %1$s: %2$s</string>
 
+    <string name="sessions_io">Sessions</string>
+    <string name="sessions_io_import">Import sessions</string>
+    <string name="sessions_io_export">Export sessions</string>
+
 </resources>

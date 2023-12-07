@@ -91,6 +91,7 @@ import ru.forblitz.statistics.dto.VehicleSpecs
 import ru.forblitz.statistics.dto.VehiclesStatisticsResponse
 import ru.forblitz.statistics.exception.ObjectException
 import ru.forblitz.statistics.helpers.ActivityResultActionManager
+import ru.forblitz.statistics.helpers.SessionsIOHelper
 import ru.forblitz.statistics.service.AdService
 import ru.forblitz.statistics.service.ConnectivityService
 import ru.forblitz.statistics.service.PreferencesService
@@ -313,6 +314,8 @@ class MainActivity : AppCompatActivity() {
         val searchRegionLayout = findViewById<ExtendedRadioGroup>(R.id.search_region_layout)
         val settingsRegionLayout = findViewById<ExtendedRadioGroup>(R.id.settings_region_layout)
         val settingsLocaleLayout = findViewById<ExtendedRadioGroup>(R.id.settings_locale_layout)
+        val settingsSessionsImport = findViewById<View>(R.id.settings_sessions_import)
+        val settingsSessionsExport = findViewById<View>(R.id.settings_sessions_export)
 
         for (i in 0 until searchRegionLayout.childCount) {
             val view = searchRegionLayout.getChildAt(i)
@@ -345,6 +348,18 @@ class MainActivity : AppCompatActivity() {
                 }
             )
         }
+        settingsSessionsImport.setOnClickListener {
+            SessionsIOHelper.importSessionsWithPicker(
+                this@MainActivity,
+                activityResultActionManager,
+                activityResultLauncher
+            )
+        }
+        settingsSessionsExport.setOnClickListener {
+            SessionsIOHelper.exportFBSS(
+                this@MainActivity
+            )
+        }
 
         // Configured settings dimensions
 
@@ -357,6 +372,18 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.settings_locale).updateLayoutParams<LinearLayout.LayoutParams> {
             height = (InterfaceUtils.getY(this@MainActivity) * 0.905 * 0.05).toInt()
+        }
+
+        findViewById<View>(R.id.settings_sessions_io).updateLayoutParams<LinearLayout.LayoutParams> {
+            height = (InterfaceUtils.getY(this@MainActivity) * 0.905 * 0.05).toInt()
+        }
+
+        settingsSessionsImport.updateLayoutParams<LinearLayout.LayoutParams> {
+            height = (InterfaceUtils.getY(this@MainActivity) * 0.905 * 0.075).toInt()
+        }
+
+        settingsSessionsExport.updateLayoutParams<LinearLayout.LayoutParams> {
+            height = (InterfaceUtils.getY(this@MainActivity) * 0.905 * 0.075).toInt()
         }
 
         findViewById<View>(R.id.settings_switches_name).updateLayoutParams<LinearLayout.LayoutParams> {

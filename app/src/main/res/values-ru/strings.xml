@@ -186,4 +186,8 @@
 
     <string name="error_message">Ошибка %1$s: %2$s</string>
 
+    <string name="sessions_io">Сессии</string>
+    <string name="sessions_io_import">Импортировать сессии</string>
+    <string name="sessions_io_export">Экспортировать сессии</string>
+
 </resources>

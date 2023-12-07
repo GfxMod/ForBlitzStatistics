@@ -353,7 +353,12 @@ class MainActivity : AppCompatActivity() {
                 this@MainActivity,
                 activityResultActionManager,
                 activityResultLauncher
-            )
+            ) {
+                with(intent) {
+                    finish()
+                    startActivity(this)
+                }
+            }
         }
         settingsSessionsExport.setOnClickListener {
             SessionsIOHelper.exportFBSS(

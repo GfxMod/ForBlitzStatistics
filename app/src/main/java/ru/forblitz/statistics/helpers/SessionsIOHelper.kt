@@ -78,7 +78,8 @@ class SessionsIOHelper {
         fun importSessionsWithPicker(
             context: Context,
             activityResultActionManager: ActivityResultActionManager,
-            activityResultLauncher: ActivityResultLauncher<Intent>
+            activityResultLauncher: ActivityResultLauncher<Intent>,
+            restartActivity: () -> Unit
         ) {
             activityResultActionManager.action = { activityResult ->
                 activityResult.data.also { pickedFile ->
@@ -94,6 +95,7 @@ class SessionsIOHelper {
                                     importFBSS(context, this@tmpFBSS)
                                     delete()
                                 }
+                                restartActivity.invoke()
                             } catch (e: Exception) {
                                 CoroutineScope(Dispatchers.Main).launch {
                                     Toast.makeText(context, context.getString(R.string.sessions_io_import_error, e.javaClass), Toast.LENGTH_SHORT).show()

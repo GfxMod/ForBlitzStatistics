@@ -32,6 +32,7 @@ import android.widget.TextView
 import android.widget.Toast
 import android.widget.ViewFlipper
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.content.res.AppCompatResources
@@ -89,6 +90,7 @@ import ru.forblitz.statistics.dto.StatisticsData
 import ru.forblitz.statistics.dto.VehicleSpecs
 import ru.forblitz.statistics.dto.VehiclesStatisticsResponse
 import ru.forblitz.statistics.exception.ObjectException
+import ru.forblitz.statistics.helpers.ActivityResultActionManager
 import ru.forblitz.statistics.service.AdService
 import ru.forblitz.statistics.service.ConnectivityService
 import ru.forblitz.statistics.service.PreferencesService
@@ -127,6 +129,14 @@ class MainActivity : AppCompatActivity() {
     private var isKeyboardShowing: Boolean = false
 
     private var searchProcessing = false
+
+    private val activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            activityResultActionManager.invoke(result.data)
+        }
+    }
+
+    private val activityResultActionManager = ActivityResultActionManager()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

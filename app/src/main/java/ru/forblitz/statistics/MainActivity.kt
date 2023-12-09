@@ -485,6 +485,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+        // check is privacy policy accepted
+
+        checkIsPrivacyPolicyAccepted()
+
         // Set region
 
         setRegion()
@@ -1406,34 +1410,24 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setRegion() {
         findViewById<EditText>(R.id.search_field).setText("", TextView.BufferType.EDITABLE)
+        app.apiService.setRegion(app.preferencesService.region!!)
+        findViewById<ExtendedRadioGroup>(R.id.search_region_layout).setCheckedItem(app.preferencesService.region!!)
+        findViewById<ExtendedRadioGroup>(R.id.settings_region_layout).setCheckedItem(app.preferencesService.region!!)
+    }
 
-        // If the region is not set, it means that the application is launched
-        // for the first time. An AlertDialog about the privacy policy is
-        // created, and the region is automatically set to 'ru'. In any other
-        // case, the specified region is set and updateLastSearch() is called
-        // (because the region has changed, the search history has changed)
-
-        if (app.preferencesService.region == "notSpecified") {
-            app.preferencesService.region = "ru"
-            app.apiService.setRegion(app.preferencesService.region!!)
-
+    private fun checkIsPrivacyPolicyAccepted() {
+        if (!app.preferencesService.isPrivacyPolicyAccepted) {
             InterfaceUtils.createAlertDialog(
                 this@MainActivity,
                 this@MainActivity.getString(R.string.terms_of_service),
                 HtmlCompat.fromHtml(this@MainActivity.getString(R.string.terms_of_service_desc), HtmlCompat.FROM_HTML_MODE_LEGACY),
                 this@MainActivity.getString(R.string.accept),
-                Runnable {  },
+                Runnable { app.preferencesService.isPrivacyPolicyAccepted = true },
                 this@MainActivity.getString(R.string.exit),
                 Runnable { finish() }
             )
                 .show()
                 .findViewById<TextView>(android.R.id.message)!!.movementMethod = LinkMovementMethod.getInstance()
-
-            setRegion()
-        } else {
-            app.apiService.setRegion(app.preferencesService.region!!)
-            findViewById<ExtendedRadioGroup>(R.id.search_region_layout).setCheckedItem(app.preferencesService.region!!)
-            findViewById<ExtendedRadioGroup>(R.id.settings_region_layout).setCheckedItem(app.preferencesService.region!!)
         }
     }
 

@@ -191,4 +191,8 @@
     <string name="sessions_io_export">Экспортировать сессии</string>
     <string name="sessions_io_import_error">Ошибка импорта (%1$s)</string>
 
+    <string name="sessions_alert_title">Нет данных для отображения</string>
+    <string name="sessions_statistics_alert_text">Сыграйте ещё минимум один бой и обновите статистику этого аккаунта, чтобы сохранить новую точку сравнения.</string>
+    <string name="sessions_list_alert_text">Необходимо иметь минимум две сохраненные сессии для отображения. Сыграйте ещё минимум один бой и обновите статистику этого аккаунта, чтобы сохранить новую точку сравнения.</string>
+
 </resources>

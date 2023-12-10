@@ -495,7 +495,7 @@
                 android:weightSum="0.1875">
 
                 <ru.forblitz.statistics.widget.common.ExtendedButton
-                    android:id="@+id/statistics_session_stat_button"
+                    android:tag="statistics_session_switch"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
@@ -504,8 +504,6 @@
                     android:hapticFeedbackEnabled="true"
                     android:fontFamily="@font/inter"
                     android:gravity="center"
-                    android:paddingHorizontal="30dp"
-                    android:paddingVertical="@dimen/padding_very_big"
                     android:text="@string/to_session_stat"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
@@ -519,7 +517,7 @@
                     android:layout_weight="0.0375" />
 
                 <ru.forblitz.statistics.widget.common.ExtendedButton
-                    android:id="@+id/statistics_sessions_list_button"
+                    android:tag="statistics_sessions_list"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
@@ -528,8 +526,6 @@
                     android:hapticFeedbackEnabled="true"
                     android:fontFamily="@font/inter"
                     android:gravity="center"
-                    android:paddingHorizontal="30dp"
-                    android:paddingVertical="@dimen/padding_very_big"
                     android:text="@string/select_session"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"

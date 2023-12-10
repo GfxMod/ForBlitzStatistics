@@ -613,7 +613,7 @@ class MainActivity : AppCompatActivity() {
 
                 val statisticsDetailsButton = findViewById<View>(R.id.statistics_details_button)
                 val statisticsDetailsBack = findViewById<View>(R.id.statistics_details_back)
-                val statisticsSessionListButton = findViewById<View>(R.id.statistics_sessions_list_button)
+                val statisticsSessionButtons = findViewById<SessionButtonsLayout>(R.id.statistics_session_buttons)
                 val clanMembersButton = findViewById<View>(R.id.clan_members_button)
                 val clanMembersListBackView = findViewById<View>(R.id.clan_members_back)
                 val tanksDetailsBack = findViewById<View>(R.id.tanks_details_back)
@@ -622,7 +622,7 @@ class MainActivity : AppCompatActivity() {
 
                 val mainFlipper = findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
                 val achievementsFlipper = findViewById<DifferenceViewFlipper>(R.id.achievements_screen)
-                val statisticsSessionStatButton = findViewById<TextView>(R.id.statistics_session_stat_button)
+                val statisticsSessionStatButton = statisticsSessionButtons.statisticsButton
 
                 // Shows the loading screen and the loading indicator, blocks all
                 // interactive elements during loading
@@ -656,7 +656,7 @@ class MainActivity : AppCompatActivity() {
                 statisticsDetailsBack.setOnClickListener {
                     statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
                 }
-                statisticsSessionListButton.setOnClickListener {
+                statisticsSessionButtons.listButtonAction = View.OnClickListener {
                     statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.SESSIONS
                 }
                 clanMembersButton.setOnClickListener {
@@ -1015,7 +1015,7 @@ class MainActivity : AppCompatActivity() {
         val statisticsSessionButtons = findViewById<SessionButtonsLayout>(R.id.statistics_session_buttons)
         val statisticsFastStat = findViewById<PlayerFastStat>(R.id.statistics_fast_stat)
         val statisticsSessionsList = findViewById<ListView>(R.id.statistics_sessions_list)
-        val statisticsSessionStatButton = findViewById<TextView>(R.id.statistics_session_stat_button)
+        val statisticsSessionStatButton = statisticsSessionButtons.statisticsButton
         val fragmentStatistics = findViewById<ViewFlipper>(R.id.fragment_statistics)
 
         runOnUiThread {
@@ -1070,7 +1070,7 @@ class MainActivity : AppCompatActivity() {
                 this@MainActivity, sessions
             )
 
-            statisticsSessionStatButton.setOnClickListener {
+            statisticsSessionButtons.statisticsButtonAction = View.OnClickListener {
                 fragmentStatistics.startAnimation(fragmentStatistics.outAnimation)
 
                 if (!statisticsSessionStatButton.isActivated) {
@@ -1086,7 +1086,7 @@ class MainActivity : AppCompatActivity() {
                                     app.userService.accountId!!,
                                     getPlayerStatisticsTypes()
                                 )
-                        ))
+                            ))
 
                         fragmentStatistics.startAnimation(fragmentStatistics.inAnimation)
                         statisticsSessionStatButton.isActivated = true

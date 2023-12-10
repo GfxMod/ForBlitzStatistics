@@ -104,6 +104,7 @@ import ru.forblitz.statistics.utils.ParseUtils
 import ru.forblitz.statistics.utils.StatisticsDataUtils
 import ru.forblitz.statistics.utils.Utils
 import ru.forblitz.statistics.widget.common.DifferenceViewFlipper
+import ru.forblitz.statistics.widget.common.ExtendedImageButton
 import ru.forblitz.statistics.widget.common.ExtendedRadioGroup
 import ru.forblitz.statistics.widget.data.AchievementsScreen
 import ru.forblitz.statistics.widget.data.ClanBrief
@@ -599,7 +600,7 @@ class MainActivity : AppCompatActivity() {
      * necessary all actions to view statistics. It can also be called forcibly
      * to perform a search.
      */
-    fun onClickSearchButton(view: View) {
+    fun onClickSearchButton(searchButton: View) {
         runOnUiThread {
             if (!searchProcessing) {
                 searchProcessing = true
@@ -619,6 +620,7 @@ class MainActivity : AppCompatActivity() {
                 val tanksDetailsBack = findViewById<View>(R.id.tanks_details_back)
                 val tanksList = findViewById<ListView>(R.id.tanks_list)
                 val tanksFilters = findViewById<View>(R.id.tanks_filters)
+                val sessionsReloadButton = findViewById<ExtendedImageButton>(R.id.statistics_session_reload)
 
                 val mainFlipper = findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
                 val achievementsFlipper = findViewById<DifferenceViewFlipper>(R.id.achievements_screen)
@@ -639,7 +641,7 @@ class MainActivity : AppCompatActivity() {
                 // Plays animation
 
                 InterfaceUtils.playCycledAnimation(
-                    view,
+                    searchButton,
                     false
                 )
 
@@ -672,6 +674,9 @@ class MainActivity : AppCompatActivity() {
                 tanksFilters.setOnClickListener {
                     HapticUtils.performHapticFeedback(tanksFilters)
                     tanksLayoutsFlipper.displayedChild = 3
+                }
+                sessionsReloadButton.setOnClickListener {
+                    searchButton.performClick()
                 }
 
                 // Set params of tanksList

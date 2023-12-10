@@ -195,4 +195,6 @@
     <string name="sessions_statistics_alert_text">Play at least one more match and update this account\'s statistics to create a new comparison point.</string>
     <string name="sessions_list_alert_text">At least two saved sessions are required for display. Play at least one more match and update this account\'s statistics to create a new comparison point.</string>
 
+    <string name="refresh_statistics">Update statistics</string>
+
 </resources>

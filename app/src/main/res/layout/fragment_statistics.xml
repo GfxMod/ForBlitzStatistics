@@ -494,22 +494,44 @@
                 android:orientation="vertical"
                 android:weightSum="0.1875">
 
-                <ru.forblitz.statistics.widget.common.ExtendedButton
-                    android:tag="statistics_session_switch"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
                     android:layout_weight="0.075"
-                    android:background="@drawable/background_sessions_true"
-                    android:hapticFeedbackEnabled="true"
-                    android:fontFamily="@font/inter"
-                    android:gravity="center"
-                    android:text="@string/to_session_stat"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    android:typeface="normal"
-                    app:autoSizeTextType="uniform" />
+                    android:orientation="horizontal">
+
+                    <ru.forblitz.statistics.widget.common.ExtendedButton
+                        android:tag="statistics_session_switch"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@drawable/background_sessions_true"
+                        android:hapticFeedbackEnabled="true"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:text="@string/to_session_stat"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="normal"
+                        app:autoSizeTextType="uniform" />
+
+                    <Space
+                        android:layout_width="@dimen/padding_big"
+                        android:layout_height="match_parent" />
+
+                    <ru.forblitz.statistics.widget.common.ExtendedImageButton
+                        android:id="@+id/statistics_session_reload"
+                        android:layout_width="0px"
+                        android:layout_height="match_parent"
+                        whatever:main_dimension="vertical"
+                        android:background="@drawable/background_layout_nested_selected"
+                        android:src="@drawable/outline_find_replace_24"
+                        android:contentDescription="@string/delete" />
+
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"

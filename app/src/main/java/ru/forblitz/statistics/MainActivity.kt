@@ -29,6 +29,7 @@ import android.widget.ListView
 import android.widget.RadioGroup
 import android.widget.TextSwitcher
 import android.widget.TextView
+import android.widget.TextView.BufferType
 import android.widget.Toast
 import android.widget.ViewFlipper
 import androidx.activity.OnBackPressedCallback
@@ -521,6 +522,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        findViewById<DifferenceViewFlipper>(R.id.statistics_layouts_flipper)?.also { statisticsLayoutFlipper ->
+            if (statisticsLayoutFlipper.displayedChild == StatisticsViewFlipperItems.STATISTICS) {
+                app.userService.nickname?.also { nickname ->
+                    findViewById<EditText>(R.id.search_field)?.apply {
+                        setText(nickname, BufferType.EDITABLE)
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Restarts the activity with the locale set
      * @param locale Locale code to be applied
@@ -731,7 +745,7 @@ class MainActivity : AppCompatActivity() {
                                 runOnUiThread {
                                     findViewById<EditText>(R.id.search_field).setText(
                                         app.userService.nickname!!,
-                                        TextView.BufferType.EDITABLE
+                                        BufferType.EDITABLE
                                     )
                                 }
                                 app.recordDatabase.recordDao().addRecord(
@@ -758,7 +772,7 @@ class MainActivity : AppCompatActivity() {
                                 searchProcessing = false
                                 runOnUiThread {
                                     mainFlipper.displayedChild = MainViewFlipperItems.ENTER_NICKNAME
-                                    searchField.setText("", TextView.BufferType.EDITABLE)
+                                    searchField.setText("", BufferType.EDITABLE)
 
                                     InterfaceUtils.createAlertDialog(
                                         this@MainActivity,
@@ -1414,7 +1428,7 @@ class MainActivity : AppCompatActivity() {
      * [R.id.settings_region_layout]
      */
     private fun setRegion() {
-        findViewById<EditText>(R.id.search_field).setText("", TextView.BufferType.EDITABLE)
+        findViewById<EditText>(R.id.search_field).setText("", BufferType.EDITABLE)
         app.apiService.setRegion(app.preferencesService.region!!)
         findViewById<ExtendedRadioGroup>(R.id.search_region_layout).setCheckedItem(app.preferencesService.region!!)
         findViewById<ExtendedRadioGroup>(R.id.settings_region_layout).setCheckedItem(app.preferencesService.region!!)

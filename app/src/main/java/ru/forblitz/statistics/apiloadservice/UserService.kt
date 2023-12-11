@@ -26,9 +26,9 @@ class UserService(private val apiService: ApiService) : APILoadService<UserServi
     }
 
     val nickname: String?
-        get() = data?.data?.get(0)?.nickname
+        get() = data?.data?.getOrNull(0)?.nickname
 
     val accountId: String?
-        get() = data?.data?.get(0)?.accountId
+        get() = data?.data?.getOrNull(0)?.accountId
 
 }

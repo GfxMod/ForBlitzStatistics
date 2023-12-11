@@ -79,7 +79,7 @@ class ClanDetails : LinearLayout {
         } else {
             clanOldTag.text = this.context.getString(R.string.empty)
         }
-        if (fullClanInfo.renamedAt != null) {
+        if (fullClanInfo.renamedAt != null && fullClanInfo.renamedAt.toLong() != 0L) {
             clanRenamedAt.text = ParseUtils.formatSecondsTimestampToDate(fullClanInfo.renamedAt)
         } else {
             clanRenamedAt.text = this.context.getString(R.string.empty)

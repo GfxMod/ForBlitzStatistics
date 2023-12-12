@@ -26,6 +26,13 @@ public class Constants {
 
     public static String achievementIconNamePrefix = "ic_medal_";
 
+    public static class ViewPagerItems {
+        public static final int FAST_STAT = 0;
+        public static final int ACHIEVEMENTS = 1;
+        public static final int CLAN = 2;
+        public static final int VEHICLES = 3;
+    }
+
     public static class MainViewFlipperItems {
         public static final int ENTER_NICKNAME = 0;
         public static final int LOADING = 1;

@@ -82,6 +82,7 @@ import ru.forblitz.statistics.data.Constants.MainViewFlipperItems
 import ru.forblitz.statistics.data.Constants.PlayerStatisticsTypes
 import ru.forblitz.statistics.data.Constants.StatisticsViewFlipperItems
 import ru.forblitz.statistics.data.Constants.TABS_COUNT
+import ru.forblitz.statistics.data.Constants.ViewPagerItems
 import ru.forblitz.statistics.data.Constants.achievementsInRow
 import ru.forblitz.statistics.data.Constants.animationDurationMillis
 import ru.forblitz.statistics.data.RecordDatabase
@@ -421,17 +422,17 @@ class MainActivity : AppCompatActivity() {
                     findViewById<View>(R.id.settings_button).performClick()
                 } else {
                     when (viewPager.currentItem) {
-                        0 -> {
+                        ViewPagerItems.FAST_STAT -> {
                             if (statisticsLayoutsFlipper.displayedChild != 0) {
                                 statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
                             }
                         }
-                        1 -> {
+                        ViewPagerItems.CLAN -> {
                             if (clanScreen.displayedChild == ClanViewFlipperItems.MEMBERS_LIST) {
                                 clanScreen.displayedChild = ClanViewFlipperItems.CLAN_INFORMATION
                             }
                         }
-                        2 -> {
+                        ViewPagerItems.VEHICLES -> {
                             if (tanksLayoutsFlipper.displayedChild == 1) {
                                 tanksLayoutsFlipper.displayedChild = 0
                             }

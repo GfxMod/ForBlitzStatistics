@@ -662,7 +662,7 @@ class MainActivity : AppCompatActivity() {
                 statisticsDetailsBack.setOnClickListener {
                     statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
                 }
-                statisticsSessionButtons.listButtonAction = View.OnClickListener {
+                statisticsSessionButtons.actions.listButtonAction = {
                     statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.SESSIONS
                 }
                 clanMembersButton.setOnClickListener {
@@ -1070,7 +1070,7 @@ class MainActivity : AppCompatActivity() {
                 this@MainActivity, sessions
             )
 
-            statisticsSessionButtons.statisticsButtonAction = View.OnClickListener {
+            statisticsSessionButtons.actions.statisticsButtonAction =  {
                 fragmentStatistics.startAnimation(fragmentStatistics.outAnimation)
 
                 if (!statisticsSessionStatButton.isActivated) {

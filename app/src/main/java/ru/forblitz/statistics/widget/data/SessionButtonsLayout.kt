@@ -2,7 +2,7 @@ package ru.forblitz.statistics.widget.data
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View.OnClickListener
+import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.content.res.AppCompatResources
 import ru.forblitz.statistics.R
@@ -16,9 +16,7 @@ class SessionButtonsLayout : LinearLayout {
     private val listButton: ExtendedButton
         get() = findViewWithTag("statistics_sessions_list")
 
-
-    var statisticsButtonAction: OnClickListener = OnClickListener {  }
-    var listButtonAction: OnClickListener = OnClickListener {  }
+    val actions: Actions = Actions()
 
     private var inactiveStatisticsButtonAction: (() -> Unit) = {
         InterfaceUtils.createAlertDialog(
@@ -79,15 +77,15 @@ class SessionButtonsLayout : LinearLayout {
         }
         if (variant == ButtonsVisibility.ONLY_FLIP) {
             statisticsButton.apply(activeButtonStyle)
-                .setOnClickListener(statisticsButtonAction)
+                .setOnClickListener { actions.statisticsButtonAction?.invoke(statisticsButton) }
             listButton.apply(inactiveButtonStyle)
                 .setOnClickListener { inactiveListButtonAction.invoke() }
         }
         if (variant == ButtonsVisibility.ALL) {
             statisticsButton.apply(activeButtonStyle)
-                .setOnClickListener(statisticsButtonAction)
+                .setOnClickListener { actions.statisticsButtonAction?.invoke(statisticsButton) }
             listButton.apply(activeButtonStyle)
-                .setOnClickListener(listButtonAction)
+                .setOnClickListener { actions.listButtonAction?.invoke(listButton) }
         }
     }
 
@@ -96,4 +94,10 @@ class SessionButtonsLayout : LinearLayout {
         ONLY_FLIP,
         ALL
     }
+
+    class Actions {
+        var statisticsButtonAction: ((View) -> Unit)? = null
+        var listButtonAction: ((View) -> Unit)? = null
+    }
+
 }

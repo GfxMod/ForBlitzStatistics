@@ -35,7 +35,11 @@ class SessionService(private var context: Context) {
 
     lateinit var list: ArrayList<File>
     val subList: ArrayList<File>
-        get() = ArrayList(list.subList(1, list.size))
+        get() = if (list.isNotEmpty()) {
+            ArrayList(list.subList(1, list.size))
+        } else {
+            list
+        }
 
     var selectedSessionIndex: Int = 0
 
@@ -137,7 +141,7 @@ class SessionService(private var context: Context) {
         with(File(sessionsDirectory(), "$accountId-$lastBattleTime.$region")) {
             if (!this.exists()) {
                 createNewFile()
-                FileWriter(name).use {
+                FileWriter(path).use {
                     it.write(json)
                 }
             }

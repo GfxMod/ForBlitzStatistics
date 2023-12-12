@@ -92,7 +92,6 @@ import ru.forblitz.statistics.dto.VehicleSpecs
 import ru.forblitz.statistics.dto.VehiclesStatisticsResponse
 import ru.forblitz.statistics.exception.ObjectException
 import ru.forblitz.statistics.helpers.ActivityResultActionManager
-import ru.forblitz.statistics.helpers.SessionsIOHelper
 import ru.forblitz.statistics.service.AdService
 import ru.forblitz.statistics.service.ConnectivityService
 import ru.forblitz.statistics.service.PreferencesService
@@ -101,7 +100,6 @@ import ru.forblitz.statistics.service.SessionService
 import ru.forblitz.statistics.service.UserVehiclesStatisticsService
 import ru.forblitz.statistics.utils.HapticUtils
 import ru.forblitz.statistics.utils.InterfaceUtils
-import ru.forblitz.statistics.utils.ParseUtils
 import ru.forblitz.statistics.utils.StatisticsDataUtils
 import ru.forblitz.statistics.utils.Utils
 import ru.forblitz.statistics.widget.common.DifferenceViewFlipper
@@ -114,7 +112,6 @@ import ru.forblitz.statistics.widget.data.PlayerFastStat
 import ru.forblitz.statistics.widget.data.SessionButtonsLayout
 import ru.forblitz.statistics.widget.data.SessionButtonsLayout.ButtonsVisibility
 import ru.forblitz.statistics.widget.data.SettingsSwitchesList
-import java.io.File
 import java.util.Collections
 import java.util.Locale
 
@@ -297,10 +294,6 @@ class MainActivity : AppCompatActivity() {
             RecordDatabase::class.java, "history-database"
         ).build()
 
-        // Creates a session directory
-
-        app.sessionService.createSessionDir()
-
         // Initialization of app.preferences
 
         app.preferencesService = PreferencesService(getSharedPreferences("settings", MODE_PRIVATE))
@@ -351,8 +344,7 @@ class MainActivity : AppCompatActivity() {
             )
         }
         settingsSessionsImport.setOnClickListener {
-            SessionsIOHelper.importSessionsWithPicker(
-                this@MainActivity,
+            app.sessionService.importSessionsWithPicker(
                 activityResultActionManager,
                 activityResultLauncher
             ) {
@@ -363,9 +355,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         settingsSessionsExport.setOnClickListener {
-            SessionsIOHelper.exportFBSS(
-                this@MainActivity
-            )
+            app.sessionService.exportFBSS()
         }
 
         // Configured settings dimensions
@@ -906,7 +896,7 @@ class MainActivity : AppCompatActivity() {
                         }
                         addOnCheckedChangeListener { _, _ ->
                             updatePlayerStatistics()
-                            setSessionStat(app.sessionService.getSelectedSessionIndex()!!) }
+                            updateSessionStatistics(app.sessionService.selectedSessionIndex) }
                     }
                     with(findViewById<MaterialButton>(R.id.statistics_toggle_rating)) {
                         visibility = if (app.userStatisticsService.ratingStatistics.battles != 0) {
@@ -918,7 +908,7 @@ class MainActivity : AppCompatActivity() {
                         }
                         addOnCheckedChangeListener { _, _ ->
                             updatePlayerStatistics()
-                            setSessionStat(app.sessionService.getSelectedSessionIndex()!!)
+                            updateSessionStatistics(app.sessionService.selectedSessionIndex)
                         }
                     }
                     with(findViewById<MaterialButton>(R.id.statistics_toggle_clan)) {
@@ -931,12 +921,12 @@ class MainActivity : AppCompatActivity() {
                         }
                         addOnCheckedChangeListener { _, _ ->
                             updatePlayerStatistics()
-                            setSessionStat(app.sessionService.getSelectedSessionIndex()!!)
+                            updateSessionStatistics(app.sessionService.selectedSessionIndex)
                         }
                     }
 
                     updatePlayerStatistics()
-                    setSessionStat(0)
+                    updateSessionStatistics(0)
 
                     searchProcessing = false
                 }
@@ -963,84 +953,75 @@ class MainActivity : AppCompatActivity() {
     /**
      * Gets 'session' statistics and sets it for all 'session' elements
      */
-    private fun setSessionStat(index: Int) {
-
-        // Saves the current session to a file
-
-        app.sessionService.createSessionFile(
-            app.userStatisticsService.json!!,
-            app.userService.accountId!!,
-            app.userStatisticsService.timestamp,
-            app.preferencesService.region!!
-        )
-        app.sessionService.getSessionsList(app.userService.accountId!!, app.preferencesService.region!!)
-
-        // Checks whether the current session matches the last one. If yes,
-        // then removes it from the list.
-
-        if (
-            app.userStatisticsService.timestamp
-            ==
-            ParseUtils.parseTimestamp(app.sessionService.getSessionsList()[0], true)
-        ) {
-            app.sessionService.getSessionsList().removeAt(0)
-        }
-
-        // Fills in the list of sessions that will be displayed with actions
-
+    private fun updateSessionStatistics(index: Int) {
         val statisticsLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.statistics_layouts_flipper)
-
-        val sessions = ArrayList<Session>(0)
-        for (i in 0 until app.sessionService.getSessionsList().size) {
-            val session = Session()
-            session.path = app.sessionService.getSessionsList()[i]
-            session.set = Runnable {
-                setSessionStat(i)
-                statisticsLayoutsFlipper.displayedChild = 0
-            }
-            session.delete = Runnable {
-                if (i == index) {
-                    Snackbar.make(statisticsLayoutsFlipper, getString(R.string.delete_select), Snackbar.LENGTH_SHORT).show()
-                } else {
-                    InterfaceUtils.createAlertDialog(
-                        this@MainActivity,
-                        this@MainActivity.getString(R.string.delete),
-                        this@MainActivity.getString(R.string.delete_alert),
-                        this@MainActivity.getString(R.string.delete),
-                        Runnable {
-                            if (File(app.sessionService.getSessionsList()[i]).delete()) {
-                                Snackbar.make(statisticsLayoutsFlipper, getString(R.string.delete_successfully), Snackbar.LENGTH_SHORT).show()
-                                if (index != sessions.size - 1) {
-                                    setSessionStat(index)
-                                } else {
-                                    setSessionStat(index - 1)
-                                }
-                                statisticsLayoutsFlipper.displayedChild = 0
-                            } else {
-                                Snackbar.make(statisticsLayoutsFlipper, getString(R.string.delete_failed), Snackbar.LENGTH_SHORT).show()
-                            }
-                        },
-                        this@MainActivity.getString(android.R.string.cancel),
-                        Runnable {  }
-                    ).show()
-                }
-            }
-            session.isSelected = i == index
-            sessions.add(session)
-        }
-
-        // Displays on the screen
-
         val statisticsSessionButtons = findViewById<SessionButtonsLayout>(R.id.statistics_session_buttons)
         val statisticsFastStat = findViewById<PlayerFastStat>(R.id.statistics_fast_stat)
         val statisticsSessionsList = findViewById<ListView>(R.id.statistics_sessions_list)
         val statisticsSessionStatButton = statisticsSessionButtons.statisticsButton
         val fragmentStatistics = findViewById<ViewFlipper>(R.id.fragment_statistics)
 
+        // Updates service with new data
+
+        app.sessionService.update(
+            app.userService.accountId!!,
+            app.userStatisticsService.timestamp,
+            app.userStatisticsService.json!!,
+            app.preferencesService.region!!
+        )
+
+        // Saves the current session to a file
+
+        app.sessionService.createSessionDir()
+        app.sessionService.createSessionFile()
+
+        // Fills in the list of sessions that will be displayed with actions
+
+        val sessions = ArrayList<Session>()
+        for (i in 0 until app.sessionService.subList.size) {
+            sessions.add(Session().apply {
+                this.path = app.sessionService.subList[i].path
+                this.set = Runnable {
+                    updateSessionStatistics(i)
+                    statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
+                }
+                this.delete = Runnable {
+                    if (i == index) {
+                        Snackbar.make(statisticsLayoutsFlipper, getString(R.string.delete_select), Snackbar.LENGTH_SHORT).show()
+                    } else {
+                        InterfaceUtils.createAlertDialog(
+                            this@MainActivity,
+                            this@MainActivity.getString(R.string.delete),
+                            this@MainActivity.getString(R.string.delete_alert),
+                            this@MainActivity.getString(R.string.delete),
+                            Runnable {
+                                if (app.sessionService.subList[i].delete()) {
+                                    Snackbar.make(statisticsLayoutsFlipper, getString(R.string.delete_successfully), Snackbar.LENGTH_SHORT).show()
+                                    if (index != sessions.size - 1) {
+                                        updateSessionStatistics(index)
+                                    } else {
+                                        updateSessionStatistics(index - 1)
+                                    }
+                                    statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
+                                } else {
+                                    Snackbar.make(statisticsLayoutsFlipper, getString(R.string.delete_failed), Snackbar.LENGTH_SHORT).show()
+                                }
+                            },
+                            this@MainActivity.getString(android.R.string.cancel),
+                            Runnable {  }
+                        ).show()
+                    }
+                }
+                this.isSelected = i == index
+            })
+        }
+
+        // Displays on the screen
+
         runOnUiThread {
 
             statisticsSessionButtons.setButtonsVisibility(
-                when(app.sessionService.getSessionsList().size) {
+                when(app.sessionService.subList.size) {
                     0 -> {
                         ButtonsVisibility.NOTHING
                     }
@@ -1054,7 +1035,7 @@ class MainActivity : AppCompatActivity() {
             )
 
             statisticsFastStat.setSessionData(
-                when(app.sessionService.getSessionsList().size) {
+                when(app.sessionService.subList.size) {
                     0 -> {
                         StatisticsData()
                     }
@@ -1062,7 +1043,7 @@ class MainActivity : AppCompatActivity() {
                         StatisticsDataUtils.calculateSessionDifferences(
                             app.userStatisticsService.getStatisticsByEnum(getPlayerStatisticsTypes()),
                             StatisticsDataUtils.parse(
-                                File(app.sessionService.getSessionsList()[index]).readText(),
+                                app.sessionService.subList[index].readText(),
                                 app.userService.accountId!!,
                                 getPlayerStatisticsTypes()
                             )
@@ -1076,14 +1057,14 @@ class MainActivity : AppCompatActivity() {
                     StatisticsDataUtils.calculateFieldDifferences(
                         app.userStatisticsService.getStatisticsByEnum(getPlayerStatisticsTypes()),
                         StatisticsDataUtils.parse(
-                            File(app.sessionService.getSessionsList()[index]).readText(),
+                            app.sessionService.subList[index].readText(),
                             app.userService.accountId!!,
                             getPlayerStatisticsTypes()
                         )
                     )
                 )
             }
-            app.sessionService.setSelectedSessionIndex(index)
+            app.sessionService.selectedSessionIndex = index
 
             statisticsSessionsList.adapter = SessionAdapter(
                 this@MainActivity, sessions
@@ -1101,7 +1082,7 @@ class MainActivity : AppCompatActivity() {
                             StatisticsDataUtils.calculateFieldDifferences(
                                 app.userStatisticsService.getStatisticsByEnum(getPlayerStatisticsTypes()),
                                 StatisticsDataUtils.parse(
-                                    File(app.sessionService.getSessionsList()[index]).readText(),
+                                    app.sessionService.subList[index].readText(),
                                     app.userService.accountId!!,
                                     getPlayerStatisticsTypes()
                                 )
@@ -1125,7 +1106,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            // TODO: refactor
             // Displays the loading screen on tanks layout and waits for data loading to finish
 
             findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper).displayedChild = MainViewFlipperItems.STATISTICS

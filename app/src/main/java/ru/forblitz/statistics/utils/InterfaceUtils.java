@@ -2,6 +2,7 @@ package ru.forblitz.statistics.utils;
 
 import static ru.forblitz.statistics.data.Constants.StatisticsViewFlipperItems.FALSE;
 import static ru.forblitz.statistics.data.Constants.StatisticsViewFlipperItems.STATISTICS;
+import static ru.forblitz.statistics.data.Constants.animationDurationMillis;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -159,8 +160,8 @@ public class InterfaceUtils {
         animFrom.setFillAfter(true);
 
         view.startAnimation(animTo);
-        new Handler().postDelayed(() -> view.startAnimation(animFrom), 125);
-        if (needToSetClickable) { new Handler().postDelayed(() -> view.setClickable(true), 250); }
+        new Handler().postDelayed(() -> view.startAnimation(animFrom), animationDurationMillis);
+        if (needToSetClickable) { new Handler().postDelayed(() -> view.setClickable(true), animationDurationMillis * 2); }
     }
 
     /**

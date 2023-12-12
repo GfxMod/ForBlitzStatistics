@@ -20,6 +20,8 @@ public class Constants {
 
     public static int hapticFeedbackType = HapticFeedbackConstants.CLOCK_TICK;
 
+    public static long animationDurationMillis = 125L;
+
     public static int achievementsInRow = 5;
 
     public static String achievementIconNamePrefix = "ic_medal_";

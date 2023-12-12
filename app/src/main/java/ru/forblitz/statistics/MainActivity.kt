@@ -83,6 +83,7 @@ import ru.forblitz.statistics.data.Constants.PlayerStatisticsTypes
 import ru.forblitz.statistics.data.Constants.StatisticsViewFlipperItems
 import ru.forblitz.statistics.data.Constants.TABS_COUNT
 import ru.forblitz.statistics.data.Constants.achievementsInRow
+import ru.forblitz.statistics.data.Constants.animationDurationMillis
 import ru.forblitz.statistics.data.RecordDatabase
 import ru.forblitz.statistics.dto.AchievementInfo
 import ru.forblitz.statistics.dto.Record
@@ -1090,7 +1091,7 @@ class MainActivity : AppCompatActivity() {
 
                         fragmentStatistics.startAnimation(fragmentStatistics.inAnimation)
                         statisticsSessionStatButton.isActivated = true
-                    }, 125)
+                    }, animationDurationMillis)
                 } else {
                     Handler(Looper.getMainLooper()).postDelayed({
                         statisticsSessionStatButton.text = getString(R.string.to_session_stat)
@@ -1102,7 +1103,7 @@ class MainActivity : AppCompatActivity() {
 
                         fragmentStatistics.startAnimation(fragmentStatistics.inAnimation)
                         statisticsSessionStatButton.isActivated = false
-                    }, 125)
+                    }, animationDurationMillis)
                 }
             }
 

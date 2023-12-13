@@ -47,6 +47,8 @@
     <string name="recruiting_options_battles">Total battles:</string>
     <string name="recruiting_options_average_damage">Average damage:</string>
 
+    <string name="recruiting_options_disabled">Automatic recruitment is not available for clan [%1$s] %2$s</string>
+
     <string name="enter_nickname">To view statistics, enter a nickname in the search field</string>
     <string name="enter_nickname_or_select">To view statistics, enter a nickname in the search field or select the one suggested below</string>
 

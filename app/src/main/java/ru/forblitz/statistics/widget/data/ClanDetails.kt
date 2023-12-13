@@ -5,6 +5,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import android.widget.ViewFlipper
 import androidx.appcompat.content.res.AppCompatResources
 import ru.forblitz.statistics.R
@@ -135,7 +136,13 @@ class ClanDetails : LinearLayout {
         } else {
             clanInfoRecruitingButton.paintFlags =
                 clanInfoRecruitingButton.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-            clanInfoRecruitingButton.setOnClickListener(null)
+            clanInfoRecruitingButton.setOnClickListener {
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.recruiting_options_disabled, fullClanInfo.tag, fullClanInfo.name),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
             clanInfoRecruitingButton.setPadding(
                 paddingHorizontal,
                 paddingVertical,

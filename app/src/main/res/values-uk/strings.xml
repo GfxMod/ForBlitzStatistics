@@ -47,6 +47,8 @@
     <string name="recruiting_options_battles">Боїв:</string>
     <string name="recruiting_options_average_damage">Середня шкода:</string>
 
+    <string name="recruiting_options_disabled">Здається, в клані [%1$s] %2$s відсутній автоматичний набір</string>
+
     <string name="enter_nickname">Щоб подвитись статистику, введіть нікнейм у полі вище</string>
     <string name="enter_nickname_or_select">Щоб подвитись статистику, введіть нікнейм у полі вище або виберіть запропонований нижче</string>
 

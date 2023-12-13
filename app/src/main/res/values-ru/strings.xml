@@ -46,6 +46,8 @@
     <string name="recruiting_options_average_battles_per_day">Боёв в день:</string>
     <string name="recruiting_options_battles">Боёв:</string>
     <string name="recruiting_options_average_damage">Средний урон:</string>
+    
+    <string name="recruiting_options_disabled">Похоже, в клане [%1$s] %2$s нет авторекрутинга</string>
 
     <string name="enter_nickname">Чтобы посмотреть статистику, введите никнейм в поле выше</string>
     <string name="enter_nickname_or_select">Чтобы посмотреть статистику, введите никнейм в поле выше или выберите предложенный ниже</string>

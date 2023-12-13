@@ -606,6 +606,66 @@
                     android:showDividers="middle">
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/settings_sessions_io"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:text="@string/sessions_io"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/inter"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:padding="@dimen/padding_small"
+                        android:autoSizeTextType="uniform" />
+
+                    <ru.forblitz.statistics.widget.common.ExtendedButton
+                        android:id="@+id/settings_sessions_import"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/background_sessions_true"
+                        android:hapticFeedbackEnabled="true"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="30dp"
+                        android:paddingVertical="@dimen/padding_very_big"
+                        android:text="@string/sessions_io_import"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="normal"
+                        app:autoSizeTextType="uniform" />
+
+                    <ru.forblitz.statistics.widget.common.ExtendedButton
+                        android:id="@+id/settings_sessions_export"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/background_button"
+                        android:hapticFeedbackEnabled="true"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="30dp"
+                        android:paddingVertical="@dimen/padding_very_big"
+                        android:text="@string/sessions_io_export"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="normal"
+                        app:autoSizeTextType="uniform" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_big"
+                    android:background="@drawable/background_layout"
+                    android:orientation="vertical"
+                    android:divider="@drawable/divider_big"
+                    android:showDividers="middle">
+
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/settings_switches_name"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"

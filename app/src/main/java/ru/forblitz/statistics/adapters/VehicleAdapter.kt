@@ -71,19 +71,27 @@ class VehicleAdapter(
         )
         name.text = vehicleSpecs.name
         battles.text = ParseUtils.splitByThousands(vehicleStat.statistics.battles.toString())
-        winRate.text = vehicleStat.statistics.winningPercentage!!.round().toString()
+        winRate.text = vehicleStat.statistics.winningPercentage!!.formatValue()
         averageDamage.text = ParseUtils.splitByThousands(if (!averageDamageRounding) {
             vehicleStat.statistics.averageDamage!!.toInt().toString()
         } else {
-            vehicleStat.statistics.averageDamage!!.round().toString()
+            vehicleStat.statistics.averageDamage!!.formatValue()
         }.toString())
-        efficiency.text = vehicleStat.statistics.efficiency!!.round().toString()
-        survived.text = vehicleStat.statistics.survivedPercentage!!.round().toString()
-        hitsFromShots.text = vehicleStat.statistics.hitsOutOfShots!!.round().toString()
+        efficiency.text = vehicleStat.statistics.efficiency!!.formatValue()
+        survived.text = vehicleStat.statistics.survivedPercentage!!.formatValue()
+        hitsFromShots.text = vehicleStat.statistics.hitsOutOfShots!!.formatValue()
         details.setOnClickListener {
             ((activityContext as Activity).findViewById<DetailsLayout>(R.id.tanks_details_layout)).setData(vehicleStat.statistics)
             activityContext.findViewById<ViewFlipper>(R.id.tanks_layouts_flipper).displayedChild = 1
         }
         return item
+    }
+
+    private fun Number.formatValue(): String {
+        return if (!this.toDouble().isFinite()) {
+            context.getString(R.string.empty)
+        } else {
+            this.round().toString()
+        }
     }
 }

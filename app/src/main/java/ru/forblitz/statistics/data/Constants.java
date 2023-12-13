@@ -20,9 +20,18 @@ public class Constants {
 
     public static int hapticFeedbackType = HapticFeedbackConstants.CLOCK_TICK;
 
+    public static long animationDurationMillis = 125L;
+
     public static int achievementsInRow = 5;
 
     public static String achievementIconNamePrefix = "ic_medal_";
+
+    public static class ViewPagerItems {
+        public static final int FAST_STAT = 0;
+        public static final int ACHIEVEMENTS = 1;
+        public static final int CLAN = 2;
+        public static final int VEHICLES = 3;
+    }
 
     public static class MainViewFlipperItems {
         public static final int ENTER_NICKNAME = 0;
@@ -33,9 +42,9 @@ public class Constants {
 
     public static class StatisticsViewFlipperItems {
         public static final int STATISTICS = 0;
-        public static final int FALSE = 1;
-
-        public static final int SESSIONS = 2;
+        public static final int DETAILS = 1;
+        public static final int SESSIONS_LIST = 2;
+        public static final int FALSE = 3;
     }
 
     public static class AchievementsViewFlipperItems {
@@ -46,10 +55,23 @@ public class Constants {
     }
 
     public static class ClanViewFlipperItems {
-        public static final int IS_A_MEMBER = 0;
-        public static final int NOT_IS_A_MEMBER = 1;
+        public static final int CLAN_INFORMATION = 0;
 
-        public static final int SERVER_EXCEPTION = 2;
+        public static final int MEMBERS_LIST = 1;
+
+        public static final int IS_NOT_A_MEMBER = 2;
+
+        public static final int SERVER_EXCEPTION = 3;
+
+        public static final int LOADING = 4;
+    }
+
+    public static class ClanBriefFlipperItems {
+        public static final int CLAN_INFORMATION = 0;
+
+        public static final int IS_NOT_A_MEMBER = 1;
+
+        public static final int LOADING = 2;
     }
 
     public static class ClanInfoViewFlipperItems {

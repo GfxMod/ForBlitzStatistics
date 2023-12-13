@@ -47,6 +47,8 @@
     <string name="recruiting_options_battles">Total battles:</string>
     <string name="recruiting_options_average_damage">Average damage:</string>
 
+    <string name="recruiting_options_disabled">Automatic recruitment is not available for clan [%1$s] %2$s</string>
+
     <string name="enter_nickname">To view statistics, enter a nickname in the search field</string>
     <string name="enter_nickname_or_select">To view statistics, enter a nickname in the search field or select the one suggested below</string>
 
@@ -109,6 +111,8 @@
     <string name="network_error">Connection could not be established</string>
     <string name="network_error_desc">Check your Internet connection</string>
     <string name="network_error_try_again">Reconnect</string>
+
+    <string name="network_region_error_desc">It seems we were unable to connect to ForBlitz. Perhaps the issue lies in the restriction of access to Russian websites. Please enable a VPN or proxy to bypass the block and try again.</string>
 
     <string name="last_search">You searched for this account\u0020</string>
 
@@ -185,5 +189,16 @@
     <string name="wargaming_exception">An error occurred on the Wargaming API side</string>
 
     <string name="error_message">Error %1$s: %2$s</string>
+
+    <string name="sessions_io">Sessions</string>
+    <string name="sessions_io_import">Import sessions</string>
+    <string name="sessions_io_export">Export sessions</string>
+    <string name="sessions_io_import_error">Import error (%1$s)</string>
+
+    <string name="sessions_alert_title">No data to display</string>
+    <string name="sessions_statistics_alert_text">Play at least one more match and update this account\'s statistics to create a new comparison point.</string>
+    <string name="sessions_list_alert_text">At least two saved sessions are required for display. Play at least one more match and update this account\'s statistics to create a new comparison point.</string>
+
+    <string name="refresh_statistics">Update statistics</string>
 
 </resources>

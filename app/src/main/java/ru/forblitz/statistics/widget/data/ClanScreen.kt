@@ -20,7 +20,7 @@ class ClanScreen : DifferenceViewFlipper {
 
     fun setData(shortClanInfo: ShortClanInfo?, fullClanInfo: FullClanInfo?) {
         if (fullClanInfo != null) {
-            displayedChild = ClanViewFlipperItems.IS_A_MEMBER
+            displayedChild = ClanViewFlipperItems.CLAN_INFORMATION
             findViewById<ClanInfo>(R.id.clan_info).setData(shortClanInfo, fullClanInfo)
             findViewById<ClanDetails>(R.id.clan_details).setData(fullClanInfo)
             findViewById<ListView>(R.id.clan_members_list).adapter =
@@ -29,11 +29,12 @@ class ClanScreen : DifferenceViewFlipper {
                     fullClanInfo
                         .members
                         .values
+                        .sorted()
                         .toTypedArray()
                 )
             findViewById<FloatingActionButton>(R.id.clan_members_back).show()
         } else {
-            displayedChild = ClanViewFlipperItems.NOT_IS_A_MEMBER
+            displayedChild = ClanViewFlipperItems.IS_NOT_A_MEMBER
         }
     }
 

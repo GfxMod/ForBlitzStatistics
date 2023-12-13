@@ -40,7 +40,7 @@ class PlayerFastStat : LinearLayout {
             )
         }
         with(findViewWithTag<TextView>("winningPercentage")) {
-            if (statisticsData.winningPercentage!!.isNaN()) {
+            if (!statisticsData.winningPercentage!!.isFinite()) {
                 text = context.getString(R.string.empty)
                 setTextColor(context.getColor(R.color.white))
             } else {
@@ -53,7 +53,7 @@ class PlayerFastStat : LinearLayout {
             }
         }
         with(findViewWithTag<TextView>("averageDamage")) {
-            if (statisticsData.averageDamage!!.isNaN()) {
+            if (!statisticsData.averageDamage!!.isFinite()) {
                 text = context.getString(R.string.empty)
                 setTextColor(context.getColor(R.color.white))
             } else {
@@ -64,15 +64,17 @@ class PlayerFastStat : LinearLayout {
                         statisticsData.averageDamage!!.round().toString()
                     }
                 )
-                setTextColor(InterfaceUtils.getValueColor(
-                    this.context,
-                    statisticsData.averageDamage!!.toDouble(),
-                    Constants.Steps.averageDamage
-                ))
+                setTextColor(
+                    InterfaceUtils.getValueColor(
+                        this.context,
+                        statisticsData.averageDamage!!.toDouble(),
+                        Constants.Steps.averageDamage
+                    )
+                )
             }
         }
         with(findViewWithTag<TextView>("efficiency")) {
-            if (statisticsData.efficiency!!.isNaN()) {
+            if (!statisticsData.efficiency!!.isFinite()) {
                 text = context.getString(R.string.empty)
                 setTextColor(context.getColor(R.color.white))
             } else {
@@ -85,14 +87,14 @@ class PlayerFastStat : LinearLayout {
             }
         }
         with(findViewWithTag<TextView>("survived")) {
-            text = if (statisticsData.survivedPercentage!!.isNaN()) {
+            text = if (!statisticsData.survivedPercentage!!.isFinite()) {
                 context.getString(R.string.empty)
             } else {
                 statisticsData.survivedPercentage!!.round().toString()
             }
         }
         with(findViewWithTag<TextView>("hitsFromShots")) {
-            text = if (statisticsData.hitsOutOfShots!!.isNaN()) {
+            text = if (!statisticsData.hitsOutOfShots!!.isFinite()) {
                 context.getString(R.string.empty)
             } else {
                 statisticsData.hitsOutOfShots!!.round().toString()

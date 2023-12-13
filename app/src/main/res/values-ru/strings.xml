@@ -46,6 +46,8 @@
     <string name="recruiting_options_average_battles_per_day">Боёв в день:</string>
     <string name="recruiting_options_battles">Боёв:</string>
     <string name="recruiting_options_average_damage">Средний урон:</string>
+    
+    <string name="recruiting_options_disabled">Похоже, в клане [%1$s] %2$s нет авторекрутинга</string>
 
     <string name="enter_nickname">Чтобы посмотреть статистику, введите никнейм в поле выше</string>
     <string name="enter_nickname_or_select">Чтобы посмотреть статистику, введите никнейм в поле выше или выберите предложенный ниже</string>
@@ -109,6 +111,8 @@
     <string name="network_error">Не удалось установить соединение</string>
     <string name="network_error_desc">Проверьте подключение к Интернету</string>
     <string name="network_error_try_again">Выполнить переподключение</string>
+
+    <string name="network_region_error_desc">Похоже, нам не удалось установить соединение с ForBlitz. Возможно, проблема в ограничении доступа к российским сайтам. Пожалуйста, включите VPN или прокси для обхода блокировки и повторите попытку.</string>
 
     <string name="last_search">Вы искали этот аккаунт\u0020</string>
 
@@ -185,5 +189,16 @@
     <string name="wargaming_exception">Возникла ошибка на стороне API Wargaming</string>
 
     <string name="error_message">Ошибка %1$s: %2$s</string>
+
+    <string name="sessions_io">Сессии</string>
+    <string name="sessions_io_import">Импортировать сессии</string>
+    <string name="sessions_io_export">Экспортировать сессии</string>
+    <string name="sessions_io_import_error">Ошибка импорта (%1$s)</string>
+
+    <string name="sessions_alert_title">Нет данных для отображения</string>
+    <string name="sessions_statistics_alert_text">Сыграйте ещё минимум один бой и обновите статистику этого аккаунта, чтобы сохранить новую точку сравнения.</string>
+    <string name="sessions_list_alert_text">Необходимо иметь минимум две сохраненные сессии для отображения. Сыграйте ещё минимум один бой и обновите статистику этого аккаунта, чтобы сохранить новую точку сравнения.</string>
+
+    <string name="refresh_statistics">Обновить статистику</string>
 
 </resources>

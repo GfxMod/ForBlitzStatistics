@@ -47,6 +47,8 @@
     <string name="recruiting_options_battles">Боїв:</string>
     <string name="recruiting_options_average_damage">Середня шкода:</string>
 
+    <string name="recruiting_options_disabled">Здається, в клані [%1$s] %2$s відсутній автоматичний набір</string>
+
     <string name="enter_nickname">Щоб подвитись статистику, введіть нікнейм у полі вище</string>
     <string name="enter_nickname_or_select">Щоб подвитись статистику, введіть нікнейм у полі вище або виберіть запропонований нижче</string>
 
@@ -109,6 +111,8 @@
     <string name="network_error">Не вдалося встановити з\'єднання</string>
     <string name="network_error_desc">Перевірте з\'єднання з Інтернетом</string>
     <string name="network_error_try_again">Виконати перепідключення</string>
+
+    <string name="network_region_error_desc">Звіддається, нам не вдалося підключитися до ForBlitz. Можливо, проблема у обмеженні доступу до російських сайтів. Будь ласка, увімкніть VPN або проксі для обходу блокування і спробуйте ще раз.</string>
 
     <string name="last_search">Ви шукали цей обліковий запис\u0020</string>
 
@@ -185,5 +189,16 @@
     <string name="wargaming_exception">Відбулася помилка з боку API Wargaming</string>
 
     <string name="error_message">Помилка %1$s: %2$s</string>
+
+    <string name="sessions_io">Сесії</string>
+    <string name="sessions_io_import">Імпортувати сесії</string>
+    <string name="sessions_io_export">Експортувати сесії</string>
+    <string name="sessions_io_import_error">Помилка імпорту (%1$s)</string>
+
+    <string name="sessions_alert_title">Немає даних для відображення</string>
+    <string name="sessions_statistics_alert_text">Зіграйте ще принаймні один бій і оновіть статистику цього облікового запису, щоб створити нову точку порівняння.</string>
+    <string name="sessions_list_alert_text">Потрібно мати принаймні дві збережені сесії для відображення. Зіграйте ще принаймні один бій і оновіть статистику цього облікового запису, щоб створити нову точку порівняння.</string>
+
+    <string name="refresh_statistics">Оновити статистику</string>
 
 </resources>

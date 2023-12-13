@@ -1273,6 +1273,7 @@
                             whatever:button_unchecked="@drawable/ic_battles_off" />
 
                         <ru.forblitz.statistics.widget.common.ExtendedRadioButton
+                            android:id="@+id/radio_average_damage"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -1285,6 +1286,7 @@
                             whatever:button_unchecked="@drawable/ic_damage_off" />
 
                         <ru.forblitz.statistics.widget.common.ExtendedRadioButton
+                            android:id="@+id/radio_efficiency"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -1297,6 +1299,7 @@
                             whatever:button_unchecked="@drawable/ic_efficiency_off" />
 
                         <ru.forblitz.statistics.widget.common.ExtendedRadioButton
+                            android:id="@+id/radio_average_xp"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -1309,6 +1312,7 @@
                             whatever:button_unchecked="@drawable/ic_xp_off" />
 
                         <ru.forblitz.statistics.widget.common.ExtendedRadioButton
+                            android:id="@+id/radio_winning_percentage"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"

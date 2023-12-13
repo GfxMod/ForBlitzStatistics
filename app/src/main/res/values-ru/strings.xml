@@ -110,6 +110,8 @@
     <string name="network_error_desc">Проверьте подключение к Интернету</string>
     <string name="network_error_try_again">Выполнить переподключение</string>
 
+    <string name="network_region_error_desc">Похоже, нам не удалось установить соединение с ForBlitz. Возможно, проблема в ограничении доступа к российским сайтам. Пожалуйста, включите VPN или прокси для обхода блокировки и повторите попытку.</string>
+
     <string name="last_search">Вы искали этот аккаунт\u0020</string>
 
     <string name="select_region">Кластер для поиска</string>

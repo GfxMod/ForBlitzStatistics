@@ -23,6 +23,8 @@ public class ConnectivityService {
 
     private AlertDialog networkAlertDialog;
 
+    private AlertDialog networkRegionAlertDialog;
+
     /**
      * @param activity {@link Activity} to be subscribed
      */
@@ -80,6 +82,45 @@ public class ConnectivityService {
                 if (networkAlertDialog != null) {
                     networkAlertDialog.dismiss();
                     networkAlertDialog = null;
+                }
+
+            });
+        }
+    }
+
+    /**
+     * Shows region alert dialog
+     * @param activity activity when {@link AlertDialog} will be created
+     */
+    public void showUkAlertDialog(@NonNull Activity activity) {
+        if (!activity.isFinishing()) {
+            activity.runOnUiThread(() -> {
+
+                killUkAlertDialog(activity);
+
+                networkRegionAlertDialog = InterfaceUtils.createAlertDialog(
+                                activity,
+                                activity.getString(R.string.network_error),
+                                activity.getString(R.string.network_region_error_desc),
+                                activity.getString(R.string.network_error_try_again),
+                                () -> showUkAlertDialog(activity))
+                        .show();
+
+            });
+        }
+    }
+
+    /**
+     * Dismiss region alert dialog
+     * @param activity activity when {@link AlertDialog} will be removed
+     */
+    public void killUkAlertDialog(@NonNull Activity activity) {
+        if (!activity.isFinishing()) {
+            activity.runOnUiThread (() -> {
+
+                if (networkRegionAlertDialog != null) {
+                    networkRegionAlertDialog.dismiss();
+                    networkRegionAlertDialog = null;
                 }
 
             });

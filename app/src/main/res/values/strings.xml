@@ -110,6 +110,8 @@
     <string name="network_error_desc">Check your Internet connection</string>
     <string name="network_error_try_again">Reconnect</string>
 
+    <string name="network_region_error_desc">It seems we were unable to connect to ForBlitz. Perhaps the issue lies in the restriction of access to Russian websites. Please enable a VPN or proxy to bypass the block and try again.</string>
+
     <string name="last_search">You searched for this account\u0020</string>
 
     <string name="select_region">Cluster to search for</string>

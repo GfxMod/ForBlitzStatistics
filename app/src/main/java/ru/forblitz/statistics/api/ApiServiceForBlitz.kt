@@ -11,7 +11,7 @@ import ru.forblitz.statistics.service.ConnectivityService
 import ru.forblitz.statistics.service.RequestsService
 
 class ApiServiceForBlitz(
-    connectivityService: ConnectivityService,
+    private val connectivityService: ConnectivityService,
     connectivityManager: ConnectivityManager,
     private val requestsService: RequestsService
 ) {
@@ -32,7 +32,14 @@ class ApiServiceForBlitz(
     suspend fun getAll(): Response<ResponseBody> {
         val requestLogItem = RequestLogItem(System.currentTimeMillis(), RequestLogItem.RequestType.METADATA, false)
         requestsService.addRecord(requestLogItem)
-        val response = apiInterfaceForBlitz.getAll()
+        var response = apiInterfaceForBlitz.getAll()
+        if (!response.isSuccessful || response.body() == null) {
+            connectivityService.responsibleActivity?.let { connectivityService.showUkAlertDialog(it) }
+            while (!response.isSuccessful || response.body() == null) {
+                response = apiInterfaceForBlitz.getAll()
+            }
+        }
+        connectivityService.responsibleActivity?.let { connectivityService.killUkAlertDialog(it) }
         requestsService.completeRecord(requestLogItem)
         return response
     }

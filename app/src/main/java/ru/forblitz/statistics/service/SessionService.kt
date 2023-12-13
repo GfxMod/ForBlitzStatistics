@@ -146,6 +146,7 @@ class SessionService(private var context: Context) {
                 }
             }
         }
+        update(accountId, lastBattleTime, json, region)
     }
 
     private fun getPlayerSessions(): ArrayList<File> {

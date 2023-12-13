@@ -42,9 +42,9 @@ public class Constants {
 
     public static class StatisticsViewFlipperItems {
         public static final int STATISTICS = 0;
-        public static final int FALSE = 1;
-
-        public static final int SESSIONS = 2;
+        public static final int DETAILS = 1;
+        public static final int SESSIONS_LIST = 2;
+        public static final int FALSE = 3;
     }
 
     public static class AchievementsViewFlipperItems {

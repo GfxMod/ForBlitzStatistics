@@ -414,7 +414,7 @@ class MainActivity : AppCompatActivity() {
 
         onBackPressedDispatcher.addCallback(this@MainActivity, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                val statisticsLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.statistics_layouts_flipper)
+                val statisticsScreen = findViewById<DifferenceViewFlipper>(R.id.fragment_statistics)
                 val clanScreen = findViewById<DifferenceViewFlipper>(R.id.fragment_clan)
                 val tanksLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.tanks_layouts_flipper)
 
@@ -423,8 +423,8 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     when (viewPager.currentItem) {
                         ViewPagerItems.FAST_STAT -> {
-                            if (statisticsLayoutsFlipper.displayedChild != 0) {
-                                statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
+                            if (statisticsScreen.displayedChild != StatisticsViewFlipperItems.FALSE) {
+                                statisticsScreen.displayedChild = StatisticsViewFlipperItems.STATISTICS
                             }
                         }
                         ViewPagerItems.CLAN -> {
@@ -516,7 +516,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        findViewById<DifferenceViewFlipper>(R.id.statistics_layouts_flipper)?.also { statisticsLayoutFlipper ->
+        findViewById<DifferenceViewFlipper>(R.id.fragment_statistics)?.also { statisticsLayoutFlipper ->
             if (statisticsLayoutFlipper.displayedChild == StatisticsViewFlipperItems.STATISTICS) {
                 app.userService.nickname?.also { nickname ->
                     findViewById<EditText>(R.id.search_field)?.apply {
@@ -614,7 +614,6 @@ class MainActivity : AppCompatActivity() {
                 val searchField = findViewById<EditText>(R.id.search_field)
                 val imm: InputMethodManager = this.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
-                val statisticsLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.statistics_layouts_flipper)
                 val clanScreen = findViewById<DifferenceViewFlipper>(R.id.fragment_clan)
                 val tanksLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.tanks_layouts_flipper)
 
@@ -629,6 +628,7 @@ class MainActivity : AppCompatActivity() {
                 val sessionsReloadButton = findViewById<ExtendedImageButton>(R.id.statistics_session_reload)
 
                 val mainFlipper = findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper)
+                val statisticsScreen = findViewById<DifferenceViewFlipper>(R.id.fragment_statistics)
                 val achievementsFlipper = findViewById<DifferenceViewFlipper>(R.id.achievements_screen)
                 val statisticsSessionStatButton = statisticsSessionButtons.statisticsButton
 
@@ -659,13 +659,13 @@ class MainActivity : AppCompatActivity() {
                 // Sets listeners for buttons
 
                 statisticsDetailsButton.setOnClickListener {
-                    statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.FALSE
+                    statisticsScreen.displayedChild = StatisticsViewFlipperItems.DETAILS
                 }
                 statisticsDetailsBack.setOnClickListener {
-                    statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
+                    statisticsScreen.displayedChild = StatisticsViewFlipperItems.STATISTICS
                 }
                 statisticsSessionButtons.actions.listButtonAction = {
-                    statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.SESSIONS
+                    statisticsScreen.displayedChild = StatisticsViewFlipperItems.SESSIONS_LIST
                 }
                 clanMembersButton.setOnClickListener {
                     clanScreen.displayedChild = ClanViewFlipperItems.MEMBERS_LIST
@@ -956,12 +956,11 @@ class MainActivity : AppCompatActivity() {
      * Gets 'session' statistics and sets it for all 'session' elements
      */
     private fun updateSessionStatistics(index: Int) {
-        val statisticsLayoutsFlipper = findViewById<DifferenceViewFlipper>(R.id.statistics_layouts_flipper)
         val statisticsSessionButtons = findViewById<SessionButtonsLayout>(R.id.statistics_session_buttons)
         val statisticsFastStat = findViewById<PlayerFastStat>(R.id.statistics_fast_stat)
         val statisticsSessionsList = findViewById<ListView>(R.id.statistics_sessions_list)
         val statisticsSessionStatButton = statisticsSessionButtons.statisticsButton
-        val fragmentStatistics = findViewById<ViewFlipper>(R.id.fragment_statistics)
+        val statisticsScreen = findViewById<ViewFlipper>(R.id.fragment_statistics)
 
         // Updates service with new data
 
@@ -985,11 +984,11 @@ class MainActivity : AppCompatActivity() {
                 this.path = app.sessionService.subList[i].path
                 this.set = Runnable {
                     updateSessionStatistics(i)
-                    statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
+                    statisticsScreen.displayedChild = StatisticsViewFlipperItems.STATISTICS
                 }
                 this.delete = Runnable {
                     if (i == index) {
-                        Snackbar.make(statisticsLayoutsFlipper, getString(R.string.delete_select), Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(statisticsScreen, getString(R.string.delete_select), Snackbar.LENGTH_SHORT).show()
                     } else {
                         InterfaceUtils.createAlertDialog(
                             this@MainActivity,
@@ -998,15 +997,15 @@ class MainActivity : AppCompatActivity() {
                             this@MainActivity.getString(R.string.delete),
                             Runnable {
                                 if (app.sessionService.subList[i].delete()) {
-                                    Snackbar.make(statisticsLayoutsFlipper, getString(R.string.delete_successfully), Snackbar.LENGTH_SHORT).show()
+                                    Snackbar.make(statisticsScreen, getString(R.string.delete_successfully), Snackbar.LENGTH_SHORT).show()
                                     if (index != sessions.size - 1) {
                                         updateSessionStatistics(index)
                                     } else {
                                         updateSessionStatistics(index - 1)
                                     }
-                                    statisticsLayoutsFlipper.displayedChild = StatisticsViewFlipperItems.STATISTICS
+                                    statisticsScreen.displayedChild = StatisticsViewFlipperItems.STATISTICS
                                 } else {
-                                    Snackbar.make(statisticsLayoutsFlipper, getString(R.string.delete_failed), Snackbar.LENGTH_SHORT).show()
+                                    Snackbar.make(statisticsScreen, getString(R.string.delete_failed), Snackbar.LENGTH_SHORT).show()
                                 }
                             },
                             this@MainActivity.getString(android.R.string.cancel),
@@ -1073,7 +1072,7 @@ class MainActivity : AppCompatActivity() {
             )
 
             statisticsSessionButtons.actions.statisticsButtonAction =  {
-                fragmentStatistics.startAnimation(fragmentStatistics.outAnimation)
+                statisticsScreen.startAnimation(statisticsScreen.outAnimation)
 
                 if (!statisticsSessionStatButton.isActivated) {
                     Handler(Looper.getMainLooper()).postDelayed({
@@ -1090,7 +1089,7 @@ class MainActivity : AppCompatActivity() {
                                 )
                             ))
 
-                        fragmentStatistics.startAnimation(fragmentStatistics.inAnimation)
+                        statisticsScreen.startAnimation(statisticsScreen.inAnimation)
                         statisticsSessionStatButton.isActivated = true
                     }, animationDurationMillis)
                 } else {
@@ -1102,7 +1101,7 @@ class MainActivity : AppCompatActivity() {
                             app.userStatisticsService.getStatisticsByEnum(getPlayerStatisticsTypes())
                         )
 
-                        fragmentStatistics.startAnimation(fragmentStatistics.inAnimation)
+                        statisticsScreen.startAnimation(statisticsScreen.inAnimation)
                         statisticsSessionStatButton.isActivated = false
                     }, animationDurationMillis)
                 }

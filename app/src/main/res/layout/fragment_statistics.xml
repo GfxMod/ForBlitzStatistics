@@ -13,449 +13,518 @@
     android:paddingHorizontal="@dimen/padding_big"
     tools:context="ru.forblitz.statistics.StatisticsFragment">
 
-    <ru.forblitz.statistics.widget.common.DifferenceViewFlipper
-        android:id="@+id/statistics_layouts_flipper"
+    <android.widget.LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:inAnimation="@anim/appearance_scale"
-        android:outAnimation="@anim/disappearance_scale" >
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:weightSum="1">
 
-        <android.widget.LinearLayout
+        <com.google.android.material.button.MaterialButtonToggleGroup
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.075"
+            android:gravity="center"
+            app:selectionRequired="true"
+            android:layout_marginBottom="@dimen/padding_big">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/statistics_toggle_random"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/materialSegmentedButtonOutlined"
+                android:text="@string/regular_battles_short_name" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/statistics_toggle_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/materialSegmentedButtonOutlined"
+                android:text="@string/rating_battles_short_name" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/statistics_toggle_clan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/materialSegmentedButtonOutlined"
+                android:text="@string/tournament_battles_short_name" />
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <ru.forblitz.statistics.widget.data.PlayerFastStat
+            android:id="@+id/statistics_fast_stat"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.55"
             android:orientation="vertical"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:weightSum="1">
+            android:background="@drawable/background_layout"
+            android:padding="@dimen/padding_big">
 
-            <com.google.android.material.button.MaterialButtonToggleGroup
+            <androidx.appcompat.widget.AppCompatTextView
+                android:tag="nickname"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.075"
-                android:gravity="center"
-                app:selectionRequired="true"
-                android:layout_marginBottom="@dimen/padding_big">
+                android:layout_weight="0.1"
+                android:fontFamily="@font/inter"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="@dimen/padding_very_big"
+                android:text="@string/loading"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:typeface="monospace"
+                app:autoSizeTextType="uniform" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/statistics_toggle_random"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/materialSegmentedButtonOutlined"
-                    android:text="@string/regular_battles_short_name" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/statistics_toggle_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/materialSegmentedButtonOutlined"
-                    android:text="@string/rating_battles_short_name" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/statistics_toggle_clan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/materialSegmentedButtonOutlined"
-                    android:text="@string/tournament_battles_short_name" />
-
-            </com.google.android.material.button.MaterialButtonToggleGroup>
-
-            <ru.forblitz.statistics.widget.data.PlayerFastStat
-                android:id="@+id/statistics_fast_stat"
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.55"
-                android:orientation="vertical"
-                android:background="@drawable/background_layout"
-                android:padding="@dimen/padding_big">
+                android:layout_weight="0.025" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:tag="nickname"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.1"
-                    android:fontFamily="@font/inter"
-                    android:gravity="center_vertical"
-                    android:paddingHorizontal="@dimen/padding_very_big"
-                    android:text="@string/loading"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    android:typeface="monospace"
-                    app:autoSizeTextType="uniform" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.025" />
-
-                <ru.forblitz.statistics.widget.data.ClanBrief
-                    android:id="@+id/statistics_clan"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.15"
-                    android:background="@drawable/background_layout_nested">
-
-                    <android.widget.LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="@dimen/padding"
-                        android:visibility="visible"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:tag="clan_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.5"
-                            android:fontFamily="@font/inter"
-                            android:gravity="start|center_vertical"
-                            android:paddingHorizontal="@dimen/padding_very_big"
-                            android:text="@string/loading"
-                            android:textColor="@android:color/white"
-                            android:textStyle="bold"
-                            android:typeface="monospace"
-                            app:autoSizeTextType="uniform" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:tag="clan_role"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.4"
-                            android:fontFamily="@font/inter"
-                            android:gravity="start|center_vertical"
-                            android:paddingHorizontal="@dimen/padding_very_big"
-                            android:text="@string/loading"
-                            android:textColor="@color/grey"
-                            android:typeface="normal"
-                            app:autoSizeTextType="uniform" />
-
-                    </android.widget.LinearLayout>
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:padding="@dimen/padding_very_big"
-                        android:text="@string/clan_false"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:typeface="monospace"
-                        android:textStyle="bold"
-                        android:visibility="gone"
-                        app:autoSizeTextType="uniform"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:padding="@dimen/padding_very_big"
-                        android:text="@string/loading"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:typeface="monospace"
-                        android:textStyle="bold"
-                        android:visibility="gone"
-                        app:autoSizeTextType="uniform"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </ru.forblitz.statistics.widget.data.ClanBrief>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.1" />
+            <ru.forblitz.statistics.widget.data.ClanBrief
+                android:id="@+id/statistics_clan"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.15"
+                android:background="@drawable/background_layout_nested">
 
                 <android.widget.LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.755"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="@dimen/padding"
+                    android:visibility="visible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:tag="clan_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
                         android:layout_weight="0.5"
-                        android:orientation="vertical">
+                        android:fontFamily="@font/inter"
+                        android:gravity="start|center_vertical"
+                        android:paddingHorizontal="@dimen/padding_very_big"
+                        android:text="@string/loading"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.1"
-                            android:fontFamily="@font/inter"
-                            android:gravity="center"
-                            android:text="@string/random_battles"
-                            android:textColor="@android:color/white"
-                            android:typeface="monospace"
-                            app:autoSizeTextType="uniform" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:tag="battles"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.2"
-                            android:fontFamily="@font/inter"
-                            android:gravity="center"
-                            android:text="@string/empty"
-                            android:textColor="@android:color/white"
-                            android:typeface="monospace"
-                            app:autoSizeTextType="uniform" />
-
-                        <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
-                            android:tag="battlesDiff"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.1"
-                            android:background="@drawable/background_sessions_true"
-                            android:fontFamily="@font/inter"
-                            android:gravity="center"
-                            android:paddingHorizontal="@dimen/padding"
-                            android:textColor="@color/session_green"
-                            android:typeface="monospace"
-                            app:autoSizeTextType="uniform"
-                            tools:text="@string/empty" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.05" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.1"
-                            android:fontFamily="@font/inter"
-                            android:gravity="center"
-                            android:text="@string/average_damage"
-                            android:textColor="@android:color/white"
-                            android:typeface="monospace"
-                            app:autoSizeTextType="uniform" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:tag="averageDamage"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.2"
-                            android:fontFamily="@font/inter"
-                            android:gravity="center"
-                            android:text="@string/empty"
-                            android:textColor="@android:color/white"
-                            android:typeface="monospace"
-                            app:autoSizeTextType="uniform" />
-
-                        <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
-                            android:tag="averageDamageDiff"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.1"
-                            android:background="@drawable/background_sessions_true"
-                            android:fontFamily="@font/inter"
-                            android:gravity="center"
-                            android:paddingHorizontal="@dimen/padding"
-                            android:textColor="@color/session_green"
-                            android:typeface="monospace"
-                            app:autoSizeTextType="uniform"
-                            tools:text="@string/empty" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.05" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.1"
-                            android:fontFamily="@font/inter"
-                            android:gravity="center"
-                            android:text="@string/survived"
-                            android:textColor="@android:color/white"
-                            android:typeface="monospace"
-                            app:autoSizeTextType="uniform" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:tag="survived"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.2"
-                            android:fontFamily="@font/inter"
-                            android:gravity="center"
-                            android:text="@string/empty"
-                            android:textColor="@android:color/white"
-                            android:typeface="monospace"
-                            app:autoSizeTextType="uniform" />
-
-                        <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
-                            android:tag="survivedDiff"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.1"
-                            android:background="@drawable/background_sessions_false"
-                            android:fontFamily="@font/inter"
-                            android:gravity="center"
-                            android:paddingHorizontal="@dimen/padding"
-                            android:textColor="@color/session_red"
-                            android:typeface="monospace"
-                            app:autoSizeTextType="uniform"
-                            tools:text="@string/empty" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.05" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:orientation="vertical">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.1"
-                            android:fontFamily="@font/inter"
-                            android:gravity="center"
-                            android:text="@string/win_rate"
-                            android:textColor="@android:color/white"
-                            android:typeface="monospace"
-                            app:autoSizeTextType="uniform" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:tag="winningPercentage"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.2"
-                            android:fontFamily="@font/inter"
-                            android:gravity="center"
-                            android:text="@string/empty"
-                            android:textColor="@android:color/white"
-                            android:typeface="monospace"
-                            app:autoSizeTextType="uniform" />
-
-                        <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
-                            android:tag="winningPercentageDiff"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.1"
-                            android:background="@drawable/background_sessions_false"
-                            android:fontFamily="@font/inter"
-                            android:gravity="center"
-                            android:paddingHorizontal="@dimen/padding"
-                            android:textColor="@color/session_red"
-                            android:typeface="monospace"
-                            app:autoSizeTextType="uniform"
-                            tools:text="@string/empty" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.05" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.1"
-                            android:fontFamily="@font/inter"
-                            android:gravity="center"
-                            android:text="@string/efficiency"
-                            android:textColor="@android:color/white"
-                            android:typeface="monospace"
-                            app:autoSizeTextType="uniform" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:tag="efficiency"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.2"
-                            android:fontFamily="@font/inter"
-                            android:gravity="center"
-                            android:text="@string/empty"
-                            android:textColor="@android:color/white"
-                            android:typeface="monospace"
-                            app:autoSizeTextType="uniform" />
-
-                        <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
-                            android:tag="efficiencyDiff"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.1"
-                            android:background="@drawable/background_sessions_true"
-                            android:fontFamily="@font/inter"
-                            android:gravity="center"
-                            android:paddingHorizontal="@dimen/padding"
-                            android:textColor="@color/session_green"
-                            android:typeface="monospace"
-                            app:autoSizeTextType="uniform"
-                            tools:text="@string/empty" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.05" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.1"
-                            android:fontFamily="@font/inter"
-                            android:gravity="center"
-                            android:text="@string/hits_from_shots"
-                            android:textColor="@android:color/white"
-                            android:typeface="monospace"
-                            app:autoSizeTextType="uniform" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:tag="hitsFromShots"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.2"
-                            android:fontFamily="@font/inter"
-                            android:gravity="center"
-                            android:text="@string/empty"
-                            android:textColor="@android:color/white"
-                            android:typeface="monospace"
-                            app:autoSizeTextType="uniform" />
-
-                        <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
-                            android:tag="hitsFromShotsDiff"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.1"
-                            android:background="@drawable/background_sessions_false"
-                            android:fontFamily="@font/inter"
-                            android:gravity="center"
-                            android:paddingHorizontal="@dimen/padding"
-                            android:textColor="@color/session_red"
-                            android:typeface="monospace"
-                            app:autoSizeTextType="uniform"
-                            tools:text="@string/empty" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.05" />
-
-                    </LinearLayout>
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:tag="clan_role"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.4"
+                        android:fontFamily="@font/inter"
+                        android:gravity="start|center_vertical"
+                        android:paddingHorizontal="@dimen/padding_very_big"
+                        android:text="@string/loading"
+                        android:textColor="@color/grey"
+                        android:typeface="normal"
+                        app:autoSizeTextType="uniform" />
 
                 </android.widget.LinearLayout>
 
-            </ru.forblitz.statistics.widget.data.PlayerFastStat>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:padding="@dimen/padding_very_big"
+                    android:text="@string/clan_false"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:typeface="monospace"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:padding="@dimen/padding_very_big"
+                    android:text="@string/loading"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:typeface="monospace"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </ru.forblitz.statistics.widget.data.ClanBrief>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.1" />
+
+            <android.widget.LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.755"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.1"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:text="@string/random_battles"
+                        android:textColor="@android:color/white"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:tag="battles"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.2"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:text="@string/empty"
+                        android:textColor="@android:color/white"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
+                        android:tag="battlesDiff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.1"
+                        android:background="@drawable/background_sessions_true"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="@dimen/padding"
+                        android:textColor="@color/session_green"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform"
+                        tools:text="@string/empty" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.05" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.1"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:text="@string/average_damage"
+                        android:textColor="@android:color/white"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:tag="averageDamage"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.2"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:text="@string/empty"
+                        android:textColor="@android:color/white"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
+                        android:tag="averageDamageDiff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.1"
+                        android:background="@drawable/background_sessions_true"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="@dimen/padding"
+                        android:textColor="@color/session_green"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform"
+                        tools:text="@string/empty" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.05" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.1"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:text="@string/survived"
+                        android:textColor="@android:color/white"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:tag="survived"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.2"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:text="@string/empty"
+                        android:textColor="@android:color/white"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
+                        android:tag="survivedDiff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.1"
+                        android:background="@drawable/background_sessions_false"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="@dimen/padding"
+                        android:textColor="@color/session_red"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform"
+                        tools:text="@string/empty" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.05" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.1"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:text="@string/win_rate"
+                        android:textColor="@android:color/white"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:tag="winningPercentage"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.2"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:text="@string/empty"
+                        android:textColor="@android:color/white"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
+                        android:tag="winningPercentageDiff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.1"
+                        android:background="@drawable/background_sessions_false"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="@dimen/padding"
+                        android:textColor="@color/session_red"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform"
+                        tools:text="@string/empty" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.05" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.1"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:text="@string/efficiency"
+                        android:textColor="@android:color/white"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:tag="efficiency"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.2"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:text="@string/empty"
+                        android:textColor="@android:color/white"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
+                        android:tag="efficiencyDiff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.1"
+                        android:background="@drawable/background_sessions_true"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="@dimen/padding"
+                        android:textColor="@color/session_green"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform"
+                        tools:text="@string/empty" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.05" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.1"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:text="@string/hits_from_shots"
+                        android:textColor="@android:color/white"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:tag="hitsFromShots"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.2"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:text="@string/empty"
+                        android:textColor="@android:color/white"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform" />
+
+                    <ru.forblitz.statistics.widget.data.DifferenceIndicatorView
+                        android:tag="hitsFromShotsDiff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.1"
+                        android:background="@drawable/background_sessions_false"
+                        android:fontFamily="@font/inter"
+                        android:gravity="center"
+                        android:paddingHorizontal="@dimen/padding"
+                        android:textColor="@color/session_red"
+                        android:typeface="monospace"
+                        app:autoSizeTextType="uniform"
+                        tools:text="@string/empty" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.05" />
+
+                </LinearLayout>
+
+            </android.widget.LinearLayout>
+
+        </ru.forblitz.statistics.widget.data.PlayerFastStat>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.0375" />
+
+        <ru.forblitz.statistics.widget.common.ExtendedButton
+            android:id="@+id/statistics_details_button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="0.075"
+            android:background="@drawable/background_button"
+            android:hapticFeedbackEnabled="true"
+            android:fontFamily="@font/inter"
+            android:gravity="center"
+            android:paddingHorizontal="30dp"
+            android:paddingVertical="@dimen/padding_very_big"
+            android:text="@string/detailed_statistics"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:typeface="normal"
+            app:autoSizeTextType="uniform" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.0375" />
+
+        <ru.forblitz.statistics.widget.data.SessionButtonsLayout
+            android:id="@+id/statistics_session_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1875"
+            android:orientation="vertical"
+            android:weightSum="0.1875">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="0.075"
+                android:orientation="horizontal">
+
+                <ru.forblitz.statistics.widget.common.ExtendedButton
+                    android:tag="statistics_session_switch"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/background_sessions_true"
+                    android:hapticFeedbackEnabled="true"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:text="@string/to_session_stat"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="normal"
+                    app:autoSizeTextType="uniform" />
+
+                <Space
+                    android:layout_width="@dimen/padding_big"
+                    android:layout_height="match_parent" />
+
+                <ru.forblitz.statistics.widget.common.ExtendedImageButton
+                    android:id="@+id/statistics_session_reload"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    whatever:main_dimension="vertical"
+                    android:background="@drawable/background_layout_nested_selected"
+                    android:src="@drawable/outline_find_replace_24"
+                    android:contentDescription="@string/delete" />
+
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -463,1020 +532,942 @@
                 android:layout_weight="0.0375" />
 
             <ru.forblitz.statistics.widget.common.ExtendedButton
-                android:id="@+id/statistics_details_button"
+                android:tag="statistics_sessions_list"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_weight="0.075"
-                android:background="@drawable/background_button"
+                android:background="@drawable/background_sessions_true"
                 android:hapticFeedbackEnabled="true"
                 android:fontFamily="@font/inter"
                 android:gravity="center"
-                android:paddingHorizontal="30dp"
-                android:paddingVertical="@dimen/padding_very_big"
-                android:text="@string/detailed_statistics"
+                android:text="@string/select_session"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
                 android:typeface="normal"
                 app:autoSizeTextType="uniform" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.0375" />
+        </ru.forblitz.statistics.widget.data.SessionButtonsLayout>
 
-            <ru.forblitz.statistics.widget.data.SessionButtonsLayout
-                android:id="@+id/statistics_session_buttons"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.1875"
-                android:orientation="vertical"
-                android:weightSum="0.1875">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.0375" />
 
-                <LinearLayout
+    </android.widget.LinearLayout>
+
+    <ru.forblitz.statistics.widget.data.DetailsLayout
+        android:id="@+id/statistics_details_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_layout"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="@dimen/padding_big">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.065"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                android:text="@string/detailed_statistics"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
+
+            <ru.forblitz.statistics.widget.common.ExtendedImageButton
+                android:id="@+id/statistics_details_back"
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_layout_nested_selected"
+                android:contentDescription="@string/back"
+                android:paddingHorizontal="@dimen/padding_big"
+                android:src="@drawable/ic_baseline_arrow_back_24"
+                app:tint="@color/transparent_white"
+                whatever:main_dimension="vertical" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.02" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.09"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.475"
+                android:background="@drawable/background_layout_nested"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.075"
-                    android:orientation="horizontal">
-
-                    <ru.forblitz.statistics.widget.common.ExtendedButton
-                        android:tag="statistics_session_switch"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:background="@drawable/background_sessions_true"
-                        android:hapticFeedbackEnabled="true"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:text="@string/to_session_stat"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="normal"
-                        app:autoSizeTextType="uniform" />
-
-                    <Space
-                        android:layout_width="@dimen/padding_big"
-                        android:layout_height="match_parent" />
-
-                    <ru.forblitz.statistics.widget.common.ExtendedImageButton
-                        android:id="@+id/statistics_session_reload"
-                        android:layout_width="0px"
-                        android:layout_height="match_parent"
-                        whatever:main_dimension="vertical"
-                        android:background="@drawable/background_layout_nested_selected"
-                        android:src="@drawable/outline_find_replace_24"
-                        android:contentDescription="@string/delete" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.0375" />
-
-                <ru.forblitz.statistics.widget.common.ExtendedButton
-                    android:tag="statistics_sessions_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.075"
-                    android:background="@drawable/background_sessions_true"
-                    android:hapticFeedbackEnabled="true"
+                    android:layout_weight="0.5"
                     android:fontFamily="@font/inter"
                     android:gravity="center"
-                    android:text="@string/select_session"
+                    android:paddingHorizontal="@dimen/padding"
+                    android:paddingVertical="2dp"
+                    android:text="@string/wins_small"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
                     android:textStyle="bold"
-                    android:typeface="normal"
+                    android:typeface="monospace"
                     app:autoSizeTextType="uniform" />
 
-            </ru.forblitz.statistics.widget.data.SessionButtonsLayout>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:tag="wins"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/background_button"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/empty"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.025" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.475"
+                android:background="@drawable/background_layout_nested"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/padding"
+                    android:paddingVertical="2dp"
+                    android:text="@string/losses_small"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:tag="losses"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/background_button"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/empty"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.02" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.005"
+            android:background="@drawable/background_layout_nested" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.02" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.09"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.475"
+                android:background="@drawable/background_layout_nested"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/win_and_survive_small"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    app:autoSizeTextType="uniform" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:tag="winAndSurvived"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/background_button"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/empty"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.025" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.475"
+                android:background="@drawable/background_layout_nested"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/padding"
+                    android:paddingVertical="2dp"
+                    android:text="@string/survive_small"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:tag="survivedBattles"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/background_button"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/empty"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.02" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.09"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.475"
+                android:background="@drawable/background_layout_nested"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/xp_small"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    app:autoSizeTextType="uniform" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:tag="xp"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/background_button"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/empty"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.025" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.475"
+                android:background="@drawable/background_layout_nested"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/padding"
+                    android:paddingVertical="2dp"
+                    android:text="@string/frags_small"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:tag="frags"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/background_button"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/empty"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.02" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.09"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.475"
+                android:background="@drawable/background_layout_nested"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/shots_small"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    app:autoSizeTextType="uniform" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:tag="shots"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/background_button"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/empty"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.025" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.475"
+                android:background="@drawable/background_layout_nested"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/padding"
+                    android:paddingVertical="2dp"
+                    android:text="@string/hits_small"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:tag="hits"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/background_button"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/empty"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.02" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.09"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.475"
+                android:background="@drawable/background_layout_nested"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/spotted_small"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    app:autoSizeTextType="uniform" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:tag="spotted"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/background_button"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/empty"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.025" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.475"
+                android:background="@drawable/background_layout_nested"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/padding"
+                    android:paddingVertical="2dp"
+                    android:text="@string/frags8p_small"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:tag="frags8p"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/background_button"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/empty"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.02" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.09"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.475"
+                android:background="@drawable/background_layout_nested"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/max_xp_small"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    app:autoSizeTextType="uniform" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:tag="maxXp"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/background_button"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/empty"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.025" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.475"
+                android:background="@drawable/background_layout_nested"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/padding"
+                    android:paddingVertical="2dp"
+                    android:text="@string/max_frags_small"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:tag="maxFrags"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/background_button"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/empty"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.02" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.09"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.475"
+                android:background="@drawable/background_layout_nested"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/captured_points_small"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    app:autoSizeTextType="uniform" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:tag="capturePoints"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/background_button"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/empty"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.025" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.475"
+                android:background="@drawable/background_layout_nested"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/padding"
+                    android:paddingVertical="2dp"
+                    android:text="@string/dropped_small"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:tag="droppedCapturePoints"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/background_button"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/empty"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.02" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.09"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.475"
+                android:background="@drawable/background_layout_nested"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/damage_dealt_small"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    app:autoSizeTextType="uniform" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:tag="damageDealt"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/background_button"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/empty"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.025" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.475"
+                android:background="@drawable/background_layout_nested"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/padding"
+                    android:paddingVertical="2dp"
+                    android:text="@string/damage_received_small"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:tag="damageReceived"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/background_button"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingHorizontal="2dp"
+                    android:paddingVertical="2dp"
+                    android:text="@string/empty"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    app:autoSizeTextType="uniform" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ru.forblitz.statistics.widget.data.DetailsLayout>
+
+    <android.widget.LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_layout"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.03" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.94"
+            android:orientation="vertical">
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.0375" />
+                android:layout_weight="0.015" />
 
-        </android.widget.LinearLayout>
-
-        <ru.forblitz.statistics.widget.data.DetailsLayout
-            android:id="@+id/statistics_details_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/background_layout"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:padding="@dimen/padding_big">
-
-            <LinearLayout
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.065"
-                android:orientation="horizontal">
+                android:fontFamily="@font/inter"
+                android:gravity="center"
+                android:text="@string/select_session"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                app:autoSizeTextType="uniform" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/inter"
-                    android:gravity="center"
-                    android:text="@string/detailed_statistics"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    app:autoSizeTextType="uniform" />
-
-                <ru.forblitz.statistics.widget.common.ExtendedImageButton
-                    android:id="@+id/statistics_details_back"
-                    android:layout_width="0px"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/background_layout_nested_selected"
-                    android:contentDescription="@string/back"
-                    android:paddingHorizontal="@dimen/padding_big"
-                    android:src="@drawable/ic_baseline_arrow_back_24"
-                    app:tint="@color/transparent_white"
-                    whatever:main_dimension="vertical" />
-
-            </LinearLayout>
+            <ListView
+                android:id="@+id/statistics_sessions_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.905"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="@dimen/padding_very_big"
+                android:requiresFadingEdge="vertical"
+                android:fadingEdgeLength="@dimen/padding_big" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.02" />
+                android:layout_weight="0.015" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.09"
-                android:orientation="horizontal">
+        </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.475"
-                    android:background="@drawable/background_layout_nested"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:paddingHorizontal="@dimen/padding"
-                        android:paddingVertical="2dp"
-                        android:text="@string/wins_small"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:tag="wins"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/background_button"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/empty"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.025" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.475"
-                    android:background="@drawable/background_layout_nested"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:paddingHorizontal="@dimen/padding"
-                        android:paddingVertical="2dp"
-                        android:text="@string/losses_small"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:tag="losses"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/background_button"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/empty"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.02" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.005"
-                android:background="@drawable/background_layout_nested" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.02" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.09"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.475"
-                    android:background="@drawable/background_layout_nested"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/win_and_survive_small"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        app:autoSizeTextType="uniform" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:tag="winAndSurvived"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/background_button"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/empty"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.025" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.475"
-                    android:background="@drawable/background_layout_nested"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:paddingHorizontal="@dimen/padding"
-                        android:paddingVertical="2dp"
-                        android:text="@string/survive_small"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:tag="survivedBattles"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/background_button"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/empty"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.02" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.09"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.475"
-                    android:background="@drawable/background_layout_nested"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/xp_small"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        app:autoSizeTextType="uniform" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:tag="xp"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/background_button"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/empty"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.025" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.475"
-                    android:background="@drawable/background_layout_nested"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:paddingHorizontal="@dimen/padding"
-                        android:paddingVertical="2dp"
-                        android:text="@string/frags_small"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:tag="frags"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/background_button"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/empty"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.02" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.09"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.475"
-                    android:background="@drawable/background_layout_nested"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/shots_small"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        app:autoSizeTextType="uniform" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:tag="shots"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/background_button"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/empty"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.025" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.475"
-                    android:background="@drawable/background_layout_nested"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:paddingHorizontal="@dimen/padding"
-                        android:paddingVertical="2dp"
-                        android:text="@string/hits_small"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:tag="hits"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/background_button"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/empty"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.02" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.09"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.475"
-                    android:background="@drawable/background_layout_nested"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/spotted_small"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        app:autoSizeTextType="uniform" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:tag="spotted"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/background_button"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/empty"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.025" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.475"
-                    android:background="@drawable/background_layout_nested"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:paddingHorizontal="@dimen/padding"
-                        android:paddingVertical="2dp"
-                        android:text="@string/frags8p_small"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:tag="frags8p"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/background_button"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/empty"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.02" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.09"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.475"
-                    android:background="@drawable/background_layout_nested"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/max_xp_small"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        app:autoSizeTextType="uniform" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:tag="maxXp"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/background_button"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/empty"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.025" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.475"
-                    android:background="@drawable/background_layout_nested"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:paddingHorizontal="@dimen/padding"
-                        android:paddingVertical="2dp"
-                        android:text="@string/max_frags_small"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:tag="maxFrags"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/background_button"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/empty"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.02" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.09"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.475"
-                    android:background="@drawable/background_layout_nested"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/captured_points_small"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        app:autoSizeTextType="uniform" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:tag="capturePoints"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/background_button"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/empty"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.025" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.475"
-                    android:background="@drawable/background_layout_nested"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:paddingHorizontal="@dimen/padding"
-                        android:paddingVertical="2dp"
-                        android:text="@string/dropped_small"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:tag="droppedCapturePoints"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/background_button"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/empty"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.02" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.09"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.475"
-                    android:background="@drawable/background_layout_nested"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/damage_dealt_small"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        app:autoSizeTextType="uniform" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:tag="damageDealt"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/background_button"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/empty"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.025" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.475"
-                    android:background="@drawable/background_layout_nested"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:paddingHorizontal="@dimen/padding"
-                        android:paddingVertical="2dp"
-                        android:text="@string/damage_received_small"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:tag="damageReceived"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/background_button"
-                        android:fontFamily="@font/inter"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:paddingHorizontal="2dp"
-                        android:paddingVertical="2dp"
-                        android:text="@string/empty"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        app:autoSizeTextType="uniform" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </ru.forblitz.statistics.widget.data.DetailsLayout>
-
-        <android.widget.LinearLayout
-            android:layout_width="match_parent"
+        <View
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@drawable/background_layout"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:visibility="gone">
+            android:layout_weight="0.03" />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.03" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.94"
-                android:orientation="vertical">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.015" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.065"
-                    android:fontFamily="@font/inter"
-                    android:gravity="center"
-                    android:text="@string/select_session"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold"
-                    app:autoSizeTextType="uniform" />
-
-                <ListView
-                    android:id="@+id/statistics_sessions_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.905"
-                    android:divider="@android:color/transparent"
-                    android:dividerHeight="@dimen/padding_very_big"
-                    android:requiresFadingEdge="vertical"
-                    android:fadingEdgeLength="@dimen/padding_big" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.015" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.03" />
-
-        </android.widget.LinearLayout>
-
-    </ru.forblitz.statistics.widget.common.DifferenceViewFlipper>
+    </android.widget.LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

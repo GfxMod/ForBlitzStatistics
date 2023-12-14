@@ -130,8 +130,6 @@ class MainActivity : AppCompatActivity() {
      */
     private var isKeyboardShowing: Boolean = false
 
-    private var searchProcessing = false
-
     private val activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             activityResultActionManager.invoke(result.data)
@@ -608,8 +606,8 @@ class MainActivity : AppCompatActivity() {
      */
     fun onClickSearchButton(searchButton: View) {
         runOnUiThread {
-            if (!searchProcessing) {
-                searchProcessing = true
+            if (!app.searchProcessingController.searchProcessing) {
+                app.searchProcessingController.startSearchProcessing()
 
                 val searchField = findViewById<EditText>(R.id.search_field)
                 val imm: InputMethodManager = this.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -761,7 +759,7 @@ class MainActivity : AppCompatActivity() {
                                 }
 
                             } catch (e: ObjectException) {
-                                searchProcessing = false
+                                app.searchProcessingController.stopSearchProcessing()
                                 runOnUiThread {
                                     mainFlipper.displayedChild = MainViewFlipperItems.ENTER_NICKNAME
                                     searchField.setText("", BufferType.EDITABLE)
@@ -928,9 +926,8 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     updatePlayerStatistics()
+                    app.searchProcessingController.completeStatisticsLoading()
                     updateSessionStatistics(0)
-
-                    searchProcessing = false
                 }
             }
 
@@ -1110,6 +1107,8 @@ class MainActivity : AppCompatActivity() {
             // Displays the loading screen on tanks layout and waits for data loading to finish
 
             findViewById<DifferenceViewFlipper>(R.id.main_layouts_flipper).displayedChild = MainViewFlipperItems.STATISTICS
+
+            app.searchProcessingController.completeSessionsLoading()
         }
     }
 
@@ -1296,6 +1295,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 tanksLayoutsFlipper.displayedChild = 0
+                app.searchProcessingController.completeTanksLoading()
             }
         }
     }
@@ -1326,12 +1326,14 @@ class MainActivity : AppCompatActivity() {
                                     runOnUiThread {
                                         clanBrief.setData(shortClanInfo)
                                         clanScreen.setData(shortClanInfo, fullClanInfo)
+                                        app.searchProcessingController.completeClanLoading()
                                     }
                                 }
                         } else {
                             runOnUiThread {
                                 clanScreen.setData(null, null)
                                 clanBrief.setData(null)
+                                app.searchProcessingController.completeClanLoading()
                             }
                         }
                     }
@@ -1340,6 +1342,7 @@ class MainActivity : AppCompatActivity() {
                     clanScreen.setServerException(e)
                     clanBrief.setServerException(e)
                     Firebase.crashlytics.recordException(e)
+                    app.searchProcessingController.completeClanLoading()
                 }
             }
         }
@@ -1389,6 +1392,7 @@ class MainActivity : AppCompatActivity() {
                                     )
                                 }
                             }
+                            app.searchProcessingController.completeAchievementsLoading()
                         }
                     }
 
@@ -1397,6 +1401,7 @@ class MainActivity : AppCompatActivity() {
                 runOnUiThread {
                     achievementsScreen.setServerException(e)
                     Firebase.crashlytics.recordException(e)
+                    app.searchProcessingController.completeAchievementsLoading()
                 }
             }
         }

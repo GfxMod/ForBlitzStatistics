@@ -12,6 +12,7 @@ import ru.forblitz.statistics.apiloadservice.UserStatisticsService
 import ru.forblitz.statistics.apiloadservice.VehicleSpecsService
 import ru.forblitz.statistics.data.Constants.PreferencesSwitchesTags
 import ru.forblitz.statistics.data.RecordDatabase
+import ru.forblitz.statistics.helpers.SearchProcessingController
 import ru.forblitz.statistics.service.AdService
 import ru.forblitz.statistics.service.ConnectivityService
 import ru.forblitz.statistics.service.PreferencesService
@@ -47,5 +48,7 @@ class ForBlitzStatisticsApplication : Application() {
     lateinit var connectivityService: ConnectivityService
     lateinit var requestsService: RequestsService
     lateinit var recordDatabase: RecordDatabase
+
+    val searchProcessingController: SearchProcessingController = SearchProcessingController()
 
 }

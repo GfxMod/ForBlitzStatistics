@@ -28,7 +28,7 @@ public class Constants {
 
     public static String achievementIconNamePrefix = "ic_medal_";
 
-    public static File sessionFilePickerInitialUri = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "ForBlitzStatistics");
+    public static File sessionFilePickerInitialUri = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
 
     public static class ViewPagerItems {
         public static final int FAST_STAT = 0;

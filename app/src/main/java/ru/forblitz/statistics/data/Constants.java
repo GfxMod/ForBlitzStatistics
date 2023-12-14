@@ -1,7 +1,9 @@
 package ru.forblitz.statistics.data;
 
+import android.os.Environment;
 import android.view.HapticFeedbackConstants;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +27,8 @@ public class Constants {
     public static int achievementsInRow = 5;
 
     public static String achievementIconNamePrefix = "ic_medal_";
+
+    public static File sessionFilePickerInitialUri = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "ForBlitzStatistics");
 
     public static class ViewPagerItems {
         public static final int FAST_STAT = 0;

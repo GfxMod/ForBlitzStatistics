@@ -355,11 +355,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
         settingsSessionsExport.setOnClickListener {
-            Toast.makeText(
-                this@MainActivity,
-                getString(R.string.sessions_exported_to, app.sessionService.exportFBSS().name),
-                Toast.LENGTH_SHORT
-            ).show()
+            CoroutineScope(Dispatchers.IO).launch {
+                app.sessionService.exportFBSS().also { file ->
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@MainActivity,
+                            getString(R.string.sessions_exported_to, file.name),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
         }
 
         // Configured settings dimensions

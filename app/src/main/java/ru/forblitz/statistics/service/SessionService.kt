@@ -61,15 +61,17 @@ class SessionService(private var context: Context) {
 
     private fun sessionsDirectory(): File { return File(context.filesDir, "sessions") }
 
-    fun exportFBSS() {
+    fun exportFBSS(): File {
         if (!externalDirectory.exists()) {
             externalDirectory.mkdir()
         }
 
-        ZipUtils.packDir(
-            sessionsDirectory(),
-            File(externalDirectory, "sessions-${System.currentTimeMillis()}.fbss")
-        )
+        return File(externalDirectory, "sessions-${System.currentTimeMillis()}.fbss").also { file ->
+            ZipUtils.packDir(
+                sessionsDirectory(),
+                file
+            )
+        }
     }
 
     private fun importFBSS(fbssFile: File) {

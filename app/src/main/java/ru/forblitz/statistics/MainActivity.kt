@@ -355,7 +355,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
         settingsSessionsExport.setOnClickListener {
-            app.sessionService.exportFBSS()
+            Toast.makeText(
+                this@MainActivity,
+                getString(R.string.sessions_exported_to, app.sessionService.exportFBSS().name),
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         // Configured settings dimensions

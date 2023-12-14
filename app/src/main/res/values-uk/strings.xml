@@ -195,6 +195,8 @@
     <string name="sessions_io_export">Експортувати сесії</string>
     <string name="sessions_io_import_error">Помилка імпорту (%1$s)</string>
 
+    <string name="sessions_exported_to">Сесії експортовані у файл %1$s</string>
+
     <string name="sessions_alert_title">Немає даних для відображення</string>
     <string name="sessions_statistics_alert_text">Зіграйте ще принаймні один бій і оновіть статистику цього облікового запису, щоб створити нову точку порівняння.</string>
     <string name="sessions_list_alert_text">Потрібно мати принаймні дві збережені сесії для відображення. Зіграйте ще принаймні один бій і оновіть статистику цього облікового запису, щоб створити нову точку порівняння.</string>

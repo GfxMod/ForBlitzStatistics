@@ -25,4 +25,14 @@
         <item name="colorSecondaryContainer">@color/transparent_grey</item>
         <item name="colorContainer">@color/transparent_black</item>
     </style>
+    <style name="FBSAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <!-- background color -->
+        <item name="android:background">@color/neutral</item>
+        <!-- title color -->
+        <item name="colorOnSurface">@color/white</item>
+        <!-- text color -->
+        <item name="colorOnSurfaceVariant">@color/transparent_white</item>
+        <!-- button text color -->
+        <item name="colorPrimary">@color/onNeutral</item>
+    </style>
 </resources>

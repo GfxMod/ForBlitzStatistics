@@ -8,6 +8,7 @@
     <color name="grey">#9094A0</color>
     <color name="transparent_grey">#50949494</color>
     <color name="neutral">#262A35</color>
+    <color name="onNeutral">#BCCEFF</color>
 
     <!-- screen background gradient colors -->
 

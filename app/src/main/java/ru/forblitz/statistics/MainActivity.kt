@@ -47,7 +47,6 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
@@ -995,7 +994,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 this.delete = Runnable {
                     if (i == index) {
-                        Snackbar.make(statisticsScreen, getString(R.string.delete_select), Snackbar.LENGTH_SHORT).show()
+                        InterfaceUtils.createSnackbar(statisticsScreen, getString(R.string.delete_select))
+                            .show()
                     } else {
                         InterfaceUtils.createAlertDialog(
                             this@MainActivity,
@@ -1004,7 +1004,8 @@ class MainActivity : AppCompatActivity() {
                             this@MainActivity.getString(R.string.delete),
                             Runnable {
                                 if (app.sessionService.subList[i].delete()) {
-                                    Snackbar.make(statisticsScreen, getString(R.string.delete_successfully), Snackbar.LENGTH_SHORT).show()
+                                    InterfaceUtils.createSnackbar(statisticsScreen, getString(R.string.delete_successfully))
+                                        .show()
                                     if (index != sessions.size - 1) {
                                         updateSessionStatistics(index)
                                     } else {
@@ -1012,7 +1013,8 @@ class MainActivity : AppCompatActivity() {
                                     }
                                     statisticsScreen.displayedChild = StatisticsViewFlipperItems.STATISTICS
                                 } else {
-                                    Snackbar.make(statisticsScreen, getString(R.string.delete_failed), Snackbar.LENGTH_SHORT).show()
+                                    InterfaceUtils.createSnackbar(statisticsScreen, getString(R.string.delete_failed))
+                                        .show()
                                 }
                             },
                             this@MainActivity.getString(android.R.string.cancel),

@@ -33,6 +33,7 @@ import androidx.transition.TransitionSet;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.snackbar.Snackbar;
 
 import ru.forblitz.statistics.R;
 import ru.forblitz.statistics.data.Constants;
@@ -253,6 +254,24 @@ public class InterfaceUtils {
         MaterialAlertDialogBuilder alertDialog = createAlertDialog(context, title, message, positiveButtonText, positiveButtonAction);
         alertDialog.setNegativeButton(negativeButtonText, (d, w) -> negativeButtonAction.run());
         return alertDialog;
+    }
+
+    public static Snackbar createSnackbar(
+            View view,
+            CharSequence text,
+            int duration
+    ) {
+        Snackbar snackbar = Snackbar.make(view, text, duration);
+        snackbar.setBackgroundTint(view.getContext().getColor(R.color.neutral));
+        snackbar.setTextColor(view.getContext().getColor(R.color.transparent_white));
+        return snackbar;
+    }
+
+    public static Snackbar createSnackbar(
+            View view,
+            CharSequence text
+    ) {
+        return createSnackbar(view, text, Snackbar.LENGTH_SHORT);
     }
 
     /**

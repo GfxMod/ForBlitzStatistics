@@ -7,6 +7,7 @@ import static ru.forblitz.statistics.data.Constants.animationDurationMillis;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -31,6 +32,7 @@ import androidx.transition.TransitionManager;
 import androidx.transition.TransitionSet;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.shape.MaterialShapeDrawable;
 
 import ru.forblitz.statistics.R;
 import ru.forblitz.statistics.data.Constants;
@@ -213,6 +215,17 @@ public class InterfaceUtils {
         alertDialog.setMessage(message);
         alertDialog.setCancelable(false);
         alertDialog.setPositiveButton(context.getString(android.R.string.ok), (d, w) -> {});
+
+        MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
+        materialShapeDrawable.initializeElevationOverlay(context);
+        materialShapeDrawable.setFillColor(ColorStateList.valueOf(
+                context.getColor(R.color.neutral)
+        ));
+        materialShapeDrawable.setCornerSize(context.getResources().getDimensionPixelSize(
+                R.dimen.padding_great
+        ));
+        alertDialog.setBackground(materialShapeDrawable);
+
         return alertDialog;
     }
 

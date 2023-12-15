@@ -7,6 +7,7 @@
     <color name="black">#FF000000</color>
     <color name="grey">#9094A0</color>
     <color name="transparent_grey">#50949494</color>
+    <color name="neutral">#262A35</color>
 
     <!-- screen background gradient colors -->
 

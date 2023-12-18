@@ -12,7 +12,7 @@ import ru.forblitz.statistics.R;
 
 public class Constants {
 
-    public static final String forBlitzBaseUrl = "https://forblitz.ru/";
+    public static final String forBlitzBaseUrl = "https://statistics.forblitz.ru/";
 
     public static int TABS_COUNT = 4;
 

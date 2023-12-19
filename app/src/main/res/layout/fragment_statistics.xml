@@ -522,7 +522,7 @@
                     whatever:main_dimension="vertical"
                     android:background="@drawable/background_layout_nested_selected"
                     android:src="@drawable/outline_find_replace_24"
-                    android:contentDescription="@string/delete" />
+                    android:contentDescription="@string/refresh_statistics" />
 
             </LinearLayout>
 

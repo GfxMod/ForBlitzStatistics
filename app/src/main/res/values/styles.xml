@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="FBSwitch" parent="Theme.ForBlitz">
+    <style name="FBSwitch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <!-- disabled switch background color -->
+        <item name="colorSurfaceVariant">@color/transparent_black</item>
+        <!-- disabled switch thumb and stroke color -->
+        <item name="colorOutline">@color/transparent_white</item>
+        <!-- enabled switch background color -->
         <item name="colorPrimary">@color/stroke_color</item>
-
-        <item name="colorOutline">@color/transparent_black</item>
+        <!-- enabled switch thumb color -->
+        <item name="colorOnPrimary">@color/onNeutral</item>
+        <!-- from enabled to disable switch animation color -->
+        <item name="colorPrimaryContainer">@color/transparent_grey</item>
     </style>
     <style
         name="materialSegmentedButtonOutlined"
@@ -24,5 +31,15 @@
     <style name="materialSegmentedButtonOutlinedOverlay">
         <item name="colorSecondaryContainer">@color/transparent_grey</item>
         <item name="colorContainer">@color/transparent_black</item>
+    </style>
+    <style name="FBSAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <!-- background color -->
+        <item name="android:background">@color/neutral</item>
+        <!-- title color -->
+        <item name="colorOnSurface">@color/white</item>
+        <!-- text color -->
+        <item name="colorOnSurfaceVariant">@color/transparent_white</item>
+        <!-- button text color -->
+        <item name="colorPrimary">@color/onNeutral</item>
     </style>
 </resources>

@@ -6,7 +6,7 @@ import retrofit2.http.GET
 
 interface ApiInterfaceForBlitz {
 
-    @GET("wp-json/wp/v2/appinfo")
+    @GET("api/v1/appinfo")
     suspend fun getAll() : Response<ResponseBody>
 
 }

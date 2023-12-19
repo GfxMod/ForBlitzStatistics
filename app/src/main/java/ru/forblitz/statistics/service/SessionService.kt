@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.forblitz.statistics.R
+import ru.forblitz.statistics.data.Constants
 import ru.forblitz.statistics.dto.UserStatisticsResponse
 import ru.forblitz.statistics.helpers.ActivityResultActionManager
 import ru.forblitz.statistics.utils.ZipUtils
@@ -55,21 +56,23 @@ class SessionService(private var context: Context) {
         private val pickerIntent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
             type = "application/octet-stream"
-            putExtra(DocumentsContract.EXTRA_INITIAL_URI, externalDirectory)
+            putExtra(DocumentsContract.EXTRA_INITIAL_URI, Constants.sessionFilePickerInitialUri)
         }
     }
 
     private fun sessionsDirectory(): File { return File(context.filesDir, "sessions") }
 
-    fun exportFBSS() {
+    fun exportFBSS(): File {
         if (!externalDirectory.exists()) {
             externalDirectory.mkdir()
         }
 
-        ZipUtils.packDir(
-            sessionsDirectory(),
-            File(externalDirectory, "sessions-${System.currentTimeMillis()}.fbss")
-        )
+        return File(externalDirectory, "sessions-${System.currentTimeMillis()}.fbss").also { file ->
+            ZipUtils.packDir(
+                sessionsDirectory(),
+                file
+            )
+        }
     }
 
     private fun importFBSS(fbssFile: File) {

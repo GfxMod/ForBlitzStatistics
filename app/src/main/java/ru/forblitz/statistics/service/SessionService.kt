@@ -68,10 +68,12 @@ class SessionService(private var context: Context) {
         }
 
         return File(externalDirectory, "sessions-${System.currentTimeMillis()}.fbss").also { file ->
-            ZipUtils.packDir(
-                sessionsDirectory(),
-                file
-            )
+            CoroutineScope(Dispatchers.IO).launch {
+                ZipUtils.packDir(
+                    sessionsDirectory(),
+                    file
+                )
+            }
         }
     }
 
